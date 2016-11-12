@@ -16,4 +16,10 @@ public interface HsbAPI {
     /** Create User **/
     @GET("/hsb/mobile/getTableList.html")
     Call<ResponseData> getTableList();
+
+
+    /** Create User **/
+    @GET("/hsb/mobile/getMenuItems.html")
+    Call<ResponseData> getMenuItems(long lastServerSyncTime);
+
 }

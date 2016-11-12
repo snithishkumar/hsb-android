@@ -8,9 +8,15 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.archide.hsb.entity.FoodCategoryEntity;
+import com.archide.hsb.entity.MenuCourseEntity;
+import com.archide.hsb.entity.MenuEntity;
+import com.archide.hsb.entity.PlacedOrderItemsEntity;
+import com.archide.hsb.entity.PlacedOrdersEntity;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 
 /**
  * Database helper class used to manage the creation and upgrading of your database. This class also usually provides
@@ -41,7 +47,11 @@ public class DatabaseHelper<T,T1> extends OrmLiteSqliteOpenHelper {
         try {
             Log.i(DatabaseHelper.class.getName(), "onCreate");
 
-
+            TableUtils.createTableIfNotExists(connectionSource, MenuCourseEntity.class);
+            TableUtils.createTableIfNotExists(connectionSource, FoodCategoryEntity.class);
+            TableUtils.createTableIfNotExists(connectionSource, MenuEntity.class);
+            TableUtils.createTableIfNotExists(connectionSource, PlacedOrdersEntity.class);
+            TableUtils.createTableIfNotExists(connectionSource, PlacedOrderItemsEntity.class);
 
         } catch (Exception e) {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);

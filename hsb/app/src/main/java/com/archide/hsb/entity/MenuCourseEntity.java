@@ -1,17 +1,37 @@
 package com.archide.hsb.entity;
 
+import com.archide.hsb.sync.json.MenuListJson;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName = "MenuCourseEntity")
 public class MenuCourseEntity {
 	public static final String MENU_COURSE_ID = "menuCourseId";
 	public static final String MENU_COURSE_UUID = "menuCourseUUID";
 	public static final String CATEGORY_NAME = "categoryName";
 	public static final String DATE_TIME = "dateTime";
-	
 
+
+    @DatabaseField(columnName = MENU_COURSE_ID,generatedId = true)
 	private int menuCourseId;
 
+    @DatabaseField(columnName = MENU_COURSE_UUID)
 	private String menuCourseUUID;
+    @DatabaseField(columnName = CATEGORY_NAME)
 	private String categoryName;
+    @DatabaseField(columnName = DATE_TIME)
 	private long dateTime;
+
+    public MenuCourseEntity(){
+
+    }
+
+	public MenuCourseEntity(MenuListJson menuListJson){
+		this.menuCourseUUID = menuListJson.getMenuCourseUuid();
+		this.categoryName = menuListJson.getCategoryName();
+		this.dateTime = menuListJson.getDateTime();
+	}
+
 	public int getMenuCourseId() {
 		return menuCourseId;
 	}

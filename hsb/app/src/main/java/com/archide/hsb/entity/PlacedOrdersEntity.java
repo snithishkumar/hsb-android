@@ -1,5 +1,9 @@
 package com.archide.hsb.entity;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName = "PlacedOrderItemsEntity")
 public class PlacedOrdersEntity {
 	
 	public static final String PLACED_ORDERS_ID = "placeOrdersId";
@@ -11,17 +15,25 @@ public class PlacedOrdersEntity {
 	public static final String TAX_AMOUNT = "taxAmount";
 	public static final String DISCOUNT = "discount";
 	public static final String TOTAL_PRICE = "totalPrice";
-	
-	
 
+
+    @DatabaseField(columnName = PLACED_ORDERS_ID,generatedId = true)
 	private int placeOrdersId;
+    @DatabaseField(columnName = PLACED_ORDERS_UUID)
 	private String placeOrdersUUID;
+    @DatabaseField(columnName = ORDER_ID)
 	private String orderId;
+    @DatabaseField(columnName = TABLE_NUMBER)
 	private String tableNumber;
+    @DatabaseField(columnName = DATE_TIME)
 	private long dateTime;
+    @DatabaseField(columnName = PRICE)
 	private double price;
+    @DatabaseField(columnName = TAX_AMOUNT)
 	private double taxAmount;
+    @DatabaseField(columnName = DISCOUNT)
 	private double discount;
+    @DatabaseField(columnName = TOTAL_PRICE)
 	private double totalPrice;
 	
 	public PlacedOrdersEntity(){
