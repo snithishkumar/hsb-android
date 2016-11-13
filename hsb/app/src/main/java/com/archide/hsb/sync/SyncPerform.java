@@ -4,13 +4,19 @@ import android.content.Context;
 import android.util.Log;
 
 import com.archide.hsb.dao.MenuItemsDao;
+import com.archide.hsb.dao.OrdersDao;
 import com.archide.hsb.entity.FoodCategoryEntity;
 import com.archide.hsb.entity.MenuCourseEntity;
 import com.archide.hsb.entity.MenuEntity;
+import com.archide.hsb.entity.PlacedOrderItemsEntity;
+import com.archide.hsb.entity.PlacedOrdersEntity;
 import com.archide.hsb.enumeration.GsonAPI;
 import com.archide.hsb.sync.json.FoodCategoryJson;
+import com.archide.hsb.sync.json.GetMenuDetails;
 import com.archide.hsb.sync.json.MenuItemJson;
 import com.archide.hsb.sync.json.MenuListJson;
+import com.archide.hsb.sync.json.OrderedMenuItems;
+import com.archide.hsb.sync.json.PlaceOrdersJson;
 import com.archide.hsb.sync.json.ResponseData;
 import com.archide.hsb.sync.json.TableListJson;
 import com.google.gson.Gson;
@@ -36,6 +42,7 @@ public class SyncPerform {
     private HsbAPI hsbAPI;
 
     private MenuItemsDao menuItemsDao;
+    private OrdersDao ordersDao;
 
     public SyncPerform(){
 
@@ -97,16 +104,22 @@ public class SyncPerform {
                 ResponseData responseData = response.body();
                 String menuItemsJsonString =  (String)responseData.getData();
 
-                List<MenuListJson>  menuListJsonList =  gson.fromJson(menuItemsJsonString, new TypeToken<List<MenuListJson>>() {
-                }.getType());
+                GetMenuDetails  menuListJsonList =  gson.fromJson(menuItemsJsonString, GetMenuDetails.class);
 
-                for(MenuListJson menuListJson : menuListJsonList){
+                List<MenuListJson> menuListJsonsList =  menuListJsonList.getMenuListJsonList();
+
+                for(MenuListJson menuListJson : menuListJsonsList){
                     processMenuDetails(menuListJson);
+                }
+
+                PlaceOrdersJson placeOrdersJson =    menuListJsonList.getPreviousOrder();
+                if(placeOrdersJson != null){
+                    processPreviousOrder(placeOrdersJson);
                 }
 
             }
         }catch (Exception e){
-
+e.printStackTrace();
         }
 
         return getErrorResponse();
@@ -145,6 +158,32 @@ public class SyncPerform {
                         menuItemsDao.updateMenuEntity(menuEntity);
                     }
                 }
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Process Previous Order Details
+     * @param placeOrdersJson
+     */
+    private void processPreviousOrder(PlaceOrdersJson placeOrdersJson){
+        try{
+            PlacedOrdersEntity placedOrdersEntity =   ordersDao.getPlacedOrdersEntity(placeOrdersJson.getPlaceOrderUuid());
+            if(placedOrdersEntity == null){
+                placedOrdersEntity = new PlacedOrdersEntity(placeOrdersJson);
+                ordersDao.createPlacedOrdersEntity(placedOrdersEntity);
+            }
+            List<OrderedMenuItems>  menuItemsList =  placeOrdersJson.getMenuItems();
+            for(OrderedMenuItems orderedMenuItems : menuItemsList){
+                PlacedOrderItemsEntity placedOrderItemsEntity = ordersDao.getPlacedOrdersItemsEntity(orderedMenuItems.getPlacedOrderItemsUUID());
+               if(placedOrderItemsEntity == null){
+                   placedOrderItemsEntity = new PlacedOrderItemsEntity(orderedMenuItems);
+                   ordersDao.createPlacedOrdersItemsEntity(placedOrderItemsEntity);
+               }
 
             }
         }catch (Exception e){

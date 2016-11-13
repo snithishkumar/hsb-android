@@ -24,10 +24,14 @@ public class MenuItemsDaoImpl extends  BaseDaoImpl implements MenuItemsDao {
 
     public MenuItemsDaoImpl(Context context) throws SQLException {
         super(context);
+        initDao();
     }
 
     @Override
     protected void initDao() throws SQLException {
+        menuEntityDao = databaseHelper.getDao(MenuEntity.class);
+        menuCourseDao = databaseHelper.getDao(MenuCourseEntity.class);
+        foodCategoryDao = databaseHelper.getDao(FoodCategoryEntity.class);
 
     }
 

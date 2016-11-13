@@ -66,6 +66,11 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
                ResponseData responseData =  syncPerform.getTableDetails();
                 postData(responseData);
                 break;
+
+            case 1:
+                responseData =   syncPerform.getMenuItems();
+                postData(responseData);
+                break;
         }
 
     }

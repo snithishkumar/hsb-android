@@ -1,5 +1,6 @@
 package com.archide.hsb.entity;
 
+import com.archide.hsb.sync.json.PlaceOrdersJson;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -15,6 +16,11 @@ public class PlacedOrdersEntity {
 	public static final String TAX_AMOUNT = "taxAmount";
 	public static final String DISCOUNT = "discount";
 	public static final String TOTAL_PRICE = "totalPrice";
+
+    public static final String SERVER_DATE_TIME = "serverDateTime";
+    public static final String ORDER_DATE_TIME = "orderDateTime";
+    public static final String LAST_UPDATED_TIME = "lastUpdatedDateTime";
+
 
 
     @DatabaseField(columnName = PLACED_ORDERS_ID,generatedId = true)
@@ -35,12 +41,30 @@ public class PlacedOrdersEntity {
 	private double discount;
     @DatabaseField(columnName = TOTAL_PRICE)
 	private double totalPrice;
+    @DatabaseField(columnName = TOTAL_PRICE)
+    private long serverDateTime;
+    @DatabaseField(columnName = TOTAL_PRICE)
+    private long orderDateTime;
+    @DatabaseField(columnName = TOTAL_PRICE)
+    private long lastUpdatedDateTime;
 	
 	public PlacedOrdersEntity(){
 		
 	}
-	
-	
+
+	public PlacedOrdersEntity(PlaceOrdersJson placeOrdersJson){
+        this.placeOrdersUUID = placeOrdersJson.getPlaceOrderUuid();
+		this.orderId = placeOrdersJson.getOrderId();
+		this.tableNumber = placeOrdersJson.getTableNumber();
+		this.price = placeOrdersJson.getPrice();
+		this.totalPrice = placeOrdersJson.getTotalPrice();
+		this.taxAmount = placeOrdersJson.getTaxAmount();
+		this.discount = placeOrdersJson.getDiscount();
+		this.totalPrice = placeOrdersJson.getTotalPrice();
+        this.serverDateTime = placeOrdersJson.getServerDateTime();
+        this.orderDateTime = placeOrdersJson.getOrderDateTime();
+        this.lastUpdatedDateTime = placeOrdersJson.getLastUpdatedDateTime();
+	}
 
 	
 	public int getPlaceOrdersId() {

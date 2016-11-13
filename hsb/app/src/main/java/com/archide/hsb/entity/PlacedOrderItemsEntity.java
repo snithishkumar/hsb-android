@@ -1,6 +1,7 @@
 package com.archide.hsb.entity;
 
 
+import com.archide.hsb.sync.json.OrderedMenuItems;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -23,6 +24,22 @@ public class PlacedOrderItemsEntity {
 	private float quantity;
     @DatabaseField(columnName = PLACED_ORDER_ENTITY,foreign = true,foreignAutoRefresh =  true)
 	private PlacedOrdersEntity placedOrdersEntity;
+    @DatabaseField(columnName = QUANTITY)
+    private String name;
+    @DatabaseField(columnName = QUANTITY)
+    private String itemCode;
+
+	public PlacedOrderItemsEntity(){
+
+	}
+
+	public PlacedOrderItemsEntity(OrderedMenuItems orderedMenuItems){
+        this.placedOrderItemsUUID = orderedMenuItems.getPlacedOrderItemsUUID();
+        this.quantity = orderedMenuItems.getQuantity();
+        this.name = orderedMenuItems.getName();
+        this.itemCode = orderedMenuItems.getItemCode();
+
+	}
 	
 	public int getPlacedOrderItemsId() {
 		return placedOrderItemsId;
@@ -57,7 +74,24 @@ public class PlacedOrderItemsEntity {
 	public void setPlacedOrdersEntity(PlacedOrdersEntity placedOrdersEntity) {
 		this.placedOrdersEntity = placedOrdersEntity;
 	}
-	@Override
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getItemCode() {
+        return itemCode;
+    }
+
+    public void setItemCode(String itemCode) {
+        this.itemCode = itemCode;
+    }
+
+    @Override
 	public String toString() {
 		return "PlacedOrderItemsEntity [placedOrderItemsId=" + placedOrderItemsId + ", placedOrderItemsUUID="
 				+ placedOrderItemsUUID + ", menuItem=" + menuItem + ", quantity=" + quantity + "]";
