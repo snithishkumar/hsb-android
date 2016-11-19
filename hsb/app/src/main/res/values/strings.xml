@@ -18,6 +18,9 @@
     <string name="internal_error">OOPS! Something went wrong. Pls try again later</string>
     <string name="no_network_heading">No Network</string>
 
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
     <string-array name="table_number">
         <item>Mercury</item>
         <item>Venus</item>
@@ -27,6 +30,14 @@
         <item>Saturn</item>
         <item>Uranus</item>
         <item>Neptune</item>
+    </string-array>
+
+    <string-array name="nav_menu">
+        <item>Current Orders</item>
+        <item>Placed Orders</item>
+        <item>Billing</item>
+        <item>About</item>
+        <item>Rate the App</item>
     </string-array>
 
 </resources>

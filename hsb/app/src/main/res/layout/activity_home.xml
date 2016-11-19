@@ -27,4 +27,13 @@
     </LinearLayout>
 
 
+    <fragment
+        android:id="@+id/fragment_navigation_drawer"
+        android:layout_width="@dimen/nav_drawer_width"
+        android:name="com.archide.hsb.view.fragments.FragmentDrawer"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:layout="@layout/fragment_navigation_drawer"
+        tools:layout="@layout/fragment_navigation_drawer" />
+
     </android.support.v4.widget.DrawerLayout>
