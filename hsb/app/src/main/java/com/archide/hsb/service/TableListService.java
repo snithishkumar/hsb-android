@@ -9,4 +9,5 @@ import android.content.Context;
 public interface TableListService {
 
     void getTableList(Context context);
+    void getMenuItems(Context context,String tableNumber);
 }

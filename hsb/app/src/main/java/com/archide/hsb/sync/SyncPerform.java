@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.archide.hsb.dao.MenuItemsDao;
 import com.archide.hsb.dao.OrdersDao;
+import com.archide.hsb.dao.impl.MenuItemsDaoImpl;
+import com.archide.hsb.dao.impl.OrdersDaoImpl;
 import com.archide.hsb.entity.FoodCategoryEntity;
 import com.archide.hsb.entity.MenuCourseEntity;
 import com.archide.hsb.entity.MenuEntity;
@@ -55,7 +57,8 @@ public class SyncPerform {
 
     private void init(){
         try{
-
+            menuItemsDao = new MenuItemsDaoImpl(context);
+            ordersDao = new OrdersDaoImpl(context);
             gson = GsonAPI.INSTANCE.getGson();
         }catch (Exception e){
             Log.e(LOG_TAG,"Error in init",e);
@@ -98,7 +101,7 @@ public class SyncPerform {
     public ResponseData getMenuItems(){
         try{
           long lastServerSyncTime =  menuItemsDao.getLastSyncTime();
-            Call<ResponseData> menuItemsResponse =  hsbAPI.getMenuItems(lastServerSyncTime);
+            Call<ResponseData> menuItemsResponse =  hsbAPI.getMenuItems(lastServerSyncTime,"1");
             Response<ResponseData> response =  menuItemsResponse.execute();
             if (response != null && response.isSuccessful()) {
                 ResponseData responseData = response.body();

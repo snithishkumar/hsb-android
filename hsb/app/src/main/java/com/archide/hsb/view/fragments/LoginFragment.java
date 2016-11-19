@@ -4,11 +4,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import com.archide.hsb.sync.json.ResponseData;
@@ -28,7 +30,7 @@ import hsb.archide.com.hsb.R;
 /**
  *
  */
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements View.OnClickListener{
 
     private MainActivity mainActivity;
     ProgressDialog progressDialog = null;
@@ -46,6 +48,10 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View loginView =  inflater.inflate(R.layout.fragment_login, container, false);
+
+        FloatingActionButton button =  (FloatingActionButton)loginView.findViewById(R.id.submit);
+        button.setOnClickListener(this);
+
         Spinner spinner = (Spinner) loginView.findViewById(R.id.vTableNumber);
         List<String> test  =new ArrayList<>();
         test.add("1");
@@ -58,7 +64,7 @@ public class LoginFragment extends Fragment {
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
-        getTableList();
+       // getTableList();
         return loginView;
     }
 
@@ -76,7 +82,7 @@ public class LoginFragment extends Fragment {
 
     private void intiView(ResponseData responseData){
         dismiss();
-        if(responseData.getSuccess()){
+       /* if(responseData.getSuccess()){
           List<String> msg = (List<String>)responseData.getMessage();
             adapter.clear();
             adapter.addAll(msg);
@@ -84,7 +90,7 @@ public class LoginFragment extends Fragment {
 
             adapter.notifyDataSetChanged();
 
-        }
+        }*/
 
     }
 
@@ -121,8 +127,32 @@ public class LoginFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
+    public interface MainActivityCallback {
+        void success(int code, Object data);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleServerSyncResponse(ResponseData responseData) {
         intiView(responseData);
+        mainActivity.success(1,null);
+        return;
     }
+
+    @Override
+   public void onClick(View view) {
+        boolean isNetWorkConnected =  Utilities.isNetworkConnected(mainActivity);
+        if(isNetWorkConnected){
+
+            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), mainActivity);
+            mainActivity.getTableListService().getMenuItems(mainActivity,"1");
+        }else{
+            ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
+        }
+    }
+
+
+  /* public void onClick(View view) {
+        mainActivity.success(1,null);
+        return;
+    }*/
 }

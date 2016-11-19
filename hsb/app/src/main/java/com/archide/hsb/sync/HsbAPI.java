@@ -4,6 +4,8 @@ import com.archide.hsb.sync.json.ResponseData;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
@@ -19,7 +21,8 @@ public interface HsbAPI {
 
 
     /** Create User **/
-    @GET("/hsb/mobile/getMenuItems.html")
-    Call<ResponseData> getMenuItems(long lastServerSyncTime);
+    @FormUrlEncoded
+    @POST("/hsb/mobile/getMenuItems.html")
+    Call<ResponseData> getMenuItems(@Field("lastServerSyncTime") long lastServerSyncTime,@Field("tableNumber") String tableNumber);
 
 }

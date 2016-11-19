@@ -3,7 +3,7 @@ package com.archide.hsb.sync.json;
 public class OrderedMenuItems {
 	
 	private String name;
-	private float quantity;
+	private int quantity;
 	private String placedOrderItemsUUID;
 	private String menuUuid;
 	private String itemCode;
@@ -28,10 +28,10 @@ public class OrderedMenuItems {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public float getQuantity() {
+	public int getQuantity() {
 		return quantity;
 	}
-	public void setQuantity(float quantity) {
+	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 	public String getPlacedOrderItemsUUID() {

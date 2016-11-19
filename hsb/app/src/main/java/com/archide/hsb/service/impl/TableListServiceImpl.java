@@ -32,6 +32,15 @@ public class TableListServiceImpl implements TableListService {
     }
 
 
+    @Override
+    public void getMenuItems(Context context,String tableNumber){
+        account = HsbSyncAdapter.getSyncAccount(context);
+        settingsBundle.putInt("currentScreen", SyncEvent.GET_MENU_LIST);
+        settingsBundle.putString("tableNumber", tableNumber);
+        ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
+    }
+
+
 
 
     private void init(){

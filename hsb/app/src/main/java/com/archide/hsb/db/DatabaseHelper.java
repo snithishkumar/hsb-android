@@ -51,8 +51,8 @@ public class DatabaseHelper<T,T1> extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, FoodCategoryEntity.class);
             TableUtils.createTableIfNotExists(connectionSource, MenuEntity.class);
             TableUtils.createTableIfNotExists(connectionSource, PlacedOrdersEntity.class);
-            TableUtils.createTableIfNotExists(connectionSource, PlacedOrderItemsEntity.class);
-
+           int res = TableUtils.createTableIfNotExists(connectionSource, PlacedOrderItemsEntity.class);
+            System.out.println(res);
         } catch (Exception e) {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
             throw new RuntimeException(e);

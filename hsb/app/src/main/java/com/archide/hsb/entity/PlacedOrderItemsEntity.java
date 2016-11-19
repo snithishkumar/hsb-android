@@ -5,14 +5,18 @@ import com.archide.hsb.sync.json.OrderedMenuItems;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "PlacedOrderItemsEntity")
+@DatabaseTable(tableName = "PlacedOrderItems")
 public class PlacedOrderItemsEntity {
 	
-	public static final String PLACED_ORDER_ITEMS_ID = "placedOrderItemsId";
-	public static final String PLACED_ORDER_ITEMS_UUID = "placedOrderItemsUUID";
-	public static final String MENU_ITEM = "menuItem";
-	public static final String QUANTITY = "quantity";
-    public static final String PLACED_ORDER_ENTITY = "placedOrdersEntity";
+	public static final String PLACED_ORDER_ITEMS_ID = "PlacedOrderItemsId";
+	public static final String PLACED_ORDER_ITEMS_UUID = "PlacedOrderItemsUUID";
+	public static final String MENU_ITEM = "MenuItem";
+	public static final String QUANTITY = "Quantity";
+    public static final String PLACED_ORDER_ENTITY = "PlacedOrders";
+	public static final String IS_CONFORM = "IsConfirm";
+    public static final String ITEM_CODE = "ItemCode";
+    public static final String NAME = "Name";
+    public static final String COST = "Cost";
 
     @DatabaseField(columnName = PLACED_ORDER_ITEMS_ID,generatedId = true)
 	private int placedOrderItemsId;
@@ -21,13 +25,17 @@ public class PlacedOrderItemsEntity {
     @DatabaseField(columnName = MENU_ITEM,foreign = true,foreignAutoRefresh =  true)
 	private MenuEntity menuItem;
     @DatabaseField(columnName = QUANTITY)
-	private float quantity;
-    @DatabaseField(columnName = PLACED_ORDER_ENTITY,foreign = true,foreignAutoRefresh =  true)
-	private PlacedOrdersEntity placedOrdersEntity;
-    @DatabaseField(columnName = QUANTITY)
+	private int quantity;
+   /* @DatabaseField(columnName = PLACED_ORDER_ENTITY,foreign = true,foreignAutoRefresh =  true)
+	private PlacedOrdersEntity placedOrdersEntity;*/
+    @DatabaseField(columnName = NAME)
     private String name;
-    @DatabaseField(columnName = QUANTITY)
+    @DatabaseField(columnName = ITEM_CODE)
     private String itemCode;
+	@DatabaseField(columnName = IS_CONFORM)
+	private boolean isConform;
+    @DatabaseField(columnName = COST)
+    private double cost;
 
 	public PlacedOrderItemsEntity(){
 
@@ -40,7 +48,23 @@ public class PlacedOrderItemsEntity {
         this.itemCode = orderedMenuItems.getItemCode();
 
 	}
-	
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public boolean isConform() {
+		return isConform;
+	}
+
+	public void setConform(boolean conform) {
+		isConform = conform;
+	}
+
 	public int getPlacedOrderItemsId() {
 		return placedOrderItemsId;
 	}
@@ -59,21 +83,21 @@ public class PlacedOrderItemsEntity {
 	public void setMenuItem(MenuEntity menuItem) {
 		this.menuItem = menuItem;
 	}
-	public float getQuantity() {
+	public int getQuantity() {
 		return quantity;
 	}
-	public void setQuantity(float quantity) {
+	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 	
 	
-	
+	/*
 	public PlacedOrdersEntity getPlacedOrdersEntity() {
 		return placedOrdersEntity;
 	}
 	public void setPlacedOrdersEntity(PlacedOrdersEntity placedOrdersEntity) {
 		this.placedOrdersEntity = placedOrdersEntity;
-	}
+	}*/
 
     public String getName() {
         return name;

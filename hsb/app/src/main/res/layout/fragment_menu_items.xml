@@ -1,0 +1,30 @@
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:id="@+id/menu_items_swipe">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_above="@+id/textView1"
+        tools:listitem="@layout/adapt_unorder_menu_items"
+        android:id="@+id/menu_items_list_fragment" />
+
+        <include
+            android:layout_width="match_parent"
+            android:id="@+id/textView1"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            layout="@layout/current_orders"/>
+
+</RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

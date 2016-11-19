@@ -4,22 +4,22 @@ import com.archide.hsb.sync.json.PlaceOrdersJson;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "PlacedOrderItemsEntity")
+@DatabaseTable(tableName = "PlacedOrders")
 public class PlacedOrdersEntity {
 	
-	public static final String PLACED_ORDERS_ID = "placeOrdersId";
-	public static final String PLACED_ORDERS_UUID = "placeOrdersUUID";
-	public static final String ORDER_ID = "orderId";
-	public static final String TABLE_NUMBER = "tableNumber";
-	public static final String DATE_TIME = "dateTime";
-	public static final String PRICE = "price";
-	public static final String TAX_AMOUNT = "taxAmount";
-	public static final String DISCOUNT = "discount";
-	public static final String TOTAL_PRICE = "totalPrice";
+	public static final String PLACED_ORDERS_ID = "PlaceOrdersId";
+	public static final String PLACED_ORDERS_UUID = "PlaceOrdersUUID";
+	public static final String ORDER_ID = "OrderId";
+	public static final String TABLE_NUMBER = "TableNumber";
+	public static final String DATE_TIME = "DateTime";
+	public static final String PRICE = "Price";
+	public static final String TAX_AMOUNT = "TaxAmount";
+	public static final String DISCOUNT = "Discount";
+	public static final String TOTAL_PRICE = "TotalPrice";
 
-    public static final String SERVER_DATE_TIME = "serverDateTime";
-    public static final String ORDER_DATE_TIME = "orderDateTime";
-    public static final String LAST_UPDATED_TIME = "lastUpdatedDateTime";
+    public static final String SERVER_DATE_TIME = "ServerDateTime";
+    public static final String ORDER_DATE_TIME = "OrderDateTime";
+    public static final String LAST_UPDATED_TIME = "LastUpdatedDateTime";
 
 
 
@@ -41,11 +41,11 @@ public class PlacedOrdersEntity {
 	private double discount;
     @DatabaseField(columnName = TOTAL_PRICE)
 	private double totalPrice;
-    @DatabaseField(columnName = TOTAL_PRICE)
+    @DatabaseField(columnName = SERVER_DATE_TIME)
     private long serverDateTime;
-    @DatabaseField(columnName = TOTAL_PRICE)
+    @DatabaseField(columnName = ORDER_DATE_TIME)
     private long orderDateTime;
-    @DatabaseField(columnName = TOTAL_PRICE)
+    @DatabaseField(columnName = LAST_UPDATED_TIME)
     private long lastUpdatedDateTime;
 	
 	public PlacedOrdersEntity(){
@@ -121,6 +121,31 @@ public class PlacedOrdersEntity {
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
+
+	public long getServerDateTime() {
+		return serverDateTime;
+	}
+
+	public void setServerDateTime(long serverDateTime) {
+		this.serverDateTime = serverDateTime;
+	}
+
+	public long getOrderDateTime() {
+		return orderDateTime;
+	}
+
+	public void setOrderDateTime(long orderDateTime) {
+		this.orderDateTime = orderDateTime;
+	}
+
+	public long getLastUpdatedDateTime() {
+		return lastUpdatedDateTime;
+	}
+
+	public void setLastUpdatedDateTime(long lastUpdatedDateTime) {
+		this.lastUpdatedDateTime = lastUpdatedDateTime;
+	}
+
 	@Override
 	public String toString() {
 		return "PlacedOrdersEntity [placeOrdersId=" + placeOrdersId + ", placeOrdersUUID=" + placeOrdersUUID + ", orderId="
