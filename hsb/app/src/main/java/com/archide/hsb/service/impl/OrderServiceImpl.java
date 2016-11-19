@@ -47,6 +47,7 @@ public class OrderServiceImpl implements OrderService {
                 PlacedOrderItemsEntity placedOrderItemsEntity = new PlacedOrderItemsEntity();
                 placedOrderItemsEntity.setConform(false);
                 placedOrderItemsEntity.setMenuItem(menuEntity);
+                placedOrderItemsEntity.setMenuCourseEntity(menuEntity.getMenuCourseEntity());
                 placedOrderItemsEntity.setItemCode(menuItemsViewModel.getItemCode());
                 placedOrderItemsEntity.setName(menuItemsViewModel.getName());
                 placedOrderItemsEntity.setPlacedOrderItemsUUID(UUID.randomUUID().toString());

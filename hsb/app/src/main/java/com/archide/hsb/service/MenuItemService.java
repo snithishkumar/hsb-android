@@ -2,6 +2,7 @@ package com.archide.hsb.service;
 
 import com.archide.hsb.entity.MenuCourseEntity;
 import com.archide.hsb.view.model.MenuItemsViewModel;
+import com.archide.hsb.view.model.OrderDetailsViewModel;
 
 import java.util.List;
 
@@ -13,5 +14,5 @@ public interface MenuItemService {
 
     List<MenuCourseEntity> getMenuCourseEntity();
 
-    List<MenuItemsViewModel> getMenuItemsViewModel(String menuCourseUuid);
+    List<MenuItemsViewModel> getMenuItemsViewModel(String menuCourseUuid, OrderDetailsViewModel orderDetailsViewModel);
 }

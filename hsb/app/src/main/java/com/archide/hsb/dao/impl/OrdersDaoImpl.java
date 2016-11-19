@@ -3,6 +3,7 @@ package com.archide.hsb.dao.impl;
 import android.content.Context;
 
 import com.archide.hsb.dao.OrdersDao;
+import com.archide.hsb.entity.MenuCourseEntity;
 import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.entity.PlacedOrdersEntity;
@@ -74,5 +75,8 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
       return   placedOrderItemDao.queryBuilder().where().eq(PlacedOrderItemsEntity.IS_CONFORM,false).query();
     }
 
+    public List<PlacedOrderItemsEntity> getPlacedOrderItemsEntity(MenuCourseEntity menuCourseEntity)throws SQLException{
+        return   placedOrderItemDao.queryBuilder().where().eq(PlacedOrderItemsEntity.IS_CONFORM,false).and().eq(PlacedOrderItemsEntity.MENU_COURSE_ENTITY,menuCourseEntity).query();
+    }
 
 }

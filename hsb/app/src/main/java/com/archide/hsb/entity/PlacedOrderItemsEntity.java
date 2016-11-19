@@ -13,6 +13,7 @@ public class PlacedOrderItemsEntity {
 	public static final String MENU_ITEM = "MenuItem";
 	public static final String QUANTITY = "Quantity";
     public static final String PLACED_ORDER_ENTITY = "PlacedOrders";
+	public static final String MENU_COURSE_ENTITY = "MenuCourse";
 	public static final String IS_CONFORM = "IsConfirm";
     public static final String ITEM_CODE = "ItemCode";
     public static final String NAME = "Name";
@@ -30,6 +31,8 @@ public class PlacedOrderItemsEntity {
 	private PlacedOrdersEntity placedOrdersEntity;*/
     @DatabaseField(columnName = NAME)
     private String name;
+	@DatabaseField(columnName = MENU_COURSE_ENTITY,foreign = true,foreignAutoRefresh =  true)
+	private MenuCourseEntity menuCourseEntity;
     @DatabaseField(columnName = ITEM_CODE)
     private String itemCode;
 	@DatabaseField(columnName = IS_CONFORM)
@@ -48,6 +51,14 @@ public class PlacedOrderItemsEntity {
         this.itemCode = orderedMenuItems.getItemCode();
 
 	}
+
+    public MenuCourseEntity getMenuCourseEntity() {
+        return menuCourseEntity;
+    }
+
+    public void setMenuCourseEntity(MenuCourseEntity menuCourseEntity) {
+        this.menuCourseEntity = menuCourseEntity;
+    }
 
     public double getCost() {
         return cost;

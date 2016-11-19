@@ -4,6 +4,8 @@ import com.archide.hsb.entity.FoodCategoryEntity;
 import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 
+import java.util.Objects;
+
 /**
  * Created by Nithish on 16/11/16.
  */
@@ -36,6 +38,7 @@ public class MenuItemsViewModel {
         this.count = placedOrderItemsEntity.getQuantity();
         this.cost = placedOrderItemsEntity.getCost();
         this.uuid = placedOrderItemsEntity.getMenuItem().getMenuUUID();
+        this.isOrdered = true;
     }
 
     public String getItemCode() {
@@ -103,5 +106,18 @@ public class MenuItemsViewModel {
                 ", isOrdered=" + isOrdered +
                 ", isCategory=" + isCategory +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MenuItemsViewModel that = (MenuItemsViewModel) o;
+        return Objects.equals(itemCode, that.itemCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(itemCode);
     }
 }

@@ -120,11 +120,12 @@ public class MenuItemsFragment extends Fragment {
     }
 
     private void getData(){
-        List<MenuItemsViewModel> menuItemsViewModels =  homeActivity.getMenuItemService().getMenuItemsViewModel(menuCourseUuid);
+        List<MenuItemsViewModel> menuItemsViewModels =  homeActivity.getMenuItemService().getMenuItemsViewModel(menuCourseUuid,orderDetailsViewModel);
         this.menuItemsViewModels.clear();
         this.menuItemsViewModels.addAll(menuItemsViewModels);
         this.menuItemsViewModels.addAll(menuItemsViewModels);
         menuItemListAdapter.notifyDataSetChanged();
+        updateFooterBar();
 
     }
 

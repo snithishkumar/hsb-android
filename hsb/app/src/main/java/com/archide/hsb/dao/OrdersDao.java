@@ -1,5 +1,6 @@
 package com.archide.hsb.dao;
 
+import com.archide.hsb.entity.MenuCourseEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.entity.PlacedOrdersEntity;
 
@@ -27,4 +28,6 @@ public interface OrdersDao {
     void removeOrderByItemCode(String itemCode)throws SQLException;
 
     List<PlacedOrderItemsEntity> getPlacedOrderItemsEntity()throws SQLException;
+
+    List<PlacedOrderItemsEntity> getPlacedOrderItemsEntity(MenuCourseEntity menuCourseEntity)throws SQLException;
 }
