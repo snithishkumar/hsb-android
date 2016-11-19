@@ -122,7 +122,7 @@ public class SyncPerform {
 
             }
         }catch (Exception e){
-e.printStackTrace();
+            e.printStackTrace();
         }
 
         return getErrorResponse();
@@ -199,6 +199,38 @@ e.printStackTrace();
         ResponseData responseData =new ResponseData(500,null);
         responseData.setStatusCode(500);
         return responseData;
+    }
+
+
+    public ResponseData sendOrderData(){
+        try{
+            PlacedOrdersEntity placedOrdersEntity =  ordersDao.getPlacedOrdersEntity();
+            if(placedOrdersEntity != null){
+                PlaceOrdersJson placeOrdersJson = new PlaceOrdersJson(placedOrdersEntity);
+                List<PlacedOrderItemsEntity> itemsEntityList =  ordersDao.getPlacedOrderItemsEntity();
+                for(PlacedOrderItemsEntity placedOrderItemsEntity : itemsEntityList){
+                    OrderedMenuItems orderedMenuItems = new OrderedMenuItems(placedOrderItemsEntity);
+                    placeOrdersJson.getMenuItems().add(orderedMenuItems);
+                }
+                Call<ResponseData> placeOrderResponse =  hsbAPI.placeAnOrder(placeOrdersJson);
+                Response<ResponseData> response =   placeOrderResponse.execute();
+                if (response != null && response.isSuccessful()) {
+                    ResponseData responseData =  response.body();
+                    if(responseData.getSuccess() && responseData.getStatusCode() == 200){
+                        ordersDao.updateServerSyncTime(responseData.getData());
+                        ordersDao.updatePlacedOrderItems();
+                        ResponseData result = new ResponseData(200,null);
+                        return result;
+                    }else {
+                        ResponseData result = new ResponseData(responseData.getStatusCode(),null);
+                        return result;
+                    }
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return getErrorResponse();
     }
 
 }

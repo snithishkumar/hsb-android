@@ -30,4 +30,11 @@ public interface OrdersDao {
     List<PlacedOrderItemsEntity> getPlacedOrderItemsEntity()throws SQLException;
 
     List<PlacedOrderItemsEntity> getPlacedOrderItemsEntity(MenuCourseEntity menuCourseEntity)throws SQLException;
+
+    void removeCurrentOrder()throws SQLException;
+
+
+    void updateServerSyncTime(String serverSyncTime)throws SQLException;
+
+    void updatePlacedOrderItems()throws SQLException;
 }

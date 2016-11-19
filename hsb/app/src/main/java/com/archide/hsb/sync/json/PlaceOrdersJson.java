@@ -1,5 +1,7 @@
 package com.archide.hsb.sync.json;
 
+import com.archide.hsb.entity.PlacedOrdersEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,20 @@ public class PlaceOrdersJson {
 	public PlaceOrdersJson(){
 		
 	}
+
+	public PlaceOrdersJson(PlacedOrdersEntity placedOrdersEntity){
+        this.tableNumber = placedOrdersEntity.getTableNumber();
+        this.orderId = placedOrdersEntity.getOrderId();
+        this.placeOrderUuid = placedOrdersEntity.getPlaceOrdersUUID();
+        this.orderDateTime = placedOrdersEntity.getOrderDateTime();
+        this.price = placedOrdersEntity.getPrice();
+        this.taxAmount = placedOrdersEntity.getTaxAmount();
+        this.discount = placedOrdersEntity.getDiscount();
+        this.totalPrice = placedOrdersEntity.getTotalPrice();
+        this.serverDateTime = placedOrdersEntity.getServerDateTime();
+        this.orderDateTime = placedOrdersEntity.getOrderDateTime();
+        this.lastUpdatedDateTime = placedOrdersEntity.getLastUpdatedDateTime();
+    }
 
     public long getServerDateTime() {
         return serverDateTime;

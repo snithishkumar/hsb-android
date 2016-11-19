@@ -1,5 +1,6 @@
 package com.archide.hsb.sync;
 
+import com.archide.hsb.sync.json.PlaceOrdersJson;
 import com.archide.hsb.sync.json.ResponseData;
 
 import retrofit2.Call;
@@ -24,5 +25,8 @@ public interface HsbAPI {
     @FormUrlEncoded
     @POST("/hsb/mobile/getMenuItems.html")
     Call<ResponseData> getMenuItems(@Field("lastServerSyncTime") long lastServerSyncTime,@Field("tableNumber") String tableNumber);
+
+    @POST("/hsb/mobile/placeAnOrder.html")
+    Call<ResponseData> placeAnOrder(@Body PlaceOrdersJson placeOrdersJson);
 
 }

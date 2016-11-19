@@ -1,6 +1,9 @@
 package com.archide.hsb.service.impl;
 
+import android.accounts.Account;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.os.Bundle;
 
 import com.archide.hsb.dao.MenuItemsDao;
 import com.archide.hsb.dao.OrdersDao;
@@ -10,13 +13,20 @@ import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.entity.PlacedOrdersEntity;
 import com.archide.hsb.service.OrderService;
+import com.archide.hsb.sync.HsbSyncAdapter;
+import com.archide.hsb.sync.SyncEvent;
 import com.archide.hsb.view.model.MenuItemsViewModel;
+import com.archide.hsb.view.model.OrderDetailsViewModel;
 import com.archide.hsb.view.model.PlaceAnOrderViewModel;
+import com.j256.ormlite.field.DatabaseField;
 
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
+import hsb.archide.com.hsb.R;
 
 /**
  * Created by Nithish on 19/11/16.
@@ -27,10 +37,15 @@ public class OrderServiceImpl implements OrderService {
     private OrdersDao ordersDao;
     private MenuItemsDao menuItemsDao;
 
+    private Bundle settingsBundle;
+    private Account account ;
+
+
     public OrderServiceImpl(Context context){
         try{
             ordersDao = new OrdersDaoImpl(context);
             menuItemsDao = new MenuItemsDaoImpl(context);
+            init();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -43,22 +58,26 @@ public class OrderServiceImpl implements OrderService {
             if(menuItemsViewModel.getCount() > 1){
                 ordersDao.updateOrdersCount(menuItemsViewModel.getItemCode(),menuItemsViewModel.getCount());
             }else{
-                MenuEntity menuEntity = menuItemsDao.getMenuItemEntity(menuItemsViewModel.getUuid());
-                PlacedOrderItemsEntity placedOrderItemsEntity = new PlacedOrderItemsEntity();
-                placedOrderItemsEntity.setConform(false);
-                placedOrderItemsEntity.setMenuItem(menuEntity);
-                placedOrderItemsEntity.setMenuCourseEntity(menuEntity.getMenuCourseEntity());
-                placedOrderItemsEntity.setItemCode(menuItemsViewModel.getItemCode());
-                placedOrderItemsEntity.setName(menuItemsViewModel.getName());
-                placedOrderItemsEntity.setPlacedOrderItemsUUID(UUID.randomUUID().toString());
-                placedOrderItemsEntity.setQuantity(menuItemsViewModel.getCount());
-                placedOrderItemsEntity.setCost(menuItemsViewModel.getCost());
-                ordersDao.createPlacedOrdersItemsEntity(placedOrderItemsEntity);
+                createOrderItems(menuItemsViewModel);
             }
         }catch (Exception e){
             e.printStackTrace();
         }
 
+    }
+
+    private void createOrderItems(MenuItemsViewModel menuItemsViewModel)throws SQLException{
+        MenuEntity menuEntity = menuItemsDao.getMenuItemEntity(menuItemsViewModel.getUuid());
+        PlacedOrderItemsEntity placedOrderItemsEntity = new PlacedOrderItemsEntity();
+        placedOrderItemsEntity.setConform(false);
+        placedOrderItemsEntity.setMenuItem(menuEntity);
+        placedOrderItemsEntity.setMenuCourseEntity(menuEntity.getMenuCourseEntity());
+        placedOrderItemsEntity.setItemCode(menuItemsViewModel.getItemCode());
+        placedOrderItemsEntity.setName(menuItemsViewModel.getName());
+        placedOrderItemsEntity.setPlacedOrderItemsUUID(UUID.randomUUID().toString());
+        placedOrderItemsEntity.setQuantity(menuItemsViewModel.getCount());
+        placedOrderItemsEntity.setCost(menuItemsViewModel.getCost());
+        ordersDao.createPlacedOrdersItemsEntity(placedOrderItemsEntity);
     }
 
     @Override
@@ -114,21 +133,37 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    public void placeOrder(){
+    public void conformOrder(PlaceAnOrderViewModel placeAnOrderViewModel,String tableNumber,Context context){
         try{
           PlacedOrdersEntity placedOrdersEntity =  ordersDao.getPlacedOrdersEntity();
             if(placedOrdersEntity == null){
                 placedOrdersEntity = new PlacedOrdersEntity();
-                placedOrdersEntity.setOrderDateTime(System.currentTimeMillis());
-                placedOrdersEntity.setOrderId(generateOrderId());
-                placedOrdersEntity.setDateTime(System.currentTimeMillis());
                 placedOrdersEntity.setPlaceOrdersUUID(UUID.randomUUID().toString());
+                placedOrdersEntity.setOrderId(generateOrderId());
+                placedOrdersEntity.setTableNumber(tableNumber);
+                placedOrdersEntity.setOrderDateTime(System.currentTimeMillis());
+                placedOrdersEntity.setPrice(placeAnOrderViewModel.getSubTotal());
+                placedOrdersEntity.setTaxAmount(placeAnOrderViewModel.getServiceTax());
+                placedOrdersEntity.setDiscount(placeAnOrderViewModel.getDiscount());
+                placedOrdersEntity.setTotalPrice(placeAnOrderViewModel.getTotalAmount());
+                placedOrdersEntity.setDateTime(System.currentTimeMillis());
+
                 ordersDao.createPlacedOrdersEntity(placedOrdersEntity);
+            }
+            ordersDao.removeCurrentOrder();
+            List<MenuItemsViewModel> menuItemsViewModels =  placeAnOrderViewModel.getMenuItemsViewModels();
+            for(MenuItemsViewModel menuItemsViewModel : menuItemsViewModels){
+                createOrderItems(menuItemsViewModel);
             }
 
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        account = HsbSyncAdapter.getSyncAccount(context);
+        settingsBundle.putInt("currentScreen", SyncEvent.PLACE_AN_ORDER);
+        settingsBundle.putString("tableNumber", tableNumber);
+        ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
     }
 
 
@@ -143,6 +178,19 @@ public class OrderServiceImpl implements OrderService {
         int ran = random.nextInt();
         stringBuilder.append(ran);
        return stringBuilder.toString();
+    }
+
+
+    private void init(){
+        if(settingsBundle == null){
+            settingsBundle = new Bundle();
+            settingsBundle.putBoolean(
+                    ContentResolver.SYNC_EXTRAS_MANUAL, true);
+            settingsBundle.putBoolean(
+                    ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+
+        }
+
     }
 
 

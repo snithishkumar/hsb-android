@@ -142,7 +142,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
    public void onClick(View view) {
         boolean isNetWorkConnected =  Utilities.isNetworkConnected(mainActivity);
         if(isNetWorkConnected){
-
             progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), mainActivity);
             mainActivity.getTableListService().getMenuItems(mainActivity,"1");
         }else{

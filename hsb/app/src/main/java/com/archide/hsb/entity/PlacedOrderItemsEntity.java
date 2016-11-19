@@ -2,6 +2,7 @@ package com.archide.hsb.entity;
 
 
 import com.archide.hsb.sync.json.OrderedMenuItems;
+import com.archide.hsb.view.model.MenuItemsViewModel;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -43,6 +44,8 @@ public class PlacedOrderItemsEntity {
 	public PlacedOrderItemsEntity(){
 
 	}
+
+
 
 	public PlacedOrderItemsEntity(OrderedMenuItems orderedMenuItems){
         this.placedOrderItemsUUID = orderedMenuItems.getPlacedOrderItemsUUID();

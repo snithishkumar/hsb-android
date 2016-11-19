@@ -1,5 +1,7 @@
 package com.archide.hsb.sync.json;
 
+import com.archide.hsb.entity.PlacedOrderItemsEntity;
+
 public class OrderedMenuItems {
 	
 	private String name;
@@ -11,7 +13,15 @@ public class OrderedMenuItems {
 	public OrderedMenuItems(){
 		
 	}
-	
+
+	public OrderedMenuItems(PlacedOrderItemsEntity placedOrderItemsEntity){
+        this.name = placedOrderItemsEntity.getName();
+        this.quantity = placedOrderItemsEntity.getQuantity();
+        this.placedOrderItemsUUID = placedOrderItemsEntity.getPlacedOrderItemsUUID();
+        this.menuUuid = placedOrderItemsEntity.getMenuItem().getMenuUUID();
+        this.itemCode = placedOrderItemsEntity.getItemCode();
+
+	}
 
 	
 	public String getItemCode() {

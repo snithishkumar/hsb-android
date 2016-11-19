@@ -1,5 +1,7 @@
 package com.archide.hsb.service;
 
+import android.content.Context;
+
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.view.model.MenuItemsViewModel;
 import com.archide.hsb.view.model.PlaceAnOrderViewModel;
@@ -22,5 +24,7 @@ public interface OrderService {
     PlaceAnOrderViewModel calculateAmountDetails(List<PlacedOrderItemsEntity> placedOrderItemsEntityList);
 
     void calcAmount(PlaceAnOrderViewModel placeAnOrderViewModel);
+
+    void conformOrder(PlaceAnOrderViewModel placeAnOrderViewModel,String tableNumber,Context context);
 
 }

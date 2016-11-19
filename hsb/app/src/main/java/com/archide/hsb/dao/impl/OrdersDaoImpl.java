@@ -48,6 +48,15 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
         placedOrdersDao.create(placedOrdersEntity);
     }
 
+    public void updateServerSyncTime(String serverSyncTime)throws SQLException{
+        placedOrdersDao.updateBuilder().updateColumnValue(PlacedOrdersEntity.SERVER_DATE_TIME,serverSyncTime).update();
+    }
+
+
+    public void updatePlacedOrderItems()throws SQLException{
+        placedOrderItemDao.updateBuilder().updateColumnValue(PlacedOrderItemsEntity.IS_CONFORM,true).update();
+    }
+
     public PlacedOrderItemsEntity getPlacedOrdersItemsEntity(String orderUuid)throws SQLException{
         return placedOrderItemDao.queryBuilder().where().eq(PlacedOrderItemsEntity.PLACED_ORDER_ITEMS_UUID,orderUuid).queryForFirst();
     }
@@ -78,5 +87,12 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
     public List<PlacedOrderItemsEntity> getPlacedOrderItemsEntity(MenuCourseEntity menuCourseEntity)throws SQLException{
         return   placedOrderItemDao.queryBuilder().where().eq(PlacedOrderItemsEntity.IS_CONFORM,false).and().eq(PlacedOrderItemsEntity.MENU_COURSE_ENTITY,menuCourseEntity).query();
     }
+
+    public void removeCurrentOrder()throws SQLException{
+        DeleteBuilder<PlacedOrderItemsEntity,Integer> deleteBuilder = placedOrderItemDao.deleteBuilder();
+        deleteBuilder.where().eq(PlacedOrderItemsEntity.IS_CONFORM,false);
+        deleteBuilder.delete();
+    }
+
 
 }
