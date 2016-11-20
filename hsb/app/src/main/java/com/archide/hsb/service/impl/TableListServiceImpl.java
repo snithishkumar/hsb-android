@@ -5,9 +5,16 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.archide.hsb.dao.AdminDao;
+import com.archide.hsb.dao.OrdersDao;
+import com.archide.hsb.dao.impl.AdminDaoImpl;
+import com.archide.hsb.dao.impl.OrdersDaoImpl;
+import com.archide.hsb.entity.AdminEntity;
 import com.archide.hsb.service.TableListService;
 import com.archide.hsb.sync.HsbSyncAdapter;
 import com.archide.hsb.sync.SyncEvent;
+
+import java.sql.SQLException;
 
 import hsb.archide.com.hsb.R;
 
@@ -19,13 +26,21 @@ public class TableListServiceImpl implements TableListService {
 
     private Bundle settingsBundle;
     private Account account ;
+    private AdminDao adminDao;
+    private Context context;
 
-    public TableListServiceImpl(){
-        init();
+    public TableListServiceImpl(Context context){
+        this.context = context;
+       try{
+           init();
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+
     }
 
     @Override
-    public void getTableList(Context context) {
+    public void getTableList() {
         account = HsbSyncAdapter.getSyncAccount(context);
         settingsBundle.putInt("currentScreen", SyncEvent.GET_TABLE_LIST);
         ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
@@ -33,7 +48,7 @@ public class TableListServiceImpl implements TableListService {
 
 
     @Override
-    public void getMenuItems(Context context,String tableNumber){
+    public void getMenuItems(String tableNumber){
         account = HsbSyncAdapter.getSyncAccount(context);
         settingsBundle.putInt("currentScreen", SyncEvent.GET_MENU_LIST);
         settingsBundle.putString("tableNumber", tableNumber);
@@ -43,7 +58,8 @@ public class TableListServiceImpl implements TableListService {
 
 
 
-    private void init(){
+    private void init()throws SQLException{
+        adminDao = new AdminDaoImpl(context);
         if(settingsBundle == null){
             settingsBundle = new Bundle();
             settingsBundle.putBoolean(
@@ -54,5 +70,44 @@ public class TableListServiceImpl implements TableListService {
         }
 
     }
+
+
+    @Override
+    public void createAdmin(String tableNumber, String mPin) {
+        try {
+            AdminEntity adminEntity = new AdminEntity();
+            adminEntity.setTableNumber(tableNumber);
+            adminEntity.setmPin(mPin);
+            adminDao.createAdminEntity(adminEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateUserMobile(String userMobile) {
+        try{
+            boolean isMobileSame =  adminDao.isMobilePresent(userMobile);
+            if(!isMobileSame){
+                OrdersDao ordersDao = new OrdersDaoImpl(context);
+                ordersDao.removeCurrentOrder();
+                adminDao.updateUserMobile(userMobile);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean isTableConfigured() {
+        try{
+            return adminDao.isTableConfigured();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 }

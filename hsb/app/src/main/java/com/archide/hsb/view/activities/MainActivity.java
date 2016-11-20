@@ -8,15 +8,17 @@ import com.archide.hsb.service.TableListService;
 import com.archide.hsb.service.impl.TableListServiceImpl;
 import com.archide.hsb.view.fragments.FragmentsUtil;
 import com.archide.hsb.view.fragments.LoginFragment;
+import com.archide.hsb.view.fragments.RegistrationFragment;
 
 import java.io.File;
 import java.io.FileInputStream;
 
 import hsb.archide.com.hsb.R;
 
-public class MainActivity extends AppCompatActivity implements LoginFragment.MainActivityCallback{
+public class MainActivity extends AppCompatActivity implements LoginFragment.MainActivityCallback, RegistrationFragment.MainActivityCallback{
 
     private LoginFragment loginFragment;
+    private RegistrationFragment registrationFragment;
     private TableListService tableListService;
 
     @Override
@@ -29,21 +31,33 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Mai
     }
 
     private void init(){
-        tableListService = new TableListServiceImpl();
+        tableListService = new TableListServiceImpl(this);
     }
 
 
     private void showFragment(){
-        loginFragment = new LoginFragment();
-        FragmentsUtil.addFragment(this, loginFragment, R.id.main_container);
+        if(tableListService.isTableConfigured()){
+            loginFragment = new LoginFragment();
+            FragmentsUtil.addFragment(this, loginFragment, R.id.main_container);
+        }else{
+            registrationFragment = new RegistrationFragment();
+            FragmentsUtil.addFragment(this, registrationFragment, R.id.main_container);
+        }
+
     }
 
     @Override
     public void success(int code, Object data) {
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
+        if(code == 2){
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }else{
+            loginFragment = new LoginFragment();
+            FragmentsUtil.replaceFragmentNoStack(this,loginFragment, R.id.main_container);
+        }
+
     }
 
     public  void copyDataBase(){

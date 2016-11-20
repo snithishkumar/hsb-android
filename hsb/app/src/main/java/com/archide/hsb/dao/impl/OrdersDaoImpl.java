@@ -95,4 +95,9 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
     }
 
 
+    @Override
+    public void reSetPlacedOrderItems() throws SQLException {
+        placedOrderItemDao.deleteBuilder().delete();
+        placedOrdersDao.deleteBuilder().delete();
+    }
 }

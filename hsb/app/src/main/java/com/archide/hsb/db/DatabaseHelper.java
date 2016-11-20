@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.archide.hsb.entity.AdminEntity;
 import com.archide.hsb.entity.FoodCategoryEntity;
 import com.archide.hsb.entity.MenuCourseEntity;
 import com.archide.hsb.entity.MenuEntity;
@@ -46,7 +47,7 @@ public class DatabaseHelper<T,T1> extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
         try {
             Log.i(DatabaseHelper.class.getName(), "onCreate");
-
+            TableUtils.createTableIfNotExists(connectionSource, AdminEntity.class);
             TableUtils.createTableIfNotExists(connectionSource, MenuCourseEntity.class);
             TableUtils.createTableIfNotExists(connectionSource, FoodCategoryEntity.class);
             TableUtils.createTableIfNotExists(connectionSource, MenuEntity.class);

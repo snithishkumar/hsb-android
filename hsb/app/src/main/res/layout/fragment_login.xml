@@ -6,31 +6,7 @@
     tools:context="com.archide.hsb.view.fragments.LoginFragment">
 
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/vTableDetailsLayout"
-        android:layout_marginTop="80dp"
-        android:layout_marginRight="16dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_free_breakfast_black_48dp"
-            android:id="@+id/vTableIcon"
-            android:layout_weight="0.40" />
-// style="@style/Widget.AppCompat.Spinner.Underlined"
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Spinner.Underlined"
-            android:id="@+id/vTableNumber"
-            android:layout_weight="1"
-            />
-    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"

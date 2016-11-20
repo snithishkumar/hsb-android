@@ -119,6 +119,8 @@ public class SyncPerform {
                 if(placeOrdersJson != null){
                     processPreviousOrder(placeOrdersJson);
                 }
+                ResponseData result = new ResponseData(200,null);
+                return result;
 
             }
         }catch (Exception e){

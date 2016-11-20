@@ -23,7 +23,7 @@ public enum ServiceAPI {
     private HsbAPI hsbAPI = null;
     //private final String url = "http://52.41.226.201:8080/mobilepay/";
     // test
-   private final String  url = "http://192.168.0.2:8082/hsb/";
+   private final String  url = "http://192.168.0.8:8082/hsb/";
     private String serverToken= "";
     private String accessToken = "";
 

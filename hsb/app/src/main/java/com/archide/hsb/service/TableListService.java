@@ -8,6 +8,11 @@ import android.content.Context;
 
 public interface TableListService {
 
-    void getTableList(Context context);
-    void getMenuItems(Context context,String tableNumber);
+    void getTableList();
+    void getMenuItems(String tableNumber);
+    void createAdmin(String tableNumber,String mPin);
+
+    void updateUserMobile(String userMobile);
+
+    boolean isTableConfigured();
 }

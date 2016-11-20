@@ -61,7 +61,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.archide.hsb.view.activities.HomeActivity" />
+        <activity android:name="com.archide.hsb.view.activities.HomeActivity"  android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name="com.archide.hsb.view.activities.OrderActivity"></activity>
     </application>
 

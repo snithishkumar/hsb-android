@@ -37,4 +37,6 @@ public interface OrdersDao {
     void updateServerSyncTime(String serverSyncTime)throws SQLException;
 
     void updatePlacedOrderItems()throws SQLException;
+
+    void reSetPlacedOrderItems()throws SQLException;
 }

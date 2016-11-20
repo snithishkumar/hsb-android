@@ -10,6 +10,9 @@
 
     <string name="mobile_number_hint">Mobile Number</string>
 
+    <string name="password_hint">Password</string>
+    <string name="re_password_hint">Re-Type Password</string>
+
     <string name="get_table_list_heading">In Progress.</string>
     <string name="get_table_list_message">Getting Table Details.Please wait...</string>
 

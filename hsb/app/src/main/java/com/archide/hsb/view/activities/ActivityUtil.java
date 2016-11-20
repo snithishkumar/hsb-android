@@ -20,6 +20,8 @@ public class ActivityUtil {
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
+    public static String TABLE_NUMBER = "";
+    public static String USER_MOBILE = "";
     //static boolean IS_LOGIN = false;
 
     public static ProgressDialog showProgress(String title, String message, Context context){

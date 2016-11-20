@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.archide.hsb.sync.json.ResponseData;
 import com.archide.hsb.util.Utilities;
@@ -33,8 +34,8 @@ import hsb.archide.com.hsb.R;
 public class LoginFragment extends Fragment implements View.OnClickListener{
 
     private MainActivity mainActivity;
-    ProgressDialog progressDialog = null;
-    ArrayAdapter<String> adapter = null;
+    private TextView userMobile;
+    private ProgressDialog progressDialog;
 
 
     @Override
@@ -48,56 +49,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View loginView =  inflater.inflate(R.layout.fragment_login, container, false);
-
+        userMobile =  (TextView)loginView.findViewById(R.id.vUserMobileNumber);
         FloatingActionButton button =  (FloatingActionButton)loginView.findViewById(R.id.submit);
         button.setOnClickListener(this);
 
-        Spinner spinner = (Spinner) loginView.findViewById(R.id.vTableNumber);
-        List<String> test  =new ArrayList<>();
-        test.add("1");
-        adapter = new ArrayAdapter<>(mainActivity,android.R.layout.simple_spinner_item,test);
-
-
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-
-       // getTableList();
         return loginView;
-    }
-
-
-    private void getTableList(){
-      boolean isNetWorkConnected =  Utilities.isNetworkConnected(mainActivity);
-        if(isNetWorkConnected){
-
-            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), mainActivity);
-            mainActivity.getTableListService().getTableList(mainActivity);
-        }else{
-            ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
-        }
-    }
-
-    private void intiView(ResponseData responseData){
-        dismiss();
-       /* if(responseData.getSuccess()){
-          List<String> msg = (List<String>)responseData.getMessage();
-            adapter.clear();
-            adapter.addAll(msg);
-
-
-            adapter.notifyDataSetChanged();
-
-        }*/
-
-    }
-
-    private void dismiss(){
-        if(progressDialog != null){
-            progressDialog.dismiss();
-        }
     }
 
 
@@ -131,27 +87,40 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         void success(int code, Object data);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void handleServerSyncResponse(ResponseData responseData) {
-        intiView(responseData);
-        mainActivity.success(1,null);
-        return;
-    }
 
     @Override
-   public void onClick(View view) {
-        boolean isNetWorkConnected =  Utilities.isNetworkConnected(mainActivity);
-        if(isNetWorkConnected){
+    public void onClick(View view) {
+        String userMobileText = userMobile.getText().toString();
+        if (userMobileText != null && !userMobileText.trim().isEmpty()) {
+            mainActivity.getTableListService().updateUserMobile(userMobileText);
+            ActivityUtil.USER_MOBILE = userMobileText;
+        }
+        getMenuList();
+    }
+
+    private void getMenuList() {
+        boolean isNetWorkConnected = Utilities.isNetworkConnected(mainActivity);
+        if (isNetWorkConnected) {
+
             progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), mainActivity);
-            mainActivity.getTableListService().getMenuItems(mainActivity,"1");
-        }else{
+            mainActivity.getTableListService().getMenuItems(ActivityUtil.TABLE_NUMBER);
+        } else {
             ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleServerSyncResponse(ResponseData responseData) {
+       if(progressDialog != null){
+           progressDialog.dismiss();
+       }
+        if(responseData.getStatusCode() != 500){
+            mainActivity.success(2,null);
+            return;
+        }else{
+            ActivityUtil.showDialog(mainActivity,"Error","Sorry for the Inconvenience. Please contact Admin.");
+        }
+    }
 
-  /* public void onClick(View view) {
-        mainActivity.success(1,null);
-        return;
-    }*/
+
 }
