@@ -36,6 +36,7 @@ public class PlaceOrdersJson {
         this.serverDateTime = placedOrdersEntity.getServerDateTime();
         this.orderDateTime = placedOrdersEntity.getOrderDateTime();
         this.lastUpdatedDateTime = placedOrdersEntity.getLastUpdatedDateTime();
+		this.userMobileNumber = placedOrdersEntity.getUserMobileNumber();
     }
 
     public long getServerDateTime() {

@@ -1,7 +1,10 @@
 package com.archide.hsb.sync;
 
+import com.archide.hsb.sync.json.GetKitchenOrders;
 import com.archide.hsb.sync.json.PlaceOrdersJson;
 import com.archide.hsb.sync.json.ResponseData;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -28,5 +31,10 @@ public interface HsbAPI {
 
     @POST("/hsb/mobile/placeAnOrder.html")
     Call<ResponseData> placeAnOrder(@Body PlaceOrdersJson placeOrdersJson);
+
+
+    /** Create User **/
+    @GET("/hsb/mobile/getKitchenOrders.html")
+    Call<ResponseData> getKitchenOrders(@Body List<GetKitchenOrders> getKitchenOrders);
 
 }

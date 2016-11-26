@@ -3,18 +3,24 @@ package com.archide.hsb.sync;
 import android.content.Context;
 import android.util.Log;
 
+import com.archide.hsb.dao.KitchenDao;
 import com.archide.hsb.dao.MenuItemsDao;
 import com.archide.hsb.dao.OrdersDao;
 import com.archide.hsb.dao.impl.MenuItemsDaoImpl;
 import com.archide.hsb.dao.impl.OrdersDaoImpl;
 import com.archide.hsb.entity.FoodCategoryEntity;
+import com.archide.hsb.entity.KitchenOrderDetailsEntity;
+import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
+import com.archide.hsb.entity.KitchenOrdersListEntity;
 import com.archide.hsb.entity.MenuCourseEntity;
 import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.entity.PlacedOrdersEntity;
 import com.archide.hsb.enumeration.GsonAPI;
 import com.archide.hsb.sync.json.FoodCategoryJson;
+import com.archide.hsb.sync.json.GetKitchenOrders;
 import com.archide.hsb.sync.json.GetMenuDetails;
+import com.archide.hsb.sync.json.KitchenOrderListResponse;
 import com.archide.hsb.sync.json.MenuItemJson;
 import com.archide.hsb.sync.json.MenuListJson;
 import com.archide.hsb.sync.json.OrderedMenuItems;
@@ -45,6 +51,7 @@ public class SyncPerform {
 
     private MenuItemsDao menuItemsDao;
     private OrdersDao ordersDao;
+    private KitchenDao kitchenDao;
 
     public SyncPerform(){
 
@@ -233,6 +240,84 @@ public class SyncPerform {
             e.printStackTrace();
         }
         return getErrorResponse();
+    }
+
+    public ResponseData getKitchenOrders(){
+        try{
+            List<KitchenOrdersListEntity>  kitchenOrdersListEntities =   kitchenDao.getKitchenOrdersList();
+            List<GetKitchenOrders> getKitchenOrdersList = new ArrayList<>();
+            for(KitchenOrdersListEntity kitchenOrdersListEntity : kitchenOrdersListEntities){
+                GetKitchenOrders getKitchenOrders = new GetKitchenOrders(kitchenOrdersListEntity);
+                getKitchenOrdersList.add(getKitchenOrders);
+            }
+            Call<ResponseData> kitchenResponse =   hsbAPI.getKitchenOrders(getKitchenOrdersList);
+
+            Response<ResponseData> response = kitchenResponse.execute();
+            if (response != null && response.isSuccessful()) {
+                ResponseData responseData = response.body();
+
+                String menuItemsJsonString =  (String)responseData.getData();
+
+                KitchenOrderListResponse  kitchenOrderListResponse =  gson.fromJson(menuItemsJsonString, KitchenOrderListResponse.class);
+                processKitchenOrders(kitchenOrderListResponse.getPlaceOrdersJsonList());
+
+                processCloseData(kitchenOrderListResponse.getClosedOrders());
+            }
+            ResponseData result = new ResponseData(200,null);
+            return result;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return getErrorResponse();
+    }
+
+
+    public void processKitchenOrders(List<PlaceOrdersJson> placeOrdersJsonList){
+        try{
+            for(PlaceOrdersJson placeOrdersJson : placeOrdersJsonList){
+                KitchenOrdersListEntity kitchenOrdersListEntity =  kitchenDao.getKitchenOrdersListEntity(placeOrdersJson.getOrderId());
+                if(kitchenOrdersListEntity == null){
+                    kitchenOrdersListEntity = new KitchenOrdersListEntity();
+                    kitchenDao.createKitchenOrder(kitchenOrdersListEntity);
+                }else{
+                    kitchenOrdersListEntity.setLastUpdateTime(placeOrdersJson.getLastUpdatedDateTime());
+                    kitchenOrdersListEntity.setServerDateTime(placeOrdersJson.getServerDateTime());
+                    kitchenDao.updateKitchenOrder(kitchenOrdersListEntity);
+                }
+
+                List<OrderedMenuItems>  orderedMenuItemsList = placeOrdersJson.getMenuItems();
+                for(OrderedMenuItems orderedMenuItems : orderedMenuItemsList){
+                    KitchenOrdersCategoryEntity kitchenOrdersCategory = kitchenDao.getKitchenOrdersCategoryEntity(kitchenOrdersListEntity,orderedMenuItems.getCategoryUuid());
+                    if(kitchenOrdersCategory == null){
+                        kitchenOrdersCategory = new KitchenOrdersCategoryEntity();
+                        kitchenOrdersCategory.setCategoryName(orderedMenuItems.getCategoryName());
+                        kitchenOrdersCategory.setFoodCategoryUUID(orderedMenuItems.getCategoryUuid());
+                        kitchenOrdersCategory.setKitchenOrdersList(kitchenOrdersListEntity);
+                        kitchenOrdersCategory.setDateTime(System.currentTimeMillis());
+                        kitchenDao.createKitchenOrderCategory(kitchenOrdersCategory);
+                    }
+                    KitchenOrderDetailsEntity kitchenOrderDetailsEntity = new KitchenOrderDetailsEntity(orderedMenuItems);
+                    kitchenOrderDetailsEntity.setKitchenOrdersCategory(kitchenOrdersCategory);
+                    kitchenOrderDetailsEntity.setKitchenOrdersList(kitchenOrdersListEntity);
+                    kitchenDao.createKitchenOrderItems(kitchenOrderDetailsEntity);
+                }
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void processCloseData(List<String> closedOrders){
+        for(String orderGuids : closedOrders){
+            try{
+                kitchenDao.closeOrders(orderGuids);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+
     }
 
 }

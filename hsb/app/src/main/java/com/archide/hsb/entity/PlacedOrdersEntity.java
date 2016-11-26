@@ -16,6 +16,7 @@ public class PlacedOrdersEntity {
 	public static final String TAX_AMOUNT = "TaxAmount";
 	public static final String DISCOUNT = "Discount";
 	public static final String TOTAL_PRICE = "TotalPrice";
+	public static final String USER_MOBILE_NUMBER = "UserMobileNumber";
 
     public static final String SERVER_DATE_TIME = "ServerDateTime";
     public static final String ORDER_DATE_TIME = "OrderDateTime";
@@ -31,6 +32,8 @@ public class PlacedOrdersEntity {
 	private String orderId;
     @DatabaseField(columnName = TABLE_NUMBER)
 	private String tableNumber;
+	@DatabaseField(columnName =  USER_MOBILE_NUMBER )
+	private String userMobileNumber;
     @DatabaseField(columnName = DATE_TIME)
 	private long dateTime;
     @DatabaseField(columnName = PRICE)
@@ -63,11 +66,19 @@ public class PlacedOrdersEntity {
 		this.totalPrice = placeOrdersJson.getTotalPrice();
         this.serverDateTime = placeOrdersJson.getServerDateTime();
         this.orderDateTime = placeOrdersJson.getOrderDateTime();
+        this.userMobileNumber = placeOrdersJson.getUserMobileNumber();
         this.lastUpdatedDateTime = placeOrdersJson.getLastUpdatedDateTime();
 	}
 
-	
-	public int getPlaceOrdersId() {
+    public String getUserMobileNumber() {
+        return userMobileNumber;
+    }
+
+    public void setUserMobileNumber(String userMobileNumber) {
+        this.userMobileNumber = userMobileNumber;
+    }
+
+    public int getPlaceOrdersId() {
 		return placeOrdersId;
 	}
 	public void setPlaceOrdersId(int placeOrdersId) {

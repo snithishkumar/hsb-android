@@ -15,6 +15,7 @@ import com.archide.hsb.entity.PlacedOrdersEntity;
 import com.archide.hsb.service.OrderService;
 import com.archide.hsb.sync.HsbSyncAdapter;
 import com.archide.hsb.sync.SyncEvent;
+import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.model.MenuItemsViewModel;
 import com.archide.hsb.view.model.OrderDetailsViewModel;
 import com.archide.hsb.view.model.PlaceAnOrderViewModel;
@@ -191,6 +192,34 @@ public class OrderServiceImpl implements OrderService {
 
         }
 
+    }
+
+
+    @Override
+    public PlaceAnOrderViewModel getPlacedHistoryOrderViewModel(){
+        PlaceAnOrderViewModel placeAnOrderViewModel = new PlaceAnOrderViewModel();
+        try{
+
+            PlacedOrdersEntity placedOrdersEntity =   ordersDao.getPlacedOrderHistoryByMobile(ActivityUtil.USER_MOBILE);
+            if(placedOrdersEntity != null){
+                List<PlacedOrderItemsEntity> placedOrderItemsEntityList =  ordersDao.getPlacedOrderHistoryItems(placedOrdersEntity);
+                for(PlacedOrderItemsEntity orderItemsEntity : placedOrderItemsEntityList){
+                    MenuItemsViewModel menuItemsViewModel = new MenuItemsViewModel(orderItemsEntity);
+                    placeAnOrderViewModel.getMenuItemsViewModels().add(menuItemsViewModel);
+                }
+            }
+
+            placeAnOrderViewModel.setSubTotalBeforeDiscount(placedOrdersEntity.getPrice());
+            placeAnOrderViewModel.setSubTotal(placedOrdersEntity.getPrice());
+            placeAnOrderViewModel.setDiscount(0);
+            placeAnOrderViewModel.setServiceTax(0);
+            placeAnOrderViewModel.setServiceVat(0);
+            placeAnOrderViewModel.setTotalAmount(placedOrdersEntity.getTotalPrice());
+            return placeAnOrderViewModel;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return placeAnOrderViewModel;
     }
 
 

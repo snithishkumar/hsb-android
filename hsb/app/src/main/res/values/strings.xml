@@ -39,8 +39,10 @@
         <item>Current Orders</item>
         <item>Placed Orders</item>
         <item>Billing</item>
+        <item>Call Waiter</item>
         <item>About</item>
         <item>Rate the App</item>
+        <item>LogOut</item>
     </string-array>
 
 </resources>

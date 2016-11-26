@@ -8,6 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.archide.hsb.service.OrderService;
+import com.archide.hsb.service.impl.OrderServiceImpl;
+import com.archide.hsb.view.fragments.FragmentsUtil;
+import com.archide.hsb.view.fragments.KitchenOrderListFragment;
+import com.archide.hsb.view.fragments.PlacedOrderHistoryFragment;
+
 import hsb.archide.com.hsb.R;
 
 
@@ -16,7 +22,7 @@ import hsb.archide.com.hsb.R;
  */
 public class NaviDrawerActivity extends AppCompatActivity {
 
-
+private OrderService orderService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +35,7 @@ public class NaviDrawerActivity extends AppCompatActivity {
 
     private void init(){
         try{
-           // accountService = new AccountServiceImpl(this);
+            orderService = new OrderServiceImpl(this);
         }catch (Exception e){
             Log.e("Error","Error in init - NaviDrawerActivity",e);
         }
@@ -44,12 +50,16 @@ public class NaviDrawerActivity extends AppCompatActivity {
     private void showFragment(int options){
         switch (options){
             case 1:
+                PlacedOrderHistoryFragment placedOrderHistoryFragment = new PlacedOrderHistoryFragment();
+                FragmentsUtil.addFragment(this, placedOrderHistoryFragment, R.id.navi_drawer_container);
               // EditProfileFragment editProfileFragment = new EditProfileFragment();
                // FragmentsUtil.addFragment(this, editProfileFragment, R.id.navi_drawer_container);
                 break;
 
-
-
+            case 2:
+                KitchenOrderListFragment kitchenOrderListFragment = new KitchenOrderListFragment();
+                FragmentsUtil.addFragment(this, kitchenOrderListFragment, R.id.navi_drawer_container);
+                break;
 
             case 5:
                 showPlayStore();
@@ -101,6 +111,7 @@ public class NaviDrawerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
+    public OrderService getOrderService() {
+        return orderService;
+    }
 }

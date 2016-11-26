@@ -27,4 +27,6 @@ public interface OrderService {
 
     void conformOrder(PlaceAnOrderViewModel placeAnOrderViewModel,String tableNumber,Context context);
 
+    PlaceAnOrderViewModel getPlacedHistoryOrderViewModel();
+
 }

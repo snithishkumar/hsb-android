@@ -94,6 +94,19 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
         deleteBuilder.delete();
     }
 
+    @Override
+    public PlacedOrdersEntity getPlacedOrderHistoryByMobile(String userMobileNumber) throws SQLException {
+        return placedOrdersDao.queryBuilder().where().eq(PlacedOrdersEntity.USER_MOBILE_NUMBER,userMobileNumber).queryForFirst();
+    }
+
+
+    @Override
+    public List<PlacedOrderItemsEntity> getPlacedOrderHistoryItems(PlacedOrdersEntity placedOrdersEntity)throws SQLException{
+        return   placedOrderItemDao.queryBuilder().where().eq(PlacedOrderItemsEntity.IS_CONFORM,true).and().eq(PlacedOrderItemsEntity.PLACED_ORDER_ENTITY,placedOrdersEntity).query();
+    }
+
+
+
 
     @Override
     public void reSetPlacedOrderItems() throws SQLException {

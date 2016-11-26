@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Mai
     @Override
     public void success(int code, Object data) {
         if(code == 2){
-            Intent intent = new Intent(this, HomeActivity.class);
+           // Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = new Intent(this, KitchenActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
