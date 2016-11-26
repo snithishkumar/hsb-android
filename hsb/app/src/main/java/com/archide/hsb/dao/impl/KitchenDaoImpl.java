@@ -26,7 +26,7 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
 
     public KitchenDaoImpl(Context context) throws SQLException {
         super(context);
-
+        initDao();
     }
 
     @Override
@@ -63,28 +63,29 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
 
     @Override
     public KitchenOrdersListEntity getKitchenOrdersListEntity(String orderId) throws SQLException {
-       return kitchenOrderListDao.updateBuilder().where().eq(KitchenOrdersListEntity.ORDER_ID,orderId).queryForFirst();
+       return kitchenOrderListDao.queryBuilder().where().eq(KitchenOrdersListEntity.ORDER_ID,orderId).queryForFirst();
     }
 
     @Override
     public List<KitchenOrdersListEntity> getKitchenOrdersList()throws SQLException{
-       return kitchenOrderListDao.queryBuilder().selectColumns(KitchenOrdersListEntity.ORDER_ID,KitchenOrdersListEntity.PLACED_ORDERS_UUID,KitchenOrdersListEntity.SERVER_DATE_TIME).where().ne(KitchenOrdersListEntity.STATUS, Status.CLOSE.toString()).query();
+       return kitchenOrderListDao.queryBuilder().selectColumns(KitchenOrdersListEntity.ORDER_ID,KitchenOrdersListEntity.PLACED_ORDERS_UUID,KitchenOrdersListEntity.SERVER_DATE_TIME).where().ne(KitchenOrdersListEntity.STATUS, Status.CLOSE).query();
     }
 
     @Override
     public void closeOrders(String orderGuid)throws SQLException{
-        kitchenOrderListDao.updateBuilder().updateColumnValue(KitchenOrdersListEntity.STATUS,Status.CLOSE.toString()).where().eq(KitchenOrdersListEntity.PLACED_ORDERS_UUID,orderGuid);
+        kitchenOrderListDao.updateBuilder().updateColumnValue(KitchenOrdersListEntity.STATUS,Status.CLOSE).where().eq(KitchenOrdersListEntity.PLACED_ORDERS_UUID,orderGuid);
     }
 
     @Override
     public List<KitchenOrdersListEntity> getUnClosedKitchenOrdersList()throws SQLException{
-       return kitchenOrderListDao.queryBuilder().where().ne(KitchenOrdersListEntity.STATUS,Status.CLOSE.toString()).query();
+      // return kitchenOrderListDao.queryBuilder().where().ne(KitchenOrdersListEntity.STATUS,Status.CLOSE).query();
+       return kitchenOrderListDao.queryForAll();
     }
 
     @Override
     public long getCountOf(FoodType foodType,KitchenOrdersListEntity kitchenOrdersListEntity)throws SQLException{
        return kitchenOrderDetailsDao.queryBuilder().where().
-                eq(KitchenOrderDetailsEntity.FOOD_TYPE,foodType.toString()).and().
+                eq(KitchenOrderDetailsEntity.FOOD_TYPE,foodType).and().
                 eq(KitchenOrderDetailsEntity.KITCHEN_ORDER_LIST,kitchenOrdersListEntity)
                 .countOf();
     }

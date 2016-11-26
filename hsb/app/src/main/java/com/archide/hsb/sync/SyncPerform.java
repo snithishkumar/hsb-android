@@ -6,6 +6,7 @@ import android.util.Log;
 import com.archide.hsb.dao.KitchenDao;
 import com.archide.hsb.dao.MenuItemsDao;
 import com.archide.hsb.dao.OrdersDao;
+import com.archide.hsb.dao.impl.KitchenDaoImpl;
 import com.archide.hsb.dao.impl.MenuItemsDaoImpl;
 import com.archide.hsb.dao.impl.OrdersDaoImpl;
 import com.archide.hsb.entity.FoodCategoryEntity;
@@ -66,6 +67,7 @@ public class SyncPerform {
         try{
             menuItemsDao = new MenuItemsDaoImpl(context);
             ordersDao = new OrdersDaoImpl(context);
+            kitchenDao = new KitchenDaoImpl(context);
             gson = GsonAPI.INSTANCE.getGson();
         }catch (Exception e){
             Log.e(LOG_TAG,"Error in init",e);
@@ -277,7 +279,7 @@ public class SyncPerform {
             for(PlaceOrdersJson placeOrdersJson : placeOrdersJsonList){
                 KitchenOrdersListEntity kitchenOrdersListEntity =  kitchenDao.getKitchenOrdersListEntity(placeOrdersJson.getOrderId());
                 if(kitchenOrdersListEntity == null){
-                    kitchenOrdersListEntity = new KitchenOrdersListEntity();
+                    kitchenOrdersListEntity = new KitchenOrdersListEntity(placeOrdersJson);
                     kitchenDao.createKitchenOrder(kitchenOrdersListEntity);
                 }else{
                     kitchenOrdersListEntity.setLastUpdateTime(placeOrdersJson.getLastUpdatedDateTime());

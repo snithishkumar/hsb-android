@@ -51,7 +51,10 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
     @Override
     public boolean isTableConfigured() throws SQLException {
         AdminEntity adminEntity = adminEntityDao.queryBuilder().queryForFirst();
-        ActivityUtil.TABLE_NUMBER = adminEntity.getTableNumber();
+        if(adminEntity != null){
+            ActivityUtil.TABLE_NUMBER = adminEntity.getTableNumber();
+        }
+
         return adminEntity != null;
     }
 }

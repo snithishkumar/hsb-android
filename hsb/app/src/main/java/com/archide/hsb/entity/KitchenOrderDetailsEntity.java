@@ -22,7 +22,7 @@ public class KitchenOrderDetailsEntity {
     public static final String STATUS = "Status";
     public static final String FOOD_TYPE = "FoodType";
     public static final String KITCHEN_ORDER_LIST = "KitchenOrdersList";
-    public static final String KITCHEN_ORDER_CATEGORY = "KitchenOrdersList";
+    public static final String KITCHEN_ORDER_CATEGORY = "KitchenOrderCategory";
 
     @DatabaseField(columnName = MENU_ID,generatedId = true)
     private int menuId;

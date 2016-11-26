@@ -34,7 +34,7 @@ public interface HsbAPI {
 
 
     /** Create User **/
-    @GET("/hsb/mobile/getKitchenOrders.html")
+    @POST ("/hsb/mobile/getKitchenOrders.html")
     Call<ResponseData> getKitchenOrders(@Body List<GetKitchenOrders> getKitchenOrders);
 
 }

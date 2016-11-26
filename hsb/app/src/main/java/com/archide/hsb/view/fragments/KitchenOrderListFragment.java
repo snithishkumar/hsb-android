@@ -67,9 +67,9 @@ public class KitchenOrderListFragment extends Fragment {
     }
 
     private void loadData(){
-        List<KitchenOrderListViewModel> kitchenOrderListViewModels = kitchenActivity.getKitchenService().getOrderList();
+        List<KitchenOrderListViewModel> temp = kitchenActivity.getKitchenService().getOrderList();
         kitchenOrderListViewModels.clear();
-        kitchenOrderListViewModels.addAll(kitchenOrderListViewModels);
+        kitchenOrderListViewModels.addAll(temp);
         kitchenOrderListAdapter.notifyDataSetChanged();
     }
 

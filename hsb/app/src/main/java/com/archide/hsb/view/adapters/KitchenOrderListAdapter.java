@@ -75,12 +75,12 @@ public class KitchenOrderListAdapter extends BaseAdapter {
         TextView tableNumber;
 
         public KitchenOrderListViewHolder(View item){
-            item.findViewById(R.id.kitchen_order_time);
-            item.findViewById(R.id.kitchen_no_of_veg_count);
-            item.findViewById(R.id.kitchen_no_of_nonveg_count);
-            item.findViewById(R.id.kitchen_last_order_time);
-            item.findViewById(R.id.kitchen_order_type);
-            item.findViewById(R.id.kitchen_table_number);
+            orderTime =  (TextView)item.findViewById(R.id.kitchen_order_time);
+            noOfVegCount =  (TextView) item.findViewById(R.id.kitchen_no_of_veg_count);
+            noOfNonVegCount = (TextView)item.findViewById(R.id.kitchen_no_of_nonveg_count);
+            lastOrderTime = (TextView)item.findViewById(R.id.kitchen_last_order_time);
+            orderType = (TextView)item.findViewById(R.id.kitchen_order_type);
+            tableNumber =  (TextView)item.findViewById(R.id.kitchen_table_number);
 
         }
     }
