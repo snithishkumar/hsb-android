@@ -2,7 +2,9 @@ package com.archide.hsb.view.model;
 
 import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
+import com.archide.hsb.enumeration.OrderStatus;
 import com.archide.hsb.enumeration.Status;
+import com.archide.hsb.enumeration.ViewStatus;
 
 /**
  * Created by Nithish on 27/11/16.
@@ -12,10 +14,13 @@ public class KitchenOrderDetailsViewModel {
 
     private String name;
     private String quantity;
-    private Status status;
+    private int id;
+    private OrderStatus status;
     private boolean isCategory;
     private boolean isComments;
     private String comments;
+    private ViewStatus viewStatus;
+    private int unAvailableCount;
 
     public KitchenOrderDetailsViewModel(){
 
@@ -24,12 +29,31 @@ public class KitchenOrderDetailsViewModel {
     public KitchenOrderDetailsViewModel(KitchenOrderDetailsEntity kitchenOrderDetailsEntity){
         this.name = kitchenOrderDetailsEntity.getName();
         this.quantity = String.valueOf(kitchenOrderDetailsEntity.getQuantity());
+        this.viewStatus = kitchenOrderDetailsEntity.getViewStatus();
+        this.id = kitchenOrderDetailsEntity.getMenuId();
+        this.status = kitchenOrderDetailsEntity.getOrderStatus();
 
     }
 
     public KitchenOrderDetailsViewModel(KitchenOrdersCategoryEntity kitchenOrdersCategoryEntity){
-            this.name = kitchenOrdersCategoryEntity.getCategoryName();
+        this.name = kitchenOrdersCategoryEntity.getCategoryName();
         this.isCategory = true;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public ViewStatus getViewStatus() {
+        return viewStatus;
+    }
+
+    public void setViewStatus(ViewStatus viewStatus) {
+        this.viewStatus = viewStatus;
     }
 
     public boolean isCategory() {
@@ -56,11 +80,11 @@ public class KitchenOrderDetailsViewModel {
         this.quantity = quantity;
     }
 
-    public Status getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
@@ -78,6 +102,14 @@ public class KitchenOrderDetailsViewModel {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public int getUnAvailableCount() {
+        return unAvailableCount;
+    }
+
+    public void setUnAvailableCount(int unAvailableCount) {
+        this.unAvailableCount = unAvailableCount;
     }
 
     @Override

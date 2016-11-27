@@ -13,6 +13,7 @@ import com.archide.hsb.service.KitchenService;
 import com.archide.hsb.view.model.KitchenOrderDetailsViewModel;
 import com.archide.hsb.view.model.KitchenOrderListViewModel;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -91,6 +92,34 @@ public class KitchenServiceImpl implements KitchenService {
         }
         return results;
     }
+
+
+    @Override
+    public void updateKitchenOrderViewStatus(String orderId,List<KitchenOrderDetailsViewModel> detailsViewModels ){
+        try {
+            kitchenDao.updateKitchenOrderListViewStatus(orderId);
+            for(KitchenOrderDetailsViewModel kitchenOrderDetailsViewModel : detailsViewModels){
+                kitchenDao.updateKitchenOrderDetailsViewStatus(kitchenOrderDetailsViewModel.getId());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void saveOrderStatus(List<KitchenOrderDetailsViewModel> detailsViewModels,String orderId ){
+        try{
+            for(KitchenOrderDetailsViewModel kitchenOrderDetailsViewModel : detailsViewModels){
+                kitchenDao.updateKitchenOrderDetailsViewStatus(kitchenOrderDetailsViewModel.getId(),kitchenOrderDetailsViewModel.getStatus(),kitchenOrderDetailsViewModel.getUnAvailableCount());
+            }
+            kitchenDao.updateKitchenOrderListViewSync(orderId);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+
 
 
     private String getOrderTime(long orderDateTime){

@@ -7,8 +7,11 @@ import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
 import com.archide.hsb.entity.KitchenOrdersListEntity;
 import com.archide.hsb.enumeration.FoodType;
+import com.archide.hsb.enumeration.OrderStatus;
 import com.archide.hsb.enumeration.Status;
+import com.archide.hsb.enumeration.ViewStatus;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.UpdateBuilder;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -78,8 +81,8 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
 
     @Override
     public List<KitchenOrdersListEntity> getUnClosedKitchenOrdersList()throws SQLException{
-      // return kitchenOrderListDao.queryBuilder().where().ne(KitchenOrdersListEntity.STATUS,Status.CLOSE).query();
-       return kitchenOrderListDao.queryForAll();
+       return kitchenOrderListDao.queryBuilder().orderBy(KitchenOrdersListEntity.LAST_UPDATED_TIME,false).where().ne(KitchenOrdersListEntity.STATUS,Status.CLOSE).query();
+
     }
 
     @Override
@@ -89,7 +92,11 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
 
     @Override
     public List<KitchenOrderDetailsEntity> getKitchenOrderDetailsEntity(KitchenOrdersCategoryEntity kitchenOrdersCategoryEntity)throws SQLException{
-      return   kitchenOrderDetailsDao.queryBuilder().where().eq(KitchenOrderDetailsEntity.KITCHEN_ORDER_CATEGORY,kitchenOrdersCategoryEntity).query();
+      return   kitchenOrderDetailsDao.queryBuilder().orderBy(KitchenOrderDetailsEntity.MENU_ID,false).where().
+              eq(KitchenOrderDetailsEntity.KITCHEN_ORDER_CATEGORY,kitchenOrdersCategoryEntity).
+              and().ne(KitchenOrderDetailsEntity.ORDER_STATUS, OrderStatus.DELIVERED).
+              and().ne(KitchenOrderDetailsEntity.ORDER_STATUS,OrderStatus.UNAVAILABLE)
+             .query();
     }
 
     @Override
@@ -100,5 +107,39 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
                 .countOf();
     }
 
+
+
+    @Override
+    public void updateKitchenOrderListViewStatus(String orderId)throws SQLException{
+      UpdateBuilder<KitchenOrdersListEntity,Integer> updateBuilder =  kitchenOrderListDao.updateBuilder();
+      updateBuilder.updateColumnValue(KitchenOrdersListEntity.VIEW_STATUS, ViewStatus.VIEWED).where().eq(KitchenOrdersListEntity.ORDER_ID,orderId);
+      updateBuilder.update();
+    }
+
+    @Override
+    public void updateKitchenOrderDetailsViewStatus(int id)throws SQLException{
+        UpdateBuilder<KitchenOrderDetailsEntity,Integer> updateBuilder =  kitchenOrderDetailsDao.updateBuilder();
+        updateBuilder.updateColumnValue(KitchenOrderDetailsEntity.VIEW_STATUS, ViewStatus.VIEWED).where().eq(KitchenOrderDetailsEntity.MENU_ID,id);
+        updateBuilder.update();
+    }
+
+
+    @Override
+    public void updateKitchenOrderDetailsViewStatus(int id,OrderStatus orderStatus,int unAvailableCount)throws SQLException{
+        UpdateBuilder<KitchenOrderDetailsEntity,Integer> updateBuilder =  kitchenOrderDetailsDao.updateBuilder();
+        updateBuilder.updateColumnValue(KitchenOrderDetailsEntity.ORDER_STATUS, orderStatus).
+                updateColumnValue(KitchenOrderDetailsEntity.UN_AVAILABLE_COUNT, unAvailableCount).
+                updateColumnValue(KitchenOrderDetailsEntity.IS_SYNC, false).
+                where().eq(KitchenOrderDetailsEntity.MENU_ID,id);
+        updateBuilder.update();
+    }
+
+
+    @Override
+    public void updateKitchenOrderListViewSync(String orderId)throws SQLException{
+        UpdateBuilder<KitchenOrdersListEntity,Integer> updateBuilder =  kitchenOrderListDao.updateBuilder();
+        updateBuilder.updateColumnValue(KitchenOrdersListEntity.IS_SYNCED, false).where().eq(KitchenOrdersListEntity.ORDER_ID,orderId);
+        updateBuilder.update();
+    }
 
 }

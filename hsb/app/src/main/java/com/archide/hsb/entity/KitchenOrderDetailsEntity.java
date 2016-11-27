@@ -1,7 +1,9 @@
 package com.archide.hsb.entity;
 
 import com.archide.hsb.enumeration.FoodType;
+import com.archide.hsb.enumeration.OrderStatus;
 import com.archide.hsb.enumeration.Status;
+import com.archide.hsb.enumeration.ViewStatus;
 import com.archide.hsb.sync.json.OrderedMenuItems;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -23,6 +25,10 @@ public class KitchenOrderDetailsEntity {
     public static final String FOOD_TYPE = "FoodType";
     public static final String KITCHEN_ORDER_LIST = "KitchenOrdersList";
     public static final String KITCHEN_ORDER_CATEGORY = "KitchenOrderCategory";
+    public static final String ORDER_STATUS = "OrderStatus";
+    public static final String VIEW_STATUS = "ViewStatus";
+    public static final String UN_AVAILABLE_COUNT = "UnAvailableCount";
+    public static final String IS_SYNC = "IsSync";
 
     @DatabaseField(columnName = MENU_ID,generatedId = true)
     private int menuId;
@@ -34,6 +40,8 @@ public class KitchenOrderDetailsEntity {
     private String name;
     @DatabaseField(columnName = QUANTITY)
     private int quantity;
+    @DatabaseField(columnName = UN_AVAILABLE_COUNT)
+    private int unAvailableCount;
     @DatabaseField(columnName = STATUS)
     private Status status;
     @DatabaseField(columnName =  FOOD_TYPE)
@@ -45,6 +53,15 @@ public class KitchenOrderDetailsEntity {
     @DatabaseField(columnName = KITCHEN_ORDER_CATEGORY,foreign = true)
     private KitchenOrdersCategoryEntity kitchenOrdersCategory;
 
+    @DatabaseField(columnName =  ORDER_STATUS)
+    private OrderStatus orderStatus;
+
+    @DatabaseField(columnName =  VIEW_STATUS)
+    private ViewStatus viewStatus;
+
+    @DatabaseField(columnName =  IS_SYNC)
+    private boolean isSync;
+
     public KitchenOrderDetailsEntity(){
 
     }
@@ -55,7 +72,33 @@ public class KitchenOrderDetailsEntity {
         this.name = orderedMenuItems.getName();
         this.quantity = orderedMenuItems.getQuantity();
         this.foodType = orderedMenuItems.getFoodType();
+        this.orderStatus = orderedMenuItems.getOrderStatus();
+        this.viewStatus = ViewStatus.UN_VIEWED;
+        this.unAvailableCount = orderedMenuItems.getUnAvailableCount();
+    }
 
+    public boolean isSync() {
+        return isSync;
+    }
+
+    public void setSync(boolean sync) {
+        isSync = sync;
+    }
+
+    public int getUnAvailableCount() {
+        return unAvailableCount;
+    }
+
+    public void setUnAvailableCount(int unAvailableCount) {
+        this.unAvailableCount = unAvailableCount;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public FoodType getFoodType() {
@@ -128,6 +171,14 @@ public class KitchenOrderDetailsEntity {
 
     public void setKitchenOrdersCategory(KitchenOrdersCategoryEntity kitchenOrdersCategory) {
         this.kitchenOrdersCategory = kitchenOrdersCategory;
+    }
+
+    public ViewStatus getViewStatus() {
+        return viewStatus;
+    }
+
+    public void setViewStatus(ViewStatus viewStatus) {
+        this.viewStatus = viewStatus;
     }
 
     @Override

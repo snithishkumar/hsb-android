@@ -15,5 +15,9 @@ public interface KitchenService {
 
     List<KitchenOrderDetailsViewModel> getKitchenOrderDetails(String orderId);
 
+    void updateKitchenOrderViewStatus(String orderId,List<KitchenOrderDetailsViewModel> detailsViewModels );
+
+    void saveOrderStatus(List<KitchenOrderDetailsViewModel> detailsViewModels,String orderId );
+
 
 }

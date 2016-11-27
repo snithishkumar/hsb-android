@@ -2,6 +2,7 @@ package com.archide.hsb.view.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,13 +24,17 @@ import hsb.archide.com.hsb.R;
  * Created by Nithish on 26/11/16.
  */
 
-public class KitchenOrderedItemsFragment extends Fragment {
+public class KitchenOrderedItemsFragment extends Fragment implements View.OnClickListener{
 
     LinearLayoutManager linearLayoutManager = null;
     KitchenActivity kitchenActivity = null;
     private String orderId = null;
     KitchenOrderedMenusAdapter kitchenOrderedMenusAdapter = null;
     private List<KitchenOrderDetailsViewModel> detailsViewModels = new ArrayList<>();
+    FloatingActionButton floatingActionButton = null;
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +56,8 @@ public class KitchenOrderedItemsFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.kitchen_order_data);
         recyclerView.setHasFixedSize(true);
 
+        floatingActionButton = (FloatingActionButton)view.findViewById(R.id.saveOrderStatus);
+        floatingActionButton.setOnClickListener(this);
         linearLayoutManager =  new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -59,6 +66,7 @@ public class KitchenOrderedItemsFragment extends Fragment {
                 super.onScrollStateChanged(recyclerView, newState);
             }
 
+
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -66,16 +74,22 @@ public class KitchenOrderedItemsFragment extends Fragment {
         });
         setAdapters(recyclerView);
         loadData();
+        updateViewStatus();
         return view;
     }
 
     private void setAdapters(RecyclerView recyclerView){
-        kitchenOrderedMenusAdapter = new KitchenOrderedMenusAdapter(kitchenActivity,detailsViewModels);
+        kitchenOrderedMenusAdapter = new KitchenOrderedMenusAdapter(kitchenActivity,detailsViewModels,KitchenOrderedItemsFragment.this);
 
         recyclerView.setAdapter(kitchenOrderedMenusAdapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(kitchenActivity,linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
+    }
+
+
+    private void updateViewStatus(){
+        kitchenActivity.getKitchenService().updateKitchenOrderViewStatus(orderId,detailsViewModels);
     }
 
     private void loadData(){
@@ -92,4 +106,14 @@ public class KitchenOrderedItemsFragment extends Fragment {
 
     }
 
+    @Override
+    public void onClick(View view) {
+        kitchenActivity.getKitchenService().saveOrderStatus(detailsViewModels,orderId);
+    }
+
+    public void enableSaveButton(){
+       if(floatingActionButton.getVisibility() != View.VISIBLE){
+           floatingActionButton.setVisibility(View.VISIBLE);
+       }
+    }
 }

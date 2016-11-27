@@ -4,6 +4,7 @@ import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
 import com.archide.hsb.entity.KitchenOrdersListEntity;
 import com.archide.hsb.enumeration.FoodType;
+import com.archide.hsb.enumeration.OrderStatus;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -37,4 +38,12 @@ public interface KitchenDao {
     List<KitchenOrdersCategoryEntity> getKitchenOrdersCategory(KitchenOrdersListEntity kitchenOrdersListEntity)throws SQLException;
 
     List<KitchenOrderDetailsEntity> getKitchenOrderDetailsEntity(KitchenOrdersCategoryEntity kitchenOrdersCategoryEntity)throws SQLException;
+
+    void updateKitchenOrderListViewStatus(String orderId)throws SQLException;
+
+    void updateKitchenOrderDetailsViewStatus(int id)throws SQLException;
+
+    void updateKitchenOrderDetailsViewStatus(int id, OrderStatus orderStatus, int unAvailableCount)throws SQLException;
+
+    void updateKitchenOrderListViewSync(String orderId)throws SQLException;
 }

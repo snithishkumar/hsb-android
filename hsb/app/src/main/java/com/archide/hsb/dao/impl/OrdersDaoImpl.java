@@ -102,7 +102,7 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
 
     @Override
     public List<PlacedOrderItemsEntity> getPlacedOrderHistoryItems(PlacedOrdersEntity placedOrdersEntity)throws SQLException{
-        return   placedOrderItemDao.queryBuilder().where().eq(PlacedOrderItemsEntity.IS_CONFORM,true).and().eq(PlacedOrderItemsEntity.PLACED_ORDER_ENTITY,placedOrdersEntity).query();
+        return   placedOrderItemDao.queryBuilder().where().eq(PlacedOrderItemsEntity.IS_CONFORM,true).query();
     }
 
 

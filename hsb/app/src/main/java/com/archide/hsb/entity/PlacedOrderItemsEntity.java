@@ -1,6 +1,7 @@
 package com.archide.hsb.entity;
 
 
+import com.archide.hsb.enumeration.OrderStatus;
 import com.archide.hsb.sync.json.OrderedMenuItems;
 import com.archide.hsb.view.model.MenuItemsViewModel;
 import com.j256.ormlite.field.DatabaseField;
@@ -13,12 +14,13 @@ public class PlacedOrderItemsEntity {
 	public static final String PLACED_ORDER_ITEMS_UUID = "PlacedOrderItemsUUID";
 	public static final String MENU_ITEM = "MenuItem";
 	public static final String QUANTITY = "Quantity";
-    public static final String PLACED_ORDER_ENTITY = "PlacedOrders";
+   // public static final String PLACED_ORDER_ENTITY = "PlacedOrders";
 	public static final String MENU_COURSE_ENTITY = "MenuCourse";
 	public static final String IS_CONFORM = "IsConfirm";
     public static final String ITEM_CODE = "ItemCode";
     public static final String NAME = "Name";
     public static final String COST = "Cost";
+    public static final String ORDER_STATUS = "OrderStatus";
 
     @DatabaseField(columnName = PLACED_ORDER_ITEMS_ID,generatedId = true)
 	private int placedOrderItemsId;
@@ -28,18 +30,20 @@ public class PlacedOrderItemsEntity {
 	private MenuEntity menuItem;
     @DatabaseField(columnName = QUANTITY)
 	private int quantity;
-   /* @DatabaseField(columnName = PLACED_ORDER_ENTITY,foreign = true,foreignAutoRefresh =  true)
-	private PlacedOrdersEntity placedOrdersEntity;*/
+
     @DatabaseField(columnName = NAME)
     private String name;
 	@DatabaseField(columnName = MENU_COURSE_ENTITY,foreign = true,foreignAutoRefresh =  true)
 	private MenuCourseEntity menuCourseEntity;
+
     @DatabaseField(columnName = ITEM_CODE)
     private String itemCode;
 	@DatabaseField(columnName = IS_CONFORM)
 	private boolean isConform;
     @DatabaseField(columnName = COST)
     private double cost;
+    @DatabaseField(columnName = ORDER_STATUS)
+	private OrderStatus orderStatus;
 
 	public PlacedOrderItemsEntity(){
 
@@ -52,6 +56,7 @@ public class PlacedOrderItemsEntity {
         this.quantity = orderedMenuItems.getQuantity();
         this.name = orderedMenuItems.getName();
         this.itemCode = orderedMenuItems.getItemCode();
+        this.orderStatus = orderedMenuItems.getOrderStatus();
 
 	}
 
@@ -105,7 +110,7 @@ public class PlacedOrderItemsEntity {
 	}
 	
 	
-	/*
+/*
 	public PlacedOrdersEntity getPlacedOrdersEntity() {
 		return placedOrdersEntity;
 	}
@@ -134,7 +139,12 @@ public class PlacedOrderItemsEntity {
 		return "PlacedOrderItemsEntity [placedOrderItemsId=" + placedOrderItemsId + ", placedOrderItemsUUID="
 				+ placedOrderItemsUUID + ", menuItem=" + menuItem + ", quantity=" + quantity + "]";
 	}
-	
-	
 
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
 }

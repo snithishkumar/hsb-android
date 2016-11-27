@@ -2,6 +2,7 @@ package com.archide.hsb.view.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +15,10 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 
+import com.archide.hsb.enumeration.OrderStatus;
+import com.archide.hsb.enumeration.ViewStatus;
 import com.archide.hsb.view.activities.KitchenActivity;
+import com.archide.hsb.view.fragments.KitchenOrderedItemsFragment;
 import com.archide.hsb.view.model.KitchenOrderDetailsViewModel;
 
 import java.util.ArrayList;
@@ -34,9 +38,12 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
 
     KitchenActivity kitchenActivity;
     List<KitchenOrderDetailsViewModel> detailsViewModels = new ArrayList<>();
-    public KitchenOrderedMenusAdapter(KitchenActivity kitchenActivity,List<KitchenOrderDetailsViewModel> detailsViewModels){
+    KitchenOrderedItemsFragment kitchenOrderedItemsFragment = null;
+
+    public KitchenOrderedMenusAdapter(KitchenActivity kitchenActivity, List<KitchenOrderDetailsViewModel> detailsViewModels, KitchenOrderedItemsFragment kitchenOrderedItemsFragment){
         this.kitchenActivity = kitchenActivity;
         this.detailsViewModels = detailsViewModels;
+        this.kitchenOrderedItemsFragment = kitchenOrderedItemsFragment;
     }
 
     @Override
@@ -67,7 +74,25 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
 
             KitchenOrderedMenusViewHolder kitchenOrderedMenusViewHolder = (KitchenOrderedMenusViewHolder)viewHolder;
             kitchenOrderedMenusViewHolder.vOrderName.setText(kitchenOrderDetailsViewModel.getName());
-            kitchenOrderedMenusViewHolder.vTotalCount.setText(kitchenOrderDetailsViewModel.getQuantity());
+            if(kitchenOrderDetailsViewModel.getViewStatus().toString().equals(ViewStatus.UN_VIEWED.toString())){
+                kitchenOrderedMenusViewHolder.vTotalCount.setTextColor(Color.BLUE);
+            }
+            kitchenOrderedMenusViewHolder.vTotalCount.setText(kitchenOrderDetailsViewModel.getQuantity()+"x");
+
+            switch (kitchenOrderDetailsViewModel.getStatus()){
+                case DELIVERED:
+                    kitchenOrderedMenusViewHolder.vOrderStatus.setText("Delivered");
+                    kitchenOrderedMenusViewHolder.vOrderStatus.setVisibility(View.VISIBLE);
+                    break;
+                case UNAVAILABLE:
+                    kitchenOrderedMenusViewHolder.vOrderStatus.setText("Totally UnAvailable");
+                    kitchenOrderedMenusViewHolder.vOrderStatus.setVisibility(View.VISIBLE);
+                    break;
+                case PARTIAL:
+                    kitchenOrderedMenusViewHolder.vOrderStatus.setText(kitchenOrderDetailsViewModel.getUnAvailableCount()+" UnAvailable");
+                    kitchenOrderedMenusViewHolder.vOrderStatus.setVisibility(View.VISIBLE);
+                    break;
+            }
 
         }else if(viewHolder instanceof FoodCategoryViewHolder){
             FoodCategoryViewHolder foodCategoryViewHolder = (FoodCategoryViewHolder)viewHolder;
@@ -118,12 +143,14 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
         TextView vTotalCount;
 
         TextView vOrderName;
+        TextView vOrderStatus;
         ImageButton vMenuList;
 
         public KitchenOrderedMenusViewHolder(View view) {
             super(view);
             vTotalCount = (TextView)view.findViewById(R.id.adapt_kitchen_total_count);
             vOrderName = (TextView)view.findViewById(R.id.adapt_kitchen_order_name);
+            vOrderStatus = (TextView)view.findViewById(R.id.order_status);
             vMenuList = (ImageButton)view.findViewById(R.id.adapt_kitchen_settings);
             vMenuList.setOnClickListener(this);
         }
@@ -135,32 +162,42 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
             popupMenu.inflate(R.menu.popup_menu);
             popupMenu.show();
 
-
-            notifyDataSetChanged();
         }
 
         @Override
         public boolean onMenuItemClick(MenuItem item) {
+           int adapterPos = getAdapterPosition();
+            final KitchenOrderDetailsViewModel kitchenOrderDetailsViewModel = detailsViewModels.get(adapterPos);
+            final int totalCount = Integer.valueOf(kitchenOrderDetailsViewModel.getQuantity());
            switch (item.getItemId()){
                case R.id.item_delivered:
+                   detailsViewModels.get(adapterPos).setStatus(OrderStatus.DELIVERED);
                    break;
                case R.id.item_unavailable:
+                   detailsViewModels.get(adapterPos).setStatus(OrderStatus.UNAVAILABLE);
+                   kitchenOrderDetailsViewModel.setUnAvailableCount(totalCount);
                    break;
                case R.id.item_custom:
                    LayoutInflater inflater = (LayoutInflater)
                            kitchenActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                    View npView = inflater.inflate(R.layout.number_picker_dialog_layout, null);
                    final NumberPicker np = (NumberPicker) npView.findViewById(R.id.numberPicker);
-                   np.setMaxValue(5);
-                   np.setMinValue(0);
+
+                   np.setMaxValue(totalCount);
+                   np.setMinValue(1);
                    np.setWrapSelectorWheel(false);
+
                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(kitchenActivity)
                            .setTitle("Available Count:")
                            .setView(npView)
                            .setPositiveButton(R.string.dialog_ok,
                                    new DialogInterface.OnClickListener() {
                                        public void onClick(DialogInterface dialog, int whichButton) {
-
+                                          int val =  np.getValue();
+                                           kitchenOrderDetailsViewModel.setUnAvailableCount(totalCount - val);
+                                           kitchenOrderDetailsViewModel.setQuantity(String.valueOf(val));
+                                           kitchenOrderDetailsViewModel.setStatus(OrderStatus.PARTIAL);
+                                           notifyDataSetChanged();
                                        }
                                    })
                            .setNegativeButton(R.string.dialog_cancel,
@@ -171,6 +208,8 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
                    alertDialogBuilder.show();
                    break;
            }
+            kitchenOrderedItemsFragment.enableSaveButton();
+            notifyDataSetChanged();
             return false;
         }
     }

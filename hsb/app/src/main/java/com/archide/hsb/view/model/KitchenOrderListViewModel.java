@@ -1,6 +1,7 @@
 package com.archide.hsb.view.model;
 
 import com.archide.hsb.enumeration.FoodType;
+import com.archide.hsb.enumeration.OrderStatus;
 import com.archide.hsb.enumeration.ViewStatus;
 
 /**
@@ -17,6 +18,7 @@ public class KitchenOrderListViewModel {
     private FoodType foodType;
     private String vegCount;
     private String nonVegCount;
+    //private OrderStatus orderStatus;
 
     public String getOrderId() {
         return orderId;
@@ -81,6 +83,14 @@ public class KitchenOrderListViewModel {
     public void setNonVegCount(String nonVegCount) {
         this.nonVegCount = nonVegCount;
     }
+
+   /* public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }*/
 
     @Override
     public String toString() {

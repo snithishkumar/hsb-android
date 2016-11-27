@@ -2,6 +2,7 @@ package com.archide.hsb.sync.json;
 
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.enumeration.FoodType;
+import com.archide.hsb.enumeration.OrderStatus;
 
 public class OrderedMenuItems {
 	
@@ -13,6 +14,8 @@ public class OrderedMenuItems {
 	private String categoryName;
 	private String categoryUuid;
     private FoodType foodType;
+	private OrderStatus orderStatus;
+    private int unAvailableCount;
 	
 	public OrderedMenuItems(){
 		
@@ -24,8 +27,27 @@ public class OrderedMenuItems {
         this.placedOrderItemsUUID = placedOrderItemsEntity.getPlacedOrderItemsUUID();
         this.menuUuid = placedOrderItemsEntity.getMenuItem().getMenuUUID();
         this.itemCode = placedOrderItemsEntity.getItemCode();
+        this.orderStatus = placedOrderItemsEntity.getOrderStatus();
+
+
 
 	}
+
+    public int getUnAvailableCount() {
+        return unAvailableCount;
+    }
+
+    public void setUnAvailableCount(int unAvailableCount) {
+        this.unAvailableCount = unAvailableCount;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
 
     public FoodType getFoodType() {
         return foodType;

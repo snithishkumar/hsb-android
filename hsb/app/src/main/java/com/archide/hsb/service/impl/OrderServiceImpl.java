@@ -12,6 +12,7 @@ import com.archide.hsb.dao.impl.OrdersDaoImpl;
 import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.entity.PlacedOrdersEntity;
+import com.archide.hsb.enumeration.OrderStatus;
 import com.archide.hsb.service.OrderService;
 import com.archide.hsb.sync.HsbSyncAdapter;
 import com.archide.hsb.sync.SyncEvent;
@@ -78,6 +79,7 @@ public class OrderServiceImpl implements OrderService {
         placedOrderItemsEntity.setPlacedOrderItemsUUID(UUID.randomUUID().toString());
         placedOrderItemsEntity.setQuantity(menuItemsViewModel.getCount());
         placedOrderItemsEntity.setCost(menuItemsViewModel.getCost());
+        placedOrderItemsEntity.setOrderStatus(OrderStatus.ORDERED);
         ordersDao.createPlacedOrdersItemsEntity(placedOrderItemsEntity);
     }
 
@@ -148,7 +150,6 @@ public class OrderServiceImpl implements OrderService {
                 placedOrdersEntity.setDiscount(placeAnOrderViewModel.getDiscount());
                 placedOrdersEntity.setTotalPrice(placeAnOrderViewModel.getTotalAmount());
                 placedOrdersEntity.setDateTime(System.currentTimeMillis());
-
                 ordersDao.createPlacedOrdersEntity(placedOrdersEntity);
             }
             ordersDao.removeCurrentOrder();

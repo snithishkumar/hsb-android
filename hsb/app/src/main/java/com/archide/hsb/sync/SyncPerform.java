@@ -18,6 +18,8 @@ import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.entity.PlacedOrdersEntity;
 import com.archide.hsb.enumeration.GsonAPI;
+import com.archide.hsb.enumeration.Status;
+import com.archide.hsb.enumeration.ViewStatus;
 import com.archide.hsb.sync.json.FoodCategoryJson;
 import com.archide.hsb.sync.json.GetKitchenOrders;
 import com.archide.hsb.sync.json.GetMenuDetails;
@@ -284,6 +286,8 @@ public class SyncPerform {
                 }else{
                     kitchenOrdersListEntity.setLastUpdateTime(placeOrdersJson.getLastUpdatedDateTime());
                     kitchenOrdersListEntity.setServerDateTime(placeOrdersJson.getServerDateTime());
+                    kitchenOrdersListEntity.setStatus(Status.OPEN);
+                    kitchenOrdersListEntity.setViewStatus(ViewStatus.UN_VIEWED);
                     kitchenDao.updateKitchenOrder(kitchenOrdersListEntity);
                 }
 
