@@ -24,6 +24,9 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
 
+    <string name="dialog_ok">Ok</string>
+    <string name="dialog_cancel">Close</string>
+
     <string-array name="table_number">
         <item>Mercury</item>
         <item>Venus</item>

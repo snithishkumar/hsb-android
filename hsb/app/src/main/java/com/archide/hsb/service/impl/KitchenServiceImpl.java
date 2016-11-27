@@ -4,10 +4,13 @@ import android.content.Context;
 
 import com.archide.hsb.dao.KitchenDao;
 import com.archide.hsb.dao.impl.KitchenDaoImpl;
+import com.archide.hsb.entity.KitchenOrderDetailsEntity;
+import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
 import com.archide.hsb.entity.KitchenOrdersListEntity;
 import com.archide.hsb.enumeration.FoodType;
 import com.archide.hsb.enumeration.ViewStatus;
 import com.archide.hsb.service.KitchenService;
+import com.archide.hsb.view.model.KitchenOrderDetailsViewModel;
 import com.archide.hsb.view.model.KitchenOrderListViewModel;
 
 import java.text.SimpleDateFormat;
@@ -61,6 +64,32 @@ public class KitchenServiceImpl implements KitchenService {
             e.printStackTrace();
         }
         return kitchenOrderListViewModels;
+    }
+
+
+    public List<KitchenOrderDetailsViewModel> getKitchenOrderDetails(String orderId){
+        List<KitchenOrderDetailsViewModel> results = new ArrayList<>();
+        try {
+            KitchenOrdersListEntity kitchenOrdersListEntity = kitchenDao.getKitchenOrdersListEntity(orderId);
+            List<KitchenOrdersCategoryEntity> ordersCategoryEntities =  kitchenDao.getKitchenOrdersCategory(kitchenOrdersListEntity);
+            for(KitchenOrdersCategoryEntity kitchenOrdersCategoryEntity : ordersCategoryEntities){
+               List<KitchenOrderDetailsEntity> kitchenOrderDetailsEntities =  kitchenDao.getKitchenOrderDetailsEntity(kitchenOrdersCategoryEntity);
+               int i = 0;
+                for(KitchenOrderDetailsEntity kitchenOrderDetailsEntity : kitchenOrderDetailsEntities){
+                  if( i == 0){
+                      KitchenOrderDetailsViewModel kitchenOrderDetailsViewModel = new KitchenOrderDetailsViewModel(kitchenOrdersCategoryEntity);
+                      results.add(kitchenOrderDetailsViewModel);
+                  }
+                    i += 1;
+                   KitchenOrderDetailsViewModel kitchenOrderDetailsViewModel = new KitchenOrderDetailsViewModel(kitchenOrderDetailsEntity);
+                   results.add(kitchenOrderDetailsViewModel);
+               }
+           }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return results;
     }
 
 

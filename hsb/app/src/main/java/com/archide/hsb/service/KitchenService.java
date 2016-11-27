@@ -1,5 +1,6 @@
 package com.archide.hsb.service;
 
+import com.archide.hsb.view.model.KitchenOrderDetailsViewModel;
 import com.archide.hsb.view.model.KitchenOrderListViewModel;
 
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.List;
 public interface KitchenService {
 
     List<KitchenOrderListViewModel> getOrderList();
+
+    List<KitchenOrderDetailsViewModel> getKitchenOrderDetails(String orderId);
 
 
 }

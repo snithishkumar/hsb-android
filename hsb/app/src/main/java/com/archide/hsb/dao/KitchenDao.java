@@ -33,4 +33,8 @@ public interface KitchenDao {
     List<KitchenOrdersListEntity> getUnClosedKitchenOrdersList()throws SQLException;
 
     long getCountOf(FoodType foodType, KitchenOrdersListEntity kitchenOrdersListEntity)throws SQLException;
+
+    List<KitchenOrdersCategoryEntity> getKitchenOrdersCategory(KitchenOrdersListEntity kitchenOrdersListEntity)throws SQLException;
+
+    List<KitchenOrderDetailsEntity> getKitchenOrderDetailsEntity(KitchenOrdersCategoryEntity kitchenOrdersCategoryEntity)throws SQLException;
 }

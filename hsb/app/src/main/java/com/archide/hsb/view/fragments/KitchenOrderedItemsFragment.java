@@ -12,6 +12,10 @@ import android.view.ViewGroup;
 
 import com.archide.hsb.view.activities.KitchenActivity;
 import com.archide.hsb.view.adapters.KitchenOrderedMenusAdapter;
+import com.archide.hsb.view.model.KitchenOrderDetailsViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import hsb.archide.com.hsb.R;
 
@@ -23,6 +27,9 @@ public class KitchenOrderedItemsFragment extends Fragment {
 
     LinearLayoutManager linearLayoutManager = null;
     KitchenActivity kitchenActivity = null;
+    private String orderId = null;
+    KitchenOrderedMenusAdapter kitchenOrderedMenusAdapter = null;
+    private List<KitchenOrderDetailsViewModel> detailsViewModels = new ArrayList<>();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +40,13 @@ public class KitchenOrderedItemsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_kitchen_ordered_items, container, false);
+
+
+        Bundle purchaseIdArgs = getArguments();
+        if(purchaseIdArgs != null){
+            orderId =  purchaseIdArgs.getString("orderId");
+
+        }
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.kitchen_order_data);
         recyclerView.setHasFixedSize(true);
@@ -51,16 +65,24 @@ public class KitchenOrderedItemsFragment extends Fragment {
             }
         });
         setAdapters(recyclerView);
+        loadData();
         return view;
     }
 
     private void setAdapters(RecyclerView recyclerView){
-        KitchenOrderedMenusAdapter kitchenOrderedMenusAdapter = new KitchenOrderedMenusAdapter();
+        kitchenOrderedMenusAdapter = new KitchenOrderedMenusAdapter(kitchenActivity,detailsViewModels);
 
         recyclerView.setAdapter(kitchenOrderedMenusAdapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(kitchenActivity,linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
+    }
+
+    private void loadData(){
+        List<KitchenOrderDetailsViewModel> temp = kitchenActivity.getKitchenService().getKitchenOrderDetails(orderId);
+        detailsViewModels.clear();
+        detailsViewModels.addAll(temp);
+        kitchenOrderedMenusAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -56,9 +56,8 @@ public class KitchenOrderListFragment extends Fragment {
         kitchenOrderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(getActivity(), "" + position,
-                        Toast.LENGTH_SHORT).show();
-                kitchenActivity.viewOrderDetails(position);
+                KitchenOrderListViewModel kitchenOrderListViewModel =  kitchenOrderListViewModels.get(position);
+                kitchenActivity.viewOrderDetails(kitchenOrderListViewModel.getOrderId());
                 return;
             }
         });
@@ -104,6 +103,6 @@ public class KitchenOrderListFragment extends Fragment {
     }
 
    public interface ViewOrderDetails{
-        void viewOrderDetails(int id);
+        void viewOrderDetails(String orderId);
     }
 }

@@ -39,14 +39,19 @@ public class KitchenActivity extends AppCompatActivity implements KitchenOrderLi
         FragmentsUtil.addFragment(this, kitchenOrderListFragment, R.id.main_container);
     }
 
-    private void showOrderDetails(){
+    private void showOrderDetails(String orderId){
         KitchenOrderedItemsFragment kitchenOrderedItemsFragment = new KitchenOrderedItemsFragment();
+
+        Bundle purchaseIdArgs = new Bundle();
+        purchaseIdArgs.putString("orderId",orderId);
+        kitchenOrderedItemsFragment.setArguments(purchaseIdArgs);
+
         FragmentsUtil.replaceFragment(this,kitchenOrderedItemsFragment,R.id.main_container);
     }
 
     @Override
-    public void viewOrderDetails(int id) {
-        showOrderDetails();
+    public void viewOrderDetails(String orderId) {
+        showOrderDetails(orderId);
     }
 
     public KitchenService getKitchenService() {
