@@ -209,13 +209,8 @@ public class OrderServiceImpl implements OrderService {
                     placeAnOrderViewModel.getMenuItemsViewModels().add(menuItemsViewModel);
                 }
             }
+            calcAmount(placeAnOrderViewModel);
 
-            placeAnOrderViewModel.setSubTotalBeforeDiscount(placedOrdersEntity.getPrice());
-            placeAnOrderViewModel.setSubTotal(placedOrdersEntity.getPrice());
-            placeAnOrderViewModel.setDiscount(0);
-            placeAnOrderViewModel.setServiceTax(0);
-            placeAnOrderViewModel.setServiceVat(0);
-            placeAnOrderViewModel.setTotalAmount(placedOrdersEntity.getTotalPrice());
             return placeAnOrderViewModel;
         }catch (Exception e){
             e.printStackTrace();

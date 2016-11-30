@@ -142,4 +142,29 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
         updateBuilder.update();
     }
 
+    @Override
+    public List<KitchenOrdersListEntity> getUnSyncedOrderList()throws SQLException{
+       return kitchenOrderListDao.queryBuilder().where().eq(KitchenOrdersListEntity.IS_SYNCED,false).query();
+    }
+
+
+    @Override
+    public List<KitchenOrderDetailsEntity> getUnSyncedOrderDetails(KitchenOrdersListEntity  kitchenOrdersListEntity)throws SQLException{
+        return kitchenOrderDetailsDao.queryBuilder().where().eq(KitchenOrderDetailsEntity.IS_SYNC,false).and().eq(KitchenOrderDetailsEntity.KITCHEN_ORDER_LIST,kitchenOrdersListEntity).query();
+    }
+
+    @Override
+    public void updateKitchenOrderDetailsSyncStatus(String placedOrderUuid)throws SQLException{
+        UpdateBuilder<KitchenOrderDetailsEntity,Integer> updateBuilder =  kitchenOrderDetailsDao.updateBuilder();
+        updateBuilder.updateColumnValue(KitchenOrderDetailsEntity.IS_SYNC, true).where().eq(KitchenOrderDetailsEntity.MENU_UUID,placedOrderUuid);
+        updateBuilder.update();
+    }
+
+    @Override
+    public void updateKitchenOrderListSyncStatus(String placedOrderUuid)throws SQLException{
+        UpdateBuilder<KitchenOrdersListEntity,Integer> updateBuilder =  kitchenOrderListDao.updateBuilder();
+        updateBuilder.updateColumnValue(KitchenOrdersListEntity.IS_SYNCED, true).where().eq(KitchenOrdersListEntity.PLACED_ORDERS_UUID,placedOrderUuid);
+        updateBuilder.update();
+    }
+
 }

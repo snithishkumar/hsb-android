@@ -21,6 +21,7 @@ public class PlacedOrderItemsEntity {
     public static final String NAME = "Name";
     public static final String COST = "Cost";
     public static final String ORDER_STATUS = "OrderStatus";
+    public static final String SERVER_SYNC_TIME = "ServerSyncTime";
 
     @DatabaseField(columnName = PLACED_ORDER_ITEMS_ID,generatedId = true)
 	private int placedOrderItemsId;
@@ -30,6 +31,9 @@ public class PlacedOrderItemsEntity {
 	private MenuEntity menuItem;
     @DatabaseField(columnName = QUANTITY)
 	private int quantity;
+
+    @DatabaseField(columnName = SERVER_SYNC_TIME)
+    private long serverSyncTime;
 
     @DatabaseField(columnName = NAME)
     private String name;
@@ -59,6 +63,14 @@ public class PlacedOrderItemsEntity {
         this.orderStatus = orderedMenuItems.getOrderStatus();
 
 	}
+
+    public long getServerSyncTime() {
+        return serverSyncTime;
+    }
+
+    public void setServerSyncTime(long serverSyncTime) {
+        this.serverSyncTime = serverSyncTime;
+    }
 
     public MenuCourseEntity getMenuCourseEntity() {
         return menuCourseEntity;

@@ -7,6 +7,7 @@ import com.archide.hsb.entity.MenuCourseEntity;
 import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.entity.PlacedOrdersEntity;
+import com.archide.hsb.enumeration.OrderStatus;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.UpdateBuilder;
@@ -53,8 +54,12 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
     }
 
 
-    public void updatePlacedOrderItems()throws SQLException{
-        placedOrderItemDao.updateBuilder().updateColumnValue(PlacedOrderItemsEntity.IS_CONFORM,true).update();
+    public void updatePlacedOrderItems(long serverSyncTime)throws SQLException{
+        UpdateBuilder<PlacedOrderItemsEntity,Integer> updateBuilder = placedOrderItemDao.updateBuilder();
+        updateBuilder.updateColumnValue(PlacedOrderItemsEntity.IS_CONFORM,true).
+                updateColumnValue(PlacedOrderItemsEntity.SERVER_SYNC_TIME,serverSyncTime).
+        where().eq(PlacedOrderItemsEntity.IS_CONFORM,false);
+        updateBuilder.update();
     }
 
     public PlacedOrderItemsEntity getPlacedOrdersItemsEntity(String orderUuid)throws SQLException{
@@ -103,6 +108,13 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
     @Override
     public List<PlacedOrderItemsEntity> getPlacedOrderHistoryItems(PlacedOrdersEntity placedOrdersEntity)throws SQLException{
         return   placedOrderItemDao.queryBuilder().where().eq(PlacedOrderItemsEntity.IS_CONFORM,true).query();
+    }
+
+
+    @Override
+    public long getPreviousSyncHistoryData()throws SQLException{
+        PlacedOrderItemsEntity placedOrderItemsEntity =  placedOrderItemDao.queryBuilder().selectColumns(PlacedOrderItemsEntity.SERVER_SYNC_TIME).orderBy(PlacedOrderItemsEntity.SERVER_SYNC_TIME,false).where().ne(PlacedOrderItemsEntity.ORDER_STATUS, OrderStatus.ORDERED).and().eq(PlacedOrderItemsEntity.IS_CONFORM,true).queryForFirst();
+        return placedOrderItemsEntity != null ? placedOrderItemsEntity.getServerSyncTime() : 0;
     }
 
 

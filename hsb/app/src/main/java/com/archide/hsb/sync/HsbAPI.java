@@ -3,6 +3,7 @@ package com.archide.hsb.sync;
 import com.archide.hsb.sync.json.GetKitchenOrders;
 import com.archide.hsb.sync.json.PlaceOrdersJson;
 import com.archide.hsb.sync.json.ResponseData;
+import com.google.gson.JsonObject;
 
 import java.util.List;
 
@@ -36,5 +37,12 @@ public interface HsbAPI {
     /** Create User **/
     @POST ("/hsb/mobile/getKitchenOrders.html")
     Call<ResponseData> getKitchenOrders(@Body List<GetKitchenOrders> getKitchenOrders);
+
+
+    @POST ("/hsb/mobile/sendUnSyncedKitchenOrders.html")
+    Call<ResponseData> sendUnSyncedKitchenOrders(@Body List<PlaceOrdersJson> placeOrderList);
+
+    @POST ("/hsb//mobile/getPreviousOrder.html")
+    Call<ResponseData> getPreviousOrder(@Body JsonObject requestData);
 
 }

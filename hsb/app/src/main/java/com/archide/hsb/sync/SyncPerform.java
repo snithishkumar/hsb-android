@@ -24,14 +24,17 @@ import com.archide.hsb.sync.json.FoodCategoryJson;
 import com.archide.hsb.sync.json.GetKitchenOrders;
 import com.archide.hsb.sync.json.GetMenuDetails;
 import com.archide.hsb.sync.json.KitchenOrderListResponse;
+import com.archide.hsb.sync.json.KitchenOrderStatusSyncResponse;
 import com.archide.hsb.sync.json.MenuItemJson;
 import com.archide.hsb.sync.json.MenuListJson;
 import com.archide.hsb.sync.json.OrderedMenuItems;
 import com.archide.hsb.sync.json.PlaceOrdersJson;
 import com.archide.hsb.sync.json.ResponseData;
 import com.archide.hsb.sync.json.TableListJson;
+import com.archide.hsb.view.activities.ActivityUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -231,7 +234,7 @@ public class SyncPerform {
                     ResponseData responseData =  response.body();
                     if(responseData.getSuccess() && responseData.getStatusCode() == 200){
                         ordersDao.updateServerSyncTime(responseData.getData());
-                        ordersDao.updatePlacedOrderItems();
+                        ordersDao.updatePlacedOrderItems(Long.valueOf(responseData.getData()));
                         ResponseData result = new ResponseData(200,null);
                         return result;
                     }else {
@@ -312,6 +315,67 @@ public class SyncPerform {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+
+    public void sendUnSyncedOrderStatus(){
+        try {
+            List<KitchenOrdersListEntity> kitchenOrdersList =  kitchenDao.getUnSyncedOrderList();
+            List<PlaceOrdersJson> placeOrderList = new ArrayList<>();
+            for(KitchenOrdersListEntity kitchenOrdersListEntity : kitchenOrdersList){
+                PlaceOrdersJson placeOrdersJson = new PlaceOrdersJson(kitchenOrdersListEntity);
+                placeOrderList.add(placeOrdersJson);
+                List<KitchenOrderDetailsEntity> kitchenOrderDetailsList = kitchenDao.getUnSyncedOrderDetails(kitchenOrdersListEntity);
+                for(KitchenOrderDetailsEntity kitchenOrderDetailsEntity : kitchenOrderDetailsList){
+                    OrderedMenuItems orderedMenuItems = new OrderedMenuItems(kitchenOrderDetailsEntity);
+                    placeOrdersJson.getMenuItems().add(orderedMenuItems);
+                }
+            }
+            Call<ResponseData> kitchenOrderSyncResponse =   hsbAPI.sendUnSyncedKitchenOrders(placeOrderList);
+            Response<ResponseData> response =   kitchenOrderSyncResponse.execute();
+            if (response != null && response.isSuccessful()) {
+                ResponseData responseData =  response.body();
+                if(responseData.getSuccess() && responseData.getStatusCode() == 200){
+                    String orderedItemsUuids =  responseData.getData();
+                    List<KitchenOrderStatusSyncResponse> placeOrdersList = gson.fromJson(orderedItemsUuids,
+                            new TypeToken<List<KitchenOrderStatusSyncResponse>>() {}.getType());
+                    for(KitchenOrderStatusSyncResponse kitchenOrderStatusSyncResponse : placeOrdersList){
+                        List<String> placedOrderItemsUuids =  kitchenOrderStatusSyncResponse.getPlacedOrderItemsUuid();
+                        kitchenDao.updateKitchenOrderListSyncStatus(kitchenOrderStatusSyncResponse.getPlacedOrderUuid());
+                        for(String placedOrderItemsUuid : placedOrderItemsUuids){
+                            kitchenDao.updateKitchenOrderDetailsSyncStatus(placedOrderItemsUuid);
+                        }
+                    }
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public ResponseData getPreviousOrderDetails(){
+        try{
+           long serverSyncTime =  ordersDao.getPreviousSyncHistoryData();
+            JsonObject request = new JsonObject();
+            request.addProperty("tableNumber", ActivityUtil.TABLE_NUMBER);
+            request.addProperty("serverLastUdpateTime", serverSyncTime);
+            Call<ResponseData> serverResponse =   hsbAPI.getPreviousOrder(request);
+            Response<ResponseData> response = serverResponse.execute();
+            if (response != null && response.isSuccessful()) {
+              ResponseData responseData = response.body();
+                if(responseData.getStatusCode() == 200){
+                    String previousOrder = responseData.getData();
+                    PlaceOrdersJson placeOrdersJson =  gson.fromJson(previousOrder,PlaceOrdersJson.class);
+                    processPreviousOrder(placeOrdersJson);
+                }
+                ResponseData result = new ResponseData(200,null);
+                return result;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+       return getErrorResponse();
     }
 
     private void processCloseData(List<String> closedOrders){

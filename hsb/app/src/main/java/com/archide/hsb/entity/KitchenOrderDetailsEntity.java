@@ -67,7 +67,7 @@ public class KitchenOrderDetailsEntity {
     }
 
     public KitchenOrderDetailsEntity(OrderedMenuItems orderedMenuItems){
-        this.menuUUID = orderedMenuItems.getMenuUuid();
+        this.menuUUID = orderedMenuItems.getPlacedOrderItemsUUID();
         this.menuItemCode = orderedMenuItems.getItemCode();
         this.name = orderedMenuItems.getName();
         this.quantity = orderedMenuItems.getQuantity();

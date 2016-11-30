@@ -1,5 +1,6 @@
 package com.archide.hsb.sync.json;
 
+import com.archide.hsb.entity.KitchenOrdersListEntity;
 import com.archide.hsb.entity.PlacedOrdersEntity;
 
 import java.util.ArrayList;
@@ -20,8 +21,9 @@ public class PlaceOrdersJson {
     private long orderDateTime;
     private long lastUpdatedDateTime;
 	
-	public PlaceOrdersJson(){
-		
+	public PlaceOrdersJson(KitchenOrdersListEntity kitchenOrdersListEntity){
+		this.orderId = kitchenOrdersListEntity.getOrderId();
+		this.placeOrderUuid = kitchenOrdersListEntity.getPlacedOrderUuid();
 	}
 
 	public PlaceOrdersJson(PlacedOrdersEntity placedOrdersEntity){
