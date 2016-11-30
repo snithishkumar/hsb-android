@@ -390,4 +390,30 @@ public class SyncPerform {
 
     }
 
+
+    public ResponseData getUnAvailableOrders() {
+        try{
+            long lastServerSyncTime =  menuItemsDao.getLastSyncTime();
+            Call<ResponseData> serverResponse =  hsbAPI.getUnAvailableMenuItems(lastServerSyncTime);
+            Response<ResponseData> response = serverResponse.execute();
+            if (response != null && response.isSuccessful()) {
+                ResponseData responseData = response.body();
+                if(responseData.getStatusCode() == 200){
+                    String menuItems =  responseData.getData();
+                    List<MenuItemJson> menuItemList = gson.fromJson(menuItems,
+                            new TypeToken<List<MenuItemJson>>() {}.getType());
+                    for(MenuItemJson menuItemJson : menuItemList){
+                        menuItemsDao.updateMenuItemStatus(menuItemJson.getMenuUuid(),menuItemJson.getServerDateTime());
+                    }
+                }
+            }
+            ResponseData result = new ResponseData(2000,null);
+            return result;
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return getErrorResponse();
+    }
+
 }

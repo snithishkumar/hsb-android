@@ -45,4 +45,8 @@ public interface HsbAPI {
     @POST ("/hsb//mobile/getPreviousOrder.html")
     Call<ResponseData> getPreviousOrder(@Body JsonObject requestData);
 
+    @FormUrlEncoded
+    @POST ("/hsb//mobile/getUnAvailableMenuItems.html")
+    Call<ResponseData> getUnAvailableMenuItems(@Field("lastServerSyncTime") long lastServerSyncTime);
+
 }

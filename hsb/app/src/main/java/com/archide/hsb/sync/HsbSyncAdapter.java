@@ -87,6 +87,11 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
                 responseData = syncPerform.getPreviousOrderDetails();
                 postData(responseData);
                 break;
+
+            case 5:
+                responseData =  syncPerform.getUnAvailableOrders();
+                postData(responseData);
+                break;
         }
 
     }

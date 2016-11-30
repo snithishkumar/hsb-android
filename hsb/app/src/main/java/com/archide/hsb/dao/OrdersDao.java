@@ -46,4 +46,6 @@ public interface OrdersDao {
     void reSetPlacedOrderItems()throws SQLException;
 
     long getPreviousSyncHistoryData()throws SQLException;
+
+    void removeUnAvailablePlacedOrders()throws SQLException;
 }

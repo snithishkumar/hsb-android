@@ -6,7 +6,9 @@ import com.archide.hsb.dao.MenuItemsDao;
 import com.archide.hsb.entity.FoodCategoryEntity;
 import com.archide.hsb.entity.MenuCourseEntity;
 import com.archide.hsb.entity.MenuEntity;
+import com.archide.hsb.enumeration.Status;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.UpdateBuilder;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -150,6 +152,20 @@ public class MenuItemsDaoImpl extends  BaseDaoImpl implements MenuItemsDao {
      */
     public List<MenuEntity> getMenuEntityList(MenuCourseEntity menuCourseEntity,FoodCategoryEntity foodCategoryEntity)throws SQLException{
        return menuEntityDao.queryBuilder().where().eq(MenuEntity.MENU_COURSE,menuCourseEntity).and().eq(MenuEntity.FOOD_CATEGORY,foodCategoryEntity).query();
+    }
+
+
+    /**
+     * Update Order status as UnAvailable and servertime based on menuitemUUID
+     * @param menuItemUuid
+     * @param serverLastUpdatedTime
+     * @throws SQLException
+     */
+    public void updateMenuItemStatus(String menuItemUuid,long serverLastUpdatedTime)throws SQLException{
+      UpdateBuilder<MenuEntity,Integer> updateBuilder =  menuEntityDao.updateBuilder();
+      updateBuilder.updateColumnValue(MenuEntity.STATUS,Status.UN_AVAILABLE).
+      updateColumnValue(MenuEntity.SERVER_DATE_TIME,serverLastUpdatedTime).where().eq(MenuEntity.MENU_UUID,menuItemUuid);
+      updateBuilder.update();
     }
 
 }

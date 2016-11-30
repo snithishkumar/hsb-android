@@ -20,6 +20,8 @@ public class PlaceAnOrderViewModel {
     private double serviceVat ;
     private double totalAmount ;
 
+    private boolean isUnAvailable;
+
     private List<MenuItemsViewModel> menuItemsViewModels = new ArrayList<>();
 
     public String getCookingComments() {
@@ -84,6 +86,14 @@ public class PlaceAnOrderViewModel {
 
     public void setMenuItemsViewModels(List<MenuItemsViewModel> menuItemsViewModels) {
         this.menuItemsViewModels = menuItemsViewModels;
+    }
+
+    public boolean isUnAvailable() {
+        return isUnAvailable;
+    }
+
+    public void setUnAvailable(boolean unAvailable) {
+        isUnAvailable = unAvailable;
     }
 
     @Override

@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.archide.hsb.enumeration.OrderStatus;
 import com.archide.hsb.view.activities.OrderActivity;
 import com.archide.hsb.view.fragments.OrderPlaceFragment;
+import com.archide.hsb.view.model.KitchenOrderDetailsViewModel;
 import com.archide.hsb.view.model.MenuItemsViewModel;
 
 import java.util.ArrayList;
@@ -26,6 +28,9 @@ public class OrderedMenuItemsAdapter extends RecyclerView.Adapter<RecyclerView.V
     private OrderPlaceFragment orderPlaceFragment;
     List<MenuItemsViewModel> menuItemsViewModels = new ArrayList<>();
 
+    private final int AVAILABLE  = 1;
+    private final int UN_AVAILABLE = 2;
+
     public OrderedMenuItemsAdapter(List<MenuItemsViewModel> menuItemsViewModels, OrderActivity orderActivity, OrderPlaceFragment orderPlaceFragment){
         this.menuItemsViewModels = menuItemsViewModels;
         this.orderActivity = orderActivity;
@@ -35,25 +40,52 @@ public class OrderedMenuItemsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapt_place_order_menus, parent, false);
+      if(viewType == AVAILABLE){
+          View view = LayoutInflater.from(parent.getContext())
+                  .inflate(R.layout.adapt_place_order_menus, parent, false);
 
-        return new OrderedMenuItemsViewHolder(view);
+          return new OrderedMenuItemsViewHolder(view);
+      }else{
+          View view = LayoutInflater.from(parent.getContext())
+                  .inflate(R.layout.adapt_place_order_unavailable_menus, parent, false);
+
+          return new OrderedMenuUnAvailableItemsViewHolder(view);
+      }
+
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) {
         MenuItemsViewModel menuItemsViewModel = menuItemsViewModels.get(position);
-        OrderedMenuItemsViewHolder orderedMenuItemsViewHolder  = (OrderedMenuItemsViewHolder)viewHolder;
-        orderedMenuItemsViewHolder.vTotalCount.setText(String.valueOf(menuItemsViewModel.getCount()) +"x ");
-        orderedMenuItemsViewHolder.vTotalAmount.setText(String.valueOf(menuItemsViewModel.getCost() * menuItemsViewModel.getCount()));
-        orderedMenuItemsViewHolder.vOrderName.setText(String.valueOf(menuItemsViewModel.getName()));
-        orderedMenuItemsViewHolder.vCountValue.setText(String.valueOf(menuItemsViewModel.getCount()));
+        if(viewHolder instanceof OrderedMenuItemsViewHolder){
+            OrderedMenuItemsViewHolder orderedMenuItemsViewHolder  = (OrderedMenuItemsViewHolder)viewHolder;
+            orderedMenuItemsViewHolder.vTotalCount.setText(String.valueOf(menuItemsViewModel.getCount()) +"x ");
+            orderedMenuItemsViewHolder.vTotalAmount.setText(String.valueOf(menuItemsViewModel.getCost() * menuItemsViewModel.getCount()));
+            orderedMenuItemsViewHolder.vOrderName.setText(String.valueOf(menuItemsViewModel.getName()));
+            orderedMenuItemsViewHolder.vCountValue.setText(String.valueOf(menuItemsViewModel.getCount()));
+        }else{
+            OrderedMenuUnAvailableItemsViewHolder orderedMenuItemsViewHolder  = (OrderedMenuUnAvailableItemsViewHolder)viewHolder;
+            orderedMenuItemsViewHolder.vTotalCount.setText(String.valueOf(menuItemsViewModel.getCount()) +"x ");
+            //orderedMenuItemsViewHolder.vTotalAmount.setText(String.valueOf(menuItemsViewModel.getCost() * menuItemsViewModel.getCount()));
+            orderedMenuItemsViewHolder.vOrderName.setText(String.valueOf(menuItemsViewModel.getName()));
+        }
+
     }
 
     @Override
     public int getItemCount() {
         return menuItemsViewModels.size() ;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        MenuItemsViewModel menuItemsViewModel = menuItemsViewModels.get(position);
+        if(menuItemsViewModel.getOrderStatus().toString() == OrderStatus.UNAVAILABLE.toString()){
+            return AVAILABLE;
+        }else{
+            return UN_AVAILABLE;
+        }
+
     }
 
     public class OrderedMenuItemsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -105,4 +137,21 @@ public class OrderedMenuItemsAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
+
+    public class OrderedMenuUnAvailableItemsViewHolder extends RecyclerView.ViewHolder {
+        TextView vTotalCount;
+        TextView vTotalAmount;
+        TextView vOrderName;
+        public OrderedMenuUnAvailableItemsViewHolder(View view) {
+            super(view);
+            vTotalCount = (TextView)view.findViewById(R.id.total_count);
+            vTotalAmount = (TextView)view.findViewById(R.id.total_amount);
+            vOrderName = (TextView)view.findViewById(R.id.order_name);
+        }
+
+    }
+
+    public void setMenuItemsViewModels(List<MenuItemsViewModel> menuItemsViewModels) {
+        this.menuItemsViewModels = menuItemsViewModels;
+    }
 }

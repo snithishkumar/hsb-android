@@ -34,4 +34,6 @@ public interface MenuItemsDao {
     List<FoodCategoryEntity> getFoodCategoryEntity(MenuCourseEntity menuCourseEntity)throws SQLException;
 
     List<MenuEntity> getMenuEntityList(MenuCourseEntity menuCourseEntity,FoodCategoryEntity foodCategoryEntity)throws SQLException;
+
+    void updateMenuItemStatus(String menuItemUuid,long serverLastUpdatedTime)throws SQLException;
 }

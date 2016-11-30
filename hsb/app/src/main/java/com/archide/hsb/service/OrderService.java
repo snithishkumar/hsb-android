@@ -29,4 +29,8 @@ public interface OrderService {
 
     PlaceAnOrderViewModel getPlacedHistoryOrderViewModel();
 
+    void checkAvailability(Context context);
+
+    void removeUnAvailableOrders();
+
 }

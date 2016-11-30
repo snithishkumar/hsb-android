@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.archide.hsb.sync.json.ResponseData;
@@ -40,7 +41,6 @@ import hsb.archide.com.hsb.R;
 public class OrderPlaceFragment extends Fragment implements View.OnClickListener{
 
     LinearLayoutManager linearLayoutManager = null;
-    List<MenuItemsViewModel> menuItemsViewModels = new ArrayList<>();
 
     EditText cookingComments ;
     TextView subTotalBeforeDiscount ;
@@ -49,12 +49,16 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
     TextView serviceTax ;
     TextView serviceVat ;
     TextView totalAmount ;
+    TextView addMoreItems ;
     Button placeAnOrder ;
+
+    RelativeLayout relativeLayout;
 
 
     private OrderActivity orderActivity;
-private ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
     private PlaceAnOrderViewModel placeAnOrderViewModel;
+    OrderedMenuItemsAdapter orderedMenuItemsAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,10 +72,12 @@ private ProgressDialog progressDialog;
          discount =  (TextView) view.findViewById(R.id.discount);
          subTotal =  (TextView) view.findViewById(R.id.subtotal);
          serviceTax =  (TextView) view.findViewById(R.id.service_tax);
-         serviceVat =  (TextView)view.findViewById(R.id.service_vat);
+        serviceTax =  (TextView) view.findViewById(R.id.service_tax);
+        addMoreItems =  (TextView)view.findViewById(R.id.edit_order);
          totalAmount =  (TextView) view.findViewById(R.id.total_amount);
           placeAnOrder =  (Button) view.findViewById(R.id.place_an_order);
           placeAnOrder.setOnClickListener(this);
+        addMoreItems.setOnClickListener(this);
     }
 
 
@@ -81,6 +87,8 @@ private ProgressDialog progressDialog;
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_place_order, container, false);
 
+        //order_unavailable_layout
+        relativeLayout =  (RelativeLayout)view.findViewById(R.id.order_unavailable_layout);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.ordered_data);
         recyclerView.setHasFixedSize(true);
         linearLayoutManager =  new LinearLayoutManager(getActivity());
@@ -96,22 +104,41 @@ private ProgressDialog progressDialog;
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-        placeAnOrderViewModel =  orderActivity.getOrderService().getCurrentOrderDetails();
         setAdapters(recyclerView);
 
         init(view);
-        populateAmountDetails();
+        checkAvailability();
         return view;
     }
 
     private void setAdapters(RecyclerView recyclerView){
-
-        OrderedMenuItemsAdapter orderedMenuItemsAdapter = new OrderedMenuItemsAdapter(placeAnOrderViewModel.getMenuItemsViewModels(),orderActivity,OrderPlaceFragment.this);
+        placeAnOrderViewModel = new PlaceAnOrderViewModel();
+        orderedMenuItemsAdapter = new OrderedMenuItemsAdapter(placeAnOrderViewModel.getMenuItemsViewModels(),orderActivity,OrderPlaceFragment.this);
 
         recyclerView.setAdapter(orderedMenuItemsAdapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(orderActivity,linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
+    }
+
+    private void loadData(){
+        placeAnOrderViewModel =  orderActivity.getOrderService().getCurrentOrderDetails();
+        if(placeAnOrderViewModel.isUnAvailable()){
+            relativeLayout.setVisibility(View.VISIBLE);
+        }
+        orderedMenuItemsAdapter.setMenuItemsViewModels(placeAnOrderViewModel.getMenuItemsViewModels());
+        orderedMenuItemsAdapter.notifyDataSetChanged();
+        populateAmountDetails();
+    }
+
+    private void checkAvailability(){
+        boolean isNetWorkConnected =  Utilities.isNetworkConnected(orderActivity);
+        if(isNetWorkConnected){
+            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), orderActivity);
+            orderActivity.getOrderService().checkAvailability(orderActivity);
+        }else{
+            ActivityUtil.showDialog(orderActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
+        }
     }
 
 
@@ -159,13 +186,23 @@ private ProgressDialog progressDialog;
 
     @Override
     public void onClick(View view) {
-        boolean isNetWorkConnected =  Utilities.isNetworkConnected(orderActivity);
-        if(isNetWorkConnected){
-            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), orderActivity);
-            orderActivity.getOrderService().conformOrder(placeAnOrderViewModel,"1",orderActivity);
-        }else{
-            ActivityUtil.showDialog(orderActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
-        }
+       if(view.getId() == R.id.edit_order){
+           orderActivity.getOrderService().removeUnAvailableOrders();
+           Intent intent = new Intent(orderActivity, HomeActivity.class);
+           intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+           startActivity(intent);
+           orderActivity.finish();
+           return;
+       }else{
+           boolean isNetWorkConnected =  Utilities.isNetworkConnected(orderActivity);
+           if(isNetWorkConnected){
+               progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), orderActivity);
+               orderActivity.getOrderService().conformOrder(placeAnOrderViewModel,"1",orderActivity);
+           }else{
+               ActivityUtil.showDialog(orderActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
+           }
+       }
+
 
     }
 
@@ -174,11 +211,15 @@ private ProgressDialog progressDialog;
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
+        if(responseData.getStatusCode() == 2000){
+            loadData();
+        }else{
+            Intent intent = new Intent(orderActivity, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            orderActivity.finish();
+            return;
+        }
 
-        Intent intent = new Intent(orderActivity, HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        orderActivity.finish();
-        return;
     }
 }

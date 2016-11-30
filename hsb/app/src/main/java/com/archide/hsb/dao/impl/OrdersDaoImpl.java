@@ -118,6 +118,13 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
     }
 
 
+    @Override
+    public void removeUnAvailablePlacedOrders()throws SQLException{
+       DeleteBuilder<PlacedOrderItemsEntity,Integer> deleteBuilder = placedOrderItemDao.deleteBuilder();
+       deleteBuilder.where().eq(PlacedOrderItemsEntity.ORDER_STATUS,OrderStatus.UNAVAILABLE).and().eq(PlacedOrderItemsEntity.IS_CONFORM,false);
+       deleteBuilder.delete();
+    }
+
 
 
     @Override

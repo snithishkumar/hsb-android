@@ -3,6 +3,7 @@ package com.archide.hsb.view.model;
 import com.archide.hsb.entity.FoodCategoryEntity;
 import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
+import com.archide.hsb.enumeration.OrderStatus;
 
 import java.util.Objects;
 
@@ -18,6 +19,7 @@ public class MenuItemsViewModel {
     private boolean isCategory;
     private double cost;
     private String itemCode;
+    private OrderStatus orderStatus;
 
     public MenuItemsViewModel(MenuEntity menuEntity){
         this.uuid = menuEntity.getMenuUUID();
@@ -38,6 +40,7 @@ public class MenuItemsViewModel {
         this.count = placedOrderItemsEntity.getQuantity();
         this.cost = placedOrderItemsEntity.getCost();
         this.uuid = placedOrderItemsEntity.getMenuItem().getMenuUUID();
+
         this.isOrdered = true;
     }
 
@@ -95,6 +98,14 @@ public class MenuItemsViewModel {
 
     public void setCategory(boolean category) {
         isCategory = category;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     @Override

@@ -13,14 +13,13 @@ import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.entity.PlacedOrdersEntity;
 import com.archide.hsb.enumeration.OrderStatus;
+import com.archide.hsb.enumeration.Status;
 import com.archide.hsb.service.OrderService;
 import com.archide.hsb.sync.HsbSyncAdapter;
 import com.archide.hsb.sync.SyncEvent;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.model.MenuItemsViewModel;
-import com.archide.hsb.view.model.OrderDetailsViewModel;
 import com.archide.hsb.view.model.PlaceAnOrderViewModel;
-import com.j256.ormlite.field.DatabaseField;
 
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -104,6 +103,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
+    public void removeUnAvailableOrders(){
+        try {
+            ordersDao.removeUnAvailablePlacedOrders();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
     public void calcAmount(PlaceAnOrderViewModel placeAnOrderViewModel){
         double subTotal = 0;
         List<MenuItemsViewModel> menuItemsViewModels = placeAnOrderViewModel.getMenuItemsViewModels();
@@ -122,8 +130,16 @@ public class OrderServiceImpl implements OrderService {
         PlaceAnOrderViewModel placeAnOrderViewModel = new PlaceAnOrderViewModel();
         double subTotal = 0;
         for(PlacedOrderItemsEntity orderItemsEntity : placedOrderItemsEntityList){
-            subTotal = subTotal + orderItemsEntity.getCost() * orderItemsEntity.getQuantity();
+            String status =  orderItemsEntity.getMenuItem().getStatus().toString();
+            if(status.equals(Status.AVAILABLE.toString())){
+                subTotal = subTotal + orderItemsEntity.getCost() * orderItemsEntity.getQuantity();
+            }else{
+                placeAnOrderViewModel.setUnAvailable(true);
+            }
+
             MenuItemsViewModel menuItemsViewModel = new MenuItemsViewModel(orderItemsEntity);
+            OrderStatus orderStatus = OrderStatus.valueOf(status);
+            menuItemsViewModel.setOrderStatus(orderStatus);
             placeAnOrderViewModel.getMenuItemsViewModels().add(menuItemsViewModel);
         }
         placeAnOrderViewModel.setSubTotalBeforeDiscount(subTotal);
@@ -165,6 +181,13 @@ public class OrderServiceImpl implements OrderService {
         account = HsbSyncAdapter.getSyncAccount(context);
         settingsBundle.putInt("currentScreen", SyncEvent.PLACE_AN_ORDER);
         settingsBundle.putString("tableNumber", tableNumber);
+        ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
+    }
+
+
+    public void checkAvailability(Context context){
+        account = HsbSyncAdapter.getSyncAccount(context);
+        settingsBundle.putInt("currentScreen", SyncEvent.CHECK_AVAILABILITY);
         ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
     }
 
