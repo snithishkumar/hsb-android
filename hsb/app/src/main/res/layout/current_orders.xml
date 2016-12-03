@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:background="#BDBDBD"
 
+    android:layout_height="match_parent">
+    //https://www.iconfinder.com/icons/769537/campfire_camping_cooking_fire_flame_hot_wood_icon#size=128
     <LinearLayout
         android:layout_width="wrap_content"
         android:orientation="vertical"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="false"
+        android:layout_centerVertical="true">
         <TextView
             android:layout_width="wrap_content"
             android:text="5 items"
+            android:textColor="#000000"
+            android:textStyle="bold"
             android:id="@+id/total_no_of_items"
             android:layout_height="wrap_content" />
 
@@ -19,30 +24,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/total_amount"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
             android:text="500"
-            />
+            android:layout_gravity="center_horizontal" />
 
 
     </LinearLayout>
 
-    <TextView
-        android:text="Place Orders"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="viewCurrentOrder"
-        android:id="@+id/textView" />
-
-    <ImageView
-        android:layout_width="18dp"
-        android:layout_height="18dp"
         android:id="@+id/cart_item_img"
-        android:src="@drawable/ic_local_dining_black_36dp"
+        android:src="@drawable/config_1"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="16dp" />
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="1dp" />
+
+    <TextView
+        android:text="Place Order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="viewCurrentOrder"
+        android:textColor="#B71C1C"
+        android:id="@+id/textView"
+        android:textSize="17dp"
+        android:drawableEnd="@drawable/place_an_order_img"
+        android:textStyle="bold"
+        android:layout_centerInParent="false"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="7dp" />
 
 
 </RelativeLayout>

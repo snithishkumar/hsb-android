@@ -22,7 +22,7 @@ import hsb.archide.com.hsb.R;
  */
 public class NaviDrawerActivity extends AppCompatActivity {
 
-private OrderService orderService;
+    private OrderService orderService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,10 +87,6 @@ private OrderService orderService;
             finish();
         }
     }
-
-
-
-
 
 
     @Override

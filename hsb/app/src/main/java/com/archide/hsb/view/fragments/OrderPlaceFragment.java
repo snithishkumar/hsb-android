@@ -1,7 +1,9 @@
 package com.archide.hsb.view.fragments;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -72,8 +74,8 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
          discount =  (TextView) view.findViewById(R.id.discount);
          subTotal =  (TextView) view.findViewById(R.id.subtotal);
          serviceTax =  (TextView) view.findViewById(R.id.service_tax);
-        serviceTax =  (TextView) view.findViewById(R.id.service_tax);
-        addMoreItems =  (TextView)view.findViewById(R.id.edit_order);
+          serviceVat =  (TextView) view.findViewById(R.id.service_vat);
+          addMoreItems =  (TextView)view.findViewById(R.id.edit_order);
          totalAmount =  (TextView) view.findViewById(R.id.total_amount);
           placeAnOrder =  (Button) view.findViewById(R.id.place_an_order);
           placeAnOrder.setOnClickListener(this);
@@ -184,26 +186,57 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
 
     }
 
+    public void addMoreOrders(){
+        orderActivity.getOrderService().removeUnAvailableOrders();
+        Intent intent = new Intent(orderActivity, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        orderActivity.finish();
+        return;
+    }
+
     @Override
     public void onClick(View view) {
        if(view.getId() == R.id.edit_order){
-           orderActivity.getOrderService().removeUnAvailableOrders();
-           Intent intent = new Intent(orderActivity, HomeActivity.class);
-           intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-           startActivity(intent);
-           orderActivity.finish();
-           return;
+           addMoreOrders();
        }else{
-           boolean isNetWorkConnected =  Utilities.isNetworkConnected(orderActivity);
-           if(isNetWorkConnected){
-               progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), orderActivity);
-               orderActivity.getOrderService().conformOrder(placeAnOrderViewModel,"1",orderActivity);
+           if(placeAnOrderViewModel.getTotalAmount() > 0){
+               boolean isNetWorkConnected =  Utilities.isNetworkConnected(orderActivity);
+               if(isNetWorkConnected){
+                   progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), orderActivity);
+                   orderActivity.getOrderService().conformOrder(placeAnOrderViewModel,"1",orderActivity);
+               }else{
+                   ActivityUtil.showDialog(orderActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
+               }
            }else{
-               ActivityUtil.showDialog(orderActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
+               showNoItemToPlaceOrder();
            }
+
+
        }
 
 
+    }
+
+    private void showNoItemToPlaceOrder(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(orderActivity);
+        // Setting Dialog Title
+        alertDialog.setTitle("Sorry");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("No items to order. Please add other items");
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.cancel();
+                addMoreOrders();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

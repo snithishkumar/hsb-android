@@ -84,7 +84,7 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
                     kitchenOrderedMenusViewHolder.vOrderStatus.setText("Delivered");
                     kitchenOrderedMenusViewHolder.vOrderStatus.setVisibility(View.VISIBLE);
                     break;
-                case UNAVAILABLE:
+                case UN_AVAILABLE:
                     kitchenOrderedMenusViewHolder.vOrderStatus.setText("Totally UnAvailable");
                     kitchenOrderedMenusViewHolder.vOrderStatus.setVisibility(View.VISIBLE);
                     break;
@@ -174,7 +174,7 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
                    detailsViewModels.get(adapterPos).setStatus(OrderStatus.DELIVERED);
                    break;
                case R.id.item_unavailable:
-                   detailsViewModels.get(adapterPos).setStatus(OrderStatus.UNAVAILABLE);
+                   detailsViewModels.get(adapterPos).setStatus(OrderStatus.UN_AVAILABLE);
                    kitchenOrderDetailsViewModel.setUnAvailableCount(totalCount);
                    break;
                case R.id.item_custom:

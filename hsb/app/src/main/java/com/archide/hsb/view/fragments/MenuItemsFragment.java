@@ -75,8 +75,6 @@ public class MenuItemsFragment extends Fragment {
 
         totalNoOfItems = (TextView) layout.findViewById(R.id.total_no_of_items);
         totalAmount =  (TextView) layout.findViewById(R.id.total_amount);
-
-
         refreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -147,7 +145,7 @@ public class MenuItemsFragment extends Fragment {
 
     public void updateFooterBar(){
 
-        totalNoOfItems.setText(String.valueOf(orderDetailsViewModel.getTotalCount()));
+        totalNoOfItems.setText(String.valueOf(orderDetailsViewModel.getTotalCount())+" items");
         totalAmount.setText(String.valueOf(orderDetailsViewModel.getTotalCost()));
         if(orderDetailsViewModel.getTotalCount() > 0){
             if(layout.getVisibility() != View.VISIBLE){

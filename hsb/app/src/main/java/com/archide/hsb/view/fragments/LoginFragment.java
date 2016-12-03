@@ -103,7 +103,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         if (isNetWorkConnected) {
 
             progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), mainActivity);
-            mainActivity.getTableListService().getMenuItems(ActivityUtil.TABLE_NUMBER);
+            mainActivity.getTableListService().getMenuItems(ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
         } else {
             ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
         }
@@ -115,7 +115,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
            progressDialog.dismiss();
        }
         if(responseData.getStatusCode() != 500){
-            mainActivity.success(2,null);
+            mainActivity.success(3,null);
             return;
         }else{
             ActivityUtil.showDialog(mainActivity,"Error","Sorry for the Inconvenience. Please contact Admin.");

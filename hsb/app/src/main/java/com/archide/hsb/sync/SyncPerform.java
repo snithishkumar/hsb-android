@@ -112,14 +112,14 @@ public class SyncPerform {
         return getErrorResponse();
     }
 
-    public ResponseData getMenuItems(){
+    public ResponseData getMenuItems(String tableNumber,String mobileNumber){
         try{
           long lastServerSyncTime =  menuItemsDao.getLastSyncTime();
-            Call<ResponseData> menuItemsResponse =  hsbAPI.getMenuItems(lastServerSyncTime,"1");
+            Call<ResponseData> menuItemsResponse =  hsbAPI.getMenuItems(lastServerSyncTime,tableNumber,mobileNumber);
             Response<ResponseData> response =  menuItemsResponse.execute();
             if (response != null && response.isSuccessful()) {
                 ResponseData responseData = response.body();
-                String menuItemsJsonString =  (String)responseData.getData();
+                String menuItemsJsonString =  responseData.getData();
 
                 GetMenuDetails  menuListJsonList =  gson.fromJson(menuItemsJsonString, GetMenuDetails.class);
 

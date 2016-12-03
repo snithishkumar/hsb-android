@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.archide.hsb.enumeration.OrderStatus;
 import com.archide.hsb.view.activities.OrderActivity;
 import com.archide.hsb.view.fragments.OrderPlaceFragment;
-import com.archide.hsb.view.model.KitchenOrderDetailsViewModel;
 import com.archide.hsb.view.model.MenuItemsViewModel;
 
 import java.util.ArrayList;
@@ -80,10 +79,10 @@ public class OrderedMenuItemsAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public int getItemViewType(int position) {
         MenuItemsViewModel menuItemsViewModel = menuItemsViewModels.get(position);
-        if(menuItemsViewModel.getOrderStatus().toString() == OrderStatus.UNAVAILABLE.toString()){
-            return AVAILABLE;
-        }else{
+        if(menuItemsViewModel.getOrderStatus().toString() == OrderStatus.UN_AVAILABLE.toString()){
             return UN_AVAILABLE;
+        }else{
+            return AVAILABLE;
         }
 
     }

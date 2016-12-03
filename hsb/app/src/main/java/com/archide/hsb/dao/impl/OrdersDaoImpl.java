@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.archide.hsb.dao.OrdersDao;
 import com.archide.hsb.entity.MenuCourseEntity;
-import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.entity.PlacedOrdersEntity;
 import com.archide.hsb.enumeration.OrderStatus;
@@ -121,7 +120,7 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
     @Override
     public void removeUnAvailablePlacedOrders()throws SQLException{
        DeleteBuilder<PlacedOrderItemsEntity,Integer> deleteBuilder = placedOrderItemDao.deleteBuilder();
-       deleteBuilder.where().eq(PlacedOrderItemsEntity.ORDER_STATUS,OrderStatus.UNAVAILABLE).and().eq(PlacedOrderItemsEntity.IS_CONFORM,false);
+       deleteBuilder.where().eq(PlacedOrderItemsEntity.ORDER_STATUS,OrderStatus.UN_AVAILABLE).and().eq(PlacedOrderItemsEntity.IS_CONFORM,false);
        deleteBuilder.delete();
     }
 

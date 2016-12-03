@@ -8,14 +8,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
 
+import com.archide.hsb.enumeration.AppType;
 import com.archide.hsb.sync.json.ResponseData;
 import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.MainActivity;
+import com.satsuware.usefulviews.LabelledSpinner;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -34,11 +36,13 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
 
     private MainActivity mainActivity;
     ProgressDialog progressDialog = null;
-    ArrayAdapter<String> adapter = null;
 
     private EditText vPasswordText;
     private EditText vReTypePasswordText;
-    private Spinner spinner;
+    private LabelledSpinner vType;
+    private LabelledSpinner vTableNumber;
+    private LinearLayout linearLayout;
+    private AppType selectedAppType = AppType.Kitchen;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +54,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View registrationView =  inflater.inflate(R.layout.fragment_registration, container, false);
+        View registrationView =  inflater.inflate(R.layout.fragment_configuration, container, false);
 
         vPasswordText = (EditText) registrationView.findViewById(R.id.vPassword);
         vReTypePasswordText = (EditText) registrationView.findViewById(R.id.vRetypePassword);
@@ -58,22 +62,51 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         FloatingActionButton button =  (FloatingActionButton)registrationView.findViewById(R.id.submit);
         button.setOnClickListener(this);
 
-         spinner = (Spinner) registrationView.findViewById(R.id.vTableNumber);
-        List<String> test  =new ArrayList<>();
-        test.add("1");
-        adapter = new ArrayAdapter<>(mainActivity,android.R.layout.simple_spinner_item,test);
+        initType(registrationView);
+        vTableNumber = (LabelledSpinner) registrationView.findViewById(R.id.vTableNumber);
+        linearLayout = (LinearLayout) registrationView.findViewById(R.id.vTableDetailsLayout);
 
-
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-
-        getTableList();
         return registrationView;
     }
 
+
+    /**
+     * Initialize type of User
+     * @param registrationView
+     */
+    private void initType(View registrationView){
+        vType = (LabelledSpinner) registrationView.findViewById(R.id.vType);
+        final List<String> data  = new ArrayList<>();
+        data.add(AppType.Kitchen.toString());
+        data.add(AppType.User.toString());
+        vType.setItemsArray(data);
+
+        vType.setOnItemChosenListener(new LabelledSpinner.OnItemChosenListener() {
+            @Override
+            public void onItemChosen(View labelledSpinner, AdapterView<?> adapterView, View itemView, int position, long id) {
+                if(position == 1){
+                    getTableList();
+                    selectedAppType = AppType.User;
+                }else{
+                    if(linearLayout.getVisibility() == View.VISIBLE){
+                        linearLayout.setVisibility(View.GONE);
+                    }
+                    selectedAppType = AppType.Kitchen;
+                }
+            }
+
+            @Override
+            public void onNothingChosen(View labelledSpinner, AdapterView<?> adapterView) {
+
+            }
+        });
+
+    }
+
+
+    /**
+     * Get Table List from the Server
+     */
     private void getTableList(){
         boolean isNetWorkConnected =  Utilities.isNetworkConnected(mainActivity);
         if(isNetWorkConnected){
@@ -110,24 +143,26 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         EventBus.getDefault().unregister(this);
     }
 
-
+    /**
+     * Process Table list response
+     * @param responseData
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleServerSyncResponse(ResponseData responseData) {
         intiView(responseData);
-
         return;
     }
 
+    /**
+     * Process Table List Data and Show that component
+     * @param responseData
+     */
     private void intiView(ResponseData responseData){
         dismiss();
         if(responseData.getSuccess()){
-          List<String> msg = (List<String>)responseData.getMessage();
-            adapter.clear();
-            adapter.addAll(msg);
-
-
-            adapter.notifyDataSetChanged();
-
+            List<String> data  =  (List<String>)responseData.getMessage();
+            linearLayout.setVisibility(View.VISIBLE);
+            vTableNumber.setItemsArray(data);
         }
 
     }
@@ -148,10 +183,16 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         if(reTypeMPin.length() != 6){
             vReTypePasswordText.setError("MPin must be 6 digits.");
         }
+        String vTableNumberText = null;
+        int appType = 1;
+        if(selectedAppType.equals(AppType.User)){
+            vTableNumberText = vTableNumber.getSpinner().getSelectedItem().toString();
+            appType = 2;
+            ActivityUtil.TABLE_NUMBER = vTableNumberText;
+        }
 
-        String vTableNumber = spinner.getSelectedItem().toString();
-        mainActivity.getTableListService().createAdmin(vTableNumber,mPin);
-        mainActivity.success(1,null);
+        mainActivity.getTableListService().createAdmin(vTableNumberText,mPin,selectedAppType);
+        mainActivity.success(appType,null);
         return;
     }
 

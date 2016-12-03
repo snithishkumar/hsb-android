@@ -95,7 +95,7 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
       return   kitchenOrderDetailsDao.queryBuilder().orderBy(KitchenOrderDetailsEntity.MENU_ID,false).where().
               eq(KitchenOrderDetailsEntity.KITCHEN_ORDER_CATEGORY,kitchenOrdersCategoryEntity).
               and().ne(KitchenOrderDetailsEntity.ORDER_STATUS, OrderStatus.DELIVERED).
-              and().ne(KitchenOrderDetailsEntity.ORDER_STATUS,OrderStatus.UNAVAILABLE)
+              and().ne(KitchenOrderDetailsEntity.ORDER_STATUS,OrderStatus.UN_AVAILABLE)
              .query();
     }
 

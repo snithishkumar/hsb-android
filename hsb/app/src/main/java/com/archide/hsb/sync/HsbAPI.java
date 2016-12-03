@@ -28,7 +28,7 @@ public interface HsbAPI {
     /** Create User **/
     @FormUrlEncoded
     @POST("/hsb/mobile/getMenuItems.html")
-    Call<ResponseData> getMenuItems(@Field("lastServerSyncTime") long lastServerSyncTime,@Field("tableNumber") String tableNumber);
+    Call<ResponseData> getMenuItems(@Field("lastServerSyncTime") long lastServerSyncTime,@Field("tableNumber") String tableNumber,@Field("mobileNumber") String mobileNumber);
 
     @POST("/hsb/mobile/placeAnOrder.html")
     Call<ResponseData> placeAnOrder(@Body PlaceOrdersJson placeOrdersJson);

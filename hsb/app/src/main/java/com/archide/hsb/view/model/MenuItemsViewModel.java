@@ -40,7 +40,7 @@ public class MenuItemsViewModel {
         this.count = placedOrderItemsEntity.getQuantity();
         this.cost = placedOrderItemsEntity.getCost();
         this.uuid = placedOrderItemsEntity.getMenuItem().getMenuUUID();
-
+this.orderStatus = placedOrderItemsEntity.getOrderStatus();
         this.isOrdered = true;
     }
 

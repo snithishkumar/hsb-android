@@ -6,16 +6,13 @@
     tools:context="com.archide.hsb.view.fragments.LoginFragment">
 
 
-
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
-        android:layout_below="@+id/vTableDetailsLayout"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="42dp">
+        android:layout_marginTop="35dp"
+        android:layout_below="@+id/login_text">
 
         <ImageView
             android:layout_width="24dp"
@@ -49,4 +46,14 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="20dp"
         android:id="@+id/submit" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/login_text"
+        android:text="(Please enter mobilenumber. If mobilenumber matches with unpaied order.)"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="35dp"
+        android:gravity="center_horizontal" />
 </RelativeLayout>

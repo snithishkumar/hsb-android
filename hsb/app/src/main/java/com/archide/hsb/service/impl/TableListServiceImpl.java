@@ -10,6 +10,7 @@ import com.archide.hsb.dao.OrdersDao;
 import com.archide.hsb.dao.impl.AdminDaoImpl;
 import com.archide.hsb.dao.impl.OrdersDaoImpl;
 import com.archide.hsb.entity.AdminEntity;
+import com.archide.hsb.enumeration.AppType;
 import com.archide.hsb.service.TableListService;
 import com.archide.hsb.sync.HsbSyncAdapter;
 import com.archide.hsb.sync.SyncEvent;
@@ -48,10 +49,11 @@ public class TableListServiceImpl implements TableListService {
 
 
     @Override
-    public void getMenuItems(String tableNumber){
+    public void getMenuItems(String tableNumber,String mobileNumber){
         account = HsbSyncAdapter.getSyncAccount(context);
         settingsBundle.putInt("currentScreen", SyncEvent.GET_MENU_LIST);
         settingsBundle.putString("tableNumber", tableNumber);
+        settingsBundle.putString("mobileNumber", mobileNumber);
         ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
     }
 
@@ -73,11 +75,12 @@ public class TableListServiceImpl implements TableListService {
 
 
     @Override
-    public void createAdmin(String tableNumber, String mPin) {
+    public void createAdmin(String tableNumber, String mPin,AppType selectedAppType) {
         try {
             AdminEntity adminEntity = new AdminEntity();
             adminEntity.setTableNumber(tableNumber);
             adminEntity.setmPin(mPin);
+            adminEntity.setAppType(selectedAppType);
             adminDao.createAdminEntity(adminEntity);
         } catch (Exception e) {
             e.printStackTrace();

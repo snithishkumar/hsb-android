@@ -8,7 +8,7 @@
     <string name="auth_type">com.archide.hsb.sync</string>
     <string name="content_authority">com.archide.hsb.sync</string>
 
-    <string name="mobile_number_hint">Mobile Number</string>
+    <string name="mobile_number_hint">MobileNumber</string>
 
     <string name="password_hint">Password</string>
     <string name="re_password_hint">Re-Type Password</string>
