@@ -51,9 +51,9 @@ public class NaviDrawerActivity extends AppCompatActivity {
     private void showFragment(int options){
         switch (options){
             case 1:
-
-                OrderPlaceFragment orderPlaceFragment = new OrderPlaceFragment();
-                FragmentsUtil.addFragment(this, orderPlaceFragment, R.id.navi_drawer_container);
+                Intent intent = new Intent(this, OrderActivity.class);
+                startActivity(intent);
+                finish();
                 break;
 
             case 2:
