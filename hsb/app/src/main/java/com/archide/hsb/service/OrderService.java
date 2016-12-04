@@ -35,4 +35,8 @@ public interface OrderService {
 
     void getPreviousOrderFromServer(Context context,String tableNumber,String mobileNumber);
 
+    void closeAnOrder(Context context,String tableNumber,String mobileNumber);
+
+    PlaceAnOrderViewModel getBillingDetails();
+
 }

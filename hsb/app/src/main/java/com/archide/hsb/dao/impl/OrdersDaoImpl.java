@@ -44,8 +44,15 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
        return placedOrdersDao.queryBuilder().queryForFirst();
     }
 
+
+
     public void createPlacedOrdersEntity(PlacedOrdersEntity placedOrdersEntity)throws  SQLException{
         placedOrdersDao.create(placedOrdersEntity);
+    }
+
+
+    public void updatePlacedOrdersEntity(PlacedOrdersEntity placedOrdersEntity)throws  SQLException{
+        placedOrdersDao.update(placedOrdersEntity);
     }
 
     public void updateServerSyncTime(String serverSyncTime)throws SQLException{
@@ -67,6 +74,10 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
 
     public void createPlacedOrdersItemsEntity(PlacedOrderItemsEntity placedOrderItemsEntity)throws  SQLException{
         placedOrderItemDao.create(placedOrderItemsEntity);
+    }
+
+    public void updatePlacedOrdersItemsEntity(PlacedOrderItemsEntity placedOrderItemsEntity)throws  SQLException{
+        placedOrderItemDao.update(placedOrderItemsEntity);
     }
 
     public void updateOrdersCount(String itemCode,int count)throws SQLException{

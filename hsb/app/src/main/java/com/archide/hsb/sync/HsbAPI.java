@@ -49,4 +49,9 @@ public interface HsbAPI {
     @POST ("/hsb//mobile/getUnAvailableMenuItems.html")
     Call<ResponseData> getUnAvailableMenuItems(@Field("lastServerSyncTime") long lastServerSyncTime);
 
+
+    @FormUrlEncoded
+    @POST ("/hsb//mobile/closeAnOrder.html")
+    Call<ResponseData> closeAnOrder(@Field("tableNumber") String tableNumber,@Field("mobileNumber") String mobileNumber,@Field("placedOrderUUid") String placedOrderUUid);
+
 }

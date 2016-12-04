@@ -92,6 +92,13 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
                 postData(responseData);
                 break;
 
+            case 4:
+                tableNumber =  extras.getString("tableNumber");
+                mobileNumber =  extras.getString("mobileNumber");
+                responseData = syncPerform.closeAnOrder(tableNumber,mobileNumber);
+                postData(responseData);
+                break;
+
             case 5:
                 responseData =  syncPerform.getUnAvailableOrders();
                 postData(responseData);

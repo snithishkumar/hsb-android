@@ -227,6 +227,29 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    @Override
+    public PlaceAnOrderViewModel getBillingDetails(){
+
+        try{
+
+            PlacedOrdersEntity placedOrdersEntity =   ordersDao.getPlacedOrderHistoryByMobile(ActivityUtil.USER_MOBILE,ActivityUtil.TABLE_NUMBER);
+            PlaceAnOrderViewModel placeAnOrderViewModel = new PlaceAnOrderViewModel();
+            if(placedOrdersEntity != null){
+                List<PlacedOrderItemsEntity> placedOrderItemsEntityList =  ordersDao.getPlacedOrderHistoryItems(placedOrdersEntity);
+                for(PlacedOrderItemsEntity orderItemsEntity : placedOrderItemsEntityList){
+                    MenuItemsViewModel menuItemsViewModel = new MenuItemsViewModel(orderItemsEntity);
+                    placeAnOrderViewModel.getMenuItemsViewModels().add(menuItemsViewModel);
+                }
+            }
+            //calcAmount(placeAnOrderViewModel);
+
+            return placeAnOrderViewModel;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     @Override
     public PlaceAnOrderViewModel getPlacedHistoryOrderViewModel(){
@@ -248,6 +271,20 @@ public class OrderServiceImpl implements OrderService {
             e.printStackTrace();
         }
         return placeAnOrderViewModel;
+    }
+
+
+    @Override
+    public void closeAnOrder(Context context,String tableNumber,String mobileNumber){
+        try{
+            account = HsbSyncAdapter.getSyncAccount(context);
+            settingsBundle.putInt("currentScreen", SyncEvent.CLOSE_AN_ORDER);
+            settingsBundle.putString("tableNumber", tableNumber);
+            settingsBundle.putString("mobileNumber", mobileNumber);
+            ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

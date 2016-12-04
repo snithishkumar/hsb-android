@@ -70,6 +70,16 @@ public class PlacedOrdersEntity {
         this.lastUpdatedDateTime = placeOrdersJson.getLastUpdatedDateTime();
 	}
 
+	public void populateBilling(PlaceOrdersJson placeOrdersJson){
+        this.price = placeOrdersJson.getPrice();
+        this.totalPrice = placeOrdersJson.getTotalPrice();
+        this.taxAmount = placeOrdersJson.getTaxAmount();
+        this.discount = placeOrdersJson.getDiscount();
+        this.totalPrice = placeOrdersJson.getTotalPrice();
+        this.serverDateTime = placeOrdersJson.getServerDateTime();
+        this.lastUpdatedDateTime = placeOrdersJson.getLastUpdatedDateTime();
+    }
+
     public String getUserMobileNumber() {
         return userMobileNumber;
     }

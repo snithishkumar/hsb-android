@@ -48,4 +48,8 @@ public interface OrdersDao {
     long getPreviousSyncHistoryData()throws SQLException;
 
     void removeUnAvailablePlacedOrders()throws SQLException;
+
+    void updatePlacedOrdersItemsEntity(PlacedOrderItemsEntity placedOrderItemsEntity)throws  SQLException;
+
+    void updatePlacedOrdersEntity(PlacedOrdersEntity placedOrdersEntity)throws  SQLException;
 }

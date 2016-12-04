@@ -39,6 +39,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -131,7 +132,7 @@ public class SyncPerform {
 
                 PlaceOrdersJson placeOrdersJson =    menuListJsonList.getPreviousOrder();
                 if(placeOrdersJson != null){
-                    processPreviousOrder(placeOrdersJson);
+                    processPreviousOrder(placeOrdersJson,false);
                 }
                 ResponseData result = new ResponseData(200,null);
                 return result;
@@ -189,12 +190,15 @@ public class SyncPerform {
      * Process Previous Order Details
      * @param placeOrdersJson
      */
-    private void processPreviousOrder(PlaceOrdersJson placeOrdersJson){
+    private void processPreviousOrder(PlaceOrdersJson placeOrdersJson,boolean isBilling){
         try{
             PlacedOrdersEntity placedOrdersEntity =   ordersDao.getPlacedOrdersEntity(placeOrdersJson.getPlaceOrderUuid());
             if(placedOrdersEntity == null){
                 placedOrdersEntity = new PlacedOrdersEntity(placeOrdersJson);
                 ordersDao.createPlacedOrdersEntity(placedOrdersEntity);
+            }else if(isBilling){
+                placedOrdersEntity.populateBilling(placeOrdersJson);
+                ordersDao.updatePlacedOrdersEntity(placedOrdersEntity);
             }
             List<OrderedMenuItems>  menuItemsList =  placeOrdersJson.getMenuItems();
             for(OrderedMenuItems orderedMenuItems : menuItemsList){
@@ -206,6 +210,9 @@ public class SyncPerform {
                    placedOrderItemsEntity.setCost(menuEntity.getPrice());
                    placedOrderItemsEntity.setMenuCourseEntity(menuEntity.getMenuCourseEntity());
                    ordersDao.createPlacedOrdersItemsEntity(placedOrderItemsEntity);
+               }else{
+                   placedOrderItemsEntity.setOrderStatus(orderedMenuItems.getOrderStatus());
+                   ordersDao.updatePlacedOrdersItemsEntity(placedOrderItemsEntity);
                }
 
             }
@@ -372,7 +379,7 @@ public class SyncPerform {
                 if(responseData.getStatusCode() == 200){
                     String previousOrder = responseData.getData();
                     PlaceOrdersJson placeOrdersJson =  gson.fromJson(previousOrder,PlaceOrdersJson.class);
-                    processPreviousOrder(placeOrdersJson);
+                    processPreviousOrder(placeOrdersJson,false);
                 }
                 ResponseData result = new ResponseData(3000,null);
                 return result;
@@ -415,6 +422,32 @@ public class SyncPerform {
             ResponseData result = new ResponseData(2000,null);
             return result;
 
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return getErrorResponse();
+    }
+
+
+    public ResponseData closeAnOrder(String tableNumber,String mobileNumber){
+        try{
+            String orderId = "";
+            PlacedOrdersEntity placedOrdersEntity = ordersDao.getPlacedOrderHistoryByMobile(mobileNumber,tableNumber);
+            if(placedOrdersEntity != null){
+                orderId = placedOrdersEntity.getOrderId();
+            }
+            Call<ResponseData> serverResponse = hsbAPI.closeAnOrder(tableNumber,mobileNumber,orderId);
+            Response<ResponseData> response = serverResponse.execute();
+            if (response != null && response.isSuccessful()) {
+                ResponseData responseData = response.body();
+                if(responseData.getStatusCode() == 200){
+                    String previousOrder = responseData.getData();
+                    PlaceOrdersJson placeOrdersJson =  gson.fromJson(previousOrder,PlaceOrdersJson.class);
+                    processPreviousOrder(placeOrdersJson,true);
+                }
+                ResponseData result = new ResponseData(2000,null);
+                return result;
+            }
         }catch (Exception e){
             e.printStackTrace();
         }

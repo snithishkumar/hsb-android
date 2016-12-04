@@ -3,6 +3,8 @@ package com.archide.hsb.view.model;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.archide.hsb.entity.PlacedOrdersEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,18 @@ public class PlaceAnOrderViewModel {
     private boolean isUnAvailable;
 
     private List<MenuItemsViewModel> menuItemsViewModels = new ArrayList<>();
+
+    public PlaceAnOrderViewModel(){
+
+    }
+
+    public PlaceAnOrderViewModel(PlacedOrdersEntity placedOrdersEntity){
+        this.serviceTax = placedOrdersEntity.getTaxAmount();
+        this.subTotalBeforeDiscount = placedOrdersEntity.getPrice();
+        this.discount = placedOrdersEntity.getDiscount();
+        this.subTotal = placedOrdersEntity.getPrice();
+        this.totalAmount = placedOrdersEntity.getTotalPrice();
+    }
 
     public String getCookingComments() {
         return cookingComments;

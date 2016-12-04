@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.archide.hsb.service.OrderService;
 import com.archide.hsb.service.impl.OrderServiceImpl;
+import com.archide.hsb.view.fragments.BillingFragment;
 import com.archide.hsb.view.fragments.FragmentsUtil;
 import com.archide.hsb.view.fragments.KitchenOrderListFragment;
 import com.archide.hsb.view.fragments.OrderPlaceFragment;
@@ -61,6 +62,11 @@ public class NaviDrawerActivity extends AppCompatActivity {
                 FragmentsUtil.addFragment(this, placedOrderHistoryFragment, R.id.navi_drawer_container);
               //  KitchenOrderListFragment kitchenOrderListFragment = new KitchenOrderListFragment();
                // FragmentsUtil.addFragment(this, kitchenOrderListFragment, R.id.navi_drawer_container);
+                break;
+
+            case 3:
+                BillingFragment billingFragment = new BillingFragment();
+                FragmentsUtil.addFragment(this, billingFragment, R.id.navi_drawer_container);
                 break;
 
             case 5:
