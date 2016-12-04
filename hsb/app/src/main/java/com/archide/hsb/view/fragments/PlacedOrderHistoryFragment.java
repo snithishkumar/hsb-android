@@ -49,7 +49,6 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
     TextView discount ;
     TextView subTotal ;
     TextView serviceTax ;
-    TextView serviceVat ;
     TextView totalAmount ;
     FloatingActionButton placeAnOrder ;
 
@@ -157,12 +156,14 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
     }
 
     public void populateAmountDetails(PlaceAnOrderViewModel placeAnOrderViewModel){
-        cookingComments.setText(placeAnOrderViewModel.getCookingComments());
+       if(placeAnOrderViewModel.getCookingComments() != null){
+           cookingComments.setText(placeAnOrderViewModel.getCookingComments());
+       }
+
         subTotalBeforeDiscount.setText(String.valueOf(placeAnOrderViewModel.getSubTotalBeforeDiscount()));
         discount.setText(String.valueOf(placeAnOrderViewModel.getDiscount()));
         subTotal.setText(String.valueOf(placeAnOrderViewModel.getSubTotal()));
         serviceTax.setText(String.valueOf(placeAnOrderViewModel.getServiceTax()));
-        serviceVat.setText(String.valueOf(placeAnOrderViewModel.getServiceVat()));
         totalAmount.setText(String.valueOf(placeAnOrderViewModel.getTotalAmount()));
 
     }

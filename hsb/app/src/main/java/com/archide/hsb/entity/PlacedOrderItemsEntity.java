@@ -61,6 +61,7 @@ public class PlacedOrderItemsEntity {
         this.name = orderedMenuItems.getName();
         this.itemCode = orderedMenuItems.getItemCode();
         this.orderStatus = orderedMenuItems.getOrderStatus();
+        this.isConform = true;
 
 	}
 

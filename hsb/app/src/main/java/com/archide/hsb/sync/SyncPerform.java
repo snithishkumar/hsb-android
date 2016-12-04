@@ -201,6 +201,10 @@ public class SyncPerform {
                 PlacedOrderItemsEntity placedOrderItemsEntity = ordersDao.getPlacedOrdersItemsEntity(orderedMenuItems.getPlacedOrderItemsUUID());
                if(placedOrderItemsEntity == null){
                    placedOrderItemsEntity = new PlacedOrderItemsEntity(orderedMenuItems);
+                   MenuEntity menuEntity = menuItemsDao.getMenuItemEntity(orderedMenuItems.getMenuUuid());
+                   placedOrderItemsEntity.setMenuItem(menuEntity);
+                   placedOrderItemsEntity.setCost(menuEntity.getPrice());
+                   placedOrderItemsEntity.setMenuCourseEntity(menuEntity.getMenuCourseEntity());
                    ordersDao.createPlacedOrdersItemsEntity(placedOrderItemsEntity);
                }
 
