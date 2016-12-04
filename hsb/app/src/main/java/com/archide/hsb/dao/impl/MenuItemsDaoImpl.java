@@ -151,7 +151,10 @@ public class MenuItemsDaoImpl extends  BaseDaoImpl implements MenuItemsDao {
      * @throws SQLException
      */
     public List<MenuEntity> getMenuEntityList(MenuCourseEntity menuCourseEntity,FoodCategoryEntity foodCategoryEntity)throws SQLException{
-       return menuEntityDao.queryBuilder().where().eq(MenuEntity.MENU_COURSE,menuCourseEntity).and().eq(MenuEntity.FOOD_CATEGORY,foodCategoryEntity).query();
+       return menuEntityDao.queryBuilder().where().eq(MenuEntity.MENU_COURSE,menuCourseEntity)
+               .and().eq(MenuEntity.FOOD_CATEGORY,foodCategoryEntity)
+               .and().eq(MenuEntity.STATUS,Status.AVAILABLE)
+               .query();
     }
 
 

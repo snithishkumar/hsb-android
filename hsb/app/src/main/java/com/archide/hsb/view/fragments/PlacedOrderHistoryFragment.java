@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,11 +24,15 @@ import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.HomeActivity;
 import com.archide.hsb.view.activities.NaviDrawerActivity;
 import com.archide.hsb.view.adapters.PlacedOrderHisMenuItemsAdapter;
+import com.archide.hsb.view.model.MenuItemsViewModel;
 import com.archide.hsb.view.model.PlaceAnOrderViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import hsb.archide.com.hsb.R;
 
@@ -46,12 +51,13 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
     TextView serviceTax ;
     TextView serviceVat ;
     TextView totalAmount ;
-    Button placeAnOrder ;
+    FloatingActionButton placeAnOrder ;
 
 
     private ProgressDialog progressDialog;
     private NaviDrawerActivity naviDrawerActivity;
-    private PlaceAnOrderViewModel placeAnOrderViewModel;
+    PlacedOrderHisMenuItemsAdapter orderedMenuItemsAdapter;
+    List<MenuItemsViewModel> menuItemsViewModels = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +71,7 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
         subTotal =  (TextView) view.findViewById(R.id.odr_his_subtotal);
         serviceTax =  (TextView) view.findViewById(R.id.odr_his_tax);
         totalAmount =  (TextView) view.findViewById(R.id.odr_his_total_amount);
-        placeAnOrder =  (Button) view.findViewById(R.id.order_history_add_menu_items);
+        placeAnOrder =  (FloatingActionButton) view.findViewById(R.id.order_history_add_menu_items);
         placeAnOrder.setOnClickListener(this);
     }
 
@@ -91,19 +97,26 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-        setAdapters(recyclerView);
-
         init(view);
-        populateAmountDetails();
+        setAdapters(recyclerView);
+        getDataFromServer();
         return view;
     }
 
+    private void getDataFromServer(){
+        boolean isNetWorkConnected = Utilities.isNetworkConnected(naviDrawerActivity);
+        if (isNetWorkConnected) {
+            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), naviDrawerActivity);
+            naviDrawerActivity.getOrderService().getPreviousOrderFromServer(naviDrawerActivity,ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
+        } else {
+            ActivityUtil.showDialog(naviDrawerActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
+        }
+
+    }
+
     private void setAdapters(RecyclerView recyclerView){
-
-        PlacedOrderHisMenuItemsAdapter orderedMenuItemsAdapter = new PlacedOrderHisMenuItemsAdapter(placeAnOrderViewModel.getMenuItemsViewModels());
-
+        orderedMenuItemsAdapter = new PlacedOrderHisMenuItemsAdapter(menuItemsViewModels);
         recyclerView.setAdapter(orderedMenuItemsAdapter);
-
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(naviDrawerActivity,linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
@@ -135,10 +148,15 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
     }
 
 
+    private void populateData(){
+        PlaceAnOrderViewModel placeAnOrderViewModel =  naviDrawerActivity.getOrderService().getPlacedHistoryOrderViewModel();
+        menuItemsViewModels.clear();
+        menuItemsViewModels.addAll(placeAnOrderViewModel.getMenuItemsViewModels());
+        orderedMenuItemsAdapter.notifyDataSetChanged();
+        populateAmountDetails(placeAnOrderViewModel);
+    }
 
-
-    public void populateAmountDetails(){
-        placeAnOrderViewModel =  naviDrawerActivity.getOrderService().getPlacedHistoryOrderViewModel();
+    public void populateAmountDetails(PlaceAnOrderViewModel placeAnOrderViewModel){
         cookingComments.setText(placeAnOrderViewModel.getCookingComments());
         subTotalBeforeDiscount.setText(String.valueOf(placeAnOrderViewModel.getSubTotalBeforeDiscount()));
         discount.setText(String.valueOf(placeAnOrderViewModel.getDiscount()));
@@ -165,7 +183,10 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
         if(progressDialog != null){
             progressDialog.dismiss();
         }
-        if(responseData.getStatusCode() != 500){
+        // 3000
+        if(responseData.getStatusCode() == 3000){
+            populateData();
+        }else if(responseData.getStatusCode() != 500){
             Intent intent = new Intent(naviDrawerActivity, HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

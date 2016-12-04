@@ -354,11 +354,12 @@ public class SyncPerform {
     }
 
 
-    public ResponseData getPreviousOrderDetails(){
+    public ResponseData getPreviousOrderDetails(String tableNumber,String mobileNumber){
         try{
            long serverSyncTime =  ordersDao.getPreviousSyncHistoryData();
             JsonObject request = new JsonObject();
-            request.addProperty("tableNumber", ActivityUtil.TABLE_NUMBER);
+            request.addProperty("tableNumber", tableNumber);
+            request.addProperty("mobileNumber", mobileNumber);
             request.addProperty("serverLastUdpateTime", serverSyncTime);
             Call<ResponseData> serverResponse =   hsbAPI.getPreviousOrder(request);
             Response<ResponseData> response = serverResponse.execute();
@@ -369,7 +370,7 @@ public class SyncPerform {
                     PlaceOrdersJson placeOrdersJson =  gson.fromJson(previousOrder,PlaceOrdersJson.class);
                     processPreviousOrder(placeOrdersJson);
                 }
-                ResponseData result = new ResponseData(200,null);
+                ResponseData result = new ResponseData(3000,null);
                 return result;
             }
         }catch (Exception e){

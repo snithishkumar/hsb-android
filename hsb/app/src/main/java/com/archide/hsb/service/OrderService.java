@@ -33,4 +33,6 @@ public interface OrderService {
 
     void removeUnAvailableOrders();
 
+    void getPreviousOrderFromServer(Context context,String tableNumber,String mobileNumber);
+
 }

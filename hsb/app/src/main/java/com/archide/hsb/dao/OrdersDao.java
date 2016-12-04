@@ -17,7 +17,7 @@ public interface OrdersDao {
 
     PlacedOrdersEntity getPlacedOrdersEntity(String placeOrderUuid)throws SQLException;
 
-    PlacedOrdersEntity getPlacedOrderHistoryByMobile(String userMobileNumber)throws SQLException;
+    PlacedOrdersEntity getPlacedOrderHistoryByMobile(String userMobileNumber,String tableNumber)throws SQLException;
 
     void createPlacedOrdersEntity(PlacedOrdersEntity placedOrdersEntity)throws  SQLException;
 

@@ -130,11 +130,11 @@ public class OrderServiceImpl implements OrderService {
         PlaceAnOrderViewModel placeAnOrderViewModel = new PlaceAnOrderViewModel();
         double subTotal = 0;
         for(PlacedOrderItemsEntity orderItemsEntity : placedOrderItemsEntityList){
-            String status =  orderItemsEntity.getMenuItem().getStatus().toString();
-            if(status.equals(Status.AVAILABLE.toString())){
-                subTotal = subTotal + orderItemsEntity.getCost() * orderItemsEntity.getQuantity();
-            }else{
+            String status =  orderItemsEntity.getOrderStatus().toString();
+            if(status.equals(Status.UN_AVAILABLE.toString())){
                 placeAnOrderViewModel.setUnAvailable(true);
+            }else{
+                subTotal = subTotal + orderItemsEntity.getCost() * orderItemsEntity.getQuantity();
             }
 
             MenuItemsViewModel menuItemsViewModel = new MenuItemsViewModel(orderItemsEntity);
@@ -191,6 +191,15 @@ public class OrderServiceImpl implements OrderService {
         ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
     }
 
+    @Override
+    public void getPreviousOrderFromServer(Context context,String tableNumber,String mobileNumber){
+        account = HsbSyncAdapter.getSyncAccount(context);
+        settingsBundle.putInt("currentScreen", SyncEvent.GET_PREVIOUS_ORDER);
+        settingsBundle.putString("tableNumber", tableNumber);
+        settingsBundle.putString("mobileNumber", mobileNumber);
+        ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
+    }
+
 
     private String generateOrderId(){
         StringBuilder stringBuilder = new StringBuilder("ARC-");
@@ -224,7 +233,7 @@ public class OrderServiceImpl implements OrderService {
         PlaceAnOrderViewModel placeAnOrderViewModel = new PlaceAnOrderViewModel();
         try{
 
-            PlacedOrdersEntity placedOrdersEntity =   ordersDao.getPlacedOrderHistoryByMobile(ActivityUtil.USER_MOBILE);
+            PlacedOrdersEntity placedOrdersEntity =   ordersDao.getPlacedOrderHistoryByMobile(ActivityUtil.USER_MOBILE,ActivityUtil.TABLE_NUMBER);
             if(placedOrdersEntity != null){
                 List<PlacedOrderItemsEntity> placedOrderItemsEntityList =  ordersDao.getPlacedOrderHistoryItems(placedOrdersEntity);
                 for(PlacedOrderItemsEntity orderItemsEntity : placedOrderItemsEntityList){

@@ -80,13 +80,15 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
                 postData(responseData);
                 break;
 
-            case 3:
+            case 13:
                 responseData =  syncPerform.getKitchenOrders();
                 postData(responseData);
                 break;
 
-            case 4:
-                responseData = syncPerform.getPreviousOrderDetails();
+            case 3:
+                 tableNumber =  extras.getString("tableNumber");
+                 mobileNumber =  extras.getString("mobileNumber");
+                responseData = syncPerform.getPreviousOrderDetails(tableNumber,mobileNumber);
                 postData(responseData);
                 break;
 

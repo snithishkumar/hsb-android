@@ -12,6 +12,7 @@ import com.archide.hsb.service.OrderService;
 import com.archide.hsb.service.impl.OrderServiceImpl;
 import com.archide.hsb.view.fragments.FragmentsUtil;
 import com.archide.hsb.view.fragments.KitchenOrderListFragment;
+import com.archide.hsb.view.fragments.OrderPlaceFragment;
 import com.archide.hsb.view.fragments.PlacedOrderHistoryFragment;
 
 import hsb.archide.com.hsb.R;
@@ -50,15 +51,16 @@ public class NaviDrawerActivity extends AppCompatActivity {
     private void showFragment(int options){
         switch (options){
             case 1:
-                PlacedOrderHistoryFragment placedOrderHistoryFragment = new PlacedOrderHistoryFragment();
-                FragmentsUtil.addFragment(this, placedOrderHistoryFragment, R.id.navi_drawer_container);
-              // EditProfileFragment editProfileFragment = new EditProfileFragment();
-               // FragmentsUtil.addFragment(this, editProfileFragment, R.id.navi_drawer_container);
+
+                OrderPlaceFragment orderPlaceFragment = new OrderPlaceFragment();
+                FragmentsUtil.addFragment(this, orderPlaceFragment, R.id.navi_drawer_container);
                 break;
 
             case 2:
-                KitchenOrderListFragment kitchenOrderListFragment = new KitchenOrderListFragment();
-                FragmentsUtil.addFragment(this, kitchenOrderListFragment, R.id.navi_drawer_container);
+                PlacedOrderHistoryFragment placedOrderHistoryFragment = new PlacedOrderHistoryFragment();
+                FragmentsUtil.addFragment(this, placedOrderHistoryFragment, R.id.navi_drawer_container);
+              //  KitchenOrderListFragment kitchenOrderListFragment = new KitchenOrderListFragment();
+               // FragmentsUtil.addFragment(this, kitchenOrderListFragment, R.id.navi_drawer_container);
                 break;
 
             case 5:
