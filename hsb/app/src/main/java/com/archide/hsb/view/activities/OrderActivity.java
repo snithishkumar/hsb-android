@@ -6,7 +6,6 @@ import android.os.Bundle;
 import com.archide.hsb.service.OrderService;
 import com.archide.hsb.service.impl.OrderServiceImpl;
 import com.archide.hsb.view.fragments.FragmentsUtil;
-import com.archide.hsb.view.fragments.LoginFragment;
 import com.archide.hsb.view.fragments.OrderPlaceFragment;
 
 import hsb.archide.com.hsb.R;

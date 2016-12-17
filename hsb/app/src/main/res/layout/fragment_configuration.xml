@@ -96,7 +96,7 @@
                 android:inputType="number"
                 android:id="@+id/vPassword"
                 android:maxLength="6"
-                android:hint="@string/mobile_number_hint" />
+                android:hint="@string/mpin_hint" />
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
@@ -127,7 +127,7 @@
                 android:inputType="number"
                 android:maxLength="6"
                 android:id="@+id/vRetypePassword"
-                android:hint="@string/mobile_number_hint" />
+                android:hint="@string/mpin_hint_retype" />
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 

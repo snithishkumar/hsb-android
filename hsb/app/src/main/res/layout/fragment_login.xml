@@ -1,59 +1,196 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.archide.hsb.view.fragments.LoginFragment">
-
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="35dp"
-        android:layout_below="@+id/login_text">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_local_phone_black_48dp"
-            android:id="@+id/vUserMobileIcon"
-            android:layout_weight="0.40" />
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:id="@+id/vUserMobileNumber"
-                android:hint="@string/mobile_number_hint" />
-        </android.support.design.widget.TextInputLayout>
-    </LinearLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_media_next"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="20dp"
-        android:id="@+id/submit" />
-
+    android:orientation="vertical"
+    android:background="#f5f5f5">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/login_text"
-        android:text="(Please enter mobilenumber. If mobilenumber matches with unpaied order.)"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="35dp"
-        android:gravity="center_horizontal" />
-</RelativeLayout>
+        android:textColor="#9e9e9e"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/login_enter_mpin"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal">
+        <Button
+            android:id="@+id/log_first_value"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            style="@style/small_round_style"
+            android:text="."/>
+        <Button
+            android:id="@+id/log_second_value"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginLeft="10dp"
+            style="@style/small_round_style"
+            android:text="."/>
+
+        <Button
+            android:id="@+id/log_third_value"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginLeft="10dp"
+            style="@style/small_round_style"
+            android:text="."/>
+
+        <Button
+            android:id="@+id/log_fourth_value"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginLeft="10dp"
+            style="@style/small_round_style"
+            android:text="."/>
+
+        <Button
+            android:id="@+id/log_fifth_value"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginLeft="10dp"
+            style="@style/small_round_style"
+            android:text="."/>
+
+        <Button
+            android:id="@+id/log_sixth_value"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginLeft="10dp"
+            style="@style/small_round_style"
+            android:text="."/>
+
+    </LinearLayout>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:overScrollMode="never"
+    android:scrollbars="none">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+            <Button
+                android:id="@+id/log_one"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                style="@style/key_style"
+                android:text="1"
+                android:layout_margin="20dp"
+                android:layout_toLeftOf="@+id/log_two"/>
+            <Button
+                android:id="@+id/log_two"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                style="@style/key_style"
+                android:text="2"
+                android:layout_margin="20dp"
+                android:layout_centerHorizontal="true"/>
+            <Button
+                android:id="@+id/log_three"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                style="@style/key_style"
+                android:text="3"
+                android:layout_margin="20dp"
+                android:layout_toRightOf="@+id/log_two"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+            <Button
+                android:id="@+id/log_four"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                style="@style/key_style"
+                android:text="4"
+                android:layout_margin="20dp"
+                android:layout_toLeftOf="@+id/log_five"/>
+            <Button
+                android:id="@+id/log_five"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                style="@style/key_style"
+                android:text="5"
+                android:layout_margin="20dp"
+                android:layout_centerHorizontal="true"/>
+            <Button
+                android:id="@+id/log_six"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                style="@style/key_style"
+                android:text="6"
+                android:layout_margin="20dp"
+                android:layout_toRightOf="@+id/log_five"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+            <Button
+                android:id="@+id/log_seven"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                style="@style/key_style"
+                android:text="7"
+                android:layout_margin="20dp"
+                android:layout_toLeftOf="@+id/log_eight"/>
+            <Button
+                android:id="@+id/log_eight"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                style="@style/key_style"
+                android:text="8"
+                android:layout_margin="20dp"
+                android:layout_centerHorizontal="true"/>
+            <Button
+                android:id="@+id/log_nine"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                style="@style/key_style"
+                android:text="9"
+                android:layout_margin="20dp"
+                android:layout_toRightOf="@+id/log_eight"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+            <Button
+                android:id="@+id/log_forget_pin"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                style="@style/key_style"
+                android:text="@string/login_forget_mpin"
+                android:layout_margin="20dp"
+                android:layout_toLeftOf="@+id/log_zero"/>
+            <Button
+                android:id="@+id/log_zero"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                style="@style/key_style"
+                android:text="0"
+                android:layout_margin="20dp"
+                android:layout_centerHorizontal="true"/>
+            <Button
+                android:id="@+id/log_del"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                style="@style/key_style"
+                android:text="Del"
+                android:layout_margin="20dp"
+                android:layout_toRightOf="@+id/log_zero"/>
+        </RelativeLayout>
+        </LinearLayout>
+</ScrollView>
+
+</LinearLayout>

@@ -7,7 +7,7 @@ import android.os.Bundle;
 import com.archide.hsb.service.TableListService;
 import com.archide.hsb.service.impl.TableListServiceImpl;
 import com.archide.hsb.view.fragments.FragmentsUtil;
-import com.archide.hsb.view.fragments.LoginFragment;
+import com.archide.hsb.view.fragments.MobileFragment;
 import com.archide.hsb.view.fragments.RegistrationFragment;
 
 import java.io.File;
@@ -15,9 +15,9 @@ import java.io.FileInputStream;
 
 import hsb.archide.com.hsb.R;
 
-public class MainActivity extends AppCompatActivity implements LoginFragment.MainActivityCallback, RegistrationFragment.MainActivityCallback{
+public class MainActivity extends AppCompatActivity implements MobileFragment.MainActivityCallback, RegistrationFragment.MainActivityCallback{
 
-    private LoginFragment loginFragment;
+    private MobileFragment mobileFragment;
     private RegistrationFragment registrationFragment;
     private TableListService tableListService;
 
@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Mai
 
     private void showFragment(){
         if(tableListService.isTableConfigured()){
-            loginFragment = new LoginFragment();
-            FragmentsUtil.addFragment(this, loginFragment, R.id.main_container);
+            mobileFragment = new MobileFragment();
+            FragmentsUtil.addFragment(this, mobileFragment, R.id.main_container);
         }else{
             registrationFragment = new RegistrationFragment();
             FragmentsUtil.addFragment(this, registrationFragment, R.id.main_container);
@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Mai
             finish();
         }
         else if(code == 2){
-            loginFragment = new LoginFragment();
-            FragmentsUtil.replaceFragmentNoStack(this,loginFragment, R.id.main_container);
+            mobileFragment = new MobileFragment();
+            FragmentsUtil.replaceFragmentNoStack(this, mobileFragment, R.id.main_container);
         }else{
 
             Intent intent = new Intent(this, HomeActivity.class);
