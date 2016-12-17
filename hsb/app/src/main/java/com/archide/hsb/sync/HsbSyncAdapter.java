@@ -9,11 +9,22 @@ import android.content.SyncResult;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.archide.hsb.enumeration.AppType;
+import com.archide.hsb.enumeration.GsonAPI;
 import com.archide.hsb.sync.json.ResponseData;
+import com.archide.hsb.sync.json.TableListJson;
+import com.archide.hsb.view.activities.ActivityUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import hsb.archide.com.hsb.R;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Created by Nithish on 06/11/16.
@@ -21,31 +32,40 @@ import hsb.archide.com.hsb.R;
 
 public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
 
-  private SyncPerform syncPerform = null;
+  private UserMenusSyncPerform userMenusSyncPerform = null;
+    private KitchenSyncPerform kitchenSyncPerform = null;
 
     private final String LOG_TAG = HsbSyncAdapter.class.getSimpleName();
+    private Context context;
 
     public HsbSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
-        init(context);
+       this.context = context;
 
     }
 
     /**
      * Initialize DAO's and Gson
      *
-     * @param context
      */
-    private void init(Context context) {
+    private void init() {
         try {
+            if (ActivityUtil.APP_TYPE == AppType.Kitchen.getAppType()) {
+                if (kitchenSyncPerform == null) {
+                    kitchenSyncPerform = new KitchenSyncPerform(context);
+                }
+            } else {
+                if(userMenusSyncPerform == null){
+                    userMenusSyncPerform = new UserMenusSyncPerform(context);
+                }
 
+            }
 
-            syncPerform = new SyncPerform(context);
 
         } catch (Exception e) {
             //  MobilePayAnalytics.getInstance().trackException(e,"Error in init - MobilePaySyncAdapter");
             //
-             Log.e(LOG_TAG,"Error in HsbSyncAdapter",e);
+            Log.e(LOG_TAG, "Error in HsbSyncAdapter", e);
         }
     }
 
@@ -61,46 +81,50 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         int currentScreen =  extras.getInt("currentScreen",0);
+        if(currentScreen != 0){
+            init();
+        }
         switch (currentScreen){
-            case 0:
-               ResponseData responseData =  syncPerform.getTableDetails();
+            case SyncEvent.GET_TABLE_LIST:
+                ResponseData responseData =  getTableDetails();
                 postData(responseData);
                 break;
 
-            case 1:
+            case SyncEvent.GET_MENU_LIST:
+
                 String tableNumber =  extras.getString("tableNumber");
                 String mobileNumber =  extras.getString("mobileNumber");
-                responseData =   syncPerform.getMenuItems(tableNumber,mobileNumber);
-               // responseData =  syncPerform.getKitchenOrders();
+                responseData =   userMenusSyncPerform.getMenuItems(tableNumber,mobileNumber);
+               // responseData =  userMenusSyncPerform.getKitchenOrders();
                 postData(responseData);
                 break;
 
-            case 2:
-                responseData =   syncPerform.sendOrderData();
+            case SyncEvent.PLACE_AN_ORDER:
+                responseData =   userMenusSyncPerform.sendOrderData();
                 postData(responseData);
                 break;
 
             case 13:
-                responseData =  syncPerform.getKitchenOrders();
+                responseData =  kitchenSyncPerform.getKitchenOrders();
                 postData(responseData);
                 break;
 
             case 3:
                  tableNumber =  extras.getString("tableNumber");
                  mobileNumber =  extras.getString("mobileNumber");
-                responseData = syncPerform.getPreviousOrderDetails(tableNumber,mobileNumber);
+                responseData = userMenusSyncPerform.getPreviousOrderDetails(tableNumber,mobileNumber);
                 postData(responseData);
                 break;
 
             case 4:
                 tableNumber =  extras.getString("tableNumber");
                 mobileNumber =  extras.getString("mobileNumber");
-                responseData = syncPerform.closeAnOrder(tableNumber,mobileNumber);
+                responseData = userMenusSyncPerform.closeAnOrder(tableNumber,mobileNumber);
                 postData(responseData);
                 break;
 
             case 5:
-                responseData =  syncPerform.getUnAvailableOrders();
+                responseData =  userMenusSyncPerform.getUnAvailableOrders();
                 postData(responseData);
                 break;
         }
@@ -149,5 +173,45 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
 
         }
         return newAccount;
+    }
+
+
+    /**
+     * Get Table list from server and send back to UI
+     * @return
+     */
+    public ResponseData getTableDetails() {
+        try {
+            HsbAPI hsbAPI = ServiceAPI.INSTANCE.getHsbAPI();
+            Call<ResponseData> tableListResponse = hsbAPI.getTableList();
+            Response<ResponseData> response = tableListResponse.execute();
+            if (response != null && response.isSuccessful()) {
+                ResponseData responseData = response.body();
+                // ResponseData responseData =  gson.fromJson(stringResponse,ResponseData.class);
+                String tableListJsonString =  responseData.getData();
+                Gson gson = GsonAPI.INSTANCE.getGson();
+                List<TableListJson> tableListJson =  gson.fromJson(tableListJsonString, new TypeToken<List<TableListJson>>() {
+                }.getType());
+
+                List<String> results = new ArrayList<>();
+                for(TableListJson tempTableList : tableListJson){
+                    results.add(tempTableList.getTableNumber());
+                }
+                responseData.setData(null);
+                responseData.setMessage(results);
+                return responseData;
+            }else{
+                return getErrorResponse();
+            }
+        } catch (Exception e) {
+            Log.e("Error","Error in  getTableDetails",e);
+        }
+        return getErrorResponse();
+    }
+
+    private ResponseData getErrorResponse(){
+        ResponseData responseData =new ResponseData(500,null);
+        responseData.setStatusCode(500);
+        return responseData;
     }
 }

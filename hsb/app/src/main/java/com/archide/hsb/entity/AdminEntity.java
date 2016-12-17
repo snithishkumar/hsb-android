@@ -14,7 +14,6 @@ public class AdminEntity {
     public static final String TABLE_NUMBER = "TableNumber";
     public static final String M_PIN = "MPin";
     public static final String USER_MOBILE = "UserMobile";
-    public static final String APP_TYPE = "AppType";
     @DatabaseField(columnName = ADMIN_ID,generatedId = true)
     private int adminId;
     @DatabaseField(columnName = TABLE_NUMBER)
@@ -23,8 +22,6 @@ public class AdminEntity {
     private String mPin;
     @DatabaseField(columnName = USER_MOBILE)
     private String userMobile;
-    @DatabaseField(columnName = APP_TYPE)
-    private AppType appType;
 
     public int getAdminId() {
         return adminId;
@@ -58,13 +55,6 @@ public class AdminEntity {
         this.userMobile = userMobile;
     }
 
-    public AppType getAppType() {
-        return appType;
-    }
-
-    public void setAppType(AppType appType) {
-        this.appType = appType;
-    }
 
     @Override
     public String toString() {

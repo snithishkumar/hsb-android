@@ -20,6 +20,8 @@ import hsb.archide.com.hsb.R;
 
 public class KitchenOrderListAdapter extends BaseAdapter {
 
+    private static final int EMPTY_VIEW = -1;
+
     List<KitchenOrderListViewModel> kitchenOrderListViewModels = null;
     public KitchenOrderListAdapter(List<KitchenOrderListViewModel> kitchenOrderListViewModels){
         this.kitchenOrderListViewModels = kitchenOrderListViewModels;
@@ -28,6 +30,14 @@ public class KitchenOrderListAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         return kitchenOrderListViewModels.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (kitchenOrderListViewModels.size() == 0) {
+            return EMPTY_VIEW;
+        }
+        return super.getItemViewType(position);
     }
 
 

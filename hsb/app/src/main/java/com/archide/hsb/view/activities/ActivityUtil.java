@@ -22,6 +22,7 @@ public class ActivityUtil {
 
     public static String TABLE_NUMBER = "";
     public static String USER_MOBILE = "";
+    public static int APP_TYPE = 0;
     //static boolean IS_LOGIN = false;
 
     public static ProgressDialog showProgress(String title, String message, Context context){

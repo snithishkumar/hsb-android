@@ -1,5 +1,6 @@
 package com.archide.hsb.view.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -37,7 +38,8 @@ public class KitchenOrderListFragment extends Fragment {
     GridView kitchenOrderList;
     private KitchenActivity kitchenActivity;
     private KitchenOrderListAdapter kitchenOrderListAdapter;
-    List<KitchenOrderListViewModel> kitchenOrderListViewModels =new ArrayList<>();
+    List<KitchenOrderListViewModel> kitchenOrderListViewModels = new ArrayList<>();
+    ProgressDialog progressDialog = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,8 @@ public class KitchenOrderListFragment extends Fragment {
         loadData();
         return view;
     }
+
+
 
     private void loadData(){
         List<KitchenOrderListViewModel> temp = kitchenActivity.getKitchenService().getOrderList();

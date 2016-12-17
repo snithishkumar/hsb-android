@@ -10,6 +10,7 @@ import com.archide.hsb.dao.OrdersDao;
 import com.archide.hsb.dao.impl.AdminDaoImpl;
 import com.archide.hsb.dao.impl.OrdersDaoImpl;
 import com.archide.hsb.entity.AdminEntity;
+import com.archide.hsb.entity.AppTypeEntity;
 import com.archide.hsb.enumeration.AppType;
 import com.archide.hsb.service.TableListService;
 import com.archide.hsb.sync.HsbSyncAdapter;
@@ -77,10 +78,14 @@ public class TableListServiceImpl implements TableListService {
     @Override
     public void createAdmin(String tableNumber, String mPin,AppType selectedAppType) {
         try {
+            // Create an App Type
+            AppTypeEntity appTypeEntity = new AppTypeEntity();
+            appTypeEntity.setAppType(selectedAppType);
+            adminDao.createAppType(appTypeEntity);
+            // Create Admin
             AdminEntity adminEntity = new AdminEntity();
             adminEntity.setTableNumber(tableNumber);
             adminEntity.setmPin(mPin);
-            adminEntity.setAppType(selectedAppType);
             adminDao.createAdminEntity(adminEntity);
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,6 +115,17 @@ public class TableListServiceImpl implements TableListService {
             e.printStackTrace();
         }
         return false;
+    }
+
+
+    @Override
+    public AppTypeEntity getAppType(){
+        try {
+          return   adminDao.getAppType();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

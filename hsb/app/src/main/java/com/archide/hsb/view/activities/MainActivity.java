@@ -4,29 +4,32 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.archide.hsb.entity.AppTypeEntity;
+import com.archide.hsb.enumeration.AppType;
 import com.archide.hsb.service.TableListService;
 import com.archide.hsb.service.impl.TableListServiceImpl;
 import com.archide.hsb.view.fragments.FragmentsUtil;
+import com.archide.hsb.view.fragments.LoginFragment;
 import com.archide.hsb.view.fragments.MobileFragment;
-import com.archide.hsb.view.fragments.RegistrationFragment;
+import com.archide.hsb.view.fragments.ConfigurationFragment;
 
 import java.io.File;
 import java.io.FileInputStream;
 
 import hsb.archide.com.hsb.R;
 
-public class MainActivity extends AppCompatActivity implements MobileFragment.MainActivityCallback, RegistrationFragment.MainActivityCallback{
+public class MainActivity extends AppCompatActivity implements MobileFragment.MainActivityCallback, ConfigurationFragment.MainActivityCallback{
 
     private MobileFragment mobileFragment;
-    private RegistrationFragment registrationFragment;
+    private ConfigurationFragment configurationFragment;
     private TableListService tableListService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       // copyDataBase();
-        init();
+
+       // init();
         showFragment();
     }
 
@@ -36,25 +39,36 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
 
 
     private void showFragment(){
-        if(tableListService.isTableConfigured()){
-            mobileFragment = new MobileFragment();
-            FragmentsUtil.addFragment(this, mobileFragment, R.id.main_container);
+        AppTypeEntity appTypeEntity = tableListService.getAppType();
+        if(appTypeEntity == null){
+            configurationFragment = new ConfigurationFragment();
+            FragmentsUtil.addFragment(this, configurationFragment, R.id.main_container);
         }else{
-            registrationFragment = new RegistrationFragment();
-            FragmentsUtil.addFragment(this, registrationFragment, R.id.main_container);
+            if(appTypeEntity.getAppType().toString().equals(AppType.Kitchen.toString())){
+                LoginFragment loginFragment = new LoginFragment();
+                FragmentsUtil.addFragment(this, loginFragment, R.id.main_container);
+            }else{
+                mobileFragment = new MobileFragment();
+                FragmentsUtil.addFragment(this, mobileFragment, R.id.main_container);
+                /*if(tableListService.isTableConfigured()){
+
+                }else{
+
+                }*/
+            }
         }
 
     }
 
     @Override
     public void success(int code, Object data) {
-        if(code == 1){
+        if(code == AppType.Kitchen.getAppType()){
             Intent intent = new Intent(this, KitchenActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         }
-        else if(code == 2){
+        else if(code == AppType.User.getAppType()){
             mobileFragment = new MobileFragment();
             FragmentsUtil.replaceFragmentNoStack(this, mobileFragment, R.id.main_container);
         }else{

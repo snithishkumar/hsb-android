@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.archide.hsb.dao.AdminDao;
 import com.archide.hsb.entity.AdminEntity;
+import com.archide.hsb.entity.AppTypeEntity;
+import com.archide.hsb.enumeration.AppType;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.j256.ormlite.dao.Dao;
 
@@ -16,6 +18,7 @@ import java.sql.SQLException;
 public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
 
     Dao<AdminEntity,Integer> adminEntityDao = null;
+    Dao<AppTypeEntity,Integer> appTypeDao = null;
 
 
 
@@ -27,7 +30,7 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
     @Override
     protected void initDao() throws SQLException {
         adminEntityDao = databaseHelper.getDao(AdminEntity.class);
-
+        appTypeDao = databaseHelper.getDao(AppTypeEntity.class);
     }
 
 
@@ -40,6 +43,11 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
     @Override
     public void createAdminEntity(AdminEntity adminEntity) throws SQLException{
         adminEntityDao.create(adminEntity);
+    }
+
+    @Override
+    public void createAppType(AppTypeEntity appTypeEntity)throws SQLException{
+        appTypeDao.create(appTypeEntity);
     }
 
     @Override
@@ -56,5 +64,10 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
         }
 
         return adminEntity != null;
+    }
+
+
+    public AppTypeEntity getAppType()throws SQLException{
+       return appTypeDao.queryBuilder().queryForFirst();
     }
 }

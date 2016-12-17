@@ -2,6 +2,7 @@ package com.archide.hsb.service;
 
 import android.content.Context;
 
+import com.archide.hsb.entity.AppTypeEntity;
 import com.archide.hsb.enumeration.AppType;
 
 /**
@@ -17,4 +18,6 @@ public interface TableListService {
     void updateUserMobile(String userMobile);
 
     boolean isTableConfigured();
+
+    AppTypeEntity getAppType();
 }

@@ -5,5 +5,13 @@ package com.archide.hsb.enumeration;
  */
 
 public enum AppType {
-    Kitchen,User;
+    Kitchen(1),User(2);
+    private int appType;
+    AppType(int appType){
+      this.appType = appType;
+    }
+
+    public int getAppType(){
+        return appType;
+    }
 }

@@ -31,15 +31,12 @@ import com.archide.hsb.sync.json.OrderedMenuItems;
 import com.archide.hsb.sync.json.PlaceOrdersJson;
 import com.archide.hsb.sync.json.ResponseData;
 import com.archide.hsb.sync.json.TableListJson;
-import com.archide.hsb.view.activities.ActivityUtil;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -48,9 +45,9 @@ import retrofit2.Response;
  * Created by Nithish on 12/11/16.
  */
 
-public class SyncPerform {
+public class UserMenusSyncPerform {
 
-    private final String LOG_TAG = SyncPerform.class.getSimpleName();
+    private final String LOG_TAG = UserMenusSyncPerform.class.getSimpleName();
 
     private Context context;
     private Gson gson;
@@ -58,13 +55,13 @@ public class SyncPerform {
 
     private MenuItemsDao menuItemsDao;
     private OrdersDao ordersDao;
-    private KitchenDao kitchenDao;
 
-    public SyncPerform(){
+
+    public UserMenusSyncPerform(){
 
     }
 
-    public SyncPerform(Context context){
+    public UserMenusSyncPerform(Context context){
         this.context = context;
         init();
     }
@@ -73,7 +70,6 @@ public class SyncPerform {
         try{
             menuItemsDao = new MenuItemsDaoImpl(context);
             ordersDao = new OrdersDaoImpl(context);
-            kitchenDao = new KitchenDaoImpl(context);
             gson = GsonAPI.INSTANCE.getGson();
         }catch (Exception e){
             Log.e(LOG_TAG,"Error in init",e);
@@ -81,37 +77,7 @@ public class SyncPerform {
         hsbAPI = ServiceAPI.INSTANCE.getHsbAPI();
     }
 
-    /**
-     * Get Table list from server and send back to UI
-     * @return
-     */
-    public ResponseData getTableDetails() {
-        try {
-            Call<ResponseData> tableListResponse = hsbAPI.getTableList();
-            Response<ResponseData> response = tableListResponse.execute();
-            if (response != null && response.isSuccessful()) {
-                ResponseData responseData = response.body();
-               // ResponseData responseData =  gson.fromJson(stringResponse,ResponseData.class);
-                String tableListJsonString =  (String)responseData.getData();
 
-                List<TableListJson>  tableListJson =  gson.fromJson(tableListJsonString, new TypeToken<List<TableListJson>>() {
-                }.getType());
-
-                List<String> results = new ArrayList<>();
-                for(TableListJson tempTableList : tableListJson){
-                    results.add(tempTableList.getTableNumber());
-                }
-                responseData.setData(null);
-                responseData.setMessage(results);
-                return responseData;
-            }else{
-                return getErrorResponse();
-            }
-        } catch (Exception e) {
-            Log.e("Error","Error in  getTableDetails",e);
-        }
-        return getErrorResponse();
-    }
 
     public ResponseData getMenuItems(String tableNumber,String mobileNumber){
         try{
@@ -260,109 +226,9 @@ public class SyncPerform {
         return getErrorResponse();
     }
 
-    public ResponseData getKitchenOrders(){
-        try{
-            List<KitchenOrdersListEntity>  kitchenOrdersListEntities =   kitchenDao.getKitchenOrdersList();
-            List<GetKitchenOrders> getKitchenOrdersList = new ArrayList<>();
-            for(KitchenOrdersListEntity kitchenOrdersListEntity : kitchenOrdersListEntities){
-                GetKitchenOrders getKitchenOrders = new GetKitchenOrders(kitchenOrdersListEntity);
-                getKitchenOrdersList.add(getKitchenOrders);
-            }
-            Call<ResponseData> kitchenResponse =   hsbAPI.getKitchenOrders(getKitchenOrdersList);
-
-            Response<ResponseData> response = kitchenResponse.execute();
-            if (response != null && response.isSuccessful()) {
-                ResponseData responseData = response.body();
-
-                String menuItemsJsonString =  (String)responseData.getData();
-
-                KitchenOrderListResponse  kitchenOrderListResponse =  gson.fromJson(menuItemsJsonString, KitchenOrderListResponse.class);
-                processKitchenOrders(kitchenOrderListResponse.getPlaceOrdersJsonList());
-
-                processCloseData(kitchenOrderListResponse.getClosedOrders());
-            }
-            ResponseData result = new ResponseData(200,null);
-            return result;
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return getErrorResponse();
-    }
 
 
-    public void processKitchenOrders(List<PlaceOrdersJson> placeOrdersJsonList){
-        try{
-            for(PlaceOrdersJson placeOrdersJson : placeOrdersJsonList){
-                KitchenOrdersListEntity kitchenOrdersListEntity =  kitchenDao.getKitchenOrdersListEntity(placeOrdersJson.getOrderId());
-                if(kitchenOrdersListEntity == null){
-                    kitchenOrdersListEntity = new KitchenOrdersListEntity(placeOrdersJson);
-                    kitchenDao.createKitchenOrder(kitchenOrdersListEntity);
-                }else{
-                    kitchenOrdersListEntity.setLastUpdateTime(placeOrdersJson.getLastUpdatedDateTime());
-                    kitchenOrdersListEntity.setServerDateTime(placeOrdersJson.getServerDateTime());
-                    kitchenOrdersListEntity.setStatus(Status.OPEN);
-                    kitchenOrdersListEntity.setViewStatus(ViewStatus.UN_VIEWED);
-                    kitchenDao.updateKitchenOrder(kitchenOrdersListEntity);
-                }
 
-                List<OrderedMenuItems>  orderedMenuItemsList = placeOrdersJson.getMenuItems();
-                for(OrderedMenuItems orderedMenuItems : orderedMenuItemsList){
-                    KitchenOrdersCategoryEntity kitchenOrdersCategory = kitchenDao.getKitchenOrdersCategoryEntity(kitchenOrdersListEntity,orderedMenuItems.getCategoryUuid());
-                    if(kitchenOrdersCategory == null){
-                        kitchenOrdersCategory = new KitchenOrdersCategoryEntity();
-                        kitchenOrdersCategory.setCategoryName(orderedMenuItems.getCategoryName());
-                        kitchenOrdersCategory.setFoodCategoryUUID(orderedMenuItems.getCategoryUuid());
-                        kitchenOrdersCategory.setKitchenOrdersList(kitchenOrdersListEntity);
-                        kitchenOrdersCategory.setDateTime(System.currentTimeMillis());
-                        kitchenDao.createKitchenOrderCategory(kitchenOrdersCategory);
-                    }
-                    KitchenOrderDetailsEntity kitchenOrderDetailsEntity = new KitchenOrderDetailsEntity(orderedMenuItems);
-                    kitchenOrderDetailsEntity.setKitchenOrdersCategory(kitchenOrdersCategory);
-                    kitchenOrderDetailsEntity.setKitchenOrdersList(kitchenOrdersListEntity);
-                    kitchenDao.createKitchenOrderItems(kitchenOrderDetailsEntity);
-                }
-
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-
-    public void sendUnSyncedOrderStatus(){
-        try {
-            List<KitchenOrdersListEntity> kitchenOrdersList =  kitchenDao.getUnSyncedOrderList();
-            List<PlaceOrdersJson> placeOrderList = new ArrayList<>();
-            for(KitchenOrdersListEntity kitchenOrdersListEntity : kitchenOrdersList){
-                PlaceOrdersJson placeOrdersJson = new PlaceOrdersJson(kitchenOrdersListEntity);
-                placeOrderList.add(placeOrdersJson);
-                List<KitchenOrderDetailsEntity> kitchenOrderDetailsList = kitchenDao.getUnSyncedOrderDetails(kitchenOrdersListEntity);
-                for(KitchenOrderDetailsEntity kitchenOrderDetailsEntity : kitchenOrderDetailsList){
-                    OrderedMenuItems orderedMenuItems = new OrderedMenuItems(kitchenOrderDetailsEntity);
-                    placeOrdersJson.getMenuItems().add(orderedMenuItems);
-                }
-            }
-            Call<ResponseData> kitchenOrderSyncResponse =   hsbAPI.sendUnSyncedKitchenOrders(placeOrderList);
-            Response<ResponseData> response =   kitchenOrderSyncResponse.execute();
-            if (response != null && response.isSuccessful()) {
-                ResponseData responseData =  response.body();
-                if(responseData.getSuccess() && responseData.getStatusCode() == 200){
-                    String orderedItemsUuids =  responseData.getData();
-                    List<KitchenOrderStatusSyncResponse> placeOrdersList = gson.fromJson(orderedItemsUuids,
-                            new TypeToken<List<KitchenOrderStatusSyncResponse>>() {}.getType());
-                    for(KitchenOrderStatusSyncResponse kitchenOrderStatusSyncResponse : placeOrdersList){
-                        List<String> placedOrderItemsUuids =  kitchenOrderStatusSyncResponse.getPlacedOrderItemsUuid();
-                        kitchenDao.updateKitchenOrderListSyncStatus(kitchenOrderStatusSyncResponse.getPlacedOrderUuid());
-                        for(String placedOrderItemsUuid : placedOrderItemsUuids){
-                            kitchenDao.updateKitchenOrderDetailsSyncStatus(placedOrderItemsUuid);
-                        }
-                    }
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
 
 
     public ResponseData getPreviousOrderDetails(String tableNumber,String mobileNumber){
@@ -390,17 +256,7 @@ public class SyncPerform {
        return getErrorResponse();
     }
 
-    private void processCloseData(List<String> closedOrders){
-        for(String orderGuids : closedOrders){
-            try{
-                kitchenDao.closeOrders(orderGuids);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
 
-        }
-
-    }
 
 
     public ResponseData getUnAvailableOrders() {

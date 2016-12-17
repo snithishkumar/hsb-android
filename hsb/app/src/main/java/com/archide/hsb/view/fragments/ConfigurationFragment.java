@@ -32,7 +32,7 @@ import hsb.archide.com.hsb.R;
  * Created by Nithish on 20/11/16.
  */
 
-public class RegistrationFragment extends Fragment implements View.OnClickListener{
+public class ConfigurationFragment extends Fragment implements View.OnClickListener{
 
     private MainActivity mainActivity;
     ProgressDialog progressDialog = null;
@@ -184,10 +184,10 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
             vReTypePasswordText.setError("MPin must be 6 digits.");
         }
         String vTableNumberText = null;
-        int appType = 1;
+        int appType = AppType.Kitchen.getAppType();
         if(selectedAppType.equals(AppType.User)){
             vTableNumberText = vTableNumber.getSpinner().getSelectedItem().toString();
-            appType = 2;
+            appType = AppType.User.getAppType();
             ActivityUtil.TABLE_NUMBER = vTableNumberText;
         }
 
