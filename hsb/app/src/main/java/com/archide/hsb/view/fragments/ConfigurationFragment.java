@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -59,7 +60,7 @@ public class ConfigurationFragment extends Fragment implements View.OnClickListe
         vPasswordText = (EditText) registrationView.findViewById(R.id.vPassword);
         vReTypePasswordText = (EditText) registrationView.findViewById(R.id.vRetypePassword);
 
-        FloatingActionButton button =  (FloatingActionButton)registrationView.findViewById(R.id.submit);
+        Button button =  (Button)registrationView.findViewById(R.id.submit);
         button.setOnClickListener(this);
 
         initType(registrationView);

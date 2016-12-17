@@ -2,15 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ccc"> //ccc
+    android:background="@android:color/white"> //ccc
     <LinearLayout
         android:id="@+id/root_layout"
-        android:layout_width="@dimen/place_order_width"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="10dp"
+
         android:background="@android:color/white"
         android:orientation="vertical"
         android:layout_margin="10dp"
@@ -86,47 +83,62 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:id="@+id/cooking_comments"
+            android:layout_marginLeft="20dp"
             android:layout_marginBottom="10dp"
             android:hint="Comments(Optional)"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:paddingLeft="20dp"
+
+            android:paddingRight="15dp"
+            android:layout_marginTop="8dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:textSize="20dp"
                 android:text="Subtotal before discount"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:textSize="20dp"
                 android:id="@+id/subtotal_before_discount"
                 android:text="Rs 1,340"/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="15dp"
+            android:layout_marginTop="8dp"
             android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="20dp"
                 android:layout_alignParentLeft="true"
                 android:text="Discount"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:textSize="20dp"
                 android:id="@+id/discount"
                 android:text="-Rs 240"/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="15dp"
+            android:layout_marginTop="8dp"
             android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="20dp"
                 android:layout_alignParentLeft="true"
                 android:text="Subtotal"/>
             <TextView
@@ -134,6 +146,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:id="@+id/subtotal"
+                android:textSize="20dp"
                 android:text="Rs 240"/>
         </RelativeLayout>
         <!--<RelativeLayout
@@ -153,32 +166,42 @@
         </RelativeLayout> -->
         <RelativeLayout
             android:layout_width="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="15dp"
+            android:layout_marginTop="8dp"
             android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:textSize="20dp"
                 android:text="Service tax (0 %)"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:id="@+id/service_tax"
+                android:textSize="20dp"
                 android:text="Rs 0"/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="15dp"
+            android:layout_marginTop="8dp"
             android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:textSize="20dp"
                 android:text="VAT (2 %)"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:id="@+id/service_vat"
+                android:textSize="20dp"
                 android:text="Rs 20.04"/>
         </RelativeLayout>
        <!-- <RelativeLayout
@@ -213,31 +236,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="20dp"
+
+            android:paddingRight="15dp"
             >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Total"
-                android:textSize="24sp"
-                android:textStyle="bold"/>
+                android:textSize="26dp"
+                android:textStyle="bold"
+               />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Rs. 1,123.04"
-                android:textSize="24sp"
                 android:id="@+id/total_amount"
+                android:textSize="26dp"
+                android:textStyle="bold"
                 android:layout_alignParentRight="true"
-                android:textStyle="bold"/>
+                />
 
         </RelativeLayout>
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:background="@drawable/rectangle_fill"
             android:id="@+id/place_an_order"
             android:layout_margin="10dp"
+            android:layout_gravity="center_horizontal"
             android:textColor="@android:color/white"
-            android:text="Proceed to Checkout  ->"
+            android:text="Proceed to Checkout"
              />
 
 
