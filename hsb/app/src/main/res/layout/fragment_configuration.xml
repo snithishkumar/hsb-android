@@ -1,145 +1,117 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:ls="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#F6F6F6"
+    android:gravity="center"
     tools:context="com.archide.hsb.view.fragments.ConfigurationFragment">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/vTypeLayout"
-        android:layout_marginTop="80dp"
-        android:layout_marginRight="16dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_free_breakfast_black_48dp"
-            android:id="@+id/vTypeIcon"
-            android:layout_weight="0.40" />
-        // style="@style/Widget.AppCompat.Spinner.Underlined"
-        <com.satsuware.usefulviews.LabelledSpinner
-            android:id="@+id/vType"
-            ls:labelText="Type"
-            ls:widgetColor="#F44336"
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content" />
-        <!--<Spinner
-            android:layout_width="wrap_content"
+        android:layout_margin="50dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/vTypeLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Spinner.Underlined"
-            android:id="@+id/vType"
-            android:layout_weight="1"
-            android:
-            />-->
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/vTableDetailsLayout"
-        android:layout_marginTop="42dp"
-        android:visibility="gone"
-        android:layout_marginRight="16dp"
-        android:layout_below="@+id/vTypeLayout"
-       >
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_free_breakfast_black_48dp"
-            android:id="@+id/vTableIcon"
-            android:layout_weight="0.40" />
-        // style="@style/Widget.AppCompat.Spinner.Underlined"
-        <com.satsuware.usefulviews.LabelledSpinner
-            android:id="@+id/vTableNumber"
-            ls:labelText="Type"
-            ls:widgetColor="#F44336"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
-        android:id="@+id/vPasswordLayout"
-        android:layout_below="@+id/vTableDetailsLayout"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="42dp">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_vpn_key_black_48dp"
-            android:id="@+id/vPasswordImg"
-            android:layout_weight="0.40" />
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <EditText
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_free_breakfast_black_48dp"
+                android:id="@+id/vTypeIcon" />
+            <com.satsuware.usefulviews.LabelledSpinner
+                android:id="@+id/vType"
+                ls:labelText="Type"
+                ls:widgetColor="#F44336"
+                android:layout_marginLeft="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:id="@+id/vPassword"
-                android:maxLength="6"
-                android:hint="@string/mpin_hint" />
-        </android.support.design.widget.TextInputLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
-        android:layout_below="@+id/vPasswordLayout"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="42dp">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_vpn_key_black_48dp"
-            android:id="@+id/vUserMobileIcon"
-            android:layout_weight="0.40" />
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/vTableDetailsLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <EditText
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_free_breakfast_black_48dp"
+                android:id="@+id/vTableIcon" />
+            <com.satsuware.usefulviews.LabelledSpinner
+                android:id="@+id/vTableNumber"
+                ls:labelText="Type"
+                ls:widgetColor="#F44336"
+                android:layout_marginLeft="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:maxLength="6"
-                android:id="@+id/vRetypePassword"
-                android:hint="@string/mpin_hint_retype" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/vPasswordLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_vpn_key_black_48dp"
+                android:id="@+id/vPasswordImg" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/vPassword"
+                    android:maxLength="6"
+                    android:hint="@string/mpin_hint" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_vpn_key_black_48dp"
+                android:id="@+id/vUserMobileIcon" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:id="@+id/vRetypePassword"
+                    android:maxLength="6"
+                    android:hint="@string/mpin_hint_retype" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="Submit"/>
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_media_next"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="20dp"
-        android:id="@+id/submit" />
-</RelativeLayout>
+
+</LinearLayout>
