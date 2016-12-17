@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       // init();
+        init();
         showFragment();
     }
 
