@@ -50,7 +50,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         View loginView =  inflater.inflate(R.layout.fragment_login, container, false);
         userMobile =  (TextView)loginView.findViewById(R.id.vUserMobileNumber);
-        FloatingActionButton button =  (FloatingActionButton)loginView.findViewById(R.id.submit);
+        Button button =  (Button)loginView.findViewById(R.id.submit);
         button.setOnClickListener(this);
 
         return loginView;

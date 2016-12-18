@@ -57,6 +57,7 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
             } else {
                 if(userMenusSyncPerform == null){
                     userMenusSyncPerform = new UserMenusSyncPerform(context);
+                    kitchenSyncPerform = new KitchenSyncPerform(context);
                 }
 
             }
@@ -87,6 +88,7 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
         switch (currentScreen){
             case SyncEvent.GET_TABLE_LIST:
                 ResponseData responseData =  getTableDetails();
+                //responseData =  kitchenSyncPerform.getKitchenOrders();
                 postData(responseData);
                 break;
 
@@ -104,7 +106,7 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
                 postData(responseData);
                 break;
 
-            case 13:
+            case SyncEvent.GET_KITCHEN_ORDERS_DATA:
                 responseData =  kitchenSyncPerform.getKitchenOrders();
                 postData(responseData);
                 break;

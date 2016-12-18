@@ -68,11 +68,9 @@ public class KitchenOrderListAdapter extends BaseAdapter {
     }
 
     private void populateKitchenOrderListViewHolder(KitchenOrderListViewModel kitchenOrderListViewModel,KitchenOrderListViewHolder kitchenOrderListViewHolder){
-        kitchenOrderListViewHolder.lastOrderTime.setText(kitchenOrderListViewModel.getLastOrderTime());
         kitchenOrderListViewHolder.orderTime.setText(kitchenOrderListViewModel.getOrderTime());
-        kitchenOrderListViewHolder.noOfVegCount.setText(kitchenOrderListViewModel.getNonVegCount());
-        kitchenOrderListViewHolder.noOfNonVegCount.setText(kitchenOrderListViewModel.getNonVegCount());
-        kitchenOrderListViewHolder.orderType.setText(kitchenOrderListViewModel.getFoodType().toString());
+        kitchenOrderListViewHolder.noOfVegCount.setText(kitchenOrderListViewModel.getVegCount());
+       kitchenOrderListViewHolder.noOfNonVegCount.setText( kitchenOrderListViewModel.getNonVegCount());
         kitchenOrderListViewHolder.tableNumber.setText(kitchenOrderListViewModel.getTableNumber());
     }
 
@@ -80,16 +78,12 @@ public class KitchenOrderListAdapter extends BaseAdapter {
         TextView orderTime;
         TextView noOfVegCount;
         TextView noOfNonVegCount;
-        TextView lastOrderTime;
-        TextView orderType;
         TextView tableNumber;
 
         public KitchenOrderListViewHolder(View item){
             orderTime =  (TextView)item.findViewById(R.id.kitchen_order_time);
             noOfVegCount =  (TextView) item.findViewById(R.id.kitchen_no_of_veg_count);
             noOfNonVegCount = (TextView)item.findViewById(R.id.kitchen_no_of_nonveg_count);
-            lastOrderTime = (TextView)item.findViewById(R.id.kitchen_last_order_time);
-            orderType = (TextView)item.findViewById(R.id.kitchen_order_type);
             tableNumber =  (TextView)item.findViewById(R.id.kitchen_table_number);
 
         }

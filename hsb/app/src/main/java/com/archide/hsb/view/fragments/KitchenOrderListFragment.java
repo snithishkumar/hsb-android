@@ -1,7 +1,11 @@
 package com.archide.hsb.view.fragments;
 
+import android.accounts.Account;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,6 +16,9 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.archide.hsb.service.impl.KitchenServiceImpl;
+import com.archide.hsb.sync.HsbSyncAdapter;
+import com.archide.hsb.sync.SyncEvent;
 import com.archide.hsb.sync.json.ResponseData;
 import com.archide.hsb.view.activities.HomeActivity;
 import com.archide.hsb.view.activities.KitchenActivity;
@@ -39,7 +46,7 @@ public class KitchenOrderListFragment extends Fragment {
     private KitchenActivity kitchenActivity;
     private KitchenOrderListAdapter kitchenOrderListAdapter;
     List<KitchenOrderListViewModel> kitchenOrderListViewModels = new ArrayList<>();
-    ProgressDialog progressDialog = null;
+    //ProgressDialog progressDialog = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,8 +60,27 @@ public class KitchenOrderListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_kitchen_order_list, container, false);
         kitchenOrderList =  (GridView)view.findViewById(R.id.gridview);
+       int orientation = getResources().getConfiguration().orientation;
+        if(Configuration.ORIENTATION_LANDSCAPE == orientation){
+            kitchenOrderList.setNumColumns(3);
+        }else{
+            kitchenOrderList.setNumColumns(2);
+        }
         kitchenOrderListAdapter =  new KitchenOrderListAdapter(kitchenOrderListViewModels);
+
         kitchenOrderList.setAdapter(kitchenOrderListAdapter);
+       /* kitchenOrderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                int pos = position;
+                KitchenOrderListViewModel kitchenOrderListViewModel =  kitchenOrderListViewModels.get(position);
+                kitchenActivity.viewOrderDetails(kitchenOrderListViewModel.getOrderId());
+                return;
+            }
+        });*/
+        init();
+        loadData();
+
         kitchenOrderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
@@ -63,8 +89,20 @@ public class KitchenOrderListFragment extends Fragment {
                 return;
             }
         });
-        loadData();
+
         return view;
+    }
+
+    private void init(){
+
+       Account account = HsbSyncAdapter.getSyncAccount(kitchenActivity);
+        Bundle settingsBundle = new Bundle();
+        settingsBundle.putInt("currentScreen", SyncEvent.GET_TABLE_LIST);
+        ContentResolver.requestSync(account, kitchenActivity.getString(R.string.auth_type), settingsBundle);
+
+
+      //  kitchenService = new KitchenServiceImpl(this);
+        // orderService = new OrderServiceImpl(this);
     }
 
 
@@ -72,7 +110,11 @@ public class KitchenOrderListFragment extends Fragment {
     private void loadData(){
         List<KitchenOrderListViewModel> temp = kitchenActivity.getKitchenService().getOrderList();
         kitchenOrderListViewModels.clear();
+        temp.addAll(temp);
+        temp.addAll(temp);
+       // temp.addAll(temp);
         kitchenOrderListViewModels.addAll(temp);
+
         kitchenOrderListAdapter.notifyDataSetChanged();
     }
 

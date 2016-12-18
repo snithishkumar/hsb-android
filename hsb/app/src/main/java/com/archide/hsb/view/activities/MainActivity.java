@@ -45,8 +45,12 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
             FragmentsUtil.addFragment(this, configurationFragment, R.id.main_container);
         }else{
             if(appTypeEntity.getAppType().toString().equals(AppType.Kitchen.toString())){
-                LoginFragment loginFragment = new LoginFragment();
-                FragmentsUtil.addFragment(this, loginFragment, R.id.main_container);
+                Intent intent = new Intent(this, KitchenActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+               // LoginFragment loginFragment = new LoginFragment();
+               // FragmentsUtil.addFragment(this, loginFragment, R.id.main_container);
             }else{
                 mobileFragment = new MobileFragment();
                 FragmentsUtil.addFragment(this, mobileFragment, R.id.main_container);

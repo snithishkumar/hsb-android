@@ -48,15 +48,12 @@ public class KitchenServiceImpl implements KitchenService {
 
                 long vegCount = kitchenDao.getCountOf(FoodType.VEG,kitchenOrdersListEntity);
                 long nonVegCount = kitchenDao.getCountOf(FoodType.NONVEG,kitchenOrdersListEntity);
-                kitchenOrderListViewModel.setVegCount(String.valueOf(vegCount));
-                kitchenOrderListViewModel.setNonVegCount(String.valueOf(nonVegCount));
-                if(vegCount > 0 && nonVegCount > 0){
-                    kitchenOrderListViewModel.setFoodType(FoodType.BOTH);
-                }else if(vegCount > 0 ){
-                    kitchenOrderListViewModel.setFoodType(FoodType.VEG);
-                }else {
-                    kitchenOrderListViewModel.setFoodType(FoodType.NONVEG);
-                }
+                String vegData = String.format("%02d",vegCount);
+
+                kitchenOrderListViewModel.setVegCount(vegData);
+                String nonVegData = String.format("%02d",nonVegCount);
+                kitchenOrderListViewModel.setNonVegCount(nonVegData);
+
                 kitchenOrderListViewModel.setOrderTime(getOrderTime(kitchenOrdersListEntity.getOrderDateTime()));
                 kitchenOrderListViewModel.setLastOrderTime(getLastOrderTime(kitchenOrdersListEntity.getLastUpdateTime()));
                 kitchenOrderListViewModels.add(kitchenOrderListViewModel);
