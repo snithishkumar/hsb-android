@@ -3,13 +3,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
-            android:id="@+id/adapt_food_name"
-            android:text="Chilly Paneer"/>
+            android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"
+                    android:id="@+id/adapt_food_name"
+                    android:text="Chilly Paneer"/>
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="25dp"
+                    android:text="Spicy"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/item_type_background"/>
+        </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

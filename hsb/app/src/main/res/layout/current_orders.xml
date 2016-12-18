@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:background="#BDBDBD"
-
     android:layout_height="match_parent">
     //https://www.iconfinder.com/icons/769537/campfire_camping_cooking_fire_flame_hot_wood_icon#size=128
     <LinearLayout
@@ -33,14 +32,13 @@
     </LinearLayout>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/cart_item_img"
         android:src="@drawable/config_1"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginStart="1dp" />
+        android:layout_marginLeft="7dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"/>
 
     <TextView
         android:text="Place Order"
