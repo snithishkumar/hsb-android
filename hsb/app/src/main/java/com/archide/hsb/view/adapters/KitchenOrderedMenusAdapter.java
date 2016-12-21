@@ -97,7 +97,7 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
 
         }else if(viewHolder instanceof FoodCategoryViewHolder){
             FoodCategoryViewHolder foodCategoryViewHolder = (FoodCategoryViewHolder)viewHolder;
-            foodCategoryViewHolder.vFoodCategory.setText("VegSoup-Stater");
+            foodCategoryViewHolder.vFoodCategory.setText(kitchenOrderDetailsViewModel.getName());
         }else{
             CookingCommentsViewHolder cookingCommentsViewHolder = (CookingCommentsViewHolder)viewHolder;
             cookingCommentsViewHolder.vFoodCookingComments.setText(kitchenOrderDetailsViewModel.getComments());

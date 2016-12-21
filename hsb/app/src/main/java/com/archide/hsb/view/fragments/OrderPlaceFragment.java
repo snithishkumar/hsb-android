@@ -76,10 +76,10 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
          serviceTax =  (TextView) view.findViewById(R.id.service_tax);
           serviceVat =  (TextView) view.findViewById(R.id.service_vat);
           addMoreItems =  (TextView)view.findViewById(R.id.edit_order);
-         totalAmount =  (TextView) view.findViewById(R.id.total_amount);
+          totalAmount =  (TextView) view.findViewById(R.id.total_amount);
           placeAnOrder =  (Button) view.findViewById(R.id.place_an_order);
           placeAnOrder.setOnClickListener(this);
-        addMoreItems.setOnClickListener(this);
+         addMoreItems.setOnClickListener(this);
     }
 
 

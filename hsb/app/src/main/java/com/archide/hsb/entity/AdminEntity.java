@@ -11,13 +11,13 @@ import com.j256.ormlite.table.DatabaseTable;
 public class AdminEntity {
 
     public static final String ADMIN_ID = "AdminId";
-    public static final String TABLE_NUMBER = "TableNumber";
+   // public static final String TABLE_NUMBER = "TableNumber";
     public static final String M_PIN = "MPin";
     public static final String USER_MOBILE = "UserMobile";
     @DatabaseField(columnName = ADMIN_ID,generatedId = true)
     private int adminId;
-    @DatabaseField(columnName = TABLE_NUMBER)
-    private String tableNumber;
+   // @DatabaseField(columnName = TABLE_NUMBER)
+   // private String tableNumber;
     @DatabaseField(columnName = M_PIN)
     private String mPin;
     @DatabaseField(columnName = USER_MOBILE)
@@ -31,13 +31,7 @@ public class AdminEntity {
         this.adminId = adminId;
     }
 
-    public String getTableNumber() {
-        return tableNumber;
-    }
 
-    public void setTableNumber(String tableNumber) {
-        this.tableNumber = tableNumber;
-    }
 
     public String getmPin() {
         return mPin;
@@ -60,7 +54,6 @@ public class AdminEntity {
     public String toString() {
         return "AdminEntity{" +
                 "adminId=" + adminId +
-                ", tableNumber='" + tableNumber + '\'' +
                 ", mPin='" + mPin + '\'' +
                 ", userMobile='" + userMobile + '\'' +
                 '}';

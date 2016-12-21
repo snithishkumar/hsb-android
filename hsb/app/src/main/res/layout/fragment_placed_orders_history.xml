@@ -3,149 +3,268 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#ccc">
-
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/white">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"> //ccc
+    <LinearLayout
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
-        android:layout_above="@+id/order_history_add_menu_items"
         android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:background="#ccc">
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+
+        tools:context="com.archide.hsb.view.activities.OrderActivity"
+        android:weightSum="1">
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Your Order"
                 android:textStyle="bold"
                 android:textSize="24sp"
+                android:layout_centerVertical="true"
                 android:id="@+id/odr_his_your_order_text"
                 android:layout_marginLeft="10dp"
-                android:textColor="@android:color/black"
-                android:layout_alignParentTop="true" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/odr_his_order_data"
-                android:layout_width="match_parent"
-                android:layout_below="@+id/odr_his_your_order_text"
-                tools:listitem="@layout/adapt_placed_ordered_his_item_details"
-                android:layout_height="wrap_content"/>
-
+                android:textColor="@android:color/black"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Amount Details"
+                android:text="Add Items"
+                android:id="@+id/edit_order"
+                android:visibility="invisible"
                 android:textStyle="bold"
-                android:id="@+id/odr_his_amount_details"
-                android:layout_below="@+id/odr_his_order_data"
                 android:textSize="18sp"
-                android:layout_marginTop="10dp"
-                android:textColor="@android:color/holo_green_dark"
-                android:layout_centerHorizontal="true" />
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:textColor="@android:color/holo_green_dark"/>
+        </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/darker_gray"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/odr_his_order_data"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/adapt_placed_ordered_his_item_details"
+            android:layout_height="wrap_content">
 
+        </android.support.v7.widget.RecyclerView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Amount Details"
+            android:textStyle="bold"
+            android:id="@+id/odr_his_amount_details"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp"
+            android:textColor="@android:color/holo_green_dark"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+
+            android:paddingRight="15dp"
+            android:layout_marginTop="8dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:id="@+id/odr_his_subtotal_before_discount_text"
-                android:layout_below="@+id/odr_his_amount_details"
+                android:textSize="20dp"
                 android:text="Subtotal before discount"/>
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/odr_his_amount_details"
+                android:layout_alignParentRight="true"
+                android:textSize="20dp"
                 android:id="@+id/odr_his_subtotal_before_discount"
-                android:text="Rs 1,340"
-                android:layout_alignParentEnd="true" />
-
+                android:text="Rs 1,340"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="20dp"
                 android:layout_alignParentLeft="true"
-                android:id="@+id/odr_his_discount_text"
-                android:layout_below="@+id/odr_his_subtotal_before_discount_text"
                 android:text="Discount"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:layout_below="@+id/odr_his_subtotal_before_discount_text"
-
-                android:layout_alignParentEnd="true"
-
+                android:layout_alignParentRight="true"
+                android:textSize="20dp"
                 android:id="@+id/odr_his_discount"
                 android:text="-Rs 240"/>
-
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="20dp"
                 android:layout_alignParentLeft="true"
-                android:id="@+id/odr_his_subtotal_text"
-                android:layout_below="@+id/odr_his_discount_text"
                 android:text="Subtotal"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:layout_below="@+id/odr_his_discount_text"
-
-                android:layout_alignParentEnd="true"
-
+                android:layout_alignParentRight="true"
                 android:id="@+id/odr_his_subtotal"
-                android:text="Rs 2400"/>
-
+                android:textSize="20dp"
+                android:text="Rs 240"/>
+        </RelativeLayout>
+        <!--<RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:id="@+id/odr_his_tax_text"
-                android:layout_below="@+id/odr_his_subtotal_text"
-                android:text="Tax"/>
+                android:text="Service fee (0 %)"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/odr_his_subtotal_text"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/odr_his_tax"
-                android:text="Rs 240"/>
+                android:layout_alignParentRight="true"
+                android:id="@+id/service_tax"
+                android:text="Rs 0"/>
+        </RelativeLayout> -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:textSize="20dp"
+                android:text="Service tax (0 %)"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:id="@+id/service_tax"
+                android:textSize="20dp"
+                android:text="Rs 0"/>
+        </RelativeLayout>
+       <!-- <RelativeLayout
+            android:layout_width="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:textSize="20dp"
+                android:text="VAT (2 %)"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:id="@+id/service_vat"
+                android:textSize="20dp"
+                android:text="Rs 20.04"/>
+        </RelativeLayout> -->
+        <!-- <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentLeft="true"
+                 android:text="Delivery fee"/>
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentRight="true"
+                 android:text="Rs 30"/>
+         </RelativeLayout>
+         <EditText
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="10dp"
+             android:layout_marginBottom="10dp"
+             android:hint="Voucher Code(Optional)"/>
+         <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentRight="true"
+             android:text="Add voucher from list"
+             android:layout_marginTop="10dp"
+             android:layout_marginBottom="10dp"
+             android:textColor="@android:color/holo_green_dark"/> -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="20dp"
 
+            android:paddingRight="15dp"
+            >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Total"
-                android:textSize="24sp"
-                android:layout_below="@+id/odr_his_tax_text"
-
-                android:layout_alignParentLeft="true"
-                android:textStyle="bold"/>
+                android:textSize="26dp"
+                android:textStyle="bold"
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Rs. 1,123.04"
-                android:textSize="24sp"
-                android:id="@+id/odr_his_total_amount"
-                android:layout_below="@+id/odr_his_tax_text"
-                android:layout_alignParentEnd="true"
-                android:textStyle="bold"/>
-
+                android:id="@+id/total_amount"
+                android:textSize="26dp"
+                android:textStyle="bold"
+                android:layout_alignParentRight="true"
+                />
 
         </RelativeLayout>
+        <!--<Button
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:id="@+id/order_history_add_menu_items"
+            android:layout_margin="10dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@android:color/white"
+            android:text="Proceed to Checkout"
+            />-->
 
 
-    </ScrollView>
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_media_next"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/order_history_add_menu_items" />
+    </LinearLayout>
+</ScrollView>
 
-
-</RelativeLayout>
+<android.support.design.widget.FloatingActionButton
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:clickable="true"
+app:borderWidth="2dp"
+app:fabSize="normal"
+app:srcCompat="@drawable/ic_add_white_48dp"
+android:layout_alignParentBottom="true"
+android:layout_alignParentEnd="true"
+    android:layout_marginRight="15dp"
+    android:layout_marginBottom="15dp"
+android:id="@+id/order_history_add_menu_items" />
+    </RelativeLayout>

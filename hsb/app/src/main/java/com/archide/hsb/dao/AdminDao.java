@@ -1,7 +1,7 @@
 package com.archide.hsb.dao;
 
 import com.archide.hsb.entity.AdminEntity;
-import com.archide.hsb.entity.AppTypeEntity;
+import com.archide.hsb.entity.ConfigurationEntity;
 
 import java.sql.SQLException;
 
@@ -17,9 +17,9 @@ public interface AdminDao {
 
     boolean isMobilePresent(String mobileNumber)throws SQLException;
 
-    boolean isTableConfigured()throws SQLException;
+    //boolean isTableConfigured()throws SQLException;
 
-    AppTypeEntity getAppType()throws SQLException;
+    ConfigurationEntity getAppType()throws SQLException;
 
-    void createAppType(AppTypeEntity appTypeEntity)throws SQLException;
+    void createAppType(ConfigurationEntity configurationEntity)throws SQLException;
 }

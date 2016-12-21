@@ -1,20 +1,14 @@
 package com.archide.hsb.view.activities;
 
-import android.accounts.Account;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.archide.hsb.entity.AppTypeEntity;
+import com.archide.hsb.entity.ConfigurationEntity;
 import com.archide.hsb.enumeration.AppType;
 import com.archide.hsb.service.TableListService;
-import com.archide.hsb.service.impl.KitchenServiceImpl;
 import com.archide.hsb.service.impl.TableListServiceImpl;
-import com.archide.hsb.sync.HsbSyncAdapter;
-import com.archide.hsb.sync.SyncEvent;
 import com.archide.hsb.view.fragments.FragmentsUtil;
-import com.archide.hsb.view.fragments.LoginFragment;
 import com.archide.hsb.view.fragments.MobileFragment;
 import com.archide.hsb.view.fragments.ConfigurationFragment;
 
@@ -44,12 +38,12 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
 
 
     private void showFragment(){
-        AppTypeEntity appTypeEntity = tableListService.getAppType();
-        if(appTypeEntity == null){
+        ConfigurationEntity configurationEntity = tableListService.getAppType();
+        if(configurationEntity == null){
             configurationFragment = new ConfigurationFragment();
             FragmentsUtil.addFragment(this, configurationFragment, R.id.main_container);
         }else{
-            if(appTypeEntity.getAppType().toString().equals(AppType.Kitchen.toString())){
+            if(configurationEntity.getAppType().toString().equals(AppType.Kitchen.toString())){
 
                 Intent intent = new Intent(this, KitchenActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -60,11 +54,7 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
             }else{
                 mobileFragment = new MobileFragment();
                 FragmentsUtil.addFragment(this, mobileFragment, R.id.main_container);
-                /*if(tableListService.isTableConfigured()){
-
-                }else{
-
-                }*/
+                ActivityUtil.TABLE_NUMBER = configurationEntity.getTableNumber();
             }
         }
 

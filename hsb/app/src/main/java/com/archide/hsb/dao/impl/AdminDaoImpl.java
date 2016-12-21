@@ -4,9 +4,7 @@ import android.content.Context;
 
 import com.archide.hsb.dao.AdminDao;
 import com.archide.hsb.entity.AdminEntity;
-import com.archide.hsb.entity.AppTypeEntity;
-import com.archide.hsb.enumeration.AppType;
-import com.archide.hsb.view.activities.ActivityUtil;
+import com.archide.hsb.entity.ConfigurationEntity;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
@@ -18,7 +16,7 @@ import java.sql.SQLException;
 public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
 
     Dao<AdminEntity,Integer> adminEntityDao = null;
-    Dao<AppTypeEntity,Integer> appTypeDao = null;
+    Dao<ConfigurationEntity,Integer> appTypeDao = null;
 
 
 
@@ -30,7 +28,7 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
     @Override
     protected void initDao() throws SQLException {
         adminEntityDao = databaseHelper.getDao(AdminEntity.class);
-        appTypeDao = databaseHelper.getDao(AppTypeEntity.class);
+        appTypeDao = databaseHelper.getDao(ConfigurationEntity.class);
     }
 
 
@@ -46,8 +44,8 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
     }
 
     @Override
-    public void createAppType(AppTypeEntity appTypeEntity)throws SQLException{
-        appTypeDao.create(appTypeEntity);
+    public void createAppType(ConfigurationEntity configurationEntity)throws SQLException{
+        appTypeDao.create(configurationEntity);
     }
 
     @Override
@@ -56,7 +54,7 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
         return adminEntity != null;
     }
 
-    @Override
+  /*  @Override
     public boolean isTableConfigured() throws SQLException {
         AdminEntity adminEntity = adminEntityDao.queryBuilder().queryForFirst();
         if(adminEntity != null){
@@ -64,10 +62,10 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
         }
 
         return adminEntity != null;
-    }
+    }*/
 
 
-    public AppTypeEntity getAppType()throws SQLException{
+    public ConfigurationEntity getAppType()throws SQLException{
        return appTypeDao.queryBuilder().queryForFirst();
     }
 }

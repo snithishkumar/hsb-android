@@ -111,11 +111,13 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
         qb.selectRaw("Sum("+KitchenOrderDetailsEntity.QUANTITY+")");
         qb.where().
                 eq(KitchenOrderDetailsEntity.FOOD_TYPE,foodType).and().
+                eq(KitchenOrderDetailsEntity.ORDER_STATUS,OrderStatus.DELIVERED).and().
+                eq(KitchenOrderDetailsEntity.ORDER_STATUS,OrderStatus.UN_AVAILABLE).and().
                 eq(KitchenOrderDetailsEntity.KITCHEN_ORDER_LIST,kitchenOrdersListEntity);
       // String tt =  qb.prepareStatementString();
         GenericRawResults<String[]> rawResults =  kitchenOrderDetailsDao.queryRaw(qb.prepareStatementString());
         String[] values = rawResults.getFirstResult();
-        return Long.valueOf(values[0]);
+        return values[0] != null ? Long.valueOf(values[0]) : 0;
 
        /* return kitchenOrderDetailsDao.queryBuilder().where().
                 eq(KitchenOrderDetailsEntity.FOOD_TYPE,foodType).and().

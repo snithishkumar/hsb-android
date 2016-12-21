@@ -8,16 +8,28 @@ import com.j256.ormlite.table.DatabaseTable;
  * Created by Nithish on 17/12/16.
  */
 @DatabaseTable(tableName = "AppType")
-public class AppTypeEntity {
+public class ConfigurationEntity {
 
     public static final String APP_TYPE = "AppType";
     public static final String APP_TYPE_ID = "AppTypeId";
+    public static final String TABLE_NUMBER = "TableNumber";
 
     @DatabaseField(columnName = APP_TYPE_ID,generatedId = true)
     private int appTypeId;
 
     @DatabaseField(columnName = APP_TYPE)
     private AppType appType;
+
+    @DatabaseField(columnName = TABLE_NUMBER)
+    private String tableNumber;
+
+    public String getTableNumber() {
+        return tableNumber;
+    }
+
+    public void setTableNumber(String tableNumber) {
+        this.tableNumber = tableNumber;
+    }
 
     public int getAppTypeId() {
         return appTypeId;
@@ -37,7 +49,7 @@ public class AppTypeEntity {
 
     @Override
     public String toString() {
-        return "AppTypeEntity{" +
+        return "ConfigurationEntity{" +
                 "appTypeId=" + appTypeId +
                 ", appType=" + appType +
                 '}';
