@@ -11,6 +11,8 @@ import com.archide.hsb.enumeration.OrderStatus;
 import com.archide.hsb.enumeration.Status;
 import com.archide.hsb.enumeration.ViewStatus;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.GenericRawResults;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.UpdateBuilder;
 
 import java.sql.SQLException;
@@ -101,10 +103,24 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
 
     @Override
     public long getCountOf(FoodType foodType,KitchenOrdersListEntity kitchenOrdersListEntity)throws SQLException{
-       return kitchenOrderDetailsDao.queryBuilder().where().
+     /* String rawQuery =   "select sum( "+KitchenOrderDetailsEntity.QUANTITY+" ) from KitchenOrdersDetails where " +
+                "" +KitchenOrderDetailsEntity.FOOD_TYPE+" = "+foodType +" and "
+                +KitchenOrderDetailsEntity.KITCHEN_ORDER_LIST+" = "+kitchenOrdersListEntity.getKitchenOrderListId();
+*/
+        QueryBuilder<KitchenOrderDetailsEntity, Integer> qb = kitchenOrderDetailsDao.queryBuilder();
+        qb.selectRaw("Sum("+KitchenOrderDetailsEntity.QUANTITY+")");
+        qb.where().
+                eq(KitchenOrderDetailsEntity.FOOD_TYPE,foodType).and().
+                eq(KitchenOrderDetailsEntity.KITCHEN_ORDER_LIST,kitchenOrdersListEntity);
+      // String tt =  qb.prepareStatementString();
+        GenericRawResults<String[]> rawResults =  kitchenOrderDetailsDao.queryRaw(qb.prepareStatementString());
+        String[] values = rawResults.getFirstResult();
+        return Long.valueOf(values[0]);
+
+       /* return kitchenOrderDetailsDao.queryBuilder().where().
                 eq(KitchenOrderDetailsEntity.FOOD_TYPE,foodType).and().
                 eq(KitchenOrderDetailsEntity.KITCHEN_ORDER_LIST,kitchenOrdersListEntity)
-                .countOf();
+                .countOf();*/
     }
 
 

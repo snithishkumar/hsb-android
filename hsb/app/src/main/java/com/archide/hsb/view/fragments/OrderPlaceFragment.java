@@ -204,7 +204,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
                boolean isNetWorkConnected =  Utilities.isNetworkConnected(orderActivity);
                if(isNetWorkConnected){
                    progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), orderActivity);
-                   orderActivity.getOrderService().conformOrder(placeAnOrderViewModel,"1",orderActivity);
+                   orderActivity.getOrderService().conformOrder(placeAnOrderViewModel,ActivityUtil.USER_MOBILE,ActivityUtil.TABLE_NUMBER,orderActivity);
                }else{
                    ActivityUtil.showDialog(orderActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
                }

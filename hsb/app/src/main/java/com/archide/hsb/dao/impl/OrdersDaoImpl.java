@@ -111,6 +111,7 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
 
     @Override
     public PlacedOrdersEntity getPlacedOrderHistoryByMobile(String userMobileNumber,String tableNumber) throws SQLException {
+       List<PlacedOrdersEntity> list =  placedOrdersDao.queryForAll();
         PlacedOrdersEntity placedOrdersEntity =  placedOrdersDao.queryBuilder().where().eq(PlacedOrdersEntity.USER_MOBILE_NUMBER,userMobileNumber)
                 .and().eq(PlacedOrdersEntity.TABLE_NUMBER,tableNumber)
                 .queryForFirst();

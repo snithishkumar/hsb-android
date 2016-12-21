@@ -56,6 +56,8 @@ public class KitchenOrdersListEntity {
         this.tableNumber = placeOrdersJson.getTableNumber();
         this.viewStatus = ViewStatus.UN_VIEWED;
         this.status = Status.OPEN;
+        this.isSynced = true;
+        this.serverDateTime = placeOrdersJson.getServerDateTime();
 
     }
 

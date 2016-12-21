@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -75,7 +76,7 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
             KitchenOrderedMenusViewHolder kitchenOrderedMenusViewHolder = (KitchenOrderedMenusViewHolder)viewHolder;
             kitchenOrderedMenusViewHolder.vOrderName.setText(kitchenOrderDetailsViewModel.getName());
             if(kitchenOrderDetailsViewModel.getViewStatus().toString().equals(ViewStatus.UN_VIEWED.toString())){
-                kitchenOrderedMenusViewHolder.vTotalCount.setTextColor(Color.BLUE);
+                kitchenOrderedMenusViewHolder.vOrderViewStatus.setVisibility(View.VISIBLE);
             }
             kitchenOrderedMenusViewHolder.vTotalCount.setText(kitchenOrderDetailsViewModel.getQuantity()+"x");
 
@@ -145,6 +146,7 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
         TextView vOrderName;
         TextView vOrderStatus;
         ImageButton vMenuList;
+        Button vOrderViewStatus;
 
         public KitchenOrderedMenusViewHolder(View view) {
             super(view);
@@ -152,6 +154,7 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
             vOrderName = (TextView)view.findViewById(R.id.adapt_kitchen_order_name);
             vOrderStatus = (TextView)view.findViewById(R.id.order_status);
             vMenuList = (ImageButton)view.findViewById(R.id.adapt_kitchen_settings);
+            vOrderViewStatus = (Button)view.findViewById(R.id.adapt_kitchen_order_tag);
             vMenuList.setOnClickListener(this);
         }
 

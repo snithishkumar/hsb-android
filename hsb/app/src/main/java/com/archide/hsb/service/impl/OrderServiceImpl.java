@@ -152,7 +152,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    public void conformOrder(PlaceAnOrderViewModel placeAnOrderViewModel,String tableNumber,Context context){
+    public void conformOrder(PlaceAnOrderViewModel placeAnOrderViewModel,String mobileNumber,String tableNumber,Context context){
         try{
           PlacedOrdersEntity placedOrdersEntity =  ordersDao.getPlacedOrdersEntity();
             if(placedOrdersEntity == null){
@@ -160,6 +160,7 @@ public class OrderServiceImpl implements OrderService {
                 placedOrdersEntity.setPlaceOrdersUUID(UUID.randomUUID().toString());
                 placedOrdersEntity.setOrderId(generateOrderId());
                 placedOrdersEntity.setTableNumber(tableNumber);
+                placedOrdersEntity.setUserMobileNumber(mobileNumber);
                 placedOrdersEntity.setOrderDateTime(System.currentTimeMillis());
                 placedOrdersEntity.setPrice(placeAnOrderViewModel.getSubTotal());
                 placedOrdersEntity.setTaxAmount(placeAnOrderViewModel.getServiceTax());

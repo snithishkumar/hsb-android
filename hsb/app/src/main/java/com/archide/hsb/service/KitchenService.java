@@ -1,5 +1,7 @@
 package com.archide.hsb.service;
 
+import android.content.Context;
+
 import com.archide.hsb.view.model.KitchenOrderDetailsViewModel;
 import com.archide.hsb.view.model.KitchenOrderListViewModel;
 
@@ -17,7 +19,7 @@ public interface KitchenService {
 
     void updateKitchenOrderViewStatus(String orderId,List<KitchenOrderDetailsViewModel> detailsViewModels );
 
-    void saveOrderStatus(List<KitchenOrderDetailsViewModel> detailsViewModels,String orderId );
+    void saveOrderStatus(List<KitchenOrderDetailsViewModel> detailsViewModels,String orderId ,Context context );
 
 
 }

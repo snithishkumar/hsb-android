@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.archide.hsb.view.activities.KitchenActivity;
 import com.archide.hsb.view.adapters.KitchenOrderedMenusAdapter;
@@ -33,7 +34,7 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
     private List<KitchenOrderDetailsViewModel> detailsViewModels = new ArrayList<>();
     FloatingActionButton floatingActionButton = null;
 
-
+    Button button = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,8 +57,9 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.kitchen_order_data);
         recyclerView.setHasFixedSize(true);
 
-        floatingActionButton = (FloatingActionButton)view.findViewById(R.id.saveOrderStatus);
-        floatingActionButton.setOnClickListener(this);
+       // floatingActionButton = (FloatingActionButton)view.findViewById(R.id.saveOrderStatus);
+        button = (Button)view.findViewById(R.id.saveOrderStatus);
+        button.setOnClickListener(this);
         linearLayoutManager =  new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -108,12 +110,14 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
 
     @Override
     public void onClick(View view) {
-        kitchenActivity.getKitchenService().saveOrderStatus(detailsViewModels,orderId);
+        kitchenActivity.getKitchenService().saveOrderStatus(detailsViewModels,orderId,kitchenActivity);
+        kitchenActivity.backPress();
+        return;
     }
 
     public void enableSaveButton(){
-       if(floatingActionButton.getVisibility() != View.VISIBLE){
-           floatingActionButton.setVisibility(View.VISIBLE);
+       if(button != null && button.getVisibility() != View.VISIBLE){
+           button.setVisibility(View.VISIBLE);
        }
     }
 }

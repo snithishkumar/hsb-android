@@ -36,11 +36,19 @@ public class KitchenActivity extends AppCompatActivity implements KitchenOrderLi
     }
 
     private void init(){
+
         Account account = HsbSyncAdapter.getSyncAccount(this);
         Bundle settingsBundle = new Bundle();
-         settingsBundle.putInt("currentScreen", SyncEvent.GET_KITCHEN_ORDERS_DATA);
-       // ContentResolver.addPeriodicSync(account, this.getString(R.string.auth_type), settingsBundle,13);
-        ContentResolver.requestSync(account, this.getString(R.string.auth_type), settingsBundle);
+        settingsBundle.putInt("currentScreen", SyncEvent.GET_KITCHEN_ORDERS_DATA);
+      //  ContentResolver.requestSync(account, this.getString(R.string.auth_type), settingsBundle);
+        ContentResolver.addPeriodicSync(account, this.getString(R.string.auth_type), Bundle.EMPTY,15);
+
+      /*  Account account = HsbSyncAdapter.getSyncAccount(this);
+        Bundle settingsBundle = new Bundle();
+        settingsBundle.putInt("currentScreen", SyncEvent.GET_KITCHEN_ORDERS_DATA);
+       // ContentResolver.setSyncAutomatically(account,this.getString(R.string.auth_type),true);
+        ContentResolver.addPeriodicSync(account, this.getString(R.string.auth_type), settingsBundle,1);
+       // ContentResolver.requestSync(account, this.getString(R.string.auth_type), settingsBundle);*/
         kitchenService = new KitchenServiceImpl(this);
        // orderService = new OrderServiceImpl(this);
     }
@@ -59,6 +67,10 @@ public class KitchenActivity extends AppCompatActivity implements KitchenOrderLi
         kitchenOrderedItemsFragment.setArguments(purchaseIdArgs);
 
         FragmentsUtil.replaceFragment(this,kitchenOrderedItemsFragment,R.id.main_container);
+    }
+
+    public void backPress(){
+        FragmentsUtil.backPressed(this);
     }
 
     @Override

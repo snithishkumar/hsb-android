@@ -62,11 +62,11 @@ public class KitchenOrderListFragment extends Fragment {
         kitchenOrderList =  (GridView)view.findViewById(R.id.gridview);
        int orientation = getResources().getConfiguration().orientation;
         if(Configuration.ORIENTATION_LANDSCAPE == orientation){
-            kitchenOrderList.setNumColumns(3);
+            kitchenOrderList.setNumColumns(1);
         }else{
-            kitchenOrderList.setNumColumns(2);
+            kitchenOrderList.setNumColumns(1);
         }
-        kitchenOrderListAdapter =  new KitchenOrderListAdapter(kitchenOrderListViewModels);
+        kitchenOrderListAdapter =  new KitchenOrderListAdapter(kitchenOrderListViewModels,kitchenActivity);
 
         kitchenOrderList.setAdapter(kitchenOrderListAdapter);
        /* kitchenOrderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -95,7 +95,7 @@ public class KitchenOrderListFragment extends Fragment {
 
     private void init(){
 
-       Account account = HsbSyncAdapter.getSyncAccount(kitchenActivity);
+        Account account = HsbSyncAdapter.getSyncAccount(kitchenActivity);
         Bundle settingsBundle = new Bundle();
         settingsBundle.putInt("currentScreen", SyncEvent.GET_TABLE_LIST);
         ContentResolver.requestSync(account, kitchenActivity.getString(R.string.auth_type), settingsBundle);
@@ -110,9 +110,7 @@ public class KitchenOrderListFragment extends Fragment {
     private void loadData(){
         List<KitchenOrderListViewModel> temp = kitchenActivity.getKitchenService().getOrderList();
         kitchenOrderListViewModels.clear();
-        temp.addAll(temp);
-        temp.addAll(temp);
-       // temp.addAll(temp);
+
         kitchenOrderListViewModels.addAll(temp);
 
         kitchenOrderListAdapter.notifyDataSetChanged();

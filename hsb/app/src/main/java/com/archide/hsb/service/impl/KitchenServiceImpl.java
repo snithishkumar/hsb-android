@@ -1,6 +1,9 @@
 package com.archide.hsb.service.impl;
 
+import android.accounts.Account;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.os.Bundle;
 
 import com.archide.hsb.dao.KitchenDao;
 import com.archide.hsb.dao.impl.KitchenDaoImpl;
@@ -10,6 +13,8 @@ import com.archide.hsb.entity.KitchenOrdersListEntity;
 import com.archide.hsb.enumeration.FoodType;
 import com.archide.hsb.enumeration.ViewStatus;
 import com.archide.hsb.service.KitchenService;
+import com.archide.hsb.sync.HsbSyncAdapter;
+import com.archide.hsb.sync.SyncEvent;
 import com.archide.hsb.view.model.KitchenOrderDetailsViewModel;
 import com.archide.hsb.view.model.KitchenOrderListViewModel;
 
@@ -18,6 +23,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import hsb.archide.com.hsb.R;
 
 /**
  * Created by Nithish on 26/11/16.
@@ -104,12 +111,14 @@ public class KitchenServiceImpl implements KitchenService {
     }
 
     @Override
-    public void saveOrderStatus(List<KitchenOrderDetailsViewModel> detailsViewModels,String orderId ){
+    public void saveOrderStatus(List<KitchenOrderDetailsViewModel> detailsViewModels,String orderId,Context context ){
         try{
             for(KitchenOrderDetailsViewModel kitchenOrderDetailsViewModel : detailsViewModels){
                 kitchenDao.updateKitchenOrderDetailsViewStatus(kitchenOrderDetailsViewModel.getId(),kitchenOrderDetailsViewModel.getStatus(),kitchenOrderDetailsViewModel.getUnAvailableCount());
             }
             kitchenDao.updateKitchenOrderListViewSync(orderId);
+
+
         }catch (Exception e){
             e.printStackTrace();
         }

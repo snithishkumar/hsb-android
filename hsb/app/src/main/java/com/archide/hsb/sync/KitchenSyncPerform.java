@@ -70,7 +70,7 @@ public class KitchenSyncPerform {
             if (response != null && response.isSuccessful()) {
                 ResponseData responseData = response.body();
 
-                String menuItemsJsonString =  (String)responseData.getData();
+                String menuItemsJsonString = responseData.getData();
 
                 KitchenOrderListResponse kitchenOrderListResponse =  gson.fromJson(menuItemsJsonString, KitchenOrderListResponse.class);
                 processKitchenOrders(kitchenOrderListResponse.getPlaceOrdersJsonList());
@@ -89,34 +89,38 @@ public class KitchenSyncPerform {
     public void processKitchenOrders(List<PlaceOrdersJson> placeOrdersJsonList){
         try{
             for(PlaceOrdersJson placeOrdersJson : placeOrdersJsonList){
-                KitchenOrdersListEntity kitchenOrdersListEntity =  kitchenDao.getKitchenOrdersListEntity(placeOrdersJson.getOrderId());
-                if(kitchenOrdersListEntity == null){
-                    kitchenOrdersListEntity = new KitchenOrdersListEntity(placeOrdersJson);
-                    kitchenDao.createKitchenOrder(kitchenOrdersListEntity);
-                }else{
-                    kitchenOrdersListEntity.setLastUpdateTime(placeOrdersJson.getLastUpdatedDateTime());
-                    kitchenOrdersListEntity.setServerDateTime(placeOrdersJson.getServerDateTime());
-                    kitchenOrdersListEntity.setStatus(Status.OPEN);
-                    kitchenOrdersListEntity.setViewStatus(ViewStatus.UN_VIEWED);
-                    kitchenDao.updateKitchenOrder(kitchenOrdersListEntity);
-                }
-
                 List<OrderedMenuItems>  orderedMenuItemsList = placeOrdersJson.getMenuItems();
-                for(OrderedMenuItems orderedMenuItems : orderedMenuItemsList){
-                    KitchenOrdersCategoryEntity kitchenOrdersCategory = kitchenDao.getKitchenOrdersCategoryEntity(kitchenOrdersListEntity,orderedMenuItems.getCategoryUuid());
-                    if(kitchenOrdersCategory == null){
-                        kitchenOrdersCategory = new KitchenOrdersCategoryEntity();
-                        kitchenOrdersCategory.setCategoryName(orderedMenuItems.getCategoryName());
-                        kitchenOrdersCategory.setFoodCategoryUUID(orderedMenuItems.getCategoryUuid());
-                        kitchenOrdersCategory.setKitchenOrdersList(kitchenOrdersListEntity);
-                        kitchenOrdersCategory.setDateTime(System.currentTimeMillis());
-                        kitchenDao.createKitchenOrderCategory(kitchenOrdersCategory);
-                    }
-                    KitchenOrderDetailsEntity kitchenOrderDetailsEntity = new KitchenOrderDetailsEntity(orderedMenuItems);
-                    kitchenOrderDetailsEntity.setKitchenOrdersCategory(kitchenOrdersCategory);
-                    kitchenOrderDetailsEntity.setKitchenOrdersList(kitchenOrdersListEntity);
-                    kitchenDao.createKitchenOrderItems(kitchenOrderDetailsEntity);
-                }
+               if(orderedMenuItemsList.size() > 0){
+                   KitchenOrdersListEntity kitchenOrdersListEntity =  kitchenDao.getKitchenOrdersListEntity(placeOrdersJson.getOrderId());
+                   if(kitchenOrdersListEntity == null){
+                       kitchenOrdersListEntity = new KitchenOrdersListEntity(placeOrdersJson);
+                       kitchenDao.createKitchenOrder(kitchenOrdersListEntity);
+                   }else{
+                       kitchenOrdersListEntity.setLastUpdateTime(placeOrdersJson.getLastUpdatedDateTime());
+                       kitchenOrdersListEntity.setServerDateTime(placeOrdersJson.getServerDateTime());
+                       kitchenOrdersListEntity.setStatus(Status.OPEN);
+                       kitchenOrdersListEntity.setViewStatus(ViewStatus.UPDATES);
+                       kitchenDao.updateKitchenOrder(kitchenOrdersListEntity);
+                   }
+
+
+                   for(OrderedMenuItems orderedMenuItems : orderedMenuItemsList){
+                       KitchenOrdersCategoryEntity kitchenOrdersCategory = kitchenDao.getKitchenOrdersCategoryEntity(kitchenOrdersListEntity,orderedMenuItems.getCategoryUuid());
+                       if(kitchenOrdersCategory == null){
+                           kitchenOrdersCategory = new KitchenOrdersCategoryEntity();
+                           kitchenOrdersCategory.setCategoryName(orderedMenuItems.getCategoryName());
+                           kitchenOrdersCategory.setFoodCategoryUUID(orderedMenuItems.getCategoryUuid());
+                           kitchenOrdersCategory.setKitchenOrdersList(kitchenOrdersListEntity);
+                           kitchenOrdersCategory.setDateTime(System.currentTimeMillis());
+                           kitchenDao.createKitchenOrderCategory(kitchenOrdersCategory);
+                       }
+                       KitchenOrderDetailsEntity kitchenOrderDetailsEntity = new KitchenOrderDetailsEntity(orderedMenuItems);
+                       kitchenOrderDetailsEntity.setKitchenOrdersCategory(kitchenOrdersCategory);
+                       kitchenOrderDetailsEntity.setKitchenOrdersList(kitchenOrdersListEntity);
+                       kitchenDao.createKitchenOrderItems(kitchenOrderDetailsEntity);
+                   }
+               }
+
 
             }
         }catch (Exception e){
@@ -146,7 +150,9 @@ public class KitchenSyncPerform {
         try {
             List<KitchenOrdersListEntity> kitchenOrdersList =  kitchenDao.getUnSyncedOrderList();
             List<PlaceOrdersJson> placeOrderList = new ArrayList<>();
+            boolean dataFlag = false;
             for(KitchenOrdersListEntity kitchenOrdersListEntity : kitchenOrdersList){
+                dataFlag = true;
                 PlaceOrdersJson placeOrdersJson = new PlaceOrdersJson(kitchenOrdersListEntity);
                 placeOrderList.add(placeOrdersJson);
                 List<KitchenOrderDetailsEntity> kitchenOrderDetailsList = kitchenDao.getUnSyncedOrderDetails(kitchenOrdersListEntity);
@@ -155,23 +161,26 @@ public class KitchenSyncPerform {
                     placeOrdersJson.getMenuItems().add(orderedMenuItems);
                 }
             }
-            Call<ResponseData> kitchenOrderSyncResponse =   hsbAPI.sendUnSyncedKitchenOrders(placeOrderList);
-            Response<ResponseData> response =   kitchenOrderSyncResponse.execute();
-            if (response != null && response.isSuccessful()) {
-                ResponseData responseData =  response.body();
-                if(responseData.getSuccess() && responseData.getStatusCode() == 200){
-                    String orderedItemsUuids =  responseData.getData();
-                    List<KitchenOrderStatusSyncResponse> placeOrdersList = gson.fromJson(orderedItemsUuids,
-                            new TypeToken<List<KitchenOrderStatusSyncResponse>>() {}.getType());
-                    for(KitchenOrderStatusSyncResponse kitchenOrderStatusSyncResponse : placeOrdersList){
-                        List<String> placedOrderItemsUuids =  kitchenOrderStatusSyncResponse.getPlacedOrderItemsUuid();
-                        kitchenDao.updateKitchenOrderListSyncStatus(kitchenOrderStatusSyncResponse.getPlacedOrderUuid());
-                        for(String placedOrderItemsUuid : placedOrderItemsUuids){
-                            kitchenDao.updateKitchenOrderDetailsSyncStatus(placedOrderItemsUuid);
+            if(dataFlag){
+                Call<ResponseData> kitchenOrderSyncResponse =   hsbAPI.sendUnSyncedKitchenOrders(placeOrderList);
+                Response<ResponseData> response =   kitchenOrderSyncResponse.execute();
+                if (response != null && response.isSuccessful()) {
+                    ResponseData responseData =  response.body();
+                    if(responseData.getSuccess() && responseData.getStatusCode() == 200){
+                        String orderedItemsUuids =  responseData.getData();
+                        List<KitchenOrderStatusSyncResponse> placeOrdersList = gson.fromJson(orderedItemsUuids,
+                                new TypeToken<List<KitchenOrderStatusSyncResponse>>() {}.getType());
+                        for(KitchenOrderStatusSyncResponse kitchenOrderStatusSyncResponse : placeOrdersList){
+                            List<String> placedOrderItemsUuids =  kitchenOrderStatusSyncResponse.getPlacedOrderItemsUuid();
+                            kitchenDao.updateKitchenOrderListSyncStatus(kitchenOrderStatusSyncResponse.getPlacedOrderUuid());
+                            for(String placedOrderItemsUuid : placedOrderItemsUuids){
+                                kitchenDao.updateKitchenOrderDetailsSyncStatus(placedOrderItemsUuid);
+                            }
                         }
                     }
                 }
             }
+
         }catch (Exception e){
             e.printStackTrace();
         }

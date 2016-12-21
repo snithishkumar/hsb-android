@@ -75,6 +75,7 @@ public class KitchenOrderDetailsEntity {
         this.orderStatus = orderedMenuItems.getOrderStatus();
         this.viewStatus = ViewStatus.UN_VIEWED;
         this.unAvailableCount = orderedMenuItems.getUnAvailableCount();
+        this.isSync = true;
     }
 
     public boolean isSync() {

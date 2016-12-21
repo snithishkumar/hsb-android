@@ -25,7 +25,7 @@ public interface OrderService {
 
     void calcAmount(PlaceAnOrderViewModel placeAnOrderViewModel);
 
-    void conformOrder(PlaceAnOrderViewModel placeAnOrderViewModel,String tableNumber,Context context);
+    void conformOrder(PlaceAnOrderViewModel placeAnOrderViewModel,String mobileNumber,String tableNumber,Context context);
 
     PlaceAnOrderViewModel getPlacedHistoryOrderViewModel();
 

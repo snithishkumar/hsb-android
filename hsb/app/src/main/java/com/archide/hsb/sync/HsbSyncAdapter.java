@@ -81,7 +81,7 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
      */
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-        int currentScreen =  extras.getInt("currentScreen",0);
+        int currentScreen =  extras.getInt("currentScreen", SyncEvent.GET_KITCHEN_ORDERS_DATA);
         if(currentScreen != 0){
             init();
         }
@@ -108,6 +108,8 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
 
             case SyncEvent.GET_KITCHEN_ORDERS_DATA:
                 responseData =  kitchenSyncPerform.getKitchenOrders();
+                kitchenSyncPerform.sendUnSyncedOrderStatus();
+                // TODO -- Need to Verify whether need to send first or get update first
                 postData(responseData);
                 break;
 

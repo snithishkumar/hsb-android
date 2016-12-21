@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="4x"
-        android:textSize="18dp"
+        android:textSize="28sp"
         android:textStyle="bold"
         android:layout_alignParentLeft="true"
         android:textColor="@android:color/holo_green_dark"/>
@@ -27,11 +27,24 @@
         android:layout_height="wrap_content"
         android:id="@+id/adapt_kitchen_order_name"
         android:layout_marginLeft="15dp"
-        android:textSize="18dp"
+        android:textSize="28sp"
         android:layout_toRightOf="@+id/adapt_kitchen_total_count"
-        android:layout_toLeftOf="@+id/adapt_kitchen_settings"
         android:text="Chicken Chukka"
         android:textColor="@android:color/black"/>
+
+
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:text="New"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:id="@+id/adapt_kitchen_order_tag"
+        android:visibility="invisible"
+        android:layout_toRightOf="@+id/adapt_kitchen_order_name"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:background="@drawable/item_type_background"/>
 
     <TextView
         android:layout_width="wrap_content"
