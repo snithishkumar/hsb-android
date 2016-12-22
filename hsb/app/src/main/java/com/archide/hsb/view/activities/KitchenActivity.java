@@ -41,7 +41,7 @@ public class KitchenActivity extends AppCompatActivity implements KitchenOrderLi
         Bundle settingsBundle = new Bundle();
         settingsBundle.putInt("currentScreen", SyncEvent.GET_KITCHEN_ORDERS_DATA);
       //  ContentResolver.requestSync(account, this.getString(R.string.auth_type), settingsBundle);
-        ContentResolver.addPeriodicSync(account, this.getString(R.string.auth_type), Bundle.EMPTY,15);
+        ContentResolver.addPeriodicSync(account, this.getString(R.string.auth_type), Bundle.EMPTY,5);
 
       /*  Account account = HsbSyncAdapter.getSyncAccount(this);
         Bundle settingsBundle = new Bundle();
