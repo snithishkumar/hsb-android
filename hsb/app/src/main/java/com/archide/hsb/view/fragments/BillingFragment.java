@@ -185,7 +185,7 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
             progressDialog.dismiss();
         }
         // 3000
-        if(responseData.getStatusCode() == 3000){
+        if(responseData.getStatusCode() == 2000){
             populateData();
         }else if(responseData.getStatusCode() != 500){
             Intent intent = new Intent(naviDrawerActivity, HomeActivity.class);

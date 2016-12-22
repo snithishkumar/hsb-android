@@ -21,6 +21,7 @@ public class PlacedOrdersEntity {
     public static final String SERVER_DATE_TIME = "ServerDateTime";
     public static final String ORDER_DATE_TIME = "OrderDateTime";
     public static final String LAST_UPDATED_TIME = "LastUpdatedDateTime";
+	public static final String IS_CLOSED = "IsClosed";
 
 
 
@@ -50,6 +51,8 @@ public class PlacedOrdersEntity {
     private long orderDateTime;
     @DatabaseField(columnName = LAST_UPDATED_TIME)
     private long lastUpdatedDateTime;
+	@DatabaseField(columnName = IS_CLOSED)
+	private boolean isClosed;
 	
 	public PlacedOrdersEntity(){
 		
@@ -68,6 +71,7 @@ public class PlacedOrdersEntity {
         this.orderDateTime = placeOrdersJson.getOrderDateTime();
         this.userMobileNumber = placeOrdersJson.getUserMobileNumber();
         this.lastUpdatedDateTime = placeOrdersJson.getLastUpdatedDateTime();
+
 	}
 
 	public void populateBilling(PlaceOrdersJson placeOrdersJson){
@@ -88,7 +92,15 @@ public class PlacedOrdersEntity {
         this.userMobileNumber = userMobileNumber;
     }
 
-    public int getPlaceOrdersId() {
+	public boolean isClosed() {
+		return isClosed;
+	}
+
+	public void setClosed(boolean closed) {
+		isClosed = closed;
+	}
+
+	public int getPlaceOrdersId() {
 		return placeOrdersId;
 	}
 	public void setPlaceOrdersId(int placeOrdersId) {

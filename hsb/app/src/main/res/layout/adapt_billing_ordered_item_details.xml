@@ -25,7 +25,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/order_name"
+        android:id="@+id/billing_order_name"
         android:text="Chicken Chukka"
         android:layout_toRightOf="@+id/billing_total_count"
         android:layout_toLeftOf="@+id/billing_total_amount"

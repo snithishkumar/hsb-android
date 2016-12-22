@@ -161,8 +161,9 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 startActivity(intent);
                 break;
             case 2:
-                /*fragment = new MessagesFragment();
-                title = getString(R.string.title_messages);*/
+                intent = new Intent(this, NaviDrawerActivity.class);
+                intent.putExtra("options",3);
+                startActivity(intent);
                 break;
             case 3:
                 intent = new Intent(this, NaviDrawerActivity.class);

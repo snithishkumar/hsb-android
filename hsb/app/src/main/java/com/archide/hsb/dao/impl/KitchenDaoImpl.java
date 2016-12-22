@@ -78,7 +78,9 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
 
     @Override
     public void closeOrders(String orderGuid)throws SQLException{
-        kitchenOrderListDao.updateBuilder().updateColumnValue(KitchenOrdersListEntity.STATUS,Status.CLOSE).where().eq(KitchenOrdersListEntity.PLACED_ORDERS_UUID,orderGuid);
+      UpdateBuilder<KitchenOrdersListEntity,Integer> updateBuilder =  kitchenOrderListDao.updateBuilder();
+        updateBuilder.updateColumnValue(KitchenOrdersListEntity.STATUS,Status.CLOSE).where().eq(KitchenOrdersListEntity.ORDER_ID,orderGuid);
+        updateBuilder.update();
     }
 
     @Override

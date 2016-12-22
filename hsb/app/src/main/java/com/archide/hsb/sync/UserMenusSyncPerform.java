@@ -164,6 +164,7 @@ public class UserMenusSyncPerform {
                 ordersDao.createPlacedOrdersEntity(placedOrdersEntity);
             }else if(isBilling){
                 placedOrdersEntity.populateBilling(placeOrdersJson);
+                placedOrdersEntity.setClosed(true);
                 ordersDao.updatePlacedOrdersEntity(placedOrdersEntity);
             }
             List<OrderedMenuItems>  menuItemsList =  placeOrdersJson.getMenuItems();

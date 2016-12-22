@@ -39,7 +39,7 @@ public class BillingMenuItemsAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) {
         MenuItemsViewModel menuItemsViewModel = menuItemsViewModels.get(position);
-        PlacedOrderHisMenuItemsAdapter.OrderedMenuItemsViewHolder orderedMenuItemsViewHolder  = (PlacedOrderHisMenuItemsAdapter.OrderedMenuItemsViewHolder)viewHolder;
+        OrderedMenuItemsViewHolder orderedMenuItemsViewHolder  = (OrderedMenuItemsViewHolder)viewHolder;
         orderedMenuItemsViewHolder.vTotalCount.setText(String.valueOf(menuItemsViewModel.getCount()) +"x ");
         orderedMenuItemsViewHolder.vTotalAmount.setText(String.valueOf(menuItemsViewModel.getCost() * menuItemsViewModel.getCount()));
         orderedMenuItemsViewHolder.vOrderName.setText(String.valueOf(menuItemsViewModel.getName()));
@@ -58,9 +58,9 @@ public class BillingMenuItemsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         public OrderedMenuItemsViewHolder(View view) {
             super(view);
-            vTotalCount = (TextView)view.findViewById(R.id.total_count);
-            vTotalAmount = (TextView)view.findViewById(R.id.total_amount);
-            vOrderName = (TextView)view.findViewById(R.id.order_name);
+            vTotalCount = (TextView)view.findViewById(R.id.billing_total_count);
+            vTotalAmount = (TextView)view.findViewById(R.id.billing_total_amount);
+            vOrderName = (TextView)view.findViewById(R.id.billing_order_name);
         }
 
 

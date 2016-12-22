@@ -97,7 +97,7 @@ public class KitchenOrderListFragment extends Fragment {
 
         Account account = HsbSyncAdapter.getSyncAccount(kitchenActivity);
         Bundle settingsBundle = new Bundle();
-        settingsBundle.putInt("currentScreen", SyncEvent.GET_TABLE_LIST);
+        settingsBundle.putInt("currentScreen", SyncEvent.GET_KITCHEN_ORDERS_DATA);
         ContentResolver.requestSync(account, kitchenActivity.getString(R.string.auth_type), settingsBundle);
 
 

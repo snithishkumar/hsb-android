@@ -35,11 +35,11 @@ public interface HsbAPI {
 
 
     /** Create User **/
-    @POST ("/hsb/mobile/getKitchenOrders.html")
+    @POST ("/hsb/mobile/kitchen/getKitchenOrders.html")
     Call<ResponseData> getKitchenOrders(@Body List<GetKitchenOrders> getKitchenOrders);
 
 
-    @POST ("/hsb/mobile/sendUnSyncedKitchenOrders.html")
+    @POST ("/hsb/mobile/kitchen/sendUnSyncedKitchenOrders.html")
     Call<ResponseData> sendUnSyncedKitchenOrders(@Body List<PlaceOrdersJson> placeOrderList);
 
     @POST ("/hsb//mobile/getPreviousOrder.html")
