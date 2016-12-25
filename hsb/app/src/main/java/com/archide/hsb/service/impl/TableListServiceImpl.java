@@ -130,4 +130,24 @@ public class TableListServiceImpl implements TableListService {
     }
 
 
+    @Override
+    public int verifyLogin(String mPin){
+        try{
+           AdminEntity adminEntity = adminDao.getAdminEntity();
+            if(adminEntity == null){
+                return 1;
+            }else  if(adminEntity.getmPin().equals(mPin)){
+                return 2;
+            }
+            return 3;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return 1;
+    }
+
+
+
+
+
 }

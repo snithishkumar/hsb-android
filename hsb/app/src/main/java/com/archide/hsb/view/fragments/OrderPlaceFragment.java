@@ -177,12 +177,12 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
 
     public void populateAmountDetails(){
         cookingComments.setText(placeAnOrderViewModel.getCookingComments());
-        subTotalBeforeDiscount.setText(String.valueOf(placeAnOrderViewModel.getSubTotalBeforeDiscount()));
-        discount.setText(String.valueOf(placeAnOrderViewModel.getDiscount()));
-        subTotal.setText(String.valueOf(placeAnOrderViewModel.getSubTotal()));
-        serviceTax.setText(String.valueOf(placeAnOrderViewModel.getServiceTax()));
-        serviceVat.setText(String.valueOf(placeAnOrderViewModel.getServiceVat()));
-        totalAmount.setText(String.valueOf(placeAnOrderViewModel.getTotalAmount()));
+        subTotalBeforeDiscount.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getSubTotalBeforeDiscount()));
+        discount.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getDiscount()));
+        subTotal.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getSubTotal()));
+        serviceTax.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getServiceTax()));
+        serviceVat.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getServiceVat()));
+        totalAmount.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getTotalAmount()));
 
     }
 

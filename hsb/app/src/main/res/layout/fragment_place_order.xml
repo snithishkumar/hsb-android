@@ -42,6 +42,8 @@
                 android:textStyle="bold"
                 android:textSize="24sp"
                 android:layout_centerVertical="true"
+                android:drawableLeft="@drawable/ic_receipt_black_36dp"
+                android:drawablePadding="15dp"
                 android:id="@+id/your_order_text"
                 android:layout_marginLeft="10dp"
                 android:textColor="@android:color/black"/>

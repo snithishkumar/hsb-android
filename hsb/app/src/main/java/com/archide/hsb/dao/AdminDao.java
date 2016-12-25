@@ -22,4 +22,6 @@ public interface AdminDao {
     ConfigurationEntity getAppType()throws SQLException;
 
     void createAppType(ConfigurationEntity configurationEntity)throws SQLException;
+
+    AdminEntity getAdminEntity()throws SQLException;
 }

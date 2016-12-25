@@ -84,7 +84,7 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }else if(viewHolder instanceof OrderItemsViewHolder){
             OrderItemsViewHolder orderItemsViewHolder = (OrderItemsViewHolder)viewHolder;
             orderItemsViewHolder.vFoodName.setText(menuItemsViewModel.getName());
-            orderItemsViewHolder.vFoodCost.setText(String.valueOf(menuItemsViewModel.getCost()));
+            orderItemsViewHolder.vFoodCost.setText(homeActivity.getString(R.string.pound)+String.valueOf(menuItemsViewModel.getCost()));
             orderItemsViewHolder.vFoodCartCount.setText(String.valueOf(menuItemsViewModel.getCount()));
         }else{
 
@@ -95,7 +95,7 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private void setValues(MenuItemsViewHolder menuItemsViewHolder,MenuItemsViewModel menuItemsViewModel ){
         menuItemsViewHolder.vFoodName.setText(menuItemsViewModel.getName());
-        menuItemsViewHolder.vFoodCost.setText(String.valueOf(menuItemsViewModel.getCost()));
+        menuItemsViewHolder.vFoodCost.setText(homeActivity.getString(R.string.pound)+String.valueOf(menuItemsViewModel.getCost()));
     }
 
     public class  FoodCategoryViewHolder extends RecyclerView.ViewHolder{

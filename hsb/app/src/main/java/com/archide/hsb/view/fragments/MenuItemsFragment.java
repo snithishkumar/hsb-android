@@ -121,7 +121,6 @@ public class MenuItemsFragment extends Fragment {
         List<MenuItemsViewModel> menuItemsViewModels =  homeActivity.getMenuItemService().getMenuItemsViewModel(menuCourseUuid,orderDetailsViewModel);
         this.menuItemsViewModels.clear();
         this.menuItemsViewModels.addAll(menuItemsViewModels);
-        this.menuItemsViewModels.addAll(menuItemsViewModels);
         menuItemListAdapter.notifyDataSetChanged();
         updateFooterBar();
 
@@ -144,10 +143,9 @@ public class MenuItemsFragment extends Fragment {
     }
 
     public void updateFooterBar(){
-
-        totalNoOfItems.setText(String.valueOf(orderDetailsViewModel.getTotalCount())+" items");
-        totalAmount.setText(String.valueOf(orderDetailsViewModel.getTotalCost()));
         if(orderDetailsViewModel.getTotalCount() > 0){
+            totalNoOfItems.setText(String.valueOf(orderDetailsViewModel.getTotalCount())+" items");
+            totalAmount.setText(getString(R.string.pound)+" "+String.valueOf(orderDetailsViewModel.getTotalCost()));
             if(layout.getVisibility() != View.VISIBLE){
                 layout.setVisibility(View.VISIBLE);
             }

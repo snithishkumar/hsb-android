@@ -3,15 +3,15 @@ package com.archide.hsb.view.fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
+import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.MainActivity;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import hsb.archide.com.hsb.R;
 /**
  *
  */
-public class LoginFragment extends Fragment implements View.OnClickListener{
+public class KitchenLoginFragment extends Fragment implements View.OnClickListener{
 
     List<String> selectedPin = new ArrayList<>(6);
     Button firstPin = null;
@@ -34,7 +34,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     Button sixthPin = null;
 
     private MainActivity mainActivity;
-    private TextView userMobile;
+    private MainActivityCallback mainActivityCallback;
     private ProgressDialog progressDialog;
 
 
@@ -49,11 +49,58 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View loginView =  inflater.inflate(R.layout.fragment_login, container, false);
-        userMobile =  (TextView)loginView.findViewById(R.id.vUserMobileNumber);
-        Button button =  (Button)loginView.findViewById(R.id.submit);
-        button.setOnClickListener(this);
+        init(loginView);
 
         return loginView;
+    }
+
+
+    private void init( View view){
+       /* try{
+            InstanceID instanceID = InstanceID.getInstance(mainActivity);
+            token = instanceID.getToken(getString(R.string.google_cloud_id),
+                    GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+        }catch (Exception e){
+            Log.e("Error","Error  in GoogleCloudMessaging",e);
+        }*/
+        Button zero = (Button)   view.findViewById(R.id.kitchen_log_zero);
+        Button one = (Button)  view.findViewById(R.id.kitchen_log_one);
+        Button two = (Button)  view.findViewById(R.id.kitchen_log_two);
+        Button three = (Button)  view.findViewById(R.id.kitchen_log_three);
+        Button four = (Button) view.findViewById(R.id.kitchen_log_four);
+        Button five = (Button) view.findViewById(R.id.kitchen_log_five);
+        Button six = (Button) view.findViewById(R.id.kitchen_log_six);
+        Button seven = (Button)  view.findViewById(R.id.kitchen_log_seven);
+        Button eight = (Button) view.findViewById(R.id.kitchen_log_eight);
+        Button nine = (Button) view.findViewById(R.id.kitchen_log_nine);
+        Button delButton = (Button) view.findViewById(R.id.kitchen_log_del);
+        Button forgetButton = (Button) view.findViewById(R.id.kitchen_log_forget_pin);
+        setListener(zero);
+        setListener(one);
+        setListener(two);
+        setListener(three);
+        setListener(four);
+        setListener(five);
+        setListener(six);
+        setListener(seven);
+        setListener(eight);
+        setListener(nine);
+        setListener(delButton);
+        setListener(forgetButton);
+
+
+        firstPin = (Button)   view.findViewById(R.id.kitchen_log_first_value);
+        secondPin = (Button)   view.findViewById(R.id.kitchen_log_second_value);
+        thirdPin = (Button)   view.findViewById(R.id.kitchen_log_third_value);
+        fourthPin = (Button)   view.findViewById(R.id.kitchen_log_fourth_value);
+        fifthPin = (Button)   view.findViewById(R.id.kitchen_log_fifth_value);
+        sixthPin = (Button)   view.findViewById(R.id.kitchen_log_sixth_value);
+
+    }
+
+
+    private void setListener(Button button){
+        button.setOnClickListener(this);
     }
 
 
@@ -62,6 +109,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     public void onAttach(Context context) {
         super.onAttach(context);
         mainActivity = (MainActivity)context;
+        mainActivityCallback = (MainActivityCallback)context;
 
     }
 
@@ -116,6 +164,22 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private void verifyLogin(){
         int count = selectedPin.size();
         if(count == 6){
+            String data = TextUtils.join("",selectedPin);
+            int result =  mainActivity.getTableListService().verifyLogin(data);
+            if(result == 2){
+                mainActivityCallback.success(5000,null);
+                //login success
+            }else if(result == 3){
+                ActivityUtil.showDialog(mainActivity,"Error","InValid Password");
+                reSetPin();
+                // Invalid Password
+            }else{
+                ActivityUtil.showDialog(mainActivity,"Error","OOPS! Something went wrong. Please contact System Admin");
+                reSetPin();
+                // Contact System Admin
+            }
+
+
            /* boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
             if(isNet){
                 progressDialog = ActivityUtil.showProgress(getString(R.string.login_submit_heading), getString(R.string.login_submit_message), mainActivity);
@@ -137,49 +201,62 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             verifyLogin();
         }
         switch (v.getId()){
-            case R.id.log_zero:
+            case R.id.kitchen_log_zero:
                 addValue("0");
                 break;
-            case R.id.log_one:
+            case R.id.kitchen_log_one:
                 addValue("1");
                 break;
-            case R.id.log_two:
+            case R.id.kitchen_log_two:
                 addValue("2");
                 break;
-            case R.id.log_three:
+            case R.id.kitchen_log_three:
                 addValue("3");
                 break;
-            case R.id.log_four:
+            case R.id.kitchen_log_four:
                 addValue("4");
                 break;
-            case R.id.log_five:
+            case R.id.kitchen_log_five:
                 addValue("5");
                 break;
-            case R.id.log_six:
+            case R.id.kitchen_log_six:
                 addValue("6");
                 break;
-            case R.id.log_seven:
+            case R.id.kitchen_log_seven:
                 addValue("7");
                 break;
-            case R.id.log_eight:
+            case R.id.kitchen_log_eight:
                 addValue("8");
                 break;
-            case R.id.log_nine:
+            case R.id.kitchen_log_nine:
                 addValue("9");
                 break;
-            case R.id.log_del:
+            case R.id.kitchen_log_del:
                 if(count > 0){
                     selectedPin.remove(count - 1);
                     resetColor(count, R.drawable.small_round_background);
                 }
                 break;
-
+            case R.id.kitchen_log_forget_pin:
+                ActivityUtil.showDialog(mainActivity,"Error","Contact System Admin");
+                break;
 
 
         }
         verifyLogin();
     }
 
+    private void reSetPin(){
+        int totalCount = selectedPin.size();
+        for(int i = totalCount; i > 0; i--){
+            selectedPin.remove(i - 1);
+            resetColor(i, R.drawable.small_round_background);
+        }
+    }
+
+    public interface MainActivityCallback {
+        void success(int code, Object data);
+    }
 
 
 

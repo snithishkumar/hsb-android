@@ -30,6 +30,8 @@
     <string name="dialog_ok">Ok</string>
     <string name="dialog_cancel">Close</string>
 
+    <string name="pound">\u00A3 </string>
+
 
     <string name="login_forget_mpin">Forget mPIN</string>
     <string name="login_enter_mpin">Enter your mPIN</string>

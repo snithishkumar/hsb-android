@@ -95,6 +95,9 @@ public class KitchenOrderListFragment extends Fragment {
 
     private void init(){
 
+        kitchenActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        kitchenActivity.getSupportActionBar().setHomeButtonEnabled(true);
+
         Account account = HsbSyncAdapter.getSyncAccount(kitchenActivity);
         Bundle settingsBundle = new Bundle();
         settingsBundle.putInt("currentScreen", SyncEvent.GET_KITCHEN_ORDERS_DATA);

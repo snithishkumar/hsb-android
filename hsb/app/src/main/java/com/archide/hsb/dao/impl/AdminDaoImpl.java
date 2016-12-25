@@ -8,6 +8,7 @@ import com.archide.hsb.entity.ConfigurationEntity;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by Nithish on 20/11/16.
@@ -67,5 +68,14 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
 
     public ConfigurationEntity getAppType()throws SQLException{
        return appTypeDao.queryBuilder().queryForFirst();
+    }
+
+    @Override
+    public AdminEntity getAdminEntity()throws SQLException{
+       List<AdminEntity> adminEntityList = adminEntityDao.queryForAll();
+        if(adminEntityList.size() > 0){
+           return adminEntityList.get(0);
+        }
+        return null;
     }
 }

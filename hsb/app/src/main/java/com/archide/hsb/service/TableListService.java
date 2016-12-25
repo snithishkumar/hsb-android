@@ -18,4 +18,6 @@ public interface TableListService {
   //  boolean isTableConfigured();
 
     ConfigurationEntity getAppType();
+
+    int verifyLogin(String mPin);
 }

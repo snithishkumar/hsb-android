@@ -77,6 +77,13 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
         setAdapters(recyclerView);
         loadData();
         updateViewStatus();
+
+
+        kitchenActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        kitchenActivity.getSupportActionBar().setHomeButtonEnabled(true);
+
+
+
         return view;
     }
 
