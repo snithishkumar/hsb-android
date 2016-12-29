@@ -21,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public enum ServiceAPI {
     INSTANCE;
     private HsbAPI hsbAPI = null;
-    private final String url = "http://192.168.43.76:8082/hsb/";
+    private final String url = "http://192.168.1.241:8082/hsb/";
     // test
    //private final String  url = "http://52.41.226.201:8080/hsb/";
     private String serverToken= "";

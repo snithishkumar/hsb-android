@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.archide.hsb.view.activities.NaviDrawerActivity;
 import com.archide.hsb.view.activities.OrderActivity;
 import com.archide.hsb.view.fragments.OrderPlaceFragment;
 import com.archide.hsb.view.model.MenuItemsViewModel;
@@ -23,9 +24,11 @@ public class PlacedOrderHisMenuItemsAdapter extends RecyclerView.Adapter<Recycle
 
 
     List<MenuItemsViewModel> menuItemsViewModels = new ArrayList<>();
+    private NaviDrawerActivity naviDrawerActivity;
 
-    public PlacedOrderHisMenuItemsAdapter(List<MenuItemsViewModel> menuItemsViewModels){
+    public PlacedOrderHisMenuItemsAdapter(List<MenuItemsViewModel> menuItemsViewModels,NaviDrawerActivity naviDrawerActivity){
         this.menuItemsViewModels = menuItemsViewModels;
+        this.naviDrawerActivity = naviDrawerActivity;
     }
 
 
@@ -42,7 +45,7 @@ public class PlacedOrderHisMenuItemsAdapter extends RecyclerView.Adapter<Recycle
         MenuItemsViewModel menuItemsViewModel = menuItemsViewModels.get(position);
         OrderedMenuItemsViewHolder orderedMenuItemsViewHolder  = (OrderedMenuItemsViewHolder)viewHolder;
         orderedMenuItemsViewHolder.vTotalCount.setText(String.valueOf(menuItemsViewModel.getCount()) +"x ");
-        orderedMenuItemsViewHolder.vTotalAmount.setText(String.valueOf(menuItemsViewModel.getCost() * menuItemsViewModel.getCount()));
+        orderedMenuItemsViewHolder.vTotalAmount.setText(naviDrawerActivity.getString(R.string.pound)+" "+String.valueOf(menuItemsViewModel.getCost() * menuItemsViewModel.getCount()));
         orderedMenuItemsViewHolder.vOrderName.setText(String.valueOf(menuItemsViewModel.getName()));
     }
 

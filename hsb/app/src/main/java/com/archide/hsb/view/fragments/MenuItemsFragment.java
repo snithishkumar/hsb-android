@@ -66,7 +66,7 @@ public class MenuItemsFragment extends Fragment {
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.menu_items_swipe);
 
 
-        orderDetailsViewModel =new OrderDetailsViewModel();
+        orderDetailsViewModel = new OrderDetailsViewModel();
         //total_no_of_items
         //total_amount
 

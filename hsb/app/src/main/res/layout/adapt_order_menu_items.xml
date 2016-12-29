@@ -7,6 +7,7 @@
         android:id="@+id/veg"
         android:layout_width="25dp"
         android:layout_height="25dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/green"/>
     <include
         android:layout_width="match_parent"

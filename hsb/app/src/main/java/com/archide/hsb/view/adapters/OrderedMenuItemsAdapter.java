@@ -58,7 +58,8 @@ public class OrderedMenuItemsAdapter extends RecyclerView.Adapter<RecyclerView.V
         MenuItemsViewModel menuItemsViewModel = menuItemsViewModels.get(position);
         if(viewHolder instanceof OrderedMenuItemsViewHolder){
             OrderedMenuItemsViewHolder orderedMenuItemsViewHolder  = (OrderedMenuItemsViewHolder)viewHolder;
-            orderedMenuItemsViewHolder.vTotalCount.setText(String.valueOf(menuItemsViewModel.getCount()) +"x ");
+            //orderedMenuItemsViewHolder.vTotalCount.setText(String.valueOf(menuItemsViewModel.getCount()) +"x ");
+            orderedMenuItemsViewHolder.vTotalCount.setText("");
             orderedMenuItemsViewHolder.vTotalAmount.setText(orderActivity.getString(R.string.pound)+String.valueOf(menuItemsViewModel.getCost() * menuItemsViewModel.getCount()));
             orderedMenuItemsViewHolder.vOrderName.setText(String.valueOf(menuItemsViewModel.getName()));
             orderedMenuItemsViewHolder.vCountValue.setText(String.valueOf(menuItemsViewModel.getCount()));

@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_marginBottom="10dp"
             android:id="@+id/order_unavailable_layout"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
@@ -28,7 +28,6 @@
                 android:drawableLeft="@drawable/ic_error_outline_black_24dp"
                 android:drawablePadding="5dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
                 android:textColor="@android:color/holo_red_dark"/>
 
         </RelativeLayout>
@@ -40,12 +39,11 @@
                 android:layout_height="wrap_content"
                 android:text="Your Order"
                 android:textStyle="bold"
-                android:textSize="24sp"
+                android:textSize="18dp"
                 android:layout_centerVertical="true"
-                android:drawableLeft="@drawable/ic_receipt_black_36dp"
-                android:drawablePadding="15dp"
+                android:drawableLeft="@drawable/ic_receipt_black_24dp"
+                android:drawablePadding="5dp"
                 android:id="@+id/your_order_text"
-                android:layout_marginLeft="10dp"
                 android:textColor="@android:color/black"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -89,24 +87,36 @@
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="10dp"
             android:hint="Comments(Optional)"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Amount Details"
+            android:drawableLeft="@drawable/ic_account_balance_black_24dp"
+            android:drawablePadding="5dp"
+            android:id="@+id/odr_his_amount_details"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:textColor="@android:color/black"
+            />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
-
+android:layout_marginLeft="10dp"
             android:paddingRight="15dp"
             android:layout_marginTop="8dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:textSize="20dp"
                 android:text="Subtotal before discount"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:textSize="20dp"
                 android:id="@+id/subtotal_before_discount"
                 android:text="Rs 1,340"/>
         </RelativeLayout>
@@ -115,18 +125,17 @@
             android:paddingLeft="20dp"
             android:paddingRight="15dp"
             android:layout_marginTop="8dp"
+            android:layout_marginLeft="10dp"
             android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
                 android:layout_alignParentLeft="true"
                 android:text="Discount"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:textSize="20dp"
                 android:id="@+id/discount"
                 android:text="-Rs 240"/>
         </RelativeLayout>
@@ -134,12 +143,12 @@
             android:layout_width="match_parent"
             android:paddingLeft="20dp"
             android:paddingRight="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="8dp"
             android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
                 android:layout_alignParentLeft="true"
                 android:text="Subtotal"/>
             <TextView
@@ -147,7 +156,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:id="@+id/subtotal"
-                android:textSize="20dp"
                 android:text="Rs 240"/>
         </RelativeLayout>
         <!--<RelativeLayout
@@ -169,20 +177,19 @@
             android:layout_width="match_parent"
             android:paddingLeft="20dp"
             android:paddingRight="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="8dp"
             android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:textSize="20dp"
                 android:text="Service tax (0 %)"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:id="@+id/service_tax"
-                android:textSize="20dp"
                 android:text="Rs 0"/>
         </RelativeLayout>
         <RelativeLayout
@@ -190,19 +197,18 @@
             android:paddingLeft="20dp"
             android:paddingRight="15dp"
             android:layout_marginTop="8dp"
+            android:layout_marginLeft="10dp"
             android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:textSize="20dp"
                 android:text="VAT (2 %)"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:id="@+id/service_vat"
-                android:textSize="20dp"
                 android:text="Rs 20.04"/>
         </RelativeLayout>
        <!-- <RelativeLayout
@@ -237,16 +243,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:paddingLeft="20dp"
             android:layout_marginTop="20dp"
-
             android:paddingRight="15dp"
             >
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total"
-                android:textSize="26dp"
+                android:drawableLeft="@drawable/ic_amount_black"
+                android:drawablePadding="10dp"
+                android:text="Total Amount"
+                android:textSize="18dp"
                 android:textStyle="bold"
                />
             <TextView
@@ -254,7 +260,7 @@
                 android:layout_height="wrap_content"
                 android:text="Rs. 1,123.04"
                 android:id="@+id/total_amount"
-                android:textSize="26dp"
+                android:textSize="18dp"
                 android:textStyle="bold"
                 android:layout_alignParentRight="true"
                 />

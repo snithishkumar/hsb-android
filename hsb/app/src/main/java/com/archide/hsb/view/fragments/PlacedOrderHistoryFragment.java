@@ -68,7 +68,7 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
         subTotalBeforeDiscount =  (TextView)view.findViewById(R.id.odr_his_subtotal_before_discount);
         discount =  (TextView) view.findViewById(R.id.odr_his_discount);
         subTotal =  (TextView) view.findViewById(R.id.odr_his_subtotal);
-        serviceTax =  (TextView) view.findViewById(R.id.odr_his_tax);
+        serviceTax =  (TextView) view.findViewById(R.id.odr_his_service_tax);
         totalAmount =  (TextView) view.findViewById(R.id.odr_his_total_amount);
         placeAnOrder =  (FloatingActionButton) view.findViewById(R.id.order_history_add_menu_items);
         placeAnOrder.setOnClickListener(this);
@@ -97,6 +97,12 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
             }
         });
         init(view);
+
+        naviDrawerActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        naviDrawerActivity.getSupportActionBar().setHomeButtonEnabled(true);
+
+
+
         setAdapters(recyclerView);
         getDataFromServer();
         return view;
@@ -114,7 +120,7 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
     }
 
     private void setAdapters(RecyclerView recyclerView){
-        orderedMenuItemsAdapter = new PlacedOrderHisMenuItemsAdapter(menuItemsViewModels);
+        orderedMenuItemsAdapter = new PlacedOrderHisMenuItemsAdapter(menuItemsViewModels,naviDrawerActivity);
         recyclerView.setAdapter(orderedMenuItemsAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(naviDrawerActivity,linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
@@ -160,11 +166,13 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
            cookingComments.setText(placeAnOrderViewModel.getCookingComments());
        }
 
-        subTotalBeforeDiscount.setText(String.valueOf(placeAnOrderViewModel.getSubTotalBeforeDiscount()));
-        discount.setText(String.valueOf(placeAnOrderViewModel.getDiscount()));
-        subTotal.setText(String.valueOf(placeAnOrderViewModel.getSubTotal()));
-        serviceTax.setText(String.valueOf(placeAnOrderViewModel.getServiceTax()));
-        totalAmount.setText(String.valueOf(placeAnOrderViewModel.getTotalAmount()));
+
+        subTotalBeforeDiscount.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getSubTotalBeforeDiscount()));
+        discount.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getDiscount()));
+        subTotal.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getSubTotal()));
+        totalAmount.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getTotalAmount()));
+       // serviceTax.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getServiceTax()));
+
 
     }
 

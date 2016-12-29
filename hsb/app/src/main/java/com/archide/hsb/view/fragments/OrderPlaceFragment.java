@@ -108,6 +108,9 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
         });
         setAdapters(recyclerView);
 
+        orderActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        orderActivity.getSupportActionBar().setHomeButtonEnabled(true);
+
         init(view);
         checkAvailability();
         return view;

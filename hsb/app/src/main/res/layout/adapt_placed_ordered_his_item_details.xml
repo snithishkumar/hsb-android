@@ -11,13 +11,12 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_alignParentLeft="true"
-        android:textColor="@android:color/holo_green_dark"/>
+        android:textColor="#2E7D32"/>
     <TextView
         android:id="@+id/total_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Rs 480"
-        android:textSize="18sp"
         android:textStyle="bold"
         android:layout_alignParentRight="true"
         android:textColor="@android:color/black"/>
@@ -27,6 +26,7 @@
         android:layout_toRightOf="@+id/total_count"
         android:orientation="vertical"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="3dp"
         android:layout_marginRight="10dp"
         android:layout_toLeftOf="@+id/total_amount">
         <TextView

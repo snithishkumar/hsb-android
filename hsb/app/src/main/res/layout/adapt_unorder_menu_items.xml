@@ -6,6 +6,7 @@
     <ImageView
         android:id="@+id/veg"
         android:layout_width="25dp"
+        android:layout_marginTop="10dp"
         android:layout_height="25dp"
         android:background="@drawable/green"/>
     <include

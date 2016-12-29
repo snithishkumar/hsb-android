@@ -76,7 +76,7 @@ public class MenuItemServiceImpl implements MenuItemService {
 
 
     public void getCurrentOrders(MenuCourseEntity menuCourseEntity, List<MenuItemsViewModel> menuItemsViewModels,OrderDetailsViewModel orderDetailsViewModel)throws SQLException{
-        List<PlacedOrderItemsEntity> placedOrderItemsEntities =  ordersDao.getPlacedOrderItemsEntity(menuCourseEntity);
+        List<PlacedOrderItemsEntity> placedOrderItemsEntities =  ordersDao.getPlacedOrderItemsEntity();
         for(PlacedOrderItemsEntity placedOrderItemsEntity : placedOrderItemsEntities){
             MenuItemsViewModel menuItems = new MenuItemsViewModel(placedOrderItemsEntity) ;
            int pos = menuItemsViewModels.indexOf(menuItems);
@@ -84,9 +84,9 @@ public class MenuItemServiceImpl implements MenuItemService {
                 // TODO Need to check what will happen if only one element present in the list
                 menuItemsViewModels.remove(pos);
                 menuItemsViewModels.add(pos,menuItems);
-                orderDetailsViewModel.setTotalCount(orderDetailsViewModel.getTotalCount() + menuItems.getCount());
-                orderDetailsViewModel.setTotalCost(orderDetailsViewModel.getTotalCost() + (menuItems.getCount() * menuItems.getCost()));
             }
+            orderDetailsViewModel.setTotalCount(orderDetailsViewModel.getTotalCount() + menuItems.getCount());
+            orderDetailsViewModel.setTotalCost(orderDetailsViewModel.getTotalCost() + (menuItems.getCount() * menuItems.getCost()));
         }
 
     }
