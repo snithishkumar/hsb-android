@@ -98,7 +98,7 @@ public class TableListServiceImpl implements TableListService {
             boolean isMobileSame =  adminDao.isMobilePresent(userMobile);
             if(!isMobileSame){
                 OrdersDao ordersDao = new OrdersDaoImpl(context);
-                ordersDao.removeCurrentOrder();
+                ordersDao.removeAllData();
                 adminDao.updateUserMobile(userMobile);
             }
 

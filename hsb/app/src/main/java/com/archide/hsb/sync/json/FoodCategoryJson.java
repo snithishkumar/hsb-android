@@ -8,6 +8,7 @@ public class FoodCategoryJson {
 	private String foodCategoryUuid;
 	private String categoryName;
 	private long dateTime;
+	private int displayOrder;
 	private List<MenuItemJson> menuItems = new ArrayList<MenuItemJson>();
 	
 
@@ -40,6 +41,14 @@ public class FoodCategoryJson {
 
 	public void setMenuItems(List<MenuItemJson> menuItems) {
 		this.menuItems = menuItems;
+	}
+
+	public int getDisplayOrder() {
+		return displayOrder;
+	}
+
+	public void setDisplayOrder(int displayOrder) {
+		this.displayOrder = displayOrder;
 	}
 
 	@Override

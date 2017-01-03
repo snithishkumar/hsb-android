@@ -12,6 +12,34 @@ public class MenuItemJson {
 	private long dateTime;
 	private long serverDateTime;
 
+	private int displayOrder;
+	private String description;
+	private String tasteType;
+
+	public int getDisplayOrder() {
+		return displayOrder;
+	}
+
+	public void setDisplayOrder(int displayOrder) {
+		this.displayOrder = displayOrder;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getTasteType() {
+		return tasteType;
+	}
+
+	public void setTasteType(String tasteType) {
+		this.tasteType = tasteType;
+	}
+
 	public long getServerDateTime() {
 		return serverDateTime;
 	}

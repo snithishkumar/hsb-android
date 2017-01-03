@@ -58,6 +58,9 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
     PlacedOrderHisMenuItemsAdapter orderedMenuItemsAdapter;
     List<MenuItemsViewModel> menuItemsViewModels = new ArrayList<>();
 
+    private LayoutInflater mInflater;
+    private ViewGroup mContainer;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +83,9 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_placed_orders_history, container, false);
+
+        mInflater = inflater;
+        mContainer = container;
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.odr_his_order_data);
         recyclerView.setHasFixedSize(true);
@@ -154,11 +160,18 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
 
 
     private void populateData(){
-        PlaceAnOrderViewModel placeAnOrderViewModel =  naviDrawerActivity.getOrderService().getPlacedHistoryOrderViewModel();
-        menuItemsViewModels.clear();
-        menuItemsViewModels.addAll(placeAnOrderViewModel.getMenuItemsViewModels());
-        orderedMenuItemsAdapter.notifyDataSetChanged();
-        populateAmountDetails(placeAnOrderViewModel);
+       PlaceAnOrderViewModel placeAnOrderViewModel =  naviDrawerActivity.getOrderService().getPlacedHistoryOrderViewModel();
+       if(placeAnOrderViewModel.getMenuItemsViewModels().size() < 1){
+           View newView = mInflater.inflate(R.layout.fragment_placed_orders_history_empty, mContainer, false);
+           mContainer.removeAllViews();
+           mContainer.addView(newView);
+       }else{
+            menuItemsViewModels.clear();
+            menuItemsViewModels.addAll(placeAnOrderViewModel.getMenuItemsViewModels());
+            orderedMenuItemsAdapter.notifyDataSetChanged();
+            populateAmountDetails(placeAnOrderViewModel);
+        }
+
     }
 
     public void populateAmountDetails(PlaceAnOrderViewModel placeAnOrderViewModel){

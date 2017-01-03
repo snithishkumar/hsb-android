@@ -286,6 +286,24 @@ public class UserMenusSyncPerform {
     }
 
 
+    public ResponseData resentBillingDetails(String tableNumber,String mobileNumber){
+        try{
+            PlacedOrdersEntity placedOrdersEntity = ordersDao.getPlacedOrderHistoryByMobile(mobileNumber,tableNumber);
+            Call<ResponseData> serverResponse =  hsbAPI.reSentBillDetails(placedOrdersEntity.getPlaceOrdersUUID());
+            Response<ResponseData> response = serverResponse.execute();
+            if (response != null && response.isSuccessful()) {
+                ResponseData responseData = response.body();
+                ResponseData result = new ResponseData(responseData.getStatusCode(),null);
+                return result;
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return getErrorResponse();
+    }
+
+
     public ResponseData closeAnOrder(String tableNumber,String mobileNumber){
         try{
             String orderId = "";
@@ -297,12 +315,14 @@ public class UserMenusSyncPerform {
             Response<ResponseData> response = serverResponse.execute();
             if (response != null && response.isSuccessful()) {
                 ResponseData responseData = response.body();
-                if(responseData.getStatusCode() == 200){
+                if(responseData.getStatusCode() == 200 || responseData.getStatusCode() == 405 || responseData.getStatusCode() == 400){
                     String previousOrder = responseData.getData();
                     PlaceOrdersJson placeOrdersJson =  gson.fromJson(previousOrder,PlaceOrdersJson.class);
                     processPreviousOrder(placeOrdersJson,true);
+
+
                 }
-                ResponseData result = new ResponseData(2000,null);
+                ResponseData result = new ResponseData(responseData.getStatusCode(),null);
                 return result;
             }
         }catch (Exception e){

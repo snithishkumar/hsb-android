@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.HomeActivity;
 import com.archide.hsb.view.adapters.NavigationDrawerAdapter;
 
@@ -99,7 +100,9 @@ public class FragmentDrawer extends Fragment {
  
             }
         }));
- 
+
+        vUserName.setText("Table No: "+ ActivityUtil.TABLE_NUMBER);
+        vMobileNumber.setText(ActivityUtil.USER_MOBILE);
         return layout;
     }
  

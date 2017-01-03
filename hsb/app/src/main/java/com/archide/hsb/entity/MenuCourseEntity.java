@@ -10,6 +10,7 @@ public class MenuCourseEntity {
 	public static final String MENU_COURSE_UUID = "menuCourseUUID";
 	public static final String CATEGORY_NAME = "categoryName";
 	public static final String DATE_TIME = "dateTime";
+    public static final String DISPLAY_ORDER = "displayOrder";
 
 
     @DatabaseField(columnName = MENU_COURSE_ID,generatedId = true)
@@ -22,6 +23,9 @@ public class MenuCourseEntity {
     @DatabaseField(columnName = DATE_TIME)
 	private long dateTime;
 
+    @DatabaseField(columnName = DISPLAY_ORDER)
+	private int displayOrder;
+
     public MenuCourseEntity(){
 
     }
@@ -30,6 +34,7 @@ public class MenuCourseEntity {
 		this.menuCourseUUID = menuListJson.getMenuCourseUuid();
 		this.categoryName = menuListJson.getCategoryName();
 		this.dateTime = menuListJson.getDateTime();
+        this.displayOrder = menuListJson.getDisplayOrder();
 	}
 
 	public int getMenuCourseId() {

@@ -86,34 +86,47 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_place_order, container, false);
 
-        //order_unavailable_layout
-        relativeLayout =  (RelativeLayout)view.findViewById(R.id.order_unavailable_layout);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.ordered_data);
-        recyclerView.setHasFixedSize(true);
-        linearLayoutManager =  new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-        setAdapters(recyclerView);
+        placeAnOrderViewModel =  orderActivity.getOrderService().getCurrentOrderDetails();
 
         orderActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         orderActivity.getSupportActionBar().setHomeButtonEnabled(true);
 
-        init(view);
-        checkAvailability();
-        return view;
+        if(placeAnOrderViewModel.getMenuItemsViewModels().size() > 0){
+            // Inflate the layout for this fragment
+            View view =  inflater.inflate(R.layout.fragment_place_order, container, false);
+
+
+
+            //order_unavailable_layout
+            relativeLayout =  (RelativeLayout)view.findViewById(R.id.order_unavailable_layout);
+            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.ordered_data);
+            recyclerView.setHasFixedSize(true);
+            linearLayoutManager =  new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                }
+
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                }
+            });
+            setAdapters(recyclerView);
+
+
+            init(view);
+            checkAvailability();
+            return view;
+        }else{
+            View view =  inflater.inflate(R.layout.fragment_place_order_empty, container, false);
+            return view;
+        }
+
+
     }
 
     private void setAdapters(RecyclerView recyclerView){
@@ -127,7 +140,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
     }
 
     private void loadData(){
-        placeAnOrderViewModel =  orderActivity.getOrderService().getCurrentOrderDetails();
+
         if(placeAnOrderViewModel.isUnAvailable()){
             relativeLayout.setVisibility(View.VISIBLE);
         }

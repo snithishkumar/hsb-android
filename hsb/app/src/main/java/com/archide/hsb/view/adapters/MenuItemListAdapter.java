@@ -86,6 +86,8 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             orderItemsViewHolder.vFoodName.setText(menuItemsViewModel.getName());
             orderItemsViewHolder.vFoodCost.setText(homeActivity.getString(R.string.pound)+String.valueOf(menuItemsViewModel.getCost()));
             orderItemsViewHolder.vFoodCartCount.setText(String.valueOf(menuItemsViewModel.getCount()));
+            orderItemsViewHolder.vFoodTasteType.setText(menuItemsViewModel.getTasteType());
+            orderItemsViewHolder.vFoodDesc.setText(menuItemsViewModel.getDescription());
         }else{
 
             MenuItemsViewHolder menuItemsViewHolder = (MenuItemsViewHolder)viewHolder;
@@ -96,6 +98,8 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void setValues(MenuItemsViewHolder menuItemsViewHolder,MenuItemsViewModel menuItemsViewModel ){
         menuItemsViewHolder.vFoodName.setText(menuItemsViewModel.getName());
         menuItemsViewHolder.vFoodCost.setText(homeActivity.getString(R.string.pound)+String.valueOf(menuItemsViewModel.getCost()));
+        menuItemsViewHolder.vFoodTasteType.setText(menuItemsViewModel.getTasteType());
+        menuItemsViewHolder.vFoodDesc.setText(menuItemsViewModel.getDescription());
     }
 
     public class  FoodCategoryViewHolder extends RecyclerView.ViewHolder{
@@ -111,12 +115,14 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         protected TextView vFoodCost;
         protected TextView vFoodDesc;
         protected TextView vFoodAddCart;
+        protected  Button vFoodTasteType;
 
         public MenuItemsViewHolder(View view){
             super(view);
             vFoodName = (TextView)view.findViewById(R.id.adapt_food_name);
             vFoodCost = (TextView)view.findViewById(R.id.adapt_food_cost);
             vFoodDesc = (TextView)view.findViewById(R.id.adapt_food_desc);
+            vFoodTasteType = (Button)view.findViewById(R.id.adapt_food_taste_type);
             vFoodAddCart = (TextView)view.findViewById(R.id.adapt_food_add_cart);
             vFoodAddCart.setOnClickListener(this);
 
@@ -142,6 +148,7 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         protected Button vFoodAddCartButton;
         protected TextView vFoodName;
         protected TextView vFoodCost;
+        protected  Button vFoodTasteType;
         protected TextView vFoodDesc;
         public OrderItemsViewHolder(View view){
             super(view);
@@ -149,6 +156,7 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             vFoodCost = (TextView)view.findViewById(R.id.adapt_food_cost);
             vFoodDesc = (TextView)view.findViewById(R.id.adapt_food_desc);
             vFoodCartCount = (TextView)view.findViewById(R.id.count_value);
+            vFoodTasteType = (Button)view.findViewById(R.id.adapt_food_taste_type);
             vFoodSubCartButton = (Button)view.findViewById(R.id.decrement);
             vFoodAddCartButton = (Button)view.findViewById(R.id.increment);
             vFoodSubCartButton.setOnClickListener(this);

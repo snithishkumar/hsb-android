@@ -20,6 +20,10 @@ public class MenuEntity {
 	public static final String DATE_TIME= "dateTime";
 	public static final String SERVER_DATE_TIME = "serverDateTime";
 
+    public static final String DISPLAY_ORDER = "displayOrder";
+    public static final String DESCRIPTION = "description";
+    public static final String TASTE_TYPE = "tasteType";
+
 
     @DatabaseField(columnName = MENU_ID,generatedId = true)
 	private int menuId;
@@ -42,6 +46,13 @@ public class MenuEntity {
     @DatabaseField(columnName = SERVER_DATE_TIME)
 	private long serverDateTime;
 
+    @DatabaseField(columnName = DISPLAY_ORDER)
+	private int displayOrder;
+    @DatabaseField(columnName = DESCRIPTION)
+	private String description;
+    @DatabaseField(columnName = TASTE_TYPE)
+	private String tasteType;
+
     public MenuEntity(){
 
     }
@@ -58,9 +69,36 @@ public class MenuEntity {
         this.status = menuItemJson.getStatus();
         this.dateTime = menuItemJson.getDateTime();
         this.serverDateTime = menuItemJson.getServerDateTime();
+        this.displayOrder = menuItemJson.getDisplayOrder();
+        this.description = menuItemJson.getDescription();
+        this.tasteType = menuItemJson.getTasteType();
     }
 
-	public int getMenuId() {
+    public int getDisplayOrder() {
+        return displayOrder;
+    }
+
+    public void setDisplayOrder(int displayOrder) {
+        this.displayOrder = displayOrder;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTasteType() {
+        return tasteType;
+    }
+
+    public void setTasteType(String tasteType) {
+        this.tasteType = tasteType;
+    }
+
+    public int getMenuId() {
 		return menuId;
 	}
 

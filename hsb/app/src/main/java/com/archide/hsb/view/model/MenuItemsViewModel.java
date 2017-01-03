@@ -20,12 +20,16 @@ public class MenuItemsViewModel {
     private double cost;
     private String itemCode;
     private OrderStatus orderStatus;
+    private String description;
+    private String tasteType;
 
     public MenuItemsViewModel(MenuEntity menuEntity){
         this.uuid = menuEntity.getMenuUUID();
         this.name = menuEntity.getName();
         this.cost = menuEntity.getPrice();
         this.itemCode = menuEntity.getMenuItemCode();
+        this.description = menuEntity.getDescription();
+        this.tasteType = menuEntity.getTasteType();
 
     }
 
@@ -42,6 +46,22 @@ public class MenuItemsViewModel {
         this.uuid = placedOrderItemsEntity.getMenuItem().getMenuUUID();
         this.orderStatus = placedOrderItemsEntity.getOrderStatus();
         this.isOrdered = true;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTasteType() {
+        return tasteType;
+    }
+
+    public void setTasteType(String tasteType) {
+        this.tasteType = tasteType;
     }
 
     public String getItemCode() {

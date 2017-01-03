@@ -18,6 +18,7 @@ import com.archide.hsb.service.OrderService;
 import com.archide.hsb.sync.HsbSyncAdapter;
 import com.archide.hsb.sync.SyncEvent;
 import com.archide.hsb.view.activities.ActivityUtil;
+import com.archide.hsb.view.model.CloseOrderViewModel;
 import com.archide.hsb.view.model.MenuItemsViewModel;
 import com.archide.hsb.view.model.PlaceAnOrderViewModel;
 
@@ -229,22 +230,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PlaceAnOrderViewModel getBillingDetails(){
+    public CloseOrderViewModel getBillingDetails(){
 
         try{
 
             PlacedOrdersEntity placedOrdersEntity =   ordersDao.getPlacedOrderHistoryByMobile(ActivityUtil.USER_MOBILE,ActivityUtil.TABLE_NUMBER);
-            PlaceAnOrderViewModel placeAnOrderViewModel = new PlaceAnOrderViewModel();
+            CloseOrderViewModel closeOrderViewModel = new CloseOrderViewModel();
             if(placedOrdersEntity != null){
-                List<PlacedOrderItemsEntity> placedOrderItemsEntityList =  ordersDao.getPlacedOrderHistoryItems(placedOrdersEntity);
-                for(PlacedOrderItemsEntity orderItemsEntity : placedOrderItemsEntityList){
-                    MenuItemsViewModel menuItemsViewModel = new MenuItemsViewModel(orderItemsEntity);
-                    placeAnOrderViewModel.getMenuItemsViewModels().add(menuItemsViewModel);
-                }
+                closeOrderViewModel.setOrderId(placedOrdersEntity.getOrderId());
+                closeOrderViewModel.setTableNumber(placedOrdersEntity.getTableNumber());
+                closeOrderViewModel.setUserMobileNumber(placedOrdersEntity.getUserMobileNumber());
+                closeOrderViewModel.setTotalAmount(String.valueOf(placedOrdersEntity.getTotalPrice()));
             }
-            //calcAmount(placeAnOrderViewModel);
 
-            return placeAnOrderViewModel;
+
+            return closeOrderViewModel;
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -283,6 +283,29 @@ public class OrderServiceImpl implements OrderService {
             settingsBundle.putString("tableNumber", tableNumber);
             settingsBundle.putString("mobileNumber", mobileNumber);
             ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void resentBilling(Context context,String tableNumber,String mobileNumber){
+        try{
+            account = HsbSyncAdapter.getSyncAccount(context);
+            settingsBundle.putInt("currentScreen", SyncEvent.RESENT_BILLING);
+            settingsBundle.putString("tableNumber", tableNumber);
+            settingsBundle.putString("mobileNumber", mobileNumber);
+            ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public void removeAllData(){
+        try{
+            ordersDao.removeAllData();
         }catch (Exception e){
             e.printStackTrace();
         }

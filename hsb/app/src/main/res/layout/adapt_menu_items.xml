@@ -19,6 +19,7 @@
                     android:layout_height="25dp"
                     android:text="Spicy"
                     android:layout_marginLeft="10dp"
+                    android:id="@+id/adapt_food_taste_type"
                     android:gravity="center"
                     android:textStyle="bold"
                     android:textColor="@android:color/white"

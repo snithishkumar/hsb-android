@@ -1,4 +1,4 @@
-package com.archide.hsb.view.adapters;
+/*package com.archide.hsb.view.adapters;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
@@ -14,9 +14,6 @@ import java.util.List;
 
 import hsb.archide.com.hsb.R;
 
-/**
- * Created by Nithish on 19/11/16.
- */
 
 public class BillingMenuItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
 
@@ -67,4 +64,4 @@ public class BillingMenuItemsAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
-}
+}*/

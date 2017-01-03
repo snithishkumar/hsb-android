@@ -22,7 +22,8 @@
             android:id="@+id/login_text"
             android:layout_marginTop="45dp"
             android:textSize="18dp"
-            android:text="(Please enter mobilenumber. If mobilenumber matches with unpaied order.)"
+            android:text="@string/mobile_number_message"
+            android:gravity="center"
             android:layout_gravity="center_horizontal" />
         <LinearLayout
             android:id="@+id/vTypeLayout"

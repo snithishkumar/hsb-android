@@ -113,6 +113,13 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
                 postData(responseData);
                 break;
 
+            case SyncEvent.RESENT_BILLING:
+                tableNumber =  extras.getString("tableNumber");
+                mobileNumber =  extras.getString("mobileNumber");
+                responseData = userMenusSyncPerform.resentBillingDetails(tableNumber,mobileNumber);
+                postData(responseData);
+                break;
+
             case 3:
                  tableNumber =  extras.getString("tableNumber");
                  mobileNumber =  extras.getString("mobileNumber");

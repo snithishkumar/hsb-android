@@ -3,36 +3,29 @@ package com.archide.hsb.view.fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.archide.hsb.service.TableListService;
-import com.archide.hsb.service.impl.TableListServiceImpl;
 import com.archide.hsb.sync.json.ResponseData;
 import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.HomeActivity;
 import com.archide.hsb.view.activities.NaviDrawerActivity;
-import com.archide.hsb.view.adapters.BillingMenuItemsAdapter;
-import com.archide.hsb.view.adapters.PlacedOrderHisMenuItemsAdapter;
-import com.archide.hsb.view.model.MenuItemsViewModel;
-import com.archide.hsb.view.model.PlaceAnOrderViewModel;
+import com.archide.hsb.view.model.CloseOrderViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import hsb.archide.com.hsb.R;
 
@@ -42,21 +35,22 @@ import hsb.archide.com.hsb.R;
 
 public class BillingFragment extends Fragment implements View.OnClickListener {
 
-    LinearLayoutManager linearLayoutManager = null;
 
-    EditText cookingComments ;
-    TextView subTotalBeforeDiscount ;
-    TextView discount ;
-    TextView subTotal ;
-    TextView serviceTax ;
-    TextView totalAmount ;
-    FloatingActionButton placeAnOrder ;
+    TextView vOrderId = null;
+    TextView vTableNumber = null;
+    TextView vTotalAmount = null;
+    TextView vUserMobileNumber = null;
+    ImageView vOrderSyncStatus = null;
 
+    TextView vOrderSyncMsg = null;
+    Button vOrderLogOut = null;
+    Button vOrderSent = null;
 
     private ProgressDialog progressDialog;
     private NaviDrawerActivity naviDrawerActivity;
-    BillingMenuItemsAdapter billingMenuItemsAdapter;
-    List<MenuItemsViewModel> menuItemsViewModels = new ArrayList<>();
+
+    private LayoutInflater mInflater;
+    private ViewGroup mContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,13 +59,18 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void init(View view){
-        subTotalBeforeDiscount =  (TextView)view.findViewById(R.id.odr_his_subtotal_before_discount);
-        discount =  (TextView) view.findViewById(R.id.odr_his_discount);
-        subTotal =  (TextView) view.findViewById(R.id.odr_his_subtotal);
-        serviceTax =  (TextView) view.findViewById(R.id.odr_his_tax);
-        totalAmount =  (TextView) view.findViewById(R.id.odr_his_total_amount);
-        placeAnOrder =  (FloatingActionButton) view.findViewById(R.id.order_history_add_menu_items);
-        placeAnOrder.setOnClickListener(this);
+        vOrderId =  (TextView) view.findViewById(R.id.close_order_order_id);
+        vTableNumber =  (TextView) view.findViewById(R.id.close_order_table_number);
+        vTotalAmount =  (TextView) view.findViewById(R.id.close_order_total_amount);
+        vUserMobileNumber =  (TextView) view.findViewById(R.id.close_order_mobile_number);
+
+        vOrderSyncStatus =  (ImageView) view.findViewById(R.id.close_order_sync_status);
+        vOrderSyncMsg =  (TextView) view.findViewById(R.id.close_order_sync_msg);
+        vOrderLogOut =  (Button) view.findViewById(R.id.close_order_logout);
+        vOrderSent =  (Button) view.findViewById(R.id.close_order_send);
+
+        vOrderLogOut.setOnClickListener(this);
+        vOrderSent.setOnClickListener(this);
     }
 
 
@@ -79,28 +78,22 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_billing, container, false);
+        View view =  inflater.inflate(R.layout.fragment_order_close, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.odr_his_order_data);
-        recyclerView.setHasFixedSize(true);
-        linearLayoutManager =  new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
+        mInflater = inflater;
+        mContainer = container;
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
+        naviDrawerActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        naviDrawerActivity.getSupportActionBar().setHomeButtonEnabled(true);
+
+
         init(view);
-        setAdapters(recyclerView);
+
         getDataFromServer();
         return view;
     }
+
+
 
     private void getDataFromServer(){
         boolean isNetWorkConnected = Utilities.isNetworkConnected(naviDrawerActivity);
@@ -113,12 +106,35 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private void setAdapters(RecyclerView recyclerView){
-        billingMenuItemsAdapter = new BillingMenuItemsAdapter(menuItemsViewModels);
-        recyclerView.setAdapter(billingMenuItemsAdapter);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(naviDrawerActivity,linearLayoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
+    private void setError(){
+        Drawable mDrawable = naviDrawerActivity.getResources().getDrawable(R.drawable.ic_error_white_48dp);
+        mDrawable.setColorFilter(new
+                PorterDuffColorFilter(Color.parseColor("#B71c1c"), PorterDuff.Mode.MULTIPLY));
+        vOrderSyncStatus.setImageDrawable(mDrawable);
+        vOrderLogOut.setVisibility(View.GONE);
+        vOrderSent.setVisibility(View.VISIBLE);
     }
+
+
+    private void showSuccess(){
+        Drawable mDrawable = naviDrawerActivity.getResources().getDrawable(R.drawable.ic_error_white_48dp);
+        vOrderSyncStatus.setImageDrawable(mDrawable);
+
+        vOrderLogOut.setVisibility(View.VISIBLE);
+        vOrderSent.setVisibility(View.GONE);
+    }
+
+
+    private void reSentBilling(){
+        boolean isNetWorkConnected = Utilities.isNetworkConnected(naviDrawerActivity);
+        if (isNetWorkConnected) {
+            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), naviDrawerActivity);
+            naviDrawerActivity.getOrderService().resentBilling(naviDrawerActivity,ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
+        } else {
+            ActivityUtil.showDialog(naviDrawerActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
+        }
+    }
+
 
 
     @Override
@@ -148,35 +164,29 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
 
 
     private void populateData(){
-        PlaceAnOrderViewModel placeAnOrderViewModel =  naviDrawerActivity.getOrderService().getBillingDetails();
-        menuItemsViewModels.clear();
-        menuItemsViewModels.addAll(placeAnOrderViewModel.getMenuItemsViewModels());
-        billingMenuItemsAdapter.notifyDataSetChanged();
-        populateAmountDetails(placeAnOrderViewModel);
-    }
-
-    public void populateAmountDetails(PlaceAnOrderViewModel placeAnOrderViewModel){
-       if(placeAnOrderViewModel.getCookingComments() != null){
-           cookingComments.setText(placeAnOrderViewModel.getCookingComments());
-       }
-
-        subTotalBeforeDiscount.setText(String.valueOf(placeAnOrderViewModel.getSubTotalBeforeDiscount()));
-        discount.setText(String.valueOf(placeAnOrderViewModel.getDiscount()));
-        subTotal.setText(String.valueOf(placeAnOrderViewModel.getSubTotal()));
-        serviceTax.setText(String.valueOf(placeAnOrderViewModel.getServiceTax()));
-        totalAmount.setText(String.valueOf(placeAnOrderViewModel.getTotalAmount()));
+        CloseOrderViewModel closeOrderViewModel =  naviDrawerActivity.getOrderService().getBillingDetails();
+        vOrderId.setText(closeOrderViewModel.getOrderId());
+        vTableNumber.setText(closeOrderViewModel.getTableNumber());
+        vTotalAmount.setText(closeOrderViewModel.getTotalAmount());
+        vUserMobileNumber.setText(closeOrderViewModel.getUserMobileNumber());
 
     }
 
-    private void getMenuList() {
-        boolean isNetWorkConnected = Utilities.isNetworkConnected(naviDrawerActivity);
-        if (isNetWorkConnected) {
-            TableListService tableListService = new TableListServiceImpl(naviDrawerActivity);
-            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), naviDrawerActivity);
-            tableListService.getMenuItems(ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
-        } else {
-            ActivityUtil.showDialog(naviDrawerActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.close_order_logout){
+            naviDrawerActivity.getOrderService().removeAllData();
+             // LogOut
+        }else if(view.getId() == R.id.close_order_send){
+            reSentBilling();
+            // Resent
         }
+    }
+
+    private void showNoData(){
+        View newView = mInflater.inflate(R.layout.fragment_order_close_empty, mContainer, false);
+        mContainer.removeAllViews();
+        mContainer.addView(newView);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -184,25 +194,49 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
         if(progressDialog != null){
             progressDialog.dismiss();
         }
-        // 3000
-        if(responseData.getStatusCode() == 2000){
-            populateData();
-        }else if(responseData.getStatusCode() != 500){
-            Intent intent = new Intent(naviDrawerActivity, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            naviDrawerActivity.finish();
-            return;
-        }else{
-            ActivityUtil.showDialog(naviDrawerActivity,"Error","Sorry for the Inconvenience. Please contact Admin.");
+        switch (responseData.getStatusCode()){
+            case 200:
+                populateData();
+                break;
+            case 405:
+                populateData();
+                setError();
+                break;
+            case 400:
+                populateData();
+                setError();
+                break;
+
+            case 404:
+                showNoData();
+                break;
+
+            case 600:
+                showSuccess();
+                break;
+
+            case 601:
+                setError();
+                break;
+
+            case 602:
+                setError();
+                break;
+
+            case 500:
+                ActivityUtil.showDialog(naviDrawerActivity,"Error","Sorry for the Inconvenience. Please contact Admin.");
+                break;
+
+            default:
+                Intent intent = new Intent(naviDrawerActivity, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                naviDrawerActivity.finish();
+                break;
         }
+
+
     }
 
-
-    @Override
-    public void onClick(View view) {
-        getMenuList();
-
-    }
 
 }

@@ -129,7 +129,7 @@ public class MenuItemsDaoImpl extends  BaseDaoImpl implements MenuItemsDao {
      * @throws SQLException
      */
     public List<MenuCourseEntity> getMenuCourseEntity()throws SQLException{
-       return menuCourseDao.queryForAll();
+       return menuCourseDao.queryBuilder().orderBy(MenuCourseEntity.DISPLAY_ORDER,true).query();
     }
 
     /**
@@ -139,7 +139,7 @@ public class MenuItemsDaoImpl extends  BaseDaoImpl implements MenuItemsDao {
      * @throws SQLException
      */
     public List<FoodCategoryEntity> getFoodCategoryEntity(MenuCourseEntity menuCourseEntity)throws SQLException{
-       return foodCategoryDao.queryBuilder().where().eq(FoodCategoryEntity.MENU_COURSE,menuCourseEntity).query();
+       return foodCategoryDao.queryBuilder().orderBy(FoodCategoryEntity.DISPLAY_ORDER,true).where().eq(FoodCategoryEntity.MENU_COURSE,menuCourseEntity).query();
     }
 
 
@@ -151,7 +151,7 @@ public class MenuItemsDaoImpl extends  BaseDaoImpl implements MenuItemsDao {
      * @throws SQLException
      */
     public List<MenuEntity> getMenuEntityList(MenuCourseEntity menuCourseEntity,FoodCategoryEntity foodCategoryEntity)throws SQLException{
-       return menuEntityDao.queryBuilder().where().eq(MenuEntity.MENU_COURSE,menuCourseEntity)
+       return menuEntityDao.queryBuilder().orderBy(MenuEntity.DISPLAY_ORDER,true).where().eq(MenuEntity.MENU_COURSE,menuCourseEntity)
                .and().eq(MenuEntity.FOOD_CATEGORY,foodCategoryEntity)
                .and().eq(MenuEntity.STATUS,Status.AVAILABLE)
                .query();

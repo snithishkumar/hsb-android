@@ -8,6 +8,7 @@ public class MenuListJson {
 	private String menuCourseUuid;
 	private String categoryName;
 	private long dateTime;
+	private int displayOrder;
 	private List<FoodCategoryJson> categoryJsons = new ArrayList<FoodCategoryJson>();
 
 	public String getMenuCourseUuid() {
@@ -34,6 +35,15 @@ public class MenuListJson {
 	public void setCategoryJsons(List<FoodCategoryJson> categoryJsons) {
 		this.categoryJsons = categoryJsons;
 	}
+
+	public int getDisplayOrder() {
+		return displayOrder;
+	}
+
+	public void setDisplayOrder(int displayOrder) {
+		this.displayOrder = displayOrder;
+	}
+
 	@Override
 	public String toString() {
 		return "MenuListJson [menuCourseUuid=" + menuCourseUuid + ", categoryName=" + categoryName + ", dateTime="

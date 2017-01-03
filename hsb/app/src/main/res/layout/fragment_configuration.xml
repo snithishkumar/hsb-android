@@ -30,7 +30,7 @@
                 android:id="@+id/vTypeIcon" />
             <com.satsuware.usefulviews.LabelledSpinner
                 android:id="@+id/vType"
-                ls:labelText="Type"
+                ls:labelText="Please Enter"
                 ls:widgetColor="#F44336"
                 android:layout_marginLeft="10dp"
                 android:layout_width="match_parent"

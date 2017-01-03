@@ -96,7 +96,7 @@ public class MobileFragment extends Fragment implements View.OnClickListener{
         boolean isNetWorkConnected = Utilities.isNetworkConnected(mainActivity);
         if (isNetWorkConnected) {
 
-            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), mainActivity);
+            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_menu_items_message), mainActivity);
             mainActivity.getTableListService().getMenuItems(ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
         } else {
             ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading), getString(R.string.no_network));

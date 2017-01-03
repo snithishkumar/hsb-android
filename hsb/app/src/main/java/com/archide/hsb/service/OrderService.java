@@ -3,6 +3,7 @@ package com.archide.hsb.service;
 import android.content.Context;
 
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
+import com.archide.hsb.view.model.CloseOrderViewModel;
 import com.archide.hsb.view.model.MenuItemsViewModel;
 import com.archide.hsb.view.model.PlaceAnOrderViewModel;
 
@@ -37,6 +38,10 @@ public interface OrderService {
 
     void closeAnOrder(Context context,String tableNumber,String mobileNumber);
 
-    PlaceAnOrderViewModel getBillingDetails();
+    CloseOrderViewModel getBillingDetails();
+
+    void resentBilling(Context context,String tableNumber,String mobileNumber);
+
+    void removeAllData();
 
 }

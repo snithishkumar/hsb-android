@@ -12,6 +12,7 @@ public class SyncEvent {
     public static final int GET_PREVIOUS_ORDER = 3;
     public static final int CLOSE_AN_ORDER = 4;
     public static final int CHECK_AVAILABILITY = 5;
+    public static final int RESENT_BILLING = 6;
 
     public static final int GET_KITCHEN_ORDERS_DATA = 7;
 }

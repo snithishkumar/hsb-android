@@ -17,7 +17,12 @@
     <string name="re_password_hint">Re-Type Password</string>
 
     <string name="get_table_list_heading">In Progress.</string>
-    <string name="get_table_list_message">Getting Table Details.Please wait...</string>
+    <string name="get_table_list_message">Retrieving table settings of HSB.Please wait...</string>
+
+    <string name="mobile_number_message">(Please provide mobile number which you\'d registered and would like the receipt to be forwarded
+mobile number provided is not registered with MobilePay)</string>
+
+    <string name="get_menu_items_message">Loading Menus.Please wait...</string>
 
     <!--Common Message-->
     <string name="no_network">Check your connection.</string>
@@ -31,6 +36,8 @@
     <string name="dialog_cancel">Close</string>
 
     <string name="pound">\u00A3 </string>
+
+<string name="thank_you_msg">Hope to see you soon</string>
 
 
     <string name="login_forget_mpin">Forget mPIN</string>
@@ -50,7 +57,7 @@
     <string-array name="nav_menu">
         <item>Current Orders</item>
         <item>Placed Orders</item>
-        <item>Billing</item>
+        <item>Close an Order</item>
         <item>Call Waiter</item>
         <item>About</item>
         <item>Rate the App</item>

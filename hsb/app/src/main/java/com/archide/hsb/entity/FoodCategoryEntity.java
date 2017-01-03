@@ -12,6 +12,7 @@ public class FoodCategoryEntity {
 	public static final String CATEGORY_NAME = "categoryName";
 	public static final String DATE_TIME = "dateTime";
 	public static final String MENU_COURSE = "menuCourse";
+	public static final String DISPLAY_ORDER = "displayOrder";
 
     @DatabaseField(columnName = FOOD_CATEGORY_ID,generatedId = true)
 	private int foodCategoryId;
@@ -25,6 +26,9 @@ public class FoodCategoryEntity {
     @DatabaseField(columnName = MENU_COURSE,foreign = true,foreignAutoRefresh =  true)
 	private MenuCourseEntity menuCourseEntity;
 
+	@DatabaseField(columnName = DISPLAY_ORDER)
+	private int displayOrder;
+
     public FoodCategoryEntity(){
 
     }
@@ -33,6 +37,7 @@ public class FoodCategoryEntity {
 		this.foodCategoryUUID = foodCategoryJson.getFoodCategoryUuid();
 		this.categoryName = foodCategoryJson.getCategoryName();
 		this.dateTime = foodCategoryJson.getDateTime();
+		this.displayOrder = foodCategoryJson.getDisplayOrder();
 
 	}
 	
