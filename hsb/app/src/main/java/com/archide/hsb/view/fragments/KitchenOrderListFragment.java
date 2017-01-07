@@ -98,10 +98,10 @@ public class KitchenOrderListFragment extends Fragment {
         kitchenActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         kitchenActivity.getSupportActionBar().setHomeButtonEnabled(true);
 
-        Account account = HsbSyncAdapter.getSyncAccount(kitchenActivity);
+       /* Account account = HsbSyncAdapter.getSyncAccount(kitchenActivity);
         Bundle settingsBundle = new Bundle();
         settingsBundle.putInt("currentScreen", SyncEvent.GET_KITCHEN_ORDERS_DATA);
-        ContentResolver.requestSync(account, kitchenActivity.getString(R.string.auth_type), settingsBundle);
+        ContentResolver.requestSync(account, kitchenActivity.getString(R.string.auth_type), settingsBundle);*/
 
 
       //  kitchenService = new KitchenServiceImpl(this);

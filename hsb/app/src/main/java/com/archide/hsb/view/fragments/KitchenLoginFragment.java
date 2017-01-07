@@ -48,7 +48,7 @@ public class KitchenLoginFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View loginView =  inflater.inflate(R.layout.fragment_login, container, false);
+        View loginView =  inflater.inflate(R.layout.fragment_kitchen_login, container, false);
         init(loginView);
 
         return loginView;

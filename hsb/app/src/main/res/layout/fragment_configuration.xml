@@ -78,7 +78,7 @@
                     android:inputType="number"
                     android:id="@+id/vPassword"
                     android:maxLength="6"
-                    android:hint="@string/mpin_hint" />
+                    android:hint= "@string/mpin_hint" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 

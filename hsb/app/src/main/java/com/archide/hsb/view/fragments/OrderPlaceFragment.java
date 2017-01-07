@@ -130,7 +130,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
     }
 
     private void setAdapters(RecyclerView recyclerView){
-        placeAnOrderViewModel = new PlaceAnOrderViewModel();
+       // placeAnOrderViewModel = new PlaceAnOrderViewModel();
         orderedMenuItemsAdapter = new OrderedMenuItemsAdapter(placeAnOrderViewModel.getMenuItemsViewModels(),orderActivity,OrderPlaceFragment.this);
 
         recyclerView.setAdapter(orderedMenuItemsAdapter);

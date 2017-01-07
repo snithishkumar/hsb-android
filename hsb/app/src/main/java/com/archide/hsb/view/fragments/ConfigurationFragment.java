@@ -176,14 +176,21 @@ public class ConfigurationFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-       String mPin = vPasswordText.getText().toString();
-        if(mPin.length() != 6){
-            vPasswordText.setError("MPin must be 6 digits.");
+       String mPin = vPasswordText.getText().toString().trim();
+        if(mPin.length() < 6){
+            vPasswordText.setError(getString(R.string.mpin_hint));
+            return;
         }
-        String reTypeMPin = vReTypePasswordText.getText().toString();
-        if(reTypeMPin.length() != 6){
-            vReTypePasswordText.setError("MPin must be 6 digits.");
+        String reTypeMPin = vReTypePasswordText.getText().toString().trim();
+        if(reTypeMPin.length() < 6){
+            vReTypePasswordText.setError(getString(R.string.mpin_hint_retype));
+            return;
         }
+        if(!mPin.equals(reTypeMPin)){
+            vReTypePasswordText.setError(getString(R.string.mpin_val_equal));
+            return;
+        }
+
         String vTableNumberText = null;
         int appType = AppType.Kitchen.getAppType();
         if(selectedAppType.equals(AppType.User)){

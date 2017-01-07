@@ -91,5 +91,21 @@ public class MenuItemServiceImpl implements MenuItemService {
 
     }
 
+    public void getCurrentOrdersCounts(OrderDetailsViewModel orderDetailsViewModel){
+        try{
+            List<PlacedOrderItemsEntity> placedOrderItemsEntities =  ordersDao.getPlacedOrderItemsEntity();
+            int totalCount = 0;
+            double totalCost = 0;
+            for(PlacedOrderItemsEntity placedOrderItemsEntity : placedOrderItemsEntities){
+                totalCount = totalCount + placedOrderItemsEntity.getQuantity();
+                totalCost = totalCost + (placedOrderItemsEntity.getQuantity() * placedOrderItemsEntity.getCost());
+            }
+            orderDetailsViewModel.setTotalCount(totalCount);
+            orderDetailsViewModel.setTotalCost(totalCost);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
 }

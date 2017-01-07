@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HSB</string>
+    <string name="app_name">Taste Of India</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -10,14 +10,18 @@
 
     <string name="mobile_number_hint">MobileNumber</string>
 
-    <string name="mpin_hint">MPin</string>
+    <string name="mpin_hint">MPin(Must be 6 digits)</string>
     <string name="mpin_hint_retype">ReType-MPin</string>
+
+    <string name="mpin_val_len">MPin must be 6 digits.</string>
+    <string name="re_mpin_val_len">ReType MPin must be 6 digits.</string>
+    <string name="mpin_val_equal">MPin and ReType must be same</string>
 
     <string name="password_hint">Password</string>
     <string name="re_password_hint">Re-Type Password</string>
 
     <string name="get_table_list_heading">In Progress.</string>
-    <string name="get_table_list_message">Retrieving table settings of HSB.Please wait...</string>
+    <string name="get_table_list_message">Retrieving table settings of Taste of India.Please wait...</string>
 
     <string name="mobile_number_message">(Please provide mobile number which you\'d registered and would like the receipt to be forwarded
 mobile number provided is not registered with MobilePay)</string>
@@ -58,10 +62,12 @@ mobile number provided is not registered with MobilePay)</string>
         <item>Current Orders</item>
         <item>Placed Orders</item>
         <item>Close an Order</item>
-        <item>Call Waiter</item>
+
         <item>About</item>
-        <item>Rate the App</item>
+
         <item>LogOut</item>
+        <item>Configuration</item>
+
     </string-array>
 
 </resources>

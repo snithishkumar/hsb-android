@@ -65,7 +65,7 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
 
     private void setupViewPager(ViewPager viewPager,TabLayout tabLayout) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+       final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         List<MenuCourseEntity> menuCourseEntityList = menuItemService.getMenuCourseEntity();
         int count = 0;
         for(MenuCourseEntity menuCourseEntity : menuCourseEntityList){
@@ -83,6 +83,24 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
         }
 
         viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Fragment fragment = adapter.getItem(position);
+                MenuItemsFragment menuItemsFragment = (MenuItemsFragment)fragment;
+                menuItemsFragment.reLoadData();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
     }
 
 
@@ -96,7 +114,9 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         @Override
         public Fragment getItem(int position) {
-            return mFragmentList.get(position);
+            Fragment fragment = mFragmentList.get(position);
+
+            return fragment;
         }
 
         @Override

@@ -15,4 +15,6 @@ public interface MenuItemService {
     List<MenuCourseEntity> getMenuCourseEntity();
 
     List<MenuItemsViewModel> getMenuItemsViewModel(String menuCourseUuid, OrderDetailsViewModel orderDetailsViewModel);
+
+    void getCurrentOrdersCounts(OrderDetailsViewModel orderDetailsViewModel);
 }

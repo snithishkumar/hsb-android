@@ -122,12 +122,15 @@ public class MenuItemsFragment extends Fragment {
         this.menuItemsViewModels.clear();
         this.menuItemsViewModels.addAll(menuItemsViewModels);
         menuItemListAdapter.notifyDataSetChanged();
-        updateFooterBar();
+       // updateFooterBar();
 
     }
 
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateFooterBar();
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -140,6 +143,11 @@ public class MenuItemsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
 
+    }
+
+    public void reLoadData(){
+        homeActivity.getMenuItemService().getCurrentOrdersCounts(orderDetailsViewModel);
+        updateFooterBar();
     }
 
     public void updateFooterBar(){
