@@ -70,8 +70,15 @@ public class NaviDrawerActivity extends AppCompatActivity {
                 FragmentsUtil.addFragment(this, billingFragment, R.id.navi_drawer_container);
                 break;
 
+            case 4:
+                break;
+
             case 5:
-                showPlayStore();
+                orderService.removeAllData();
+                intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
                 break;
 
 
@@ -79,23 +86,6 @@ public class NaviDrawerActivity extends AppCompatActivity {
     }
 
 
-    private void showPlayStore(){
-        Uri uri = Uri.parse("market://details?id=" + this.getPackageName());
-        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-        // To count with Play market backstack, After pressing back button,
-        // to taken back to our application, we need to add following flags to intent.
-       /* goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
-                Intent.FLAG_ACTIVITY_NEW_DOCUMENT  |
-                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);*/
-        try {
-            startActivity(goToMarket);
-            finish();
-        } catch (ActivityNotFoundException e) {
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://play.google.com/store/apps/details?id=" + this.getPackageName())));
-            finish();
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
