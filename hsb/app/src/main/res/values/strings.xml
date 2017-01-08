@@ -9,6 +9,7 @@
     <string name="content_authority">com.archide.hsb.sync</string>
 
     <string name="mobile_number_hint">MobileNumber</string>
+    <string name="mobile_number_error">MobileNumber should not be Empty</string>
 
     <string name="mpin_hint">MPin(Must be 6 digits)</string>
     <string name="mpin_hint_retype">ReType-MPin</string>

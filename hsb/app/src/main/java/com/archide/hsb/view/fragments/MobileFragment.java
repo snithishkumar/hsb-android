@@ -88,8 +88,12 @@ public class MobileFragment extends Fragment implements View.OnClickListener{
         if (userMobileText != null && !userMobileText.trim().isEmpty()) {
             mainActivity.getTableListService().updateUserMobile(userMobileText);
             ActivityUtil.USER_MOBILE = userMobileText;
+            getMenuList();
+        }else{
+            userMobile.setError(getString(R.string.mobile_number_error));
+
         }
-        getMenuList();
+
     }
 
     private void getMenuList() {

@@ -105,7 +105,7 @@ public class MenuItemsFragment extends Fragment {
         });
 
         setAdapters(recyclerView);
-        getData();
+       // getData();
         return view;
     }
 
@@ -129,7 +129,8 @@ public class MenuItemsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateFooterBar();
+        getData();
+        reLoadData();
     }
 
     @Override
