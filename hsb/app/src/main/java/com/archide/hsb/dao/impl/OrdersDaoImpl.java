@@ -99,6 +99,10 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
       return   placedOrderItemDao.queryBuilder().where().eq(PlacedOrderItemsEntity.IS_CONFORM,false).query();
     }
 
+    public List<PlacedOrderItemsEntity> getPlacedOrderItemsEntityTest()throws SQLException{
+        return   placedOrderItemDao.queryForAll();
+    }
+
     public List<PlacedOrderItemsEntity> getPlacedOrderItemsEntity(MenuCourseEntity menuCourseEntity)throws SQLException{
         return   placedOrderItemDao.queryBuilder().where().eq(PlacedOrderItemsEntity.IS_CONFORM,false).and().eq(PlacedOrderItemsEntity.MENU_COURSE_ENTITY,menuCourseEntity).query();
     }
