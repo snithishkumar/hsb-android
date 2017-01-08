@@ -51,7 +51,7 @@
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_margin="5dp"
-            android:id="@+id/adapt_pur_item_delete"
+            android:id="@+id/adapt_place_order_remove"
             android:layout_gravity="end|right"
             android:src="@drawable/ic_clear_black_18dp"
             />

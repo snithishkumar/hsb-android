@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.archide.hsb.enumeration.OrderStatus;
@@ -95,6 +97,7 @@ public class OrderedMenuItemsAdapter extends RecyclerView.Adapter<RecyclerView.V
         TextView vDecrement;
         TextView vCountValue;
         TextView vIncrement;
+        ImageView vRemovePlaceAnOrder;
         public OrderedMenuItemsViewHolder(View view) {
             super(view);
             vTotalCount = (TextView)view.findViewById(R.id.total_count);
@@ -102,10 +105,12 @@ public class OrderedMenuItemsAdapter extends RecyclerView.Adapter<RecyclerView.V
             vOrderName = (TextView)view.findViewById(R.id.order_name);
             vDecrement = (TextView)view.findViewById(R.id.decrement);
             vCountValue = (TextView)view.findViewById(R.id.count_value);
+            vRemovePlaceAnOrder = (ImageView)view.findViewById(R.id.adapt_place_order_remove);
 
             vIncrement = (TextView)view.findViewById(R.id.increment);
             vDecrement.setOnClickListener(this);
             vIncrement.setOnClickListener(this);
+            vRemovePlaceAnOrder.setOnClickListener(this);
         }
 
         @Override
@@ -131,9 +136,21 @@ public class OrderedMenuItemsAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
 
                     break;
+                case R.id.adapt_place_order_remove:
+                    orderActivity.getOrderService().removeOrderItems(menuItemsViewModel);
+                    menuItemsViewModels.remove(getAdapterPosition());
+                    if(menuItemsViewModels.size() > 0){
+                        orderPlaceFragment.calcAmountDetails();
+                    }
+                    break;
+            }
+            if(menuItemsViewModels.size() > 0){
+                notifyDataSetChanged();
+            }else{
+                orderPlaceFragment.showNoData();
+                return;
             }
 
-            notifyDataSetChanged();
         }
     }
 

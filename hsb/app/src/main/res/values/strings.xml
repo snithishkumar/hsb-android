@@ -44,6 +44,9 @@ mobile number provided is not registered with MobilePay)</string>
 <string name="thank_you_msg">Hope to see you soon</string>
 
 
+    <string name="order_conformation">You Order has been received. Thanks.</string>
+
+
     <string name="login_forget_mpin">Forget mPIN</string>
     <string name="login_enter_mpin">Enter your mPIN</string>
 
@@ -59,8 +62,8 @@ mobile number provided is not registered with MobilePay)</string>
     </string-array>
 
     <string-array name="nav_menu">
-        <item>Current Orders</item>
-        <item>Placed Orders</item>
+        <item>My Cart</item>
+        <item>Ordered Items</item>
         <item>Close an Order</item>
 
         <item>About</item>

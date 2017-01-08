@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.archide.hsb.sync.json.ResponseData;
 import com.archide.hsb.util.Utilities;
@@ -56,6 +57,9 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
 
     RelativeLayout relativeLayout;
 
+    private LayoutInflater mInflater;
+    private ViewGroup mContainer;
+
 
     private OrderActivity orderActivity;
     private ProgressDialog progressDialog;
@@ -86,6 +90,8 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mInflater = inflater;
+        mContainer = container;
 
         placeAnOrderViewModel =  orderActivity.getOrderService().getCurrentOrderDetails();
 
@@ -263,6 +269,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
         if(responseData.getStatusCode() == 2000){
             loadData();
         }else{
+            Toast.makeText(orderActivity,getString(R.string.order_conformation),Toast.LENGTH_LONG).show();
             Intent intent = new Intent(orderActivity, HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -270,5 +277,12 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
             return;
         }
 
+    }
+
+
+    public void showNoData(){
+        View newView = mInflater.inflate(R.layout.fragment_place_order_empty, mContainer, false);
+        mContainer.removeAllViews();
+        mContainer.addView(newView);
     }
 }

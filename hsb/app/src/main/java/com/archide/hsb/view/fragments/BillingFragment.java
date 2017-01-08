@@ -20,6 +20,7 @@ import com.archide.hsb.sync.json.ResponseData;
 import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.HomeActivity;
+import com.archide.hsb.view.activities.MainActivity;
 import com.archide.hsb.view.activities.NaviDrawerActivity;
 import com.archide.hsb.view.model.CloseOrderViewModel;
 
@@ -176,6 +177,10 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         if(view.getId() == R.id.close_order_logout){
             naviDrawerActivity.getOrderService().removeAllData();
+            Intent intent = new Intent(naviDrawerActivity, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            naviDrawerActivity.finish();
              // LogOut
         }else if(view.getId() == R.id.close_order_send){
             reSentBilling();
