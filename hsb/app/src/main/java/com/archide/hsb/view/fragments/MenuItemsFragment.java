@@ -15,10 +15,16 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.archide.hsb.sync.json.ResponseData;
+import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.HomeActivity;
 import com.archide.hsb.view.adapters.MenuItemListAdapter;
 import com.archide.hsb.view.model.MenuItemsViewModel;
 import com.archide.hsb.view.model.OrderDetailsViewModel;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,8 +73,7 @@ public class MenuItemsFragment extends Fragment {
 
 
         orderDetailsViewModel = new OrderDetailsViewModel();
-        //total_no_of_items
-        //total_amount
+
 
         layout =  (RelativeLayout)view.findViewById(R.id.textView1);
         layout.setVisibility(View.GONE);
@@ -79,7 +84,7 @@ public class MenuItemsFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Need to Call Service class TODO
+                homeActivity.getMenuItemService().getMenuItems(ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
 
             }
         });
@@ -146,6 +151,18 @@ public class MenuItemsFragment extends Fragment {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
     public void reLoadData(){
         homeActivity.getMenuItemService().getCurrentOrdersCounts(orderDetailsViewModel);
         updateFooterBar();
@@ -166,5 +183,19 @@ public class MenuItemsFragment extends Fragment {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleServerSyncResponse(ResponseData responseData) {
+        stopRefreshing();
+        getData();
+        reLoadData();
+
+    }
+
+
+    private void stopRefreshing(){
+        if(refreshLayout != null){
+            refreshLayout.setRefreshing(false);
+        }
+    }
 
 }

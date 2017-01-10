@@ -17,4 +17,6 @@ public interface MenuItemService {
     List<MenuItemsViewModel> getMenuItemsViewModel(String menuCourseUuid, OrderDetailsViewModel orderDetailsViewModel);
 
     void getCurrentOrdersCounts(OrderDetailsViewModel orderDetailsViewModel);
+
+    void getMenuItems(String tableNumber,String mobileNumber);
 }

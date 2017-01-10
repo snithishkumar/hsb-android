@@ -1,6 +1,9 @@
 package com.archide.hsb.service.impl;
 
+import android.accounts.Account;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.os.Bundle;
 
 import com.archide.hsb.dao.MenuItemsDao;
 import com.archide.hsb.dao.OrdersDao;
@@ -11,12 +14,16 @@ import com.archide.hsb.entity.MenuCourseEntity;
 import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.service.MenuItemService;
+import com.archide.hsb.sync.HsbSyncAdapter;
+import com.archide.hsb.sync.SyncEvent;
 import com.archide.hsb.view.model.MenuItemsViewModel;
 import com.archide.hsb.view.model.OrderDetailsViewModel;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import hsb.archide.com.hsb.R;
 
 /**
  * Created by Nithish on 16/11/16.
@@ -26,11 +33,13 @@ public class MenuItemServiceImpl implements MenuItemService {
 
     private MenuItemsDao menuItemsDao;
     private OrdersDao ordersDao;
+    private Context context;
 
     public  MenuItemServiceImpl(Context context){
         try{
             menuItemsDao = new MenuItemsDaoImpl(context);
             ordersDao = new OrdersDaoImpl(context);
+            this.context = context;
         }catch (Exception e){
 
         }
@@ -105,6 +114,21 @@ public class MenuItemServiceImpl implements MenuItemService {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+
+    @Override
+    public void getMenuItems(String tableNumber,String mobileNumber){
+       Account account = HsbSyncAdapter.getSyncAccount(context);
+        Bundle settingsBundle = new Bundle();
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        settingsBundle.putInt("currentScreen", SyncEvent.GET_MENU_LIST);
+        settingsBundle.putString("tableNumber", tableNumber);
+        settingsBundle.putString("mobileNumber", mobileNumber);
+        ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
     }
 
 
