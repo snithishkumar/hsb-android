@@ -136,7 +136,6 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
     }
 
     private void setAdapters(RecyclerView recyclerView){
-       // placeAnOrderViewModel = new PlaceAnOrderViewModel();
         orderedMenuItemsAdapter = new OrderedMenuItemsAdapter(placeAnOrderViewModel.getMenuItemsViewModels(),orderActivity,OrderPlaceFragment.this);
 
         recyclerView.setAdapter(orderedMenuItemsAdapter);
@@ -146,7 +145,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
     }
 
     private void loadData(){
-
+        placeAnOrderViewModel =  orderActivity.getOrderService().getCurrentOrderDetails();
         if(placeAnOrderViewModel.isUnAvailable()){
             relativeLayout.setVisibility(View.VISIBLE);
         }
@@ -268,8 +267,15 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
         }
         if(responseData.getStatusCode() == 2000){
             loadData();
-        }else{
+        }else if(responseData.getStatusCode() == 200){
             Toast.makeText(orderActivity,getString(R.string.order_conformation),Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(orderActivity, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            orderActivity.finish();
+            return;
+        }else{
+            Toast.makeText(orderActivity,getString(R.string.internal_error),Toast.LENGTH_LONG).show();
             Intent intent = new Intent(orderActivity, HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

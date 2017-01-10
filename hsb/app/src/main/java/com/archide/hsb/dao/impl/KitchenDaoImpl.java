@@ -102,36 +102,41 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
 
     @Override
     public List<KitchenOrderDetailsEntity> getKitchenOrderDetailsEntity(KitchenOrdersCategoryEntity kitchenOrdersCategoryEntity)throws SQLException{
-      return   kitchenOrderDetailsDao.queryBuilder().orderBy(KitchenOrderDetailsEntity.MENU_ID,false).where().
+     /* return   kitchenOrderDetailsDao.queryBuilder().orderBy(KitchenOrderDetailsEntity.MENU_ID,false).where().
               eq(KitchenOrderDetailsEntity.KITCHEN_ORDER_CATEGORY,kitchenOrdersCategoryEntity).
               and().ne(KitchenOrderDetailsEntity.ORDER_STATUS, OrderStatus.DELIVERED).
               and().ne(KitchenOrderDetailsEntity.ORDER_STATUS,OrderStatus.UN_AVAILABLE)
-             .query();
+             .query();*/
+
+        return   kitchenOrderDetailsDao.queryBuilder().orderBy(KitchenOrderDetailsEntity.MENU_ID,false).where().
+                eq(KitchenOrderDetailsEntity.KITCHEN_ORDER_CATEGORY,kitchenOrdersCategoryEntity).
+                and().eq(KitchenOrderDetailsEntity.ORDER_STATUS, OrderStatus.ORDERED)
+                .query();
     }
 
     @Override
     public long getCountOf(FoodType foodType,KitchenOrdersListEntity kitchenOrdersListEntity)throws SQLException{
-     /* String rawQuery =   "select sum( "+KitchenOrderDetailsEntity.QUANTITY+" ) from KitchenOrdersDetails where " +
-                "" +KitchenOrderDetailsEntity.FOOD_TYPE+" = "+foodType +" and "
-                +KitchenOrderDetailsEntity.KITCHEN_ORDER_LIST+" = "+kitchenOrdersListEntity.getKitchenOrderListId();
-*/
         QueryBuilder<KitchenOrderDetailsEntity, Integer> qb = kitchenOrderDetailsDao.queryBuilder();
+        qb.selectRaw("Sum("+KitchenOrderDetailsEntity.QUANTITY+")");
+        qb.where().
+                eq(KitchenOrderDetailsEntity.FOOD_TYPE,foodType).and().
+                eq(KitchenOrderDetailsEntity.ORDER_STATUS, OrderStatus.ORDERED).and().
+                eq(KitchenOrderDetailsEntity.KITCHEN_ORDER_LIST,kitchenOrdersListEntity);
+        GenericRawResults<String[]> rawResults =  kitchenOrderDetailsDao.queryRaw(qb.prepareStatementString());
+        String[] values = rawResults.getFirstResult();
+        return values[0] != null ? Long.valueOf(values[0]) : 0;
+       /* QueryBuilder<KitchenOrderDetailsEntity, Integer> qb = kitchenOrderDetailsDao.queryBuilder();
         qb.selectRaw("Sum("+KitchenOrderDetailsEntity.QUANTITY+")");
         qb.where().
                 eq(KitchenOrderDetailsEntity.FOOD_TYPE,foodType).and().
                 ne(KitchenOrderDetailsEntity.ORDER_STATUS,OrderStatus.DELIVERED).and().
                 ne(KitchenOrderDetailsEntity.ORDER_STATUS,OrderStatus.UN_AVAILABLE).and().
                 eq(KitchenOrderDetailsEntity.KITCHEN_ORDER_LIST,kitchenOrdersListEntity);
-     //  String tt =  qb.prepareStatementString();
         GenericRawResults<String[]> rawResults =  kitchenOrderDetailsDao.queryRaw(qb.prepareStatementString());
         String[] values = rawResults.getFirstResult();
-       //List<KitchenOrderDetailsEntity> list = kitchenOrderDetailsDao.queryForAll();
-        return values[0] != null ? Long.valueOf(values[0]) : 0;
+        return values[0] != null ? Long.valueOf(values[0]) : 0;*/
 
-       /* return kitchenOrderDetailsDao.queryBuilder().where().
-                eq(KitchenOrderDetailsEntity.FOOD_TYPE,foodType).and().
-                eq(KitchenOrderDetailsEntity.KITCHEN_ORDER_LIST,kitchenOrdersListEntity)
-                .countOf();*/
+
     }
 
 
@@ -152,10 +157,11 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
 
 
     @Override
-    public void updateKitchenOrderDetailsViewStatus(int id,OrderStatus orderStatus,int unAvailableCount)throws SQLException{
+    public void updateKitchenOrderDetailsViewStatus(int id,OrderStatus orderStatus,int unAvailableCount,int quantity)throws SQLException{
         UpdateBuilder<KitchenOrderDetailsEntity,Integer> updateBuilder =  kitchenOrderDetailsDao.updateBuilder();
         updateBuilder.updateColumnValue(KitchenOrderDetailsEntity.ORDER_STATUS, orderStatus).
                 updateColumnValue(KitchenOrderDetailsEntity.UN_AVAILABLE_COUNT, unAvailableCount).
+                updateColumnValue(KitchenOrderDetailsEntity.QUANTITY, quantity).
                 updateColumnValue(KitchenOrderDetailsEntity.IS_SYNC, false).
                 where().eq(KitchenOrderDetailsEntity.MENU_ID,id);
         updateBuilder.update();

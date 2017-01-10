@@ -21,6 +21,7 @@ public class KitchenOrderDetailsViewModel {
     private String comments;
     private ViewStatus viewStatus;
     private int unAvailableCount;
+    private boolean isEdited;
 
     public KitchenOrderDetailsViewModel(){
 
@@ -38,6 +39,14 @@ public class KitchenOrderDetailsViewModel {
     public KitchenOrderDetailsViewModel(KitchenOrdersCategoryEntity kitchenOrdersCategoryEntity){
         this.name = kitchenOrdersCategoryEntity.getCategoryName();
         this.isCategory = true;
+    }
+
+    public boolean isEdited() {
+        return isEdited;
+    }
+
+    public void setEdited(boolean edited) {
+        isEdited = edited;
     }
 
     public int getId() {

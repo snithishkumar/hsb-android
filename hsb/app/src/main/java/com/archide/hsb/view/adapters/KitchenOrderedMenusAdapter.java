@@ -171,13 +171,14 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
         public boolean onMenuItemClick(MenuItem item) {
            int adapterPos = getAdapterPosition();
             final KitchenOrderDetailsViewModel kitchenOrderDetailsViewModel = detailsViewModels.get(adapterPos);
+            kitchenOrderDetailsViewModel.setEdited(true);
             final int totalCount = Integer.valueOf(kitchenOrderDetailsViewModel.getQuantity());
            switch (item.getItemId()){
                case R.id.item_delivered:
-                   detailsViewModels.get(adapterPos).setStatus(OrderStatus.DELIVERED);
-                   break;
+                   kitchenOrderDetailsViewModel.setStatus(OrderStatus.DELIVERED);
+                    break;
                case R.id.item_unavailable:
-                   detailsViewModels.get(adapterPos).setStatus(OrderStatus.UN_AVAILABLE);
+                   kitchenOrderDetailsViewModel.setStatus(OrderStatus.UN_AVAILABLE);
                    kitchenOrderDetailsViewModel.setUnAvailableCount(totalCount);
                    break;
                case R.id.item_custom:

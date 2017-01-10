@@ -116,8 +116,10 @@ public class KitchenServiceImpl implements KitchenService {
     public void saveOrderStatus(List<KitchenOrderDetailsViewModel> detailsViewModels,String orderId,Context context ){
         try{
             for(KitchenOrderDetailsViewModel kitchenOrderDetailsViewModel : detailsViewModels){
-                if(!kitchenOrderDetailsViewModel.isCategory()){
-                    kitchenDao.updateKitchenOrderDetailsViewStatus(kitchenOrderDetailsViewModel.getId(),kitchenOrderDetailsViewModel.getStatus(),kitchenOrderDetailsViewModel.getUnAvailableCount());
+                if(!kitchenOrderDetailsViewModel.isCategory() && kitchenOrderDetailsViewModel.isEdited()){
+                    kitchenDao.updateKitchenOrderDetailsViewStatus(kitchenOrderDetailsViewModel.getId(),
+                            kitchenOrderDetailsViewModel.getStatus(),kitchenOrderDetailsViewModel.getUnAvailableCount(),
+                            Integer.valueOf(kitchenOrderDetailsViewModel.getQuantity()));
                 }
 
             }

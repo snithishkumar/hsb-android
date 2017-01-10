@@ -170,9 +170,9 @@ public class OrderServiceImpl implements OrderService {
                 placedOrdersEntity.setDateTime(System.currentTimeMillis());
                 ordersDao.createPlacedOrdersEntity(placedOrdersEntity);
             }
-            List<PlacedOrderItemsEntity> itemsEntities = ordersDao.getPlacedOrderItemsEntity();
+           // List<PlacedOrderItemsEntity> itemsEntities = ordersDao.getPlacedOrderItemsEntity();
             ordersDao.removeCurrentOrder();
-            List<PlacedOrderItemsEntity> itemsEntities1 = ordersDao.getPlacedOrderItemsEntity();
+           // List<PlacedOrderItemsEntity> itemsEntities1 = ordersDao.getPlacedOrderItemsEntity();
             List<MenuItemsViewModel> menuItemsViewModels =  placeAnOrderViewModel.getMenuItemsViewModels();
             for(MenuItemsViewModel menuItemsViewModel : menuItemsViewModels){
                 createOrderItems(menuItemsViewModel);

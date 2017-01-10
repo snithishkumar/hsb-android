@@ -43,7 +43,7 @@ public interface KitchenDao {
 
     void updateKitchenOrderDetailsViewStatus(int id)throws SQLException;
 
-    void updateKitchenOrderDetailsViewStatus(int id, OrderStatus orderStatus, int unAvailableCount)throws SQLException;
+    void updateKitchenOrderDetailsViewStatus(int id, OrderStatus orderStatus, int unAvailableCount,int quantity)throws SQLException;
 
     void updateKitchenOrderListViewSync(String orderId)throws SQLException;
 

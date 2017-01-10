@@ -85,6 +85,8 @@ public class KitchenOrderListAdapter extends BaseAdapter {
             kitchenOrderListViewHolder.viewStatus.setBackgroundColor(ContextCompat.getColor(kitchenActivity, android.R.color.holo_blue_bright));
         }else if(kitchenOrderListViewModel.getViewStatus().getViewStatus() == ViewStatus.UN_VIEWED.getViewStatus()){
             kitchenOrderListViewHolder.viewStatus.setVisibility(View.VISIBLE);
+        }else{
+            kitchenOrderListViewHolder.viewStatus.setVisibility(View.INVISIBLE);
         }
 
     }
