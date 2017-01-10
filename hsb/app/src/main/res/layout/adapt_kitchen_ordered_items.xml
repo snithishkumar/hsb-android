@@ -16,8 +16,8 @@
 
     <ImageButton
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
+        android:layout_height="35dp"
+        android:layout_marginRight="5dp"
         android:id="@+id/adapt_kitchen_settings"
         android:background="@color/white"
         android:src="@drawable/ic_more_vert_black_48dp"

@@ -33,10 +33,12 @@ import hsb.archide.com.hsb.R;
 public class KitchenServiceImpl implements KitchenService {
 
     private KitchenDao kitchenDao;
+    private Context context;
 
     public KitchenServiceImpl(Context context){
         try{
             kitchenDao = new KitchenDaoImpl(context);
+            this.context = context;
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -120,11 +122,21 @@ public class KitchenServiceImpl implements KitchenService {
 
             }
             kitchenDao.updateKitchenOrderListViewSync(orderId);
-
-
+            syncData();
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    private void syncData(){
+        Account account = HsbSyncAdapter.getSyncAccount(context);
+        Bundle settingsBundle = new Bundle();
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        settingsBundle.putInt("currentScreen", SyncEvent.GET_KITCHEN_ORDERS_DATA);
+        ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
     }
 
 
