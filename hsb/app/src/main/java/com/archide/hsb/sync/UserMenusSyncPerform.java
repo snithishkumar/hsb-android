@@ -167,7 +167,7 @@ public class UserMenusSyncPerform {
                 placedOrdersEntity.setClosed(true);
                 ordersDao.updatePlacedOrdersEntity(placedOrdersEntity);
             }
-            List<PlacedOrderItemsEntity> orderItemsEntities =  ordersDao.getPlacedOrderItemsEntityTest();
+           // List<PlacedOrderItemsEntity> orderItemsEntities =  ordersDao.getPlacedOrderItemsEntityTest();
             List<OrderedMenuItems>  menuItemsList =  placeOrdersJson.getMenuItems();
             for(OrderedMenuItems orderedMenuItems : menuItemsList){
                 PlacedOrderItemsEntity placedOrderItemsEntity = ordersDao.getPlacedOrdersItemsEntity(orderedMenuItems.getPlacedOrderItemsUUID());

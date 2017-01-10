@@ -29,6 +29,7 @@ public class KitchenOrderDetailsEntity {
     public static final String VIEW_STATUS = "ViewStatus";
     public static final String UN_AVAILABLE_COUNT = "UnAvailableCount";
     public static final String IS_SYNC = "IsSync";
+    public static final String SERVER_DATE_TIME = "ServerDateTime";
 
     @DatabaseField(columnName = MENU_ID,generatedId = true)
     private int menuId;
@@ -62,6 +63,9 @@ public class KitchenOrderDetailsEntity {
     @DatabaseField(columnName =  IS_SYNC)
     private boolean isSync;
 
+    @DatabaseField(columnName = SERVER_DATE_TIME)
+    private long serverDateTime;
+
     public KitchenOrderDetailsEntity(){
 
     }
@@ -76,6 +80,15 @@ public class KitchenOrderDetailsEntity {
         this.viewStatus = ViewStatus.UN_VIEWED;
         this.unAvailableCount = orderedMenuItems.getUnAvailableCount();
         this.isSync = true;
+        this.serverDateTime = Long.valueOf(orderedMenuItems.getLastUpdatedDateTime());
+    }
+
+    public long getServerDateTime() {
+        return serverDateTime;
+    }
+
+    public void setServerDateTime(long serverDateTime) {
+        this.serverDateTime = serverDateTime;
     }
 
     public boolean isSync() {

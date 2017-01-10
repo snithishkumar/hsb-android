@@ -44,6 +44,8 @@ mobile number provided is not registered with MobilePay)</string>
 
 <string name="thank_you_msg">Hope to see you soon</string>
 
+    <string name="kitchen_no_data">No to data to see.</string>
+
 
     <string name="order_conformation">You Order has been received. Thanks.</string>
 

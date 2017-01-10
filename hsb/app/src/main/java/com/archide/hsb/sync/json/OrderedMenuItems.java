@@ -17,6 +17,7 @@ public class OrderedMenuItems {
     private FoodType foodType;
 	private OrderStatus orderStatus;
     private int unAvailableCount;
+	private String lastUpdatedDateTime;
 	
 	public OrderedMenuItems(KitchenOrderDetailsEntity kitchenOrderDetailsEntity){
 		this.unAvailableCount = kitchenOrderDetailsEntity.getUnAvailableCount();
@@ -38,7 +39,15 @@ public class OrderedMenuItems {
 
 	}
 
-    public int getUnAvailableCount() {
+	public String getLastUpdatedDateTime() {
+		return lastUpdatedDateTime;
+	}
+
+	public void setLastUpdatedDateTime(String lastUpdatedDateTime) {
+		this.lastUpdatedDateTime = lastUpdatedDateTime;
+	}
+
+	public int getUnAvailableCount() {
         return unAvailableCount;
     }
 

@@ -61,7 +61,9 @@ public class KitchenSyncPerform {
             List<KitchenOrdersListEntity> kitchenOrdersListEntities =   kitchenDao.getKitchenOrdersList();
             List<GetKitchenOrders> getKitchenOrdersList = new ArrayList<>();
             for(KitchenOrdersListEntity kitchenOrdersListEntity : kitchenOrdersListEntities){
+               long lastKitchenOrderDetails = kitchenDao.getLastKitchenOrderDetails(kitchenOrdersListEntity);
                 GetKitchenOrders getKitchenOrders = new GetKitchenOrders(kitchenOrdersListEntity);
+                getKitchenOrders.setServerDateTime(lastKitchenOrderDetails);
                 getKitchenOrdersList.add(getKitchenOrders);
             }
             Call<ResponseData> kitchenResponse =   hsbAPI.getKitchenOrders(getKitchenOrdersList);

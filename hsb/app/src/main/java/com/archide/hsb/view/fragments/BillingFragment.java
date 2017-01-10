@@ -212,6 +212,10 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
                 setError();
                 break;
 
+            case 403:
+                showNoData();
+                break;
+
             case 404:
                 showNoData();
                 break;

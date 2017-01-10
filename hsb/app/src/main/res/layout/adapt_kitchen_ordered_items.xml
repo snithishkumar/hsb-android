@@ -9,16 +9,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="4x"
-        android:textSize="28sp"
         android:textStyle="bold"
+        android:textSize="19dp"
         android:layout_alignParentLeft="true"
         android:textColor="@android:color/holo_green_dark"/>
 
     <ImageButton
-        android:layout_width="12dp"
-        android:layout_height="18dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
         android:id="@+id/adapt_kitchen_settings"
-        android:src="@drawable/ic_more_vert_black_24dp"
+        android:background="@color/white"
+        android:src="@drawable/ic_more_vert_black_48dp"
         android:layout_alignParentRight="true"
          />
 
@@ -26,8 +28,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/adapt_kitchen_order_name"
+        android:textSize="19dp"
         android:layout_marginLeft="15dp"
-        android:textSize="28sp"
         android:layout_toRightOf="@+id/adapt_kitchen_total_count"
         android:text="Chicken Chukka"
         android:textColor="@android:color/black"/>

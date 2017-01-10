@@ -62,7 +62,7 @@ public class KitchenOrderListFragment extends Fragment {
         kitchenOrderList =  (GridView)view.findViewById(R.id.gridview);
        int orientation = getResources().getConfiguration().orientation;
         if(Configuration.ORIENTATION_LANDSCAPE == orientation){
-            kitchenOrderList.setNumColumns(1);
+            kitchenOrderList.setNumColumns(2);
         }else{
             kitchenOrderList.setNumColumns(1);
         }
@@ -85,6 +85,12 @@ public class KitchenOrderListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 KitchenOrderListViewModel kitchenOrderListViewModel =  kitchenOrderListViewModels.get(position);
+              int nonVegCount = Integer.valueOf(kitchenOrderListViewModel.getNonVegCount());
+                int vegCount = Integer.valueOf(kitchenOrderListViewModel.getVegCount());
+                if(nonVegCount < 1 && vegCount < 1){
+                    Toast.makeText(kitchenActivity,getString(R.string.kitchen_no_data),Toast.LENGTH_LONG).show();
+                    return;
+                }
                 kitchenActivity.viewOrderDetails(kitchenOrderListViewModel.getOrderId());
                 return;
             }

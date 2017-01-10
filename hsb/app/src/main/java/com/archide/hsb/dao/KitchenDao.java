@@ -54,4 +54,6 @@ public interface KitchenDao {
     void updateKitchenOrderDetailsSyncStatus(String placedOrderUuid)throws SQLException;
 
     void updateKitchenOrderListSyncStatus(String placedOrderUuid)throws SQLException;
+
+    long getLastKitchenOrderDetails(KitchenOrdersListEntity kitchenOrdersListEntity)throws SQLException;
 }
