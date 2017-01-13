@@ -23,6 +23,7 @@ import com.archide.hsb.sync.json.ResponseData;
 import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.HomeActivity;
+import com.archide.hsb.view.activities.MainActivity;
 import com.archide.hsb.view.activities.OrderActivity;
 import com.archide.hsb.view.adapters.OrderedMenuItemsAdapter;
 import com.archide.hsb.view.model.MenuItemsViewModel;
@@ -224,6 +225,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
            if(placeAnOrderViewModel.getTotalAmount() > 0){
                boolean isNetWorkConnected =  Utilities.isNetworkConnected(orderActivity);
                if(isNetWorkConnected){
+                   placeAnOrderViewModel.setCookingComments(cookingComments.getText().toString());
                    progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), orderActivity);
                    orderActivity.getOrderService().conformOrder(placeAnOrderViewModel,ActivityUtil.USER_MOBILE,ActivityUtil.TABLE_NUMBER,orderActivity);
                }else{
@@ -269,7 +271,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
             loadData();
         }else if(responseData.getStatusCode() == 200){
             Toast.makeText(orderActivity,getString(R.string.order_conformation),Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(orderActivity, HomeActivity.class);
+            Intent intent = new Intent(orderActivity, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             orderActivity.finish();

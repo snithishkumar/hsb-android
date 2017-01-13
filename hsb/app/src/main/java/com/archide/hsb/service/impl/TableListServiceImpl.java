@@ -9,14 +9,16 @@ import com.archide.hsb.dao.AdminDao;
 import com.archide.hsb.dao.OrdersDao;
 import com.archide.hsb.dao.impl.AdminDaoImpl;
 import com.archide.hsb.dao.impl.OrdersDaoImpl;
-import com.archide.hsb.entity.AdminEntity;
 import com.archide.hsb.entity.ConfigurationEntity;
+import com.archide.hsb.entity.UsersEntity;
 import com.archide.hsb.enumeration.AppType;
 import com.archide.hsb.service.TableListService;
 import com.archide.hsb.sync.HsbSyncAdapter;
 import com.archide.hsb.sync.SyncEvent;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import hsb.archide.com.hsb.R;
 
@@ -82,11 +84,9 @@ public class TableListServiceImpl implements TableListService {
             ConfigurationEntity configurationEntity = new ConfigurationEntity();
             configurationEntity.setAppType(selectedAppType);
             configurationEntity.setTableNumber(tableNumber);
+            configurationEntity.setmPin(mPin);
             adminDao.createAppType(configurationEntity);
-            // Create Admin
-            AdminEntity adminEntity = new AdminEntity();
-            adminEntity.setmPin(mPin);
-            adminDao.createAdminEntity(adminEntity);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -95,28 +95,15 @@ public class TableListServiceImpl implements TableListService {
     @Override
     public void updateUserMobile(String userMobile) {
         try{
-            boolean isMobileSame =  adminDao.isMobilePresent(userMobile);
-            if(!isMobileSame){
-                OrdersDao ordersDao = new OrdersDaoImpl(context);
-                ordersDao.removeAllData();
-                adminDao.updateUserMobile(userMobile);
-            }
-
-
+            UsersEntity usersEntity = new UsersEntity();
+            usersEntity.setUserMobileNumber(userMobile);
+            usersEntity.setClosed(false);
+            adminDao.createUsers(usersEntity);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-  /*  @Override
-    public boolean isTableConfigured() {
-        try{
-            return adminDao.isTableConfigured();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return false;
-    }*/
 
 
     @Override
@@ -133,10 +120,10 @@ public class TableListServiceImpl implements TableListService {
     @Override
     public int verifyLogin(String mPin){
         try{
-           AdminEntity adminEntity = adminDao.getAdminEntity();
-            if(adminEntity == null){
+            ConfigurationEntity configurationEntity = adminDao.getAppType();
+            if(configurationEntity == null){
                 return 1;
-            }else  if(adminEntity.getmPin().equals(mPin)){
+            }else  if(configurationEntity.getmPin().equals(mPin)){
                 return 2;
             }
             return 3;
@@ -144,6 +131,31 @@ public class TableListServiceImpl implements TableListService {
             e.printStackTrace();
         }
         return 1;
+    }
+
+
+    @Override
+    public List<UsersEntity> getUsers(){
+        try {
+            return adminDao.getUsersList();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+
+    @Override
+    public void removePreviousData(){
+        try{
+            OrdersDao ordersDao = new OrdersDaoImpl(context);
+            ordersDao.removeAllData();
+            if(adminDao.isOrderCloseUser()){
+                adminDao.removeClosedUser();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

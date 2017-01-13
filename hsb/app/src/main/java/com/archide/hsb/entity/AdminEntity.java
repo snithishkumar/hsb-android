@@ -7,23 +7,22 @@ import com.j256.ormlite.table.DatabaseTable;
 /**
  * Created by Nithish on 20/11/16.
  */
-@DatabaseTable(tableName = "AdminTable")
+/*@DatabaseTable(tableName = "AdminTable")
 public class AdminEntity {
 
     public static final String ADMIN_ID = "AdminId";
    // public static final String TABLE_NUMBER = "TableNumber";
     public static final String M_PIN = "MPin";
-    public static final String USER_MOBILE = "UserMobile";
+   // public static final String USER_MOBILE = "UserMobile";
     @DatabaseField(columnName = ADMIN_ID,generatedId = true)
     private int adminId;
-   // @DatabaseField(columnName = TABLE_NUMBER)
-   // private String tableNumber;
+
     @DatabaseField(columnName = M_PIN)
     private String mPin;
-    @DatabaseField(columnName = USER_MOBILE)
-    private String userMobile;
+   /* @DatabaseField(columnName = USER_MOBILE)
+    private String userMobile;*/
 
-    public int getAdminId() {
+   /* public int getAdminId() {
         return adminId;
     }
 
@@ -41,21 +40,21 @@ public class AdminEntity {
         this.mPin = mPin;
     }
 
-    public String getUserMobile() {
+  /*  public String getUserMobile() {
         return userMobile;
     }
 
     public void setUserMobile(String userMobile) {
         this.userMobile = userMobile;
-    }
+    }*/
 
-
+/*
     @Override
     public String toString() {
         return "AdminEntity{" +
                 "adminId=" + adminId +
                 ", mPin='" + mPin + '\'' +
-                ", userMobile='" + userMobile + '\'' +
                 '}';
     }
 }
+*/

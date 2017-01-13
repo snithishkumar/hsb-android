@@ -1,5 +1,6 @@
 package com.archide.hsb.view.model;
 
+import com.archide.hsb.entity.KitchenCookingCmntsEntity;
 import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
 import com.archide.hsb.enumeration.OrderStatus;
@@ -39,6 +40,11 @@ public class KitchenOrderDetailsViewModel {
     public KitchenOrderDetailsViewModel(KitchenOrdersCategoryEntity kitchenOrdersCategoryEntity){
         this.name = kitchenOrdersCategoryEntity.getCategoryName();
         this.isCategory = true;
+    }
+
+    public KitchenOrderDetailsViewModel(KitchenCookingCmntsEntity kitchenCookingCmntsEntity){
+        this.comments = kitchenCookingCmntsEntity.getCookingComments();
+        this.isComments = true;
     }
 
     public boolean isEdited() {

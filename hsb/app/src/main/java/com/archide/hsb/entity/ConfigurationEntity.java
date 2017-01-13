@@ -13,6 +13,7 @@ public class ConfigurationEntity {
     public static final String APP_TYPE = "AppType";
     public static final String APP_TYPE_ID = "AppTypeId";
     public static final String TABLE_NUMBER = "TableNumber";
+    public static final String MPIN = "MPin";
 
     @DatabaseField(columnName = APP_TYPE_ID,generatedId = true)
     private int appTypeId;
@@ -22,6 +23,9 @@ public class ConfigurationEntity {
 
     @DatabaseField(columnName = TABLE_NUMBER)
     private String tableNumber;
+
+    @DatabaseField(columnName =  MPIN)
+    private String mPin;
 
     public String getTableNumber() {
         return tableNumber;
@@ -45,6 +49,14 @@ public class ConfigurationEntity {
 
     public void setAppType(AppType appType) {
         this.appType = appType;
+    }
+
+    public String getmPin() {
+        return mPin;
+    }
+
+    public void setmPin(String mPin) {
+        this.mPin = mPin;
     }
 
     @Override

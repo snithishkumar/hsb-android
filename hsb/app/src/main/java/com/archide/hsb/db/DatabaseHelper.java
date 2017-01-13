@@ -8,9 +8,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.archide.hsb.entity.AdminEntity;
 import com.archide.hsb.entity.ConfigurationEntity;
 import com.archide.hsb.entity.FoodCategoryEntity;
+import com.archide.hsb.entity.KitchenCookingCmntsEntity;
 import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
 import com.archide.hsb.entity.KitchenOrdersListEntity;
@@ -18,6 +18,7 @@ import com.archide.hsb.entity.MenuCourseEntity;
 import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.entity.PlacedOrdersEntity;
+import com.archide.hsb.entity.UsersEntity;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
@@ -52,7 +53,7 @@ public class DatabaseHelper<T,T1> extends OrmLiteSqliteOpenHelper {
         try {
             Log.i(DatabaseHelper.class.getName(), "onCreate");
             TableUtils.createTableIfNotExists(connectionSource, ConfigurationEntity.class);
-            TableUtils.createTableIfNotExists(connectionSource, AdminEntity.class);
+            TableUtils.createTableIfNotExists(connectionSource, UsersEntity.class);
             TableUtils.createTableIfNotExists(connectionSource, MenuCourseEntity.class);
             TableUtils.createTableIfNotExists(connectionSource, FoodCategoryEntity.class);
             TableUtils.createTableIfNotExists(connectionSource, MenuEntity.class);
@@ -62,6 +63,7 @@ public class DatabaseHelper<T,T1> extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, KitchenOrdersListEntity.class);
             TableUtils.createTableIfNotExists(connectionSource, KitchenOrdersCategoryEntity.class);
             TableUtils.createTableIfNotExists(connectionSource, KitchenOrderDetailsEntity.class);
+            TableUtils.createTableIfNotExists(connectionSource, KitchenCookingCmntsEntity.class);
 
         } catch (Exception e) {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);

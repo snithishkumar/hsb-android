@@ -22,6 +22,7 @@ public class PlacedOrdersEntity {
     public static final String ORDER_DATE_TIME = "OrderDateTime";
     public static final String LAST_UPDATED_TIME = "LastUpdatedDateTime";
 	public static final String IS_CLOSED = "IsClosed";
+	public static final String COMMENTS = "comments";
 
 
 
@@ -53,6 +54,9 @@ public class PlacedOrdersEntity {
     private long lastUpdatedDateTime;
 	@DatabaseField(columnName = IS_CLOSED)
 	private boolean isClosed;
+
+    @DatabaseField(columnName = COMMENTS)
+	private String comments;
 	
 	public PlacedOrdersEntity(){
 		
@@ -82,6 +86,14 @@ public class PlacedOrdersEntity {
         this.totalPrice = placeOrdersJson.getTotalPrice();
         this.serverDateTime = placeOrdersJson.getServerDateTime();
         this.lastUpdatedDateTime = placeOrdersJson.getLastUpdatedDateTime();
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
     public String getUserMobileNumber() {

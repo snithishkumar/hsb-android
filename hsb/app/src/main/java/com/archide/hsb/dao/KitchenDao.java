@@ -1,5 +1,6 @@
 package com.archide.hsb.dao;
 
+import com.archide.hsb.entity.KitchenCookingCmntsEntity;
 import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
 import com.archide.hsb.entity.KitchenOrdersListEntity;
@@ -56,4 +57,10 @@ public interface KitchenDao {
     void updateKitchenOrderListSyncStatus(String placedOrderUuid)throws SQLException;
 
     long getLastKitchenOrderDetails(KitchenOrdersListEntity kitchenOrdersListEntity)throws SQLException;
+
+    KitchenCookingCmntsEntity getKitchenCookingCmntsEntity(String cookingCommentsUUID)throws SQLException;
+
+    void saveKitchenCookingCmntsEntity(KitchenCookingCmntsEntity kitchenCookingCmntsEntity)throws SQLException;
+
+    List<KitchenCookingCmntsEntity> getKitchenCookingCmntsEntity(KitchenOrdersListEntity kitchenOrdersListEntity)throws SQLException;
 }

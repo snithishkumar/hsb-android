@@ -24,7 +24,7 @@
         android:layout_marginTop="10dp"
         android:text="Save"
         android:layout_centerInParent="false"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_alignWithParentIfMissing="false"
         tools:layout_alignWithParentIfMissing="false"
         android:layout_alignParentBottom="true"

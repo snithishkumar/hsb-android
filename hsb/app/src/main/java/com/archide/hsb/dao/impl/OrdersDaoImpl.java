@@ -21,7 +21,6 @@ import java.util.List;
 public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
 
     Dao<PlacedOrdersEntity,Integer> placedOrdersDao = null;
-
     Dao<PlacedOrderItemsEntity,Integer> placedOrderItemDao = null;
 
     public OrdersDaoImpl(Context context) throws SQLException {

@@ -1,6 +1,7 @@
 package com.archide.hsb.view.activities;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import com.archide.hsb.view.fragments.FragmentsUtil;
 import com.archide.hsb.view.fragments.KitchenLoginFragment;
 import com.archide.hsb.view.fragments.MobileFragment;
 import com.archide.hsb.view.fragments.ConfigurationFragment;
+import com.archide.hsb.view.fragments.WelcomeFragment;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,9 +22,10 @@ import java.io.FileInputStream;
 import hsb.archide.com.hsb.R;
 
 public class MainActivity extends AppCompatActivity implements MobileFragment.MainActivityCallback,
-        ConfigurationFragment.MainActivityCallback, KitchenLoginFragment.MainActivityCallback{
+        ConfigurationFragment.MainActivityCallback, KitchenLoginFragment.MainActivityCallback,WelcomeFragment.MainActivityCallback{
 
-    private MobileFragment mobileFragment;
+   // private MobileFragment mobileFragment;
+    private WelcomeFragment welcomeFragment;
     private ConfigurationFragment configurationFragment;
     private TableListService tableListService;
 
@@ -47,20 +50,15 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
             FragmentsUtil.addFragment(this, configurationFragment, R.id.main_container);
         }else{
             if(configurationEntity.getAppType().toString().equals(AppType.Kitchen.toString())){
-
                 KitchenLoginFragment kitchenLoginFragment = new KitchenLoginFragment();
                 FragmentsUtil.addFragment(this, kitchenLoginFragment, R.id.main_container);
-
-               /* Intent intent = new Intent(this, KitchenActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();*/
-               // KitchenLoginFragment loginFragment = new KitchenLoginFragment();
-               // FragmentsUtil.addFragment(this, loginFragment, R.id.main_container);
             }else{
-                mobileFragment = new MobileFragment();
-                FragmentsUtil.addFragment(this, mobileFragment, R.id.main_container);
+                welcomeFragment = new WelcomeFragment();
+                FragmentsUtil.addFragment(this, welcomeFragment, R.id.main_container);
                 ActivityUtil.TABLE_NUMBER = configurationEntity.getTableNumber();
+              /*  mobileFragment = new MobileFragment();
+                FragmentsUtil.addFragment(this, mobileFragment, R.id.main_container);
+                ActivityUtil.TABLE_NUMBER = configurationEntity.getTableNumber();*/
             }
         }
 
@@ -78,9 +76,20 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
             finish();*/
         }
         else if(code == AppType.User.getAppType()){
-            mobileFragment = new MobileFragment();
-            FragmentsUtil.replaceFragmentNoStack(this, mobileFragment, R.id.main_container);
-        }else if(code == 5000){
+            welcomeFragment = new WelcomeFragment();
+            FragmentsUtil.replaceFragmentNoStack(this, welcomeFragment, R.id.main_container);
+
+        }
+        else if(code == 5001){
+            MobileFragment mobileFragment = new MobileFragment();
+            FragmentsUtil.replaceFragment(this,mobileFragment,R.id.main_container);
+        }else if(code == 5002){
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
+        else if(code == 5000){
             Intent intent = new Intent(this, KitchenActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -111,8 +120,14 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
         }
     }
 
+    @Override
+    public void onBackPressed() {
+       Fragment fragment =  getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if(!(fragment instanceof WelcomeFragment)){
+            super.onBackPressed();
+        }
 
-
+    }
 
     public TableListService getTableListService() {
         return tableListService;

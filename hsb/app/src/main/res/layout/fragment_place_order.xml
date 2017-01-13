@@ -84,6 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:id="@+id/cooking_comments"
+            android:maxLength="512"
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="10dp"
             android:hint="Comments(Optional)"/>

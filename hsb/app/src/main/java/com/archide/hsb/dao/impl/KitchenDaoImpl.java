@@ -3,6 +3,7 @@ package com.archide.hsb.dao.impl;
 import android.content.Context;
 
 import com.archide.hsb.dao.KitchenDao;
+import com.archide.hsb.entity.KitchenCookingCmntsEntity;
 import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
 import com.archide.hsb.entity.KitchenOrdersListEntity;
@@ -27,6 +28,7 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
     Dao<KitchenOrdersListEntity,Integer> kitchenOrderListDao = null;
     Dao<KitchenOrdersCategoryEntity,Integer> kitchenOrderCategorytDao = null;
     Dao<KitchenOrderDetailsEntity,Integer> kitchenOrderDetailsDao = null;
+    Dao<KitchenCookingCmntsEntity,Integer> kitchenCookingCommentsDao = null;
 
 
     public KitchenDaoImpl(Context context) throws SQLException {
@@ -39,6 +41,7 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
         kitchenOrderListDao = databaseHelper.getDao(KitchenOrdersListEntity.class);
         kitchenOrderCategorytDao =  databaseHelper.getDao(KitchenOrdersCategoryEntity.class);
         kitchenOrderDetailsDao = databaseHelper.getDao(KitchenOrderDetailsEntity.class);
+        kitchenCookingCommentsDao = databaseHelper.getDao(KitchenCookingCmntsEntity.class);
     }
 
     @Override
@@ -83,7 +86,7 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
     }
 
     @Override
-    public void closeOrders(String orderGuid)throws SQLException{
+    public void closeOrders(String orderGuid)throws SQLException{ // TODO Need to delete data from table
       UpdateBuilder<KitchenOrdersListEntity,Integer> updateBuilder =  kitchenOrderListDao.updateBuilder();
         updateBuilder.updateColumnValue(KitchenOrdersListEntity.STATUS,Status.CLOSE).where().eq(KitchenOrdersListEntity.ORDER_ID,orderGuid);
         updateBuilder.update();
@@ -198,6 +201,22 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
         UpdateBuilder<KitchenOrdersListEntity,Integer> updateBuilder =  kitchenOrderListDao.updateBuilder();
         updateBuilder.updateColumnValue(KitchenOrdersListEntity.IS_SYNCED, true).where().eq(KitchenOrdersListEntity.PLACED_ORDERS_UUID,placedOrderUuid);
         updateBuilder.update();
+    }
+
+    @Override
+    public KitchenCookingCmntsEntity getKitchenCookingCmntsEntity(String cookingCommentsUUID)throws SQLException{
+      return   kitchenCookingCommentsDao.queryBuilder().where().eq(KitchenCookingCmntsEntity.COOKING_COMMENTS_UUID,cookingCommentsUUID).queryForFirst();
+    }
+
+    @Override
+    public List<KitchenCookingCmntsEntity> getKitchenCookingCmntsEntity(KitchenOrdersListEntity kitchenOrdersListEntity)throws SQLException{
+        //List<KitchenCookingCmntsEntity> res = kitchenCookingCommentsDao.queryForAll();
+        return   kitchenCookingCommentsDao.queryBuilder().orderBy(KitchenCookingCmntsEntity.DATE_TIME,false).where().eq(KitchenCookingCmntsEntity.KITCHEN_ORDER_LIST,kitchenOrdersListEntity).query();
+    }
+
+    @Override
+    public void saveKitchenCookingCmntsEntity(KitchenCookingCmntsEntity kitchenCookingCmntsEntity)throws SQLException{
+        kitchenCookingCommentsDao.create(kitchenCookingCmntsEntity);
     }
 
 }

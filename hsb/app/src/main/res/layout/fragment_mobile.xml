@@ -55,7 +55,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="phone"
+                    android:inputType="number"
                     android:id="@+id/vUserMobileNumber"
                     android:hint="@string/mobile_number_hint" />
             </android.support.design.widget.TextInputLayout>

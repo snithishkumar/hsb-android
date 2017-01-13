@@ -7,6 +7,7 @@ import com.archide.hsb.dao.KitchenDao;
 import com.archide.hsb.dao.impl.KitchenDaoImpl;
 import com.archide.hsb.dao.impl.MenuItemsDaoImpl;
 import com.archide.hsb.dao.impl.OrdersDaoImpl;
+import com.archide.hsb.entity.KitchenCookingCmntsEntity;
 import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
 import com.archide.hsb.entity.KitchenOrdersListEntity;
@@ -14,6 +15,7 @@ import com.archide.hsb.enumeration.GsonAPI;
 import com.archide.hsb.enumeration.Status;
 import com.archide.hsb.enumeration.ViewStatus;
 import com.archide.hsb.sync.json.GetKitchenOrders;
+import com.archide.hsb.sync.json.KitchenCookingComments;
 import com.archide.hsb.sync.json.KitchenOrderListResponse;
 import com.archide.hsb.sync.json.KitchenOrderStatusSyncResponse;
 import com.archide.hsb.sync.json.OrderedMenuItems;
@@ -121,12 +123,31 @@ public class KitchenSyncPerform {
                        kitchenOrderDetailsEntity.setKitchenOrdersList(kitchenOrdersListEntity);
                        kitchenDao.createKitchenOrderItems(kitchenOrderDetailsEntity);
                    }
+                   processCookingComments(placeOrdersJson,kitchenOrdersListEntity);
                }
 
 
             }
         }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+
+    private void processCookingComments(PlaceOrdersJson placeOrdersJson,KitchenOrdersListEntity kitchenOrdersListEntity ){
+        List<KitchenCookingComments> cookingCommentsList = placeOrdersJson.getCookingCommentsList();
+        for(KitchenCookingComments kitchenCookingComments : cookingCommentsList){
+            try {
+                KitchenCookingCmntsEntity cookingCmntsEntity = kitchenDao.getKitchenCookingCmntsEntity(kitchenCookingComments.getKitchenCookingCommentsUUID());
+                if(cookingCmntsEntity == null){
+                    cookingCmntsEntity = new KitchenCookingCmntsEntity(kitchenCookingComments);
+                    cookingCmntsEntity.setKitchenOrdersList(kitchenOrdersListEntity);
+                    kitchenDao.saveKitchenCookingCmntsEntity(cookingCmntsEntity);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
     }
 

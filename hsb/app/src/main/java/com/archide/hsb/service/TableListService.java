@@ -1,7 +1,10 @@
 package com.archide.hsb.service;
 
 import com.archide.hsb.entity.ConfigurationEntity;
+import com.archide.hsb.entity.UsersEntity;
 import com.archide.hsb.enumeration.AppType;
+
+import java.util.List;
 
 /**
  * Created by Nithish on 12/11/16.
@@ -20,4 +23,8 @@ public interface TableListService {
     ConfigurationEntity getAppType();
 
     int verifyLogin(String mPin);
+
+    List<UsersEntity> getUsers();
+
+    void removePreviousData();
 }

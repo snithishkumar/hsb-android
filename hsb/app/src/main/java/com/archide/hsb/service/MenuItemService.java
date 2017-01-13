@@ -18,5 +18,5 @@ public interface MenuItemService {
 
     void getCurrentOrdersCounts(OrderDetailsViewModel orderDetailsViewModel);
 
-    void getMenuItems(String tableNumber,String mobileNumber);
+
 }

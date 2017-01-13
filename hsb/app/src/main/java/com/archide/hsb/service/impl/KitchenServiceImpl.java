@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.archide.hsb.dao.KitchenDao;
 import com.archide.hsb.dao.impl.KitchenDaoImpl;
+import com.archide.hsb.entity.KitchenCookingCmntsEntity;
 import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
 import com.archide.hsb.entity.KitchenOrdersListEntity;
@@ -92,6 +93,14 @@ public class KitchenServiceImpl implements KitchenService {
                    results.add(kitchenOrderDetailsViewModel);
                }
            }
+
+            List<KitchenCookingCmntsEntity> kitchenCookingCmntsList =  kitchenDao.getKitchenCookingCmntsEntity(kitchenOrdersListEntity);
+
+            for(KitchenCookingCmntsEntity kitchenCookingCmntsEntity : kitchenCookingCmntsList){
+                KitchenOrderDetailsViewModel kitchenOrderDetailsViewModel = new KitchenOrderDetailsViewModel(kitchenCookingCmntsEntity);
+                results.add(kitchenOrderDetailsViewModel);
+                break; // TODO Need to display all comments
+            }
 
         }catch (Exception e){
             e.printStackTrace();

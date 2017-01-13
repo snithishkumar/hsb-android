@@ -39,6 +39,12 @@
                 android:visibility="invisible"
                 android:textColor="@android:color/white"
                 android:background="@android:color/holo_green_dark"/>
+
+          <!--  <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9965820037"
+                /> -->
         </LinearLayout>
         <TextView
             android:layout_width="1dp"

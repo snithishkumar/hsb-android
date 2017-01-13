@@ -98,7 +98,6 @@ public class NaviDrawerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // go to previous activity
                 onBackPressed();
                 return true;
         }

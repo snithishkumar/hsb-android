@@ -20,7 +20,9 @@ public class PlaceOrdersJson {
     private long serverDateTime;
     private long orderDateTime;
     private long lastUpdatedDateTime;
-	
+    private List<KitchenCookingComments> cookingCommentsList = new ArrayList<>();
+	private String comments;
+
 	public PlaceOrdersJson(KitchenOrdersListEntity kitchenOrdersListEntity){
 		this.orderId = kitchenOrdersListEntity.getOrderId();
 		this.placeOrderUuid = kitchenOrdersListEntity.getPlacedOrderUuid();
@@ -39,6 +41,15 @@ public class PlaceOrdersJson {
         this.orderDateTime = placedOrdersEntity.getOrderDateTime();
         this.lastUpdatedDateTime = placedOrdersEntity.getLastUpdatedDateTime();
 		this.userMobileNumber = placedOrdersEntity.getUserMobileNumber();
+		this.comments = placedOrdersEntity.getComments();
+    }
+
+    public List<KitchenCookingComments> getCookingCommentsList() {
+        return cookingCommentsList;
+    }
+
+    public void setCookingCommentsList(List<KitchenCookingComments> cookingCommentsList) {
+        this.cookingCommentsList = cookingCommentsList;
     }
 
     public long getServerDateTime() {
@@ -119,10 +130,16 @@ public class PlaceOrdersJson {
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-	
-	
 
-	public String getPlaceOrderUuid() {
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public String getPlaceOrderUuid() {
 		return placeOrderUuid;
 	}
 	public void setPlaceOrderUuid(String placeOrderUuid) {

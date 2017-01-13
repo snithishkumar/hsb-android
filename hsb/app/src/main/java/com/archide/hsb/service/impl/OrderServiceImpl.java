@@ -168,6 +168,7 @@ public class OrderServiceImpl implements OrderService {
                 placedOrdersEntity.setDiscount(placeAnOrderViewModel.getDiscount());
                 placedOrdersEntity.setTotalPrice(placeAnOrderViewModel.getTotalAmount());
                 placedOrdersEntity.setDateTime(System.currentTimeMillis());
+                placedOrdersEntity.setComments(placeAnOrderViewModel.getCookingComments());
                 ordersDao.createPlacedOrdersEntity(placedOrdersEntity);
             }
            // List<PlacedOrderItemsEntity> itemsEntities = ordersDao.getPlacedOrderItemsEntity();
@@ -311,6 +312,20 @@ public class OrderServiceImpl implements OrderService {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void getMenuItems(String tableNumber,String mobileNumber,Context context){
+        Account account = HsbSyncAdapter.getSyncAccount(context);
+        Bundle settingsBundle = new Bundle();
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        settingsBundle.putInt("currentScreen", SyncEvent.GET_MENU_LIST);
+        settingsBundle.putString("tableNumber", tableNumber);
+        settingsBundle.putString("mobileNumber", mobileNumber);
+        ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
     }
 
 

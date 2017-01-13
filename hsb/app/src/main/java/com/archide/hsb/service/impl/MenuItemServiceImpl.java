@@ -117,19 +117,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
 
-    @Override
-    public void getMenuItems(String tableNumber,String mobileNumber){
-       Account account = HsbSyncAdapter.getSyncAccount(context);
-        Bundle settingsBundle = new Bundle();
-        settingsBundle.putBoolean(
-                ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        settingsBundle.putBoolean(
-                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        settingsBundle.putInt("currentScreen", SyncEvent.GET_MENU_LIST);
-        settingsBundle.putString("tableNumber", tableNumber);
-        settingsBundle.putString("mobileNumber", mobileNumber);
-        ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
-    }
+
 
 
 }
