@@ -46,4 +46,7 @@ public interface OrderService {
 
     void getMenuItems(String tableNumber,String mobileNumber,Context context);
 
+    void closeOrder(String mobileNumber);
+
+
 }

@@ -1,19 +1,21 @@
 package com.archide.hsb.view.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.Menu;
+import android.view.MenuItem;
 
 import com.archide.hsb.entity.ConfigurationEntity;
 import com.archide.hsb.enumeration.AppType;
 import com.archide.hsb.service.TableListService;
 import com.archide.hsb.service.impl.TableListServiceImpl;
+import com.archide.hsb.view.fragments.ConfigurationFragment;
 import com.archide.hsb.view.fragments.FragmentsUtil;
 import com.archide.hsb.view.fragments.KitchenLoginFragment;
 import com.archide.hsb.view.fragments.MobileFragment;
-import com.archide.hsb.view.fragments.ConfigurationFragment;
+import com.archide.hsb.view.fragments.OrderModuleLoginFragment;
+import com.archide.hsb.view.fragments.TableChangeFragment;
 import com.archide.hsb.view.fragments.WelcomeFragment;
 
 import java.io.File;
@@ -22,9 +24,11 @@ import java.io.FileInputStream;
 import hsb.archide.com.hsb.R;
 
 public class MainActivity extends AppCompatActivity implements MobileFragment.MainActivityCallback,
-        ConfigurationFragment.MainActivityCallback, KitchenLoginFragment.MainActivityCallback,WelcomeFragment.MainActivityCallback{
+        ConfigurationFragment.MainActivityCallback, KitchenLoginFragment.MainActivityCallback,
+        OrderModuleLoginFragment.MainActivityCallback,TableChangeFragment.MainActivityCallback,
+        WelcomeFragment.MainActivityCallback{
 
-   // private MobileFragment mobileFragment;
+    // private MobileFragment mobileFragment;
     private WelcomeFragment welcomeFragment;
     private ConfigurationFragment configurationFragment;
     private TableListService tableListService;
@@ -56,9 +60,7 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
                 welcomeFragment = new WelcomeFragment();
                 FragmentsUtil.addFragment(this, welcomeFragment, R.id.main_container);
                 ActivityUtil.TABLE_NUMBER = configurationEntity.getTableNumber();
-              /*  mobileFragment = new MobileFragment();
-                FragmentsUtil.addFragment(this, mobileFragment, R.id.main_container);
-                ActivityUtil.TABLE_NUMBER = configurationEntity.getTableNumber();*/
+
             }
         }
 
@@ -94,6 +96,11 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
+        }else if(code == 6000){
+            TableChangeFragment tableChangeFragment = new TableChangeFragment();
+            FragmentsUtil.replaceFragmentNoStack(this, tableChangeFragment, R.id.main_container);
+        }else if(code == 7000){
+            FragmentsUtil.replaceFragmentNoStack(this, welcomeFragment, R.id.main_container);
         }else{
 
             Intent intent = new Intent(this, HomeActivity.class);
@@ -122,12 +129,34 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
 
     @Override
     public void onBackPressed() {
-       Fragment fragment =  getSupportFragmentManager().findFragmentById(R.id.main_container);
+        Fragment fragment =  getSupportFragmentManager().findFragmentById(R.id.main_container);
         if(!(fragment instanceof WelcomeFragment)){
             super.onBackPressed();
         }
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.action_refresh:
+                if(getTableListService().isUnClosedUser()){
+                    ActivityUtil.showDialog(this,getString(R.string.Warn),getString(R.string.change_table_error));
+                }else{
+                   OrderModuleLoginFragment orderModuleLoginFragment = new OrderModuleLoginFragment();
+                    FragmentsUtil.replaceFragmentNoStack(this, orderModuleLoginFragment, R.id.main_container);
+                }
+
+                break;
+            default:
+                break;
+        }
+
+        return true;
+    }
+
+
 
     public TableListService getTableListService() {
         return tableListService;

@@ -155,4 +155,6 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
         placedOrderItemDao.deleteBuilder().delete();
         placedOrdersDao.deleteBuilder().delete();
     }
+
+
 }

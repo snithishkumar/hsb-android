@@ -1,6 +1,5 @@
 package com.archide.hsb.view.adapters;
 
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import com.archide.hsb.enumeration.ViewStatus;
 import com.archide.hsb.view.activities.KitchenActivity;
 import com.archide.hsb.view.model.KitchenOrderListViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import hsb.archide.com.hsb.R;
@@ -79,6 +77,7 @@ public class KitchenOrderListAdapter extends BaseAdapter {
         kitchenOrderListViewHolder.noOfVegCount.setText(kitchenOrderListViewModel.getVegCount());
         kitchenOrderListViewHolder.noOfNonVegCount.setText( kitchenOrderListViewModel.getNonVegCount());
         kitchenOrderListViewHolder.tableNumber.setText(kitchenOrderListViewModel.getTableNumber());
+        kitchenOrderListViewHolder.orderId.setText(kitchenOrderListViewModel.getOrderId());
         if(kitchenOrderListViewModel.getViewStatus().getViewStatus() == ViewStatus.UPDATES.getViewStatus()){
             kitchenOrderListViewHolder.viewStatus.setVisibility(View.VISIBLE);
             kitchenOrderListViewHolder.viewStatus.setText("Updates");
@@ -96,6 +95,7 @@ public class KitchenOrderListAdapter extends BaseAdapter {
         TextView noOfVegCount;
         TextView noOfNonVegCount;
         TextView tableNumber;
+        TextView orderId;
         Button viewStatus;
 
         public KitchenOrderListViewHolder(View item){
@@ -104,8 +104,7 @@ public class KitchenOrderListAdapter extends BaseAdapter {
             noOfNonVegCount = (TextView)item.findViewById(R.id.kitchen_no_of_nonveg_count);
             tableNumber =  (TextView)item.findViewById(R.id.kitchen_table_number);
             viewStatus =  (Button)item.findViewById(R.id.kitchen_view_Status);
-
-
+            orderId =  (TextView)item.findViewById(R.id.adapt_kit_order_id);
         }
     }
 }

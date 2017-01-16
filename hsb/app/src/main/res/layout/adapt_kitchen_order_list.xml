@@ -13,39 +13,55 @@
         tools:context="com.archide.hsb.view.fragments.ConfigurationFragment">
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="03"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/kitchen_table_number"
+                    android:textColor="@android:color/black"
+                    android:textSize="56sp"
+                    android:textStyle="bold"/>
+
+                <Button
+                    android:layout_width="75dp"
+                    android:layout_height="30dp"
+                    android:text="New"
+                    android:gravity="center"
+                    android:id="@+id/kitchen_view_Status"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:layout_marginTop="5dp"
+                    android:visibility="invisible"
+                    android:textColor="@android:color/white"
+                    android:background="@android:color/holo_green_dark"/>
+
+                <!--  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="9965820037"
+                      /> -->
+            </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="03"
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/kitchen_table_number"
-                android:textColor="@android:color/black"
-                android:textSize="56sp"
-                android:textStyle="bold"/>
-
-            <Button
-                android:layout_width="75dp"
-                android:layout_height="30dp"
-                android:text="New"
-                android:gravity="center"
-                android:id="@+id/kitchen_view_Status"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:layout_marginTop="5dp"
-                android:visibility="invisible"
-                android:textColor="@android:color/white"
-                android:background="@android:color/holo_green_dark"/>
-
-          <!--  <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/adapt_kit_order_id"
                 android:text="9965820037"
-                /> -->
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal" />
+
         </LinearLayout>
+
         <TextView
             android:layout_width="1dp"
             android:layout_height="match_parent"

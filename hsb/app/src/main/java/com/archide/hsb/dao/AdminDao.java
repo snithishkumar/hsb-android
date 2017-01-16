@@ -27,4 +27,12 @@ public interface AdminDao {
     void removeClosedUser()throws SQLException;
 
     void createUsers(UsersEntity usersEntity)throws SQLException;
+
+    UsersEntity getUsersEntity(String mobileNumber)throws SQLException;
+
+    void closeOrder(String mobileNumber)throws SQLException;
+
+    void changeTableNumber(String tableNumber)throws SQLException;
+
+    boolean isUnClosedUser()throws SQLException;
 }

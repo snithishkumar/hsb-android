@@ -14,8 +14,10 @@ import com.archide.hsb.service.impl.OrderServiceImpl;
 import com.archide.hsb.view.fragments.BillingFragment;
 import com.archide.hsb.view.fragments.FragmentsUtil;
 import com.archide.hsb.view.fragments.KitchenOrderListFragment;
+import com.archide.hsb.view.fragments.OrderModuleLoginFragment;
 import com.archide.hsb.view.fragments.OrderPlaceFragment;
 import com.archide.hsb.view.fragments.PlacedOrderHistoryFragment;
+import com.archide.hsb.view.fragments.TableChangeFragment;
 
 import hsb.archide.com.hsb.R;
 
@@ -23,7 +25,7 @@ import hsb.archide.com.hsb.R;
 /**
  * Created by Nithishkumar on 3/27/2016.
  */
-public class NaviDrawerActivity extends AppCompatActivity {
+public class NaviDrawerActivity extends AppCompatActivity{
 
     private OrderService orderService;
 
@@ -71,10 +73,12 @@ public class NaviDrawerActivity extends AppCompatActivity {
                 break;
 
             case 4:
+
                 break;
 
             case 5:
                 orderService.removeAllData();
+                orderService.closeOrder(ActivityUtil.USER_MOBILE);
                 intent = new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -109,8 +113,6 @@ public class NaviDrawerActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
     }
-
-
 
 
 

@@ -56,4 +56,5 @@ public interface OrdersDao {
     void removeAllData()throws SQLException;
 
     List<PlacedOrderItemsEntity> getPlacedOrderItemsEntityTest()throws SQLException;
+
 }

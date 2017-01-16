@@ -33,6 +33,10 @@ mobile number provided is not registered with MobilePay)</string>
     <string name="no_network">Check your connection.</string>
     <string name="internal_error">OOPS! Something went wrong. Pls try again later</string>
     <string name="no_network_heading">No Network</string>
+    
+    
+    <string name="Warn">Warn</string>
+    <string name="change_table_error">Please close an order.</string>
 
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
@@ -71,8 +75,7 @@ mobile number provided is not registered with MobilePay)</string>
 
         <item>About</item>
 
-        <item>LogOut</item>
-        <item>Configuration</item>
+        <item>Logout</item>
 
     </string-array>
 

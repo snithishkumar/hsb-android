@@ -5,9 +5,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.archide.hsb.entity.ConfigurationEntity;
 import com.archide.hsb.entity.UsersEntity;
@@ -39,10 +43,9 @@ public class WelcomeFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
     }
-
-   // private TableListService tableListService;
 
 
     @Override
@@ -59,6 +62,7 @@ public class WelcomeFragment extends Fragment implements View.OnClickListener{
         button3.setOnClickListener(this);
         button4.setOnClickListener(this);
 
+        ActivityUtil.USER_MOBILE = null;
 
         List<UsersEntity> usersEntities =  mainActivity.getTableListService().getUsers();
         ConfigurationEntity configurationEntity =   mainActivity.getTableListService().getAppType();
@@ -103,6 +107,12 @@ public class WelcomeFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_admin, menu);
+    }
+
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.welcome_button1:
@@ -140,7 +150,6 @@ public class WelcomeFragment extends Fragment implements View.OnClickListener{
     private void getMenuList() {
         boolean isNetWorkConnected = Utilities.isNetworkConnected(mainActivity);
         if (isNetWorkConnected) {
-
             progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_menu_items_message), mainActivity);
             mainActivity.getTableListService().getMenuItems(ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
         } else {
@@ -180,6 +189,8 @@ public class WelcomeFragment extends Fragment implements View.OnClickListener{
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
+
+
 
 
 

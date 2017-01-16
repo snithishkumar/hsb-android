@@ -201,6 +201,7 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
         }
         switch (responseData.getStatusCode()){
             case 200:
+                naviDrawerActivity.getOrderService().closeOrder(ActivityUtil.USER_MOBILE);
                 populateData();
                 break;
             case 405:

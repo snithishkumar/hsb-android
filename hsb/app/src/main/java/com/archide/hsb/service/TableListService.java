@@ -27,4 +27,11 @@ public interface TableListService {
     List<UsersEntity> getUsers();
 
     void removePreviousData();
+
+
+    void changeTableNumber(String tableNumber);
+
+    boolean isOrderOpen();
+
+    boolean isUnClosedUser();
 }

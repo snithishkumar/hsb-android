@@ -95,10 +95,14 @@ public class TableListServiceImpl implements TableListService {
     @Override
     public void updateUserMobile(String userMobile) {
         try{
-            UsersEntity usersEntity = new UsersEntity();
-            usersEntity.setUserMobileNumber(userMobile);
-            usersEntity.setClosed(false);
-            adminDao.createUsers(usersEntity);
+           UsersEntity usersEntity =  adminDao.getUsersEntity(userMobile);
+            if(usersEntity == null){
+                usersEntity = new UsersEntity();
+                usersEntity.setUserMobileNumber(userMobile);
+                usersEntity.setClosed(false);
+                adminDao.createUsers(usersEntity);
+            }
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -159,6 +163,35 @@ public class TableListServiceImpl implements TableListService {
     }
 
 
+    @Override
+    public void changeTableNumber(String tableNumber){
+        try {
+            AdminDao adminDao = new AdminDaoImpl(context);
+            adminDao.changeTableNumber(tableNumber);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean isOrderOpen(){
+        try{
+            return   adminDao.isOrderCloseUser();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isUnClosedUser(){
+        try{
+           return adminDao.isUnClosedUser();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 
 

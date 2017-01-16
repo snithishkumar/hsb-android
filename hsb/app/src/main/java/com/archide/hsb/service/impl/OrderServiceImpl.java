@@ -5,8 +5,10 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.archide.hsb.dao.AdminDao;
 import com.archide.hsb.dao.MenuItemsDao;
 import com.archide.hsb.dao.OrdersDao;
+import com.archide.hsb.dao.impl.AdminDaoImpl;
 import com.archide.hsb.dao.impl.MenuItemsDaoImpl;
 import com.archide.hsb.dao.impl.OrdersDaoImpl;
 import com.archide.hsb.entity.MenuEntity;
@@ -41,12 +43,14 @@ public class OrderServiceImpl implements OrderService {
 
     private Bundle settingsBundle;
     private Account account ;
+    private Context context;
 
 
     public OrderServiceImpl(Context context){
         try{
             ordersDao = new OrdersDaoImpl(context);
             menuItemsDao = new MenuItemsDaoImpl(context);
+            this.context = context;
             init();
         }catch (Exception e){
             e.printStackTrace();
@@ -309,6 +313,7 @@ public class OrderServiceImpl implements OrderService {
     public void removeAllData(){
         try{
             ordersDao.removeAllData();
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -327,6 +332,20 @@ public class OrderServiceImpl implements OrderService {
         settingsBundle.putString("mobileNumber", mobileNumber);
         ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
     }
+
+
+    @Override
+    public void closeOrder(String mobileNumber){
+        try{
+            AdminDao adminDao = new AdminDaoImpl(context);
+            adminDao.closeOrder(mobileNumber);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+
 
 
 }

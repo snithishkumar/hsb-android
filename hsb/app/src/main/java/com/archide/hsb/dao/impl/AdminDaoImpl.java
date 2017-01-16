@@ -7,6 +7,7 @@ import com.archide.hsb.entity.ConfigurationEntity;
 import com.archide.hsb.entity.UsersEntity;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
+import com.j256.ormlite.stmt.UpdateBuilder;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -79,6 +80,35 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
         deleteBuilder.where().eq(UsersEntity.IS_CLOSED,false);
         deleteBuilder.delete();
     }
+
+    @Override
+    public UsersEntity getUsersEntity(String mobileNumber)throws SQLException{
+       return usersDao.queryBuilder().where().eq(UsersEntity.USER_MOBILE_NUMBER,mobileNumber).and().eq(UsersEntity.IS_CLOSED,false).queryForFirst();
+    }
+
+
+    @Override
+    public void closeOrder(String mobileNumber)throws SQLException{
+     UpdateBuilder<UsersEntity,Integer> updateBuilder = usersDao.updateBuilder();
+        updateBuilder.updateColumnValue(UsersEntity.IS_CLOSED,true).where().eq(UsersEntity.USER_MOBILE_NUMBER,mobileNumber);
+        updateBuilder.update();
+    }
+
+
+    @Override
+    public void changeTableNumber(String tableNumber)throws SQLException{
+        appTypeDao.updateBuilder().updateColumnValue(ConfigurationEntity.TABLE_NUMBER,tableNumber).update();
+    }
+
+
+    @Override
+    public boolean isUnClosedUser()throws SQLException{
+        UsersEntity usersEntity =  usersDao.queryBuilder().where().eq(UsersEntity.IS_CLOSED,false).queryForFirst();
+       return usersEntity != null;
+    }
+
+
+
 
 
 
