@@ -118,6 +118,10 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
         placedOrdersDao.deleteBuilder().delete();
     }
 
+    public void removePlacedOrder( PlacedOrdersEntity placedOrdersEntity)throws SQLException{
+        placedOrdersDao.delete(placedOrdersEntity);
+    }
+
     @Override
     public PlacedOrdersEntity getPlacedOrderHistoryByMobile(String userMobileNumber,String tableNumber) throws SQLException {
       // List<PlacedOrdersEntity> list =  placedOrdersDao.queryForAll();

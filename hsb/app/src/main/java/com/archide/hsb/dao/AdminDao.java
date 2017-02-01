@@ -35,4 +35,6 @@ public interface AdminDao {
     void changeTableNumber(String tableNumber)throws SQLException;
 
     boolean isUnClosedUser()throws SQLException;
+
+    void updateUser(String userMobile)throws SQLException;
 }

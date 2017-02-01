@@ -1,5 +1,6 @@
 package com.archide.hsb.entity;
 
+import com.archide.hsb.enumeration.FoodType;
 import com.archide.hsb.enumeration.Status;
 import com.archide.hsb.sync.json.MenuItemJson;
 import com.j256.ormlite.field.DatabaseField;
@@ -23,6 +24,7 @@ public class MenuEntity {
     public static final String DISPLAY_ORDER = "displayOrder";
     public static final String DESCRIPTION = "description";
     public static final String TASTE_TYPE = "tasteType";
+	public static final String FOOD_TYPE = "foodType";
 
 
     @DatabaseField(columnName = MENU_ID,generatedId = true)
@@ -52,6 +54,8 @@ public class MenuEntity {
 	private String description;
     @DatabaseField(columnName = TASTE_TYPE)
 	private String tasteType;
+	@DatabaseField(columnName = FOOD_TYPE)
+	private FoodType foodType;
 
     public MenuEntity(){
 
@@ -72,6 +76,7 @@ public class MenuEntity {
         this.displayOrder = menuItemJson.getDisplayOrder();
         this.description = menuItemJson.getDescription();
         this.tasteType = menuItemJson.getTasteType();
+        this.foodType = menuItemJson.getFoodType();
     }
 
     public int getDisplayOrder() {
@@ -178,7 +183,15 @@ public class MenuEntity {
 		this.dateTime = dateTime;
 	}
 
-	@Override
+    public FoodType getFoodType() {
+        return foodType;
+    }
+
+    public void setFoodType(FoodType foodType) {
+        this.foodType = foodType;
+    }
+
+    @Override
 	public String toString() {
 		return "MenuEntity{" +
 				"menuId=" + menuId +

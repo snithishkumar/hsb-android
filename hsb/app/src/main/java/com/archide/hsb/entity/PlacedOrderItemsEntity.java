@@ -22,6 +22,7 @@ public class PlacedOrderItemsEntity {
     public static final String COST = "Cost";
     public static final String ORDER_STATUS = "OrderStatus";
     public static final String SERVER_SYNC_TIME = "ServerSyncTime";
+    public static final String IS_DELETED = "isDeleted";
 
     @DatabaseField(columnName = PLACED_ORDER_ITEMS_ID,generatedId = true)
 	private int placedOrderItemsId;
@@ -48,6 +49,8 @@ public class PlacedOrderItemsEntity {
     private double cost;
     @DatabaseField(columnName = ORDER_STATUS)
 	private OrderStatus orderStatus;
+    @DatabaseField(columnName = IS_DELETED)
+    private boolean isDeleted;
 
 	public PlacedOrderItemsEntity(){
 
@@ -62,8 +65,17 @@ public class PlacedOrderItemsEntity {
         this.itemCode = orderedMenuItems.getItemCode();
         this.orderStatus = orderedMenuItems.getOrderStatus();
         this.isConform = true;
+        this.isDeleted = orderedMenuItems.isDeleted();
 
 	}
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 
     public long getServerSyncTime() {
         return serverSyncTime;

@@ -46,7 +46,7 @@ public class KitchenActivity extends AppCompatActivity implements KitchenOrderLi
         ContentResolver.setIsSyncable(account, this.getString(R.string.content_authority), 1);
         ContentResolver.setSyncAutomatically(account, this.getString(R.string.content_authority), true);
 
-        ContentResolver.addPeriodicSync(account, this.getString(R.string.auth_type), Bundle.EMPTY,5);
+        ContentResolver.addPeriodicSync(account, this.getString(R.string.auth_type), Bundle.EMPTY,1);
 
             kitchenService = new KitchenServiceImpl(this);
 

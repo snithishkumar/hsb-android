@@ -18,6 +18,7 @@ public class OrderedMenuItems {
 	private OrderStatus orderStatus;
     private int unAvailableCount;
 	private String lastUpdatedDateTime;
+	private boolean isDeleted;
 	
 	public OrderedMenuItems(KitchenOrderDetailsEntity kitchenOrderDetailsEntity){
 		this.unAvailableCount = kitchenOrderDetailsEntity.getUnAvailableCount();
@@ -37,6 +38,14 @@ public class OrderedMenuItems {
 
 
 
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		isDeleted = deleted;
 	}
 
 	public String getLastUpdatedDateTime() {

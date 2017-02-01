@@ -156,24 +156,36 @@ public class OrderServiceImpl implements OrderService {
         return placeAnOrderViewModel;
     }
 
+    private void createPlacedOrders(PlacedOrdersEntity placedOrdersEntity,PlaceAnOrderViewModel placeAnOrderViewModel,String mobileNumber,String tableNumber)throws SQLException{
+
+        placedOrdersEntity.setPlaceOrdersUUID(UUID.randomUUID().toString());
+        placedOrdersEntity.setOrderId(generateOrderId());
+        placedOrdersEntity.setTableNumber(tableNumber);
+        placedOrdersEntity.setUserMobileNumber(mobileNumber);
+        placedOrdersEntity.setOrderDateTime(System.currentTimeMillis());
+        placedOrdersEntity.setPrice(placeAnOrderViewModel.getSubTotal());
+        placedOrdersEntity.setTaxAmount(placeAnOrderViewModel.getServiceTax());
+        placedOrdersEntity.setDiscount(placeAnOrderViewModel.getDiscount());
+        placedOrdersEntity.setTotalPrice(placeAnOrderViewModel.getTotalAmount());
+        placedOrdersEntity.setDateTime(System.currentTimeMillis());
+        placedOrdersEntity.setComments(placeAnOrderViewModel.getCookingComments());
+        ordersDao.createPlacedOrdersEntity(placedOrdersEntity);
+    }
+
 
     public void conformOrder(PlaceAnOrderViewModel placeAnOrderViewModel,String mobileNumber,String tableNumber,Context context){
         try{
           PlacedOrdersEntity placedOrdersEntity =  ordersDao.getPlacedOrdersEntity();
-            if(placedOrdersEntity == null){
+            if(placedOrdersEntity != null && placedOrdersEntity.isClosed()){
+                ordersDao.removePlacedOrder(placedOrdersEntity);
+                AdminDao adminDao = new AdminDaoImpl(context);
+                adminDao.updateUser(ActivityUtil.USER_MOBILE);
                 placedOrdersEntity = new PlacedOrdersEntity();
-                placedOrdersEntity.setPlaceOrdersUUID(UUID.randomUUID().toString());
-                placedOrdersEntity.setOrderId(generateOrderId());
-                placedOrdersEntity.setTableNumber(tableNumber);
-                placedOrdersEntity.setUserMobileNumber(mobileNumber);
-                placedOrdersEntity.setOrderDateTime(System.currentTimeMillis());
-                placedOrdersEntity.setPrice(placeAnOrderViewModel.getSubTotal());
-                placedOrdersEntity.setTaxAmount(placeAnOrderViewModel.getServiceTax());
-                placedOrdersEntity.setDiscount(placeAnOrderViewModel.getDiscount());
-                placedOrdersEntity.setTotalPrice(placeAnOrderViewModel.getTotalAmount());
-                placedOrdersEntity.setDateTime(System.currentTimeMillis());
-                placedOrdersEntity.setComments(placeAnOrderViewModel.getCookingComments());
-                ordersDao.createPlacedOrdersEntity(placedOrdersEntity);
+                createPlacedOrders(placedOrdersEntity,placeAnOrderViewModel,mobileNumber,tableNumber);
+            }
+            if(placedOrdersEntity == null ){
+                placedOrdersEntity = new PlacedOrdersEntity();
+                createPlacedOrders(placedOrdersEntity,placeAnOrderViewModel,mobileNumber,tableNumber);
             }
            // List<PlacedOrderItemsEntity> itemsEntities = ordersDao.getPlacedOrderItemsEntity();
             ordersDao.removeCurrentOrder();
@@ -211,15 +223,13 @@ public class OrderServiceImpl implements OrderService {
 
 
     private String generateOrderId(){
-        StringBuilder stringBuilder = new StringBuilder("ARC-");
+        StringBuilder stringBuilder = new StringBuilder("T");
+        stringBuilder.append(ActivityUtil.TABLE_NUMBER);
+        stringBuilder.append("-");
         Calendar calendar = Calendar.getInstance();
         stringBuilder.append(calendar.get(Calendar.HOUR_OF_DAY));
         stringBuilder.append(calendar.get(Calendar.MINUTE));
         stringBuilder.append(calendar.get(Calendar.SECOND));
-        stringBuilder.append(calendar.get(Calendar.MILLISECOND));
-        Random random = new Random();
-        int ran = random.nextInt();
-        stringBuilder.append(ran);
        return stringBuilder.toString();
     }
 
@@ -266,6 +276,7 @@ public class OrderServiceImpl implements OrderService {
 
             PlacedOrdersEntity placedOrdersEntity =   ordersDao.getPlacedOrderHistoryByMobile(ActivityUtil.USER_MOBILE,ActivityUtil.TABLE_NUMBER);
             if(placedOrdersEntity != null){
+                placeAnOrderViewModel.setOrderId(placedOrdersEntity.getOrderId());
                 List<PlacedOrderItemsEntity> placedOrderItemsEntityList =  ordersDao.getPlacedOrderHistoryItems(placedOrdersEntity);
                 for(PlacedOrderItemsEntity orderItemsEntity : placedOrderItemsEntityList){
                     MenuItemsViewModel menuItemsViewModel = new MenuItemsViewModel(orderItemsEntity);

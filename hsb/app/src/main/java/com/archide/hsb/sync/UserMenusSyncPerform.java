@@ -179,6 +179,8 @@ public class UserMenusSyncPerform {
                    placedOrderItemsEntity.setMenuCourseEntity(menuEntity.getMenuCourseEntity());
                    ordersDao.createPlacedOrdersItemsEntity(placedOrderItemsEntity);
                }else{
+                   placedOrderItemsEntity.setQuantity(orderedMenuItems.getQuantity());
+                   placedOrderItemsEntity.setDeleted(orderedMenuItems.isDeleted());
                    placedOrderItemsEntity.setOrderStatus(orderedMenuItems.getOrderStatus());
                    ordersDao.updatePlacedOrdersItemsEntity(placedOrderItemsEntity);
                }

@@ -3,6 +3,7 @@ package com.archide.hsb.view.model;
 import com.archide.hsb.entity.FoodCategoryEntity;
 import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
+import com.archide.hsb.enumeration.FoodType;
 import com.archide.hsb.enumeration.OrderStatus;
 
 import java.util.Objects;
@@ -22,6 +23,7 @@ public class MenuItemsViewModel {
     private OrderStatus orderStatus;
     private String description;
     private String tasteType;
+    private FoodType foodType;
 
     public MenuItemsViewModel(MenuEntity menuEntity){
         this.uuid = menuEntity.getMenuUUID();
@@ -30,6 +32,7 @@ public class MenuItemsViewModel {
         this.itemCode = menuEntity.getMenuItemCode();
         this.description = menuEntity.getDescription();
         this.tasteType = menuEntity.getTasteType();
+        this.foodType = menuEntity.getFoodType();
 
     }
 
@@ -47,6 +50,15 @@ public class MenuItemsViewModel {
         this.tasteType = placedOrderItemsEntity.getMenuItem().getTasteType();
         this.orderStatus = placedOrderItemsEntity.getOrderStatus();
         this.isOrdered = true;
+        this.foodType = placedOrderItemsEntity.getMenuItem().getFoodType();
+    }
+
+    public FoodType getFoodType() {
+        return foodType;
+    }
+
+    public void setFoodType(FoodType foodType) {
+        this.foodType = foodType;
     }
 
     public String getDescription() {

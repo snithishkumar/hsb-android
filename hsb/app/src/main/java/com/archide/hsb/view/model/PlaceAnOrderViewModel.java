@@ -21,6 +21,7 @@ public class PlaceAnOrderViewModel {
     private double serviceTax ;
     private double serviceVat ;
     private double totalAmount ;
+    private String orderId;
 
     private boolean isUnAvailable;
 
@@ -36,6 +37,15 @@ public class PlaceAnOrderViewModel {
         this.discount = placedOrdersEntity.getDiscount();
         this.subTotal = placedOrdersEntity.getPrice();
         this.totalAmount = placedOrdersEntity.getTotalPrice();
+        this.orderId = placedOrdersEntity.getOrderId();
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public String getCookingComments() {

@@ -198,7 +198,17 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
     }
 
     public void populateAmountDetails(){
-        cookingComments.setText(placeAnOrderViewModel.getCookingComments());
+        String text = cookingComments.getText().toString();
+        if(text != null && text.trim().length() > 0){
+            cookingComments.setText(text);
+            cookingComments.setFocusable(false);
+            cookingComments.setFocusableInTouchMode(true);
+        }else{
+            cookingComments.setText(placeAnOrderViewModel.getCookingComments());
+            cookingComments.setFocusable(false);
+            cookingComments.setFocusableInTouchMode(true);
+        }
+
         subTotalBeforeDiscount.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getSubTotalBeforeDiscount()));
         discount.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getDiscount()));
         subTotal.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getSubTotal()));

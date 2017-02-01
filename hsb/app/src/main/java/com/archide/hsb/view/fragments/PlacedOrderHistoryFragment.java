@@ -50,6 +50,7 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
     TextView subTotal ;
     TextView serviceTax ;
     TextView totalAmount ;
+    TextView orderId;
     FloatingActionButton placeAnOrder ;
 
 
@@ -73,6 +74,7 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
         subTotal =  (TextView) view.findViewById(R.id.odr_his_subtotal);
         serviceTax =  (TextView) view.findViewById(R.id.odr_his_service_tax);
         totalAmount =  (TextView) view.findViewById(R.id.odr_his_total_amount);
+        orderId = (TextView)view.findViewById(R.id.odr_his_order_id);
         placeAnOrder =  (FloatingActionButton) view.findViewById(R.id.order_history_add_menu_items);
         placeAnOrder.setOnClickListener(this);
     }
@@ -179,7 +181,7 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
            cookingComments.setText(placeAnOrderViewModel.getCookingComments());
        }
 
-
+        orderId.setText("Order Id:"+String.valueOf(placeAnOrderViewModel.getOrderId()));
         subTotalBeforeDiscount.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getSubTotalBeforeDiscount()));
         discount.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getDiscount()));
         subTotal.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getSubTotal()));

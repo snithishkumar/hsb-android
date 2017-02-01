@@ -56,6 +56,7 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
 
     @Override
     public List<UsersEntity> getUsersList()throws SQLException{
+       // List<UsersEntity> tt =  usersDao.queryForAll();
        return usersDao.queryBuilder().where().eq(UsersEntity.IS_CLOSED,false).query();
     }
 
@@ -77,7 +78,7 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
     @Override
     public void removeClosedUser()throws SQLException{
       DeleteBuilder<UsersEntity,Integer> deleteBuilder = usersDao.deleteBuilder();
-        deleteBuilder.where().eq(UsersEntity.IS_CLOSED,false);
+        deleteBuilder.where().eq(UsersEntity.IS_CLOSED,true);
         deleteBuilder.delete();
     }
 
@@ -105,6 +106,14 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
     public boolean isUnClosedUser()throws SQLException{
         UsersEntity usersEntity =  usersDao.queryBuilder().where().eq(UsersEntity.IS_CLOSED,false).queryForFirst();
        return usersEntity != null;
+    }
+
+
+    @Override
+    public void updateUser(String mobileNumber)throws SQLException{
+        UpdateBuilder<UsersEntity,Integer> updateBuilder = usersDao.updateBuilder();
+        updateBuilder.updateColumnValue(UsersEntity.IS_CLOSED,false).where().eq(UsersEntity.USER_MOBILE_NUMBER,mobileNumber);
+        updateBuilder.update();
     }
 
 

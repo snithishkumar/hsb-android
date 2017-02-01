@@ -1,12 +1,15 @@
 package com.archide.hsb.view.adapters;
 
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.archide.hsb.enumeration.FoodType;
 import com.archide.hsb.view.activities.HomeActivity;
 import com.archide.hsb.view.fragments.MenuItemsFragment;
 import com.archide.hsb.view.model.MenuItemsViewModel;
@@ -88,10 +91,21 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             orderItemsViewHolder.vFoodCartCount.setText(String.valueOf(menuItemsViewModel.getCount()));
             orderItemsViewHolder.vFoodTasteType.setText(menuItemsViewModel.getTasteType());
             orderItemsViewHolder.vFoodDesc.setText(menuItemsViewModel.getDescription());
+            setFoodType(orderItemsViewHolder.vFoodType,menuItemsViewModel.getFoodType());
         }else{
 
             MenuItemsViewHolder menuItemsViewHolder = (MenuItemsViewHolder)viewHolder;
+            setFoodType(menuItemsViewHolder.vFoodType,menuItemsViewModel.getFoodType());
             setValues(menuItemsViewHolder,menuItemsViewModel);
+        }
+    }
+
+
+    private void setFoodType(ImageView imageView, FoodType foodType){
+        if(foodType.toString().equals(FoodType.NONVEG.toString())){
+            imageView.setImageDrawable(homeActivity.getDrawable(R.drawable.ic_nonveg));
+        }else{
+            imageView.setImageDrawable(homeActivity.getDrawable(R.drawable.ic_veg));
         }
     }
 
@@ -116,6 +130,7 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         protected TextView vFoodDesc;
         protected TextView vFoodAddCart;
         protected  Button vFoodTasteType;
+        private ImageView vFoodType;
 
         public MenuItemsViewHolder(View view){
             super(view);
@@ -124,6 +139,7 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             vFoodDesc = (TextView)view.findViewById(R.id.adapt_food_desc);
             vFoodTasteType = (Button)view.findViewById(R.id.adapt_food_taste_type);
             vFoodAddCart = (TextView)view.findViewById(R.id.adapt_food_add_cart);
+            vFoodType = (ImageView)view.findViewById(R.id.veg);
             vFoodAddCart.setOnClickListener(this);
 
 
@@ -150,6 +166,7 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         protected TextView vFoodCost;
         protected  Button vFoodTasteType;
         protected TextView vFoodDesc;
+        private ImageView vFoodType;
         public OrderItemsViewHolder(View view){
             super(view);
             vFoodName = (TextView)view.findViewById(R.id.adapt_food_name);
@@ -159,6 +176,7 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             vFoodTasteType = (Button)view.findViewById(R.id.adapt_food_taste_type);
             vFoodSubCartButton = (Button)view.findViewById(R.id.decrement);
             vFoodAddCartButton = (Button)view.findViewById(R.id.increment);
+            vFoodType = (ImageView)view.findViewById(R.id.veg);
             vFoodSubCartButton.setOnClickListener(this);
             vFoodAddCartButton.setOnClickListener(this);
         }

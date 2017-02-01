@@ -1,5 +1,6 @@
 package com.archide.hsb.sync.json;
 
+import com.archide.hsb.enumeration.FoodType;
 import com.archide.hsb.enumeration.Status;
 
 public class MenuItemJson {
@@ -14,6 +15,7 @@ public class MenuItemJson {
 
 	private int displayOrder;
 	private String description;
+	private FoodType foodType;
 	private String tasteType;
 
 	public int getDisplayOrder() {
@@ -88,7 +90,16 @@ public class MenuItemJson {
 	public void setDateTime(long dateTime) {
 		this.dateTime = dateTime;
 	}
-	@Override
+
+    public FoodType getFoodType() {
+        return foodType;
+    }
+
+    public void setFoodType(FoodType foodType) {
+        this.foodType = foodType;
+    }
+
+    @Override
 	public String toString() {
 		return "MenuItemJson [menuUuid=" + menuUuid + ", menuItemCode=" + menuItemCode + ", name=" + name + ", price="
 				+ price + ", status=" + status + ", dateTime=" + dateTime + "]";

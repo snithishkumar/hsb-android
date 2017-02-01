@@ -39,7 +39,7 @@
             android:textSize="14sp"
             android:textColor="@android:color/darker_gray"
             android:id="@+id/adapt_food_desc"
-            android:text="[Spicy]"/>
+            android:text="I am going to add long string. To check whether design adjust or not. Please click I agree if your want to help make Android studio better or I don't agree otherwise."/>
 
 
 </LinearLayout>
