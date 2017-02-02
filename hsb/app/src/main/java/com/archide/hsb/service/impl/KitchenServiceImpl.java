@@ -133,13 +133,13 @@ public class KitchenServiceImpl implements KitchenService {
 
             }
             kitchenDao.updateKitchenOrderListViewSync(orderId);
-            syncData();
+           // syncData();
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    private void syncData(){
+  /*  private void syncData(){
         Account account = HsbSyncAdapter.getSyncAccount(context);
         Bundle settingsBundle = new Bundle();
         settingsBundle.putBoolean(
@@ -148,7 +148,7 @@ public class KitchenServiceImpl implements KitchenService {
                 ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         settingsBundle.putInt("currentScreen", SyncEvent.GET_KITCHEN_ORDERS_DATA);
         ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
-    }
+    }*/
 
 
 

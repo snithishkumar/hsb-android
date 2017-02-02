@@ -84,8 +84,8 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
         mInflater = inflater;
         mContainer = container;
 
-        naviDrawerActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        naviDrawerActivity.getSupportActionBar().setHomeButtonEnabled(true);
+        naviDrawerActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        naviDrawerActivity.getSupportActionBar().setHomeButtonEnabled(false);
 
 
         init(view);
@@ -135,6 +135,8 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
             ActivityUtil.showDialog(naviDrawerActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
         }
     }
+
+
 
 
 

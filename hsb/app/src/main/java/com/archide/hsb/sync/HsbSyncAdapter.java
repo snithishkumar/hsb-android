@@ -81,64 +81,87 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
      */
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
+
         int currentScreen =  extras.getInt("currentScreen", SyncEvent.GET_KITCHEN_ORDERS_DATA);
+
+
         if(currentScreen != 0){
             init();
         }
-        switch (currentScreen){
-            case SyncEvent.GET_TABLE_LIST:
-                ResponseData responseData =  getTableDetails();
-                //responseData =  kitchenSyncPerform.getKitchenOrders();
-                postData(responseData);
-                break;
+        if(currentScreen == SyncEvent.GET_KITCHEN_ORDERS_DATA){
+           while (true){
+               try{
+                   ResponseData  responseData =  kitchenSyncPerform.getKitchenOrders();
+                   kitchenSyncPerform.sendUnSyncedOrderStatus();
+                   postData(responseData);
+               }catch (Exception e){
+                    e.printStackTrace();
+               }
+               try{
+                   Thread.sleep(10000);
+               }catch (Exception e){
+                   e.printStackTrace();
+               }
 
-            case SyncEvent.GET_MENU_LIST:
+           }
 
-                String tableNumber =  extras.getString("tableNumber");
-                String mobileNumber =  extras.getString("mobileNumber");
-                responseData =   userMenusSyncPerform.getMenuItems(tableNumber,mobileNumber);
-               // responseData =  userMenusSyncPerform.getKitchenOrders();
-                postData(responseData);
-                break;
+        }else{
+            switch (currentScreen){
+                case SyncEvent.GET_TABLE_LIST:
+                    ResponseData responseData =  getTableDetails();
+                    //responseData =  kitchenSyncPerform.getKitchenOrders();
+                    postData(responseData);
+                    break;
 
-            case SyncEvent.PLACE_AN_ORDER:
-                responseData =   userMenusSyncPerform.sendOrderData();
-                postData(responseData);
-                break;
+                case SyncEvent.GET_MENU_LIST:
 
-            case SyncEvent.GET_KITCHEN_ORDERS_DATA:
-                responseData =  kitchenSyncPerform.getKitchenOrders();
-                kitchenSyncPerform.sendUnSyncedOrderStatus();
-                // TODO -- Need to Verify whether need to send first or get update first
-                postData(responseData);
-                break;
+                    String tableNumber =  extras.getString("tableNumber");
+                    String mobileNumber =  extras.getString("mobileNumber");
+                    responseData =   userMenusSyncPerform.getMenuItems(tableNumber,mobileNumber);
+                    // responseData =  userMenusSyncPerform.getKitchenOrders();
+                    postData(responseData);
+                    break;
 
-            case SyncEvent.RESENT_BILLING:
-                tableNumber =  extras.getString("tableNumber");
-                mobileNumber =  extras.getString("mobileNumber");
-                responseData = userMenusSyncPerform.resentBillingDetails(tableNumber,mobileNumber);
-                postData(responseData);
-                break;
+                case SyncEvent.PLACE_AN_ORDER:
+                    responseData =   userMenusSyncPerform.sendOrderData();
+                    postData(responseData);
+                    break;
 
-            case 3:
-                 tableNumber =  extras.getString("tableNumber");
-                 mobileNumber =  extras.getString("mobileNumber");
-                responseData = userMenusSyncPerform.getPreviousOrderDetails(tableNumber,mobileNumber);
-                postData(responseData);
-                break;
+                case SyncEvent.GET_KITCHEN_ORDERS_DATA:
 
-            case 4:
-                tableNumber =  extras.getString("tableNumber");
-                mobileNumber =  extras.getString("mobileNumber");
-                responseData = userMenusSyncPerform.closeAnOrder(tableNumber,mobileNumber);
-                postData(responseData);
-                break;
+                    responseData =  kitchenSyncPerform.getKitchenOrders();
+                    kitchenSyncPerform.sendUnSyncedOrderStatus();
+                    postData(responseData);
+                    break;
 
-            case 5:
-                responseData =  userMenusSyncPerform.getUnAvailableOrders();
-                postData(responseData);
-                break;
+                case SyncEvent.RESENT_BILLING:
+                    tableNumber =  extras.getString("tableNumber");
+                    mobileNumber =  extras.getString("mobileNumber");
+                    responseData = userMenusSyncPerform.resentBillingDetails(tableNumber,mobileNumber);
+                    postData(responseData);
+                    break;
+
+                case 3:
+                    tableNumber =  extras.getString("tableNumber");
+                    mobileNumber =  extras.getString("mobileNumber");
+                    responseData = userMenusSyncPerform.getPreviousOrderDetails(tableNumber,mobileNumber);
+                    postData(responseData);
+                    break;
+
+                case 4:
+                    tableNumber =  extras.getString("tableNumber");
+                    mobileNumber =  extras.getString("mobileNumber");
+                    responseData = userMenusSyncPerform.closeAnOrder(tableNumber,mobileNumber);
+                    postData(responseData);
+                    break;
+
+                case 5:
+                    responseData =  userMenusSyncPerform.getUnAvailableOrders();
+                    postData(responseData);
+                    break;
+            }
         }
+
 
     }
 

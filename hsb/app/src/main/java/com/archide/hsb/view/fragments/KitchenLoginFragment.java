@@ -1,6 +1,8 @@
 package com.archide.hsb.view.fragments;
 
+import android.accounts.Account;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.archide.hsb.sync.HsbSyncAdapter;
+import com.archide.hsb.sync.SyncEvent;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.MainActivity;
 
@@ -167,6 +171,7 @@ public class KitchenLoginFragment extends Fragment implements View.OnClickListen
             String data = TextUtils.join("",selectedPin);
             int result =  mainActivity.getTableListService().verifyLogin(data);
             if(result == 2){
+                syncData();
                 mainActivityCallback.success(5000,null);
                 //login success
             }else if(result == 3){
@@ -193,6 +198,17 @@ public class KitchenLoginFragment extends Fragment implements View.OnClickListen
         }
     }
 
+
+    private void syncData(){
+        Account account = HsbSyncAdapter.getSyncAccount(mainActivity);
+        Bundle settingsBundle = new Bundle();
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        settingsBundle.putInt("currentScreen", SyncEvent.GET_KITCHEN_ORDERS_DATA);
+        ContentResolver.requestSync(account, mainActivity.getString(R.string.auth_type), settingsBundle);
+    }
 
     @Override
     public void onClick(View v) {

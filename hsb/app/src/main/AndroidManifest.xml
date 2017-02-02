@@ -29,7 +29,6 @@
             android:name="com.archide.hsb.sync.HsbProvider"
             android:authorities="@string/content_authority"
             android:label="HSB"
-            android:enabled="true"
             android:exported="false"
             android:syncable="true" />
 
