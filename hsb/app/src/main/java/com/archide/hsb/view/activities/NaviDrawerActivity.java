@@ -1,6 +1,8 @@
 package com.archide.hsb.view.activities;
 
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +30,8 @@ import hsb.archide.com.hsb.R;
 public class NaviDrawerActivity extends AppCompatActivity{
 
     private OrderService orderService;
+
+    private boolean isLogOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,10 +115,58 @@ public class NaviDrawerActivity extends AppCompatActivity{
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+
+        if(isLogOut){
+            logOut();
+        }else{
+            super.onBackPressed();
+        }
+    }
+
+    private void clearData(){
+        getOrderService().removeAllData();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
 
+    private void logOut(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        // Setting Dialog Title
+        alertDialog.setTitle("Conform");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Are you sure want to logout?");
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.cancel();
+                clearData();
+
+            }
+        });
+
+        // Setting Positive "Yes" Button
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
+   
+
+    public void setLogOut(boolean logOut) {
+        isLogOut = logOut;
+    }
 
     public OrderService getOrderService() {
         return orderService;

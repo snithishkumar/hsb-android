@@ -134,7 +134,10 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
 
     @Override
     public List<PlacedOrderItemsEntity> getPlacedOrderHistoryItems(PlacedOrdersEntity placedOrdersEntity)throws SQLException{
-        return   placedOrderItemDao.queryBuilder().where().eq(PlacedOrderItemsEntity.IS_CONFORM,true).and().ne(PlacedOrderItemsEntity.ORDER_STATUS,OrderStatus.UN_AVAILABLE).query();
+        return   placedOrderItemDao.queryBuilder().where().eq(PlacedOrderItemsEntity.IS_CONFORM,true).and()
+                .ne(PlacedOrderItemsEntity.ORDER_STATUS,OrderStatus.UN_AVAILABLE)
+                .and().eq(PlacedOrderItemsEntity.IS_DELETED,false)
+                .query();
     }
 
 
