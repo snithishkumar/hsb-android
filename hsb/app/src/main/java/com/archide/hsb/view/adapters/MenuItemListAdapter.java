@@ -206,7 +206,7 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         menuItemsFragment.updateFooterBar();
                     }else{
                         menuItemsViewModel.setCount(menuItemsViewModel.getCount() - 1);
-                        homeActivity.getOrderService().addOrderItems(menuItemsViewModel);
+                        homeActivity.getOrderService().updateOrderItems(menuItemsViewModel);
                         orderDetailsViewModel.setTotalCount(orderDetailsViewModel.getTotalCount() - 1);
                         orderDetailsViewModel.setTotalCost(orderDetailsViewModel.getTotalCost() - menuItemsViewModel.getCost());
                         menuItemsFragment.updateFooterBar();

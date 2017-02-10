@@ -9,7 +9,7 @@ public class FoodCategoryJson {
 	private String categoryName;
 	private long dateTime;
 	private int displayOrder;
-	private List<MenuItemJson> menuItems = new ArrayList<MenuItemJson>();
+	private List<MenuItemJson> menuItems = new ArrayList<>();
 	
 
 	

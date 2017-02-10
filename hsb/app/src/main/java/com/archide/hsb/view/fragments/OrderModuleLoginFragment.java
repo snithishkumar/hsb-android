@@ -162,7 +162,7 @@ public class OrderModuleLoginFragment extends Fragment implements View.OnClickLi
                 mainActivityCallback.success(6000,null);
                 //login success
             }else if(result == 3){
-                ActivityUtil.showDialog(mainActivity,"Error","InValid Password");
+                ActivityUtil.showDialog(mainActivity,"Error",getString(R.string.incorrect_password));
                 reSetPin();
                 // Invalid Password
             }else{

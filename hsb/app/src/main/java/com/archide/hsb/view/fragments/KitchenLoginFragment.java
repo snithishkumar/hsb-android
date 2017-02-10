@@ -175,7 +175,7 @@ public class KitchenLoginFragment extends Fragment implements View.OnClickListen
                 mainActivityCallback.success(5000,null);
                 //login success
             }else if(result == 3){
-                ActivityUtil.showDialog(mainActivity,"Error","InValid Password");
+                ActivityUtil.showDialog(mainActivity,"Error",getString(R.string.incorrect_password));
                 reSetPin();
                 // Invalid Password
             }else{

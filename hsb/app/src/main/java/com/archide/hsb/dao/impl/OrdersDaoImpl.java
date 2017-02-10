@@ -71,6 +71,16 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
         return placedOrderItemDao.queryBuilder().where().eq(PlacedOrderItemsEntity.PLACED_ORDER_ITEMS_UUID,orderUuid).queryForFirst();
     }
 
+
+    @Override
+    public void updateOrderStatus(String itemCode)throws SQLException{
+        UpdateBuilder<PlacedOrderItemsEntity,Integer> updateBuilder = placedOrderItemDao.updateBuilder();
+        updateBuilder.
+                updateColumnValue(PlacedOrderItemsEntity.ORDER_STATUS,OrderStatus.UN_AVAILABLE).
+                where().eq(PlacedOrderItemsEntity.ITEM_CODE,itemCode).and().eq(PlacedOrderItemsEntity.IS_CONFORM,false);
+        updateBuilder.update();
+    }
+
     public void createPlacedOrdersItemsEntity(PlacedOrderItemsEntity placedOrderItemsEntity)throws  SQLException{
         placedOrderItemDao.create(placedOrderItemsEntity);
     }
@@ -93,9 +103,16 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
         deleteBuilder.delete();
     }
 
+    public List<PlacedOrderItemsEntity> getAvailablePlacedOrderItemsEntity()throws SQLException{
+        return   placedOrderItemDao.queryBuilder().where().eq(PlacedOrderItemsEntity.IS_CONFORM,false)
+                .and().ne(PlacedOrderItemsEntity.ORDER_STATUS,OrderStatus.UN_AVAILABLE)
+                .query();
+    }
+
 
     public List<PlacedOrderItemsEntity> getPlacedOrderItemsEntity()throws SQLException{
-      return   placedOrderItemDao.queryBuilder().where().eq(PlacedOrderItemsEntity.IS_CONFORM,false).query();
+      return   placedOrderItemDao.queryBuilder().where().eq(PlacedOrderItemsEntity.IS_CONFORM,false)
+              .query();
     }
 
     public List<PlacedOrderItemsEntity> getPlacedOrderItemsEntityTest()throws SQLException{

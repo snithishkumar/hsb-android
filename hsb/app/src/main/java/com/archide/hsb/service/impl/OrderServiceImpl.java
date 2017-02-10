@@ -58,6 +58,16 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+
+    @Override
+    public void updateOrderItems(MenuItemsViewModel menuItemsViewModel){
+        try{
+            ordersDao.updateOrdersCount(menuItemsViewModel.getItemCode(),menuItemsViewModel.getCount());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void addOrderItems(MenuItemsViewModel menuItemsViewModel) {
         try{
@@ -175,7 +185,7 @@ public class OrderServiceImpl implements OrderService {
 
     public void conformOrder(PlaceAnOrderViewModel placeAnOrderViewModel,String mobileNumber,String tableNumber,Context context){
         try{
-          PlacedOrdersEntity placedOrdersEntity =  ordersDao.getPlacedOrdersEntity();
+            PlacedOrdersEntity placedOrdersEntity =  ordersDao.getPlacedOrdersEntity();
             if(placedOrdersEntity != null && placedOrdersEntity.isClosed()){
                 ordersDao.removePlacedOrder(placedOrdersEntity);
                 AdminDao adminDao = new AdminDaoImpl(context);
@@ -186,13 +196,19 @@ public class OrderServiceImpl implements OrderService {
             if(placedOrdersEntity == null ){
                 placedOrdersEntity = new PlacedOrdersEntity();
                 createPlacedOrders(placedOrdersEntity,placeAnOrderViewModel,mobileNumber,tableNumber);
+            }else{
+                placedOrdersEntity.setTotalPrice(placedOrdersEntity.getTotalPrice() + placeAnOrderViewModel.getTotalAmount());
+                ordersDao.updatePlacedOrdersEntity(placedOrdersEntity);
             }
            // List<PlacedOrderItemsEntity> itemsEntities = ordersDao.getPlacedOrderItemsEntity();
             ordersDao.removeCurrentOrder();
            // List<PlacedOrderItemsEntity> itemsEntities1 = ordersDao.getPlacedOrderItemsEntity();
             List<MenuItemsViewModel> menuItemsViewModels =  placeAnOrderViewModel.getMenuItemsViewModels();
             for(MenuItemsViewModel menuItemsViewModel : menuItemsViewModels){
-                createOrderItems(menuItemsViewModel);
+                if(!menuItemsViewModel.getOrderStatus().toString().equals(OrderStatus.UN_AVAILABLE.toString())){
+                    createOrderItems(menuItemsViewModel);
+                }
+
             }
 
         }catch (Exception e){

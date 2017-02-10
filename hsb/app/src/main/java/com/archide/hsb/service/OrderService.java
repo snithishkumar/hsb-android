@@ -48,5 +48,7 @@ public interface OrderService {
 
     void closeOrder(String mobileNumber);
 
+    void updateOrderItems(MenuItemsViewModel menuItemsViewModel);
+
 
 }

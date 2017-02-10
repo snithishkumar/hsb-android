@@ -59,4 +59,8 @@ public interface OrdersDao {
 
     void removePlacedOrder( PlacedOrdersEntity placedOrdersEntity)throws SQLException;
 
+    void updateOrderStatus(String itemCode)throws SQLException;
+
+    List<PlacedOrderItemsEntity> getAvailablePlacedOrderItemsEntity()throws SQLException;
+
 }

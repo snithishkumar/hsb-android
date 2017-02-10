@@ -132,7 +132,7 @@ public class OrderedMenuItemsAdapter extends RecyclerView.Adapter<RecyclerView.V
                         orderPlaceFragment.calcAmountDetails();
                     }else{
                         menuItemsViewModel.setCount(menuItemsViewModel.getCount() - 1);
-                        orderActivity.getOrderService().addOrderItems(menuItemsViewModel);
+                        orderActivity.getOrderService().updateOrderItems(menuItemsViewModel);
                         orderPlaceFragment.calcAmountDetails();
                     }
 

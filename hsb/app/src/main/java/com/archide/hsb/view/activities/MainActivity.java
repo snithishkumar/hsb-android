@@ -33,13 +33,16 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
     private ConfigurationFragment configurationFragment;
     private TableListService tableListService;
 
+
+    private static final String TAG_MY_FRAGMENT = "myFragment";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         init();
         showFragment();
+
     }
 
     private void init(){
@@ -58,7 +61,8 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
                 FragmentsUtil.addFragment(this, kitchenLoginFragment, R.id.main_container);
             }else{
                 welcomeFragment = new WelcomeFragment();
-                FragmentsUtil.addFragment(this, welcomeFragment, R.id.main_container);
+
+                FragmentsUtil.addRemoveFragment(this, welcomeFragment, R.id.main_container);
                 ActivityUtil.TABLE_NUMBER = configurationEntity.getTableNumber();
 
             }

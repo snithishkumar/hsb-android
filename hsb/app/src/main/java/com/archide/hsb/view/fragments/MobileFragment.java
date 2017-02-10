@@ -31,6 +31,9 @@ public class MobileFragment extends Fragment implements View.OnClickListener{
     private TextView userMobile;
     private ProgressDialog progressDialog;
 
+    private LayoutInflater mInflater;
+    private ViewGroup mContainer;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,12 +44,22 @@ public class MobileFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View loginView =  inflater.inflate(R.layout.fragment_mobile, container, false);
+
+        mInflater = inflater;
+        mContainer = container;
+
+
+        return initLayout();
+    }
+
+
+    private View initLayout(){
+        View loginView =  mInflater.inflate(R.layout.fragment_mobile, mContainer, false);
         userMobile =  (TextView)loginView.findViewById(R.id.vUserMobileNumber);
         Button button =  (Button)loginView.findViewById(R.id.submit);
         button.setOnClickListener(this);
-
         return loginView;
+
     }
 
 
@@ -83,15 +96,25 @@ public class MobileFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
-        String userMobileText = userMobile.getText().toString();
-        if (userMobileText != null && !userMobileText.trim().isEmpty()) {
-            mainActivity.getTableListService().updateUserMobile(userMobileText);
-            ActivityUtil.USER_MOBILE = userMobileText;
-            getMenuList();
-        }else{
-            userMobile.setError(getString(R.string.mobile_number_error));
+        switch (view.getId()){
+            case R.id.submit:
+                String userMobileText = userMobile.getText().toString();
+                if (userMobileText != null && !userMobileText.trim().isEmpty()) {
+                    mainActivity.getTableListService().updateUserMobile(userMobileText);
+                    ActivityUtil.USER_MOBILE = userMobileText;
+                    getMenuList();
+                }else{
+                    userMobile.setError(getString(R.string.mobile_number_error));
 
+                }
+                break;
+            case R.id.try_now:
+                mContainer.removeAllViews();
+                View layoutView = initLayout();
+                mContainer.addView(layoutView );
+                break;
         }
+
 
     }
 
@@ -102,8 +125,17 @@ public class MobileFragment extends Fragment implements View.OnClickListener{
             progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_menu_items_message), mainActivity);
             mainActivity.getTableListService().getMenuItems(ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
         } else {
-            ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
+            showNoInterNet();
+           // ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
         }
+    }
+
+    private void showNoInterNet(){
+        View newView = mInflater.inflate(R.layout.fragment_no_internet, mContainer, false);
+        TextView tryNow = (TextView)newView.findViewById(R.id.try_now);
+        tryNow.setOnClickListener(this);
+        mContainer.removeAllViews();
+        mContainer.addView(newView);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

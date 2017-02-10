@@ -37,6 +37,22 @@ public class FragmentsUtil {
                 .commit();
     }
 
+    public static void addRemoveFragment(AppCompatActivity activity, Fragment fragment, int containerId){
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        Fragment currentFragment =  fragmentManager.findFragmentById(containerId);
+        if(currentFragment != null){
+            fragmentManager.beginTransaction()
+                    .replace(containerId, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        }else{
+            fragmentManager.beginTransaction()
+                    .add(containerId, fragment)
+                    .commit();
+        }
+
+    }
+
     public static void removeFragment(AppCompatActivity activity, int containerId){
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         Fragment fragment =  fragmentManager.findFragmentById(containerId);

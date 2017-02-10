@@ -5,13 +5,13 @@
         android:id="@+id/item_delivered"
         android:title="Delivered"
         android:visible="true"/>
-    <item
+   <!-- <item
         android:id="@+id/item_unavailable"
         android:title="UnAvailable"
         android:visible="true"/>
     <item
         android:id="@+id/item_custom"
         android:title="Custom"
-        android:visible="true"/>
+        android:visible="true"/> -->
 
 </menu>

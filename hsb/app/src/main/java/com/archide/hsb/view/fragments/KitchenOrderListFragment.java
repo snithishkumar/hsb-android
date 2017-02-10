@@ -48,6 +48,11 @@ public class KitchenOrderListFragment extends Fragment {
     List<KitchenOrderListViewModel> kitchenOrderListViewModels = new ArrayList<>();
     //ProgressDialog progressDialog = null;
 
+    private LayoutInflater mInflater;
+    private ViewGroup mContainer;
+    private boolean isFlag = false;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +64,10 @@ public class KitchenOrderListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_kitchen_order_list, container, false);
+
+        mInflater = inflater;
+        mContainer = container;
+
         kitchenOrderList =  (GridView)view.findViewById(R.id.gridview);
        int orientation = getResources().getConfiguration().orientation;
         if(Configuration.ORIENTATION_LANDSCAPE == orientation){
@@ -99,19 +108,40 @@ public class KitchenOrderListFragment extends Fragment {
         return view;
     }
 
+
+    private void showView(View newView){
+        kitchenOrderList =  (GridView)newView.findViewById(R.id.gridview);
+        int orientation = getResources().getConfiguration().orientation;
+        if(Configuration.ORIENTATION_LANDSCAPE == orientation){
+            kitchenOrderList.setNumColumns(2);
+        }else{
+            kitchenOrderList.setNumColumns(1);
+        }
+        kitchenOrderListAdapter =  new KitchenOrderListAdapter(kitchenOrderListViewModels,kitchenActivity);
+
+        kitchenOrderList.setAdapter(kitchenOrderListAdapter);
+
+        kitchenOrderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                KitchenOrderListViewModel kitchenOrderListViewModel =  kitchenOrderListViewModels.get(position);
+                int nonVegCount = Integer.valueOf(kitchenOrderListViewModel.getNonVegCount());
+                int vegCount = Integer.valueOf(kitchenOrderListViewModel.getVegCount());
+                if(nonVegCount < 1 && vegCount < 1){
+                    Toast.makeText(kitchenActivity,getString(R.string.kitchen_no_data),Toast.LENGTH_LONG).show();
+                    return;
+                }
+                kitchenActivity.viewOrderDetails(kitchenOrderListViewModel.getOrderId());
+                return;
+            }
+        });
+    }
+
     private void init(){
 
         kitchenActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         kitchenActivity.getSupportActionBar().setHomeButtonEnabled(true);
 
-       /* Account account = HsbSyncAdapter.getSyncAccount(kitchenActivity);
-        Bundle settingsBundle = new Bundle();
-        settingsBundle.putInt("currentScreen", SyncEvent.GET_KITCHEN_ORDERS_DATA);
-        ContentResolver.requestSync(account, kitchenActivity.getString(R.string.auth_type), settingsBundle);*/
-
-
-      //  kitchenService = new KitchenServiceImpl(this);
-        // orderService = new OrderServiceImpl(this);
     }
 
 
@@ -119,10 +149,24 @@ public class KitchenOrderListFragment extends Fragment {
     private void loadData(){
         List<KitchenOrderListViewModel> temp = kitchenActivity.getKitchenService().getOrderList();
         kitchenOrderListViewModels.clear();
+        if(temp.size() < 1){
+            View newView = mInflater.inflate(R.layout.fragment_kitchen_empty_list, mContainer, false);
+            mContainer.removeAllViews();
+            mContainer.addView(newView);
+            isFlag = true;
+        }else{
+            if(isFlag){
+                View newView = mInflater.inflate(R.layout.fragment_kitchen_order_list, mContainer, false);
+                mContainer.removeAllViews();
+                mContainer.addView(newView);
+                showView(newView);
+            }
+            isFlag = false;
+            kitchenOrderListViewModels.addAll(temp);
+            kitchenOrderListAdapter.notifyDataSetChanged();
+        }
 
-        kitchenOrderListViewModels.addAll(temp);
 
-        kitchenOrderListAdapter.notifyDataSetChanged();
     }
 
     @Override

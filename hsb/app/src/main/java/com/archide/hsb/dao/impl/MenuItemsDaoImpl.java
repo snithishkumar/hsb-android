@@ -171,4 +171,9 @@ public class MenuItemsDaoImpl extends  BaseDaoImpl implements MenuItemsDao {
       updateBuilder.update();
     }
 
+    @Override
+    public MenuEntity getMenuEntity(String menuUUID)throws SQLException{
+       return menuEntityDao.queryBuilder().where().eq(MenuEntity.MENU_UUID,menuUUID).queryForFirst();
+    }
+
 }

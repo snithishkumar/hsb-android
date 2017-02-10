@@ -177,7 +177,7 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
                case R.id.item_delivered:
                    kitchenOrderDetailsViewModel.setStatus(OrderStatus.DELIVERED);
                     break;
-               case R.id.item_unavailable:
+              /* case R.id.item_unavailable:
                    kitchenOrderDetailsViewModel.setStatus(OrderStatus.UN_AVAILABLE);
                    kitchenOrderDetailsViewModel.setUnAvailableCount(totalCount);
                    break;
@@ -210,7 +210,7 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
                                        }
                                    });
                    alertDialogBuilder.show();
-                   break;
+                   break;*/
            }
             kitchenOrderedItemsFragment.enableSaveButton();
             notifyDataSetChanged();

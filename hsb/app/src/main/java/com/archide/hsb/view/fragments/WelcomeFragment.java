@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.archide.hsb.entity.ConfigurationEntity;
@@ -40,9 +41,14 @@ public class WelcomeFragment extends Fragment implements View.OnClickListener{
     MainActivity mainActivity = null;
     private ProgressDialog progressDialog;
 
+
+    private LayoutInflater mInflater;
+    private ViewGroup mContainer;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setHasOptionsMenu(true);
 
     }
@@ -51,7 +57,14 @@ public class WelcomeFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_welcome, container, false);
+        mInflater = inflater;
+        mContainer = container;
+        return initLayout();
+    }
+
+
+    private View initLayout(){
+        View view =  mInflater.inflate(R.layout.fragment_welcome, mContainer, false);
 
         button1 = (Button)view.findViewById(R.id.welcome_button1);
         button2 = (Button)view.findViewById(R.id.welcome_button2);
@@ -102,7 +115,6 @@ public class WelcomeFragment extends Fragment implements View.OnClickListener{
                 break;
 
         }
-
         return view;
     }
 
@@ -131,6 +143,16 @@ public class WelcomeFragment extends Fragment implements View.OnClickListener{
                 val = button4.getText().toString();
                 showFragment(val);
                 break;
+
+            case R.id.try_now:
+                boolean isNetWorkConnected = Utilities.isNetworkConnected(mainActivity);
+                if(isNetWorkConnected){
+                    mContainer.removeAllViews();
+                    View layoutView = initLayout();
+                    mContainer.addView(layoutView);
+                }
+
+                break;
         }
     }
 
@@ -153,8 +175,18 @@ public class WelcomeFragment extends Fragment implements View.OnClickListener{
             progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_menu_items_message), mainActivity);
             mainActivity.getTableListService().getMenuItems(ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
         } else {
-            ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
+            showNoInterNet();
+            //ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
         }
+    }
+
+
+    private void showNoInterNet(){
+        View newView = mInflater.inflate(R.layout.fragment_no_internet, mContainer, false);
+        TextView tryNow = (TextView)newView.findViewById(R.id.try_now);
+        tryNow.setOnClickListener(this);
+        mContainer.removeAllViews();
+        mContainer.addView(newView);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -189,9 +221,6 @@ public class WelcomeFragment extends Fragment implements View.OnClickListener{
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
-
-
-
 
 
     public interface MainActivityCallback {

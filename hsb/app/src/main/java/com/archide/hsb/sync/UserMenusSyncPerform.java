@@ -204,7 +204,7 @@ public class UserMenusSyncPerform {
             PlacedOrdersEntity placedOrdersEntity =  ordersDao.getPlacedOrdersEntity();
             if(placedOrdersEntity != null){
                 PlaceOrdersJson placeOrdersJson = new PlaceOrdersJson(placedOrdersEntity);
-                List<PlacedOrderItemsEntity> itemsEntityList =  ordersDao.getPlacedOrderItemsEntity();
+                List<PlacedOrderItemsEntity> itemsEntityList =  ordersDao.getAvailablePlacedOrderItemsEntity();
                 for(PlacedOrderItemsEntity placedOrderItemsEntity : itemsEntityList){
                     OrderedMenuItems orderedMenuItems = new OrderedMenuItems(placedOrderItemsEntity);
                     placeOrdersJson.getMenuItems().add(orderedMenuItems);
@@ -276,6 +276,8 @@ public class UserMenusSyncPerform {
                             new TypeToken<List<MenuItemJson>>() {}.getType());
                     for(MenuItemJson menuItemJson : menuItemList){
                         menuItemsDao.updateMenuItemStatus(menuItemJson.getMenuUuid(),menuItemJson.getServerDateTime());
+                        MenuEntity menuEntity =  menuItemsDao.getMenuEntity(menuItemJson.getMenuUuid());
+                        ordersDao.updateOrderStatus(menuEntity.getMenuItemCode());
                     }
                 }
             }

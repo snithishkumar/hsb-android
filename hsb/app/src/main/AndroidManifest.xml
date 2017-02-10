@@ -55,7 +55,7 @@
                 android:resource="@xml/syncadapter" />
         </service>
 
-        <activity android:name="com.archide.hsb.view.activities.MainActivity">
+        <activity android:name="com.archide.hsb.view.activities.MainActivity" android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -64,9 +64,9 @@
         </activity>
         <activity android:name="com.archide.hsb.view.activities.HomeActivity"
             android:configChanges="orientation|screenSize" android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.archide.hsb.view.activities.OrderActivity"></activity>
-        <activity android:name="com.archide.hsb.view.activities.NaviDrawerActivity"></activity>
-        <activity android:name="com.archide.hsb.view.activities.KitchenActivity"></activity>
+        <activity android:name="com.archide.hsb.view.activities.OrderActivity" android:configChanges="orientation|screenSize"></activity>
+        <activity android:name="com.archide.hsb.view.activities.NaviDrawerActivity" android:configChanges="orientation|screenSize"></activity>
+        <activity android:name="com.archide.hsb.view.activities.KitchenActivity" android:configChanges="orientation|screenSize"></activity>
     </application>
 
 </manifest>

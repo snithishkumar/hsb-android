@@ -7,8 +7,8 @@
     > //ccc
 
     <RelativeLayout
-        android:layout_width="500dp"
-        android:layout_height="500dp"
+        android:layout_width="600dp"
+        android:layout_height="600dp"
         android:background="@drawable/welcome_image"
         android:layout_centerVertical="true"
        >
@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginStart="50dp"
+            android:layout_marginStart="20dp"
             android:visibility="invisible"
             android:id="@+id/welcome_hidden_button" />
 
@@ -28,12 +28,12 @@
             android:layout_centerInParent="true"
             android:layout_toEndOf="@+id/welcome_hidden_button"
             android:orientation="vertical"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="10dp"
             android:layout_height="wrap_content">
 
             <Button
                 android:text="Button1"
-                android:layout_width="150dp"
+                android:layout_width="170dp"
                 android:layout_marginTop="50dp"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
@@ -43,7 +43,7 @@
             <Button
                 android:text="Button2"
                 android:layout_height="wrap_content"
-                android:layout_width="150dp"
+                android:layout_width="170dp"
                 android:layout_marginTop="75dp"
                 android:textColor="@android:color/white"
                 android:background="@drawable/item_type_background"
@@ -52,7 +52,7 @@
             <Button
                 android:text="Button3"
                 android:layout_height="wrap_content"
-                android:layout_width="150dp"
+                android:layout_width="170dp"
                 android:layout_marginTop="75dp"
                 android:textColor="@android:color/white"
                 android:background="@drawable/item_type_background"
@@ -61,7 +61,7 @@
             <Button
                 android:text="Button3"
                 android:layout_height="wrap_content"
-                android:layout_width="150dp"
+                android:layout_width="170dp"
                 android:layout_marginTop="75dp"
                 android:textColor="@android:color/white"
                 android:background="@drawable/item_type_background"
