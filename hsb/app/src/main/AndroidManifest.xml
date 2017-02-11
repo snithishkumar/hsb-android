@@ -19,6 +19,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
+        <receiver
+            android:name="com.archide.hsb.listeners.NetworkChangeReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
         <!-- Sync Adapter starts -->
         <!--
         Ref : https://www.udacity.com/course/viewer#!/c-ud853/l-1614738811/m-3612129996 &

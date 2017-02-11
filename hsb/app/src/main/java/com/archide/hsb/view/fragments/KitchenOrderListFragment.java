@@ -88,7 +88,7 @@ public class KitchenOrderListFragment extends Fragment {
             }
         });*/
         init();
-        loadData();
+        loadData(null);
 
         kitchenOrderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
@@ -146,25 +146,36 @@ public class KitchenOrderListFragment extends Fragment {
 
 
 
-    private void loadData(){
-        List<KitchenOrderListViewModel> temp = kitchenActivity.getKitchenService().getOrderList();
-        kitchenOrderListViewModels.clear();
-        if(temp.size() < 1){
-            View newView = mInflater.inflate(R.layout.fragment_kitchen_empty_list, mContainer, false);
+    private void loadData(ResponseData responseData){
+        if(responseData != null && responseData.getStatusCode() == 600 && !responseData.getSuccess()){
             mContainer.removeAllViews();
-            mContainer.addView(newView);
+            View noInternetFragment = mInflater.inflate(R.layout.fragment_no_internet, mContainer, false);
+            mContainer.addView(noInternetFragment);
             isFlag = true;
         }else{
-            if(isFlag){
-                View newView = mInflater.inflate(R.layout.fragment_kitchen_order_list, mContainer, false);
+            if(responseData != null && responseData.getStatusCode() == 500){
+                return;
+            }
+            List<KitchenOrderListViewModel> temp = kitchenActivity.getKitchenService().getOrderList();
+            kitchenOrderListViewModels.clear();
+            if(temp.size() < 1){
+                View newView = mInflater.inflate(R.layout.fragment_kitchen_empty_list, mContainer, false);
                 mContainer.removeAllViews();
                 mContainer.addView(newView);
-                showView(newView);
+                isFlag = true;
+            }else{
+                if(isFlag){
+                    View newView = mInflater.inflate(R.layout.fragment_kitchen_order_list, mContainer, false);
+                    mContainer.removeAllViews();
+                    mContainer.addView(newView);
+                    showView(newView);
+                }
+                isFlag = false;
+                kitchenOrderListViewModels.addAll(temp);
+                kitchenOrderListAdapter.notifyDataSetChanged();
             }
-            isFlag = false;
-            kitchenOrderListViewModels.addAll(temp);
-            kitchenOrderListAdapter.notifyDataSetChanged();
         }
+
 
 
     }
@@ -196,7 +207,7 @@ public class KitchenOrderListFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleServerSyncResponse(ResponseData responseData) {
-        loadData();
+        loadData(responseData);
     }
 
    public interface ViewOrderDetails{
