@@ -198,6 +198,7 @@ public class OrderServiceImpl implements OrderService {
                 createPlacedOrders(placedOrdersEntity,placeAnOrderViewModel,mobileNumber,tableNumber);
             }else{
                 placedOrdersEntity.setTotalPrice(placedOrdersEntity.getTotalPrice() + placeAnOrderViewModel.getTotalAmount());
+                placedOrdersEntity.setComments(placeAnOrderViewModel.getCookingComments());
                 ordersDao.updatePlacedOrdersEntity(placedOrdersEntity);
             }
            // List<PlacedOrderItemsEntity> itemsEntities = ordersDao.getPlacedOrderItemsEntity();

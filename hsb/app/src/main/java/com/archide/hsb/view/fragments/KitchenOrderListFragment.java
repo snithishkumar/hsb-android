@@ -20,6 +20,7 @@ import com.archide.hsb.service.impl.KitchenServiceImpl;
 import com.archide.hsb.sync.HsbSyncAdapter;
 import com.archide.hsb.sync.SyncEvent;
 import com.archide.hsb.sync.json.ResponseData;
+import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.activities.HomeActivity;
 import com.archide.hsb.view.activities.KitchenActivity;
 import com.archide.hsb.view.adapters.KitchenOrderListAdapter;
@@ -62,48 +63,55 @@ public class KitchenOrderListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        boolean isNetWorkConnected = Utilities.isNetworkConnected(kitchenActivity);
+        View view = null;
+        if(!isNetWorkConnected){
+            view =   inflater.inflate(R.layout.fragment_no_internet, mContainer, false);
+            isFlag = true;
+        }else{
+            view =  inflater.inflate(R.layout.fragment_kitchen_order_list, container, false);
+
+            kitchenOrderList =  (GridView)view.findViewById(R.id.gridview);
+            int orientation = getResources().getConfiguration().orientation;
+            if(Configuration.ORIENTATION_LANDSCAPE == orientation){
+                kitchenOrderList.setNumColumns(2);
+            }else{
+                kitchenOrderList.setNumColumns(1);
+            }
+
+            List<KitchenOrderListViewModel> temp = kitchenActivity.getKitchenService().getOrderList();
+            kitchenOrderListViewModels.clear();
+            kitchenOrderListViewModels.addAll(temp);
+            
+            kitchenOrderListAdapter =  new KitchenOrderListAdapter(kitchenOrderListViewModels,kitchenActivity);
+
+            kitchenOrderList.setAdapter(kitchenOrderListAdapter);
+
+            init();
+
+
+
+            kitchenOrderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View v,
+                                        int position, long id) {
+                    KitchenOrderListViewModel kitchenOrderListViewModel =  kitchenOrderListViewModels.get(position);
+                    int nonVegCount = Integer.valueOf(kitchenOrderListViewModel.getNonVegCount());
+                    int vegCount = Integer.valueOf(kitchenOrderListViewModel.getVegCount());
+                    if(nonVegCount < 1 && vegCount < 1){
+                        Toast.makeText(kitchenActivity,getString(R.string.kitchen_no_data),Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    kitchenActivity.viewOrderDetails(kitchenOrderListViewModel.getOrderId());
+                    return;
+                }
+            });
+        }
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_kitchen_order_list, container, false);
 
         mInflater = inflater;
         mContainer = container;
 
-        kitchenOrderList =  (GridView)view.findViewById(R.id.gridview);
-       int orientation = getResources().getConfiguration().orientation;
-        if(Configuration.ORIENTATION_LANDSCAPE == orientation){
-            kitchenOrderList.setNumColumns(2);
-        }else{
-            kitchenOrderList.setNumColumns(1);
-        }
-        kitchenOrderListAdapter =  new KitchenOrderListAdapter(kitchenOrderListViewModels,kitchenActivity);
 
-        kitchenOrderList.setAdapter(kitchenOrderListAdapter);
-       /* kitchenOrderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                int pos = position;
-                KitchenOrderListViewModel kitchenOrderListViewModel =  kitchenOrderListViewModels.get(position);
-                kitchenActivity.viewOrderDetails(kitchenOrderListViewModel.getOrderId());
-                return;
-            }
-        });*/
-        init();
-        loadData(null);
-
-        kitchenOrderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                KitchenOrderListViewModel kitchenOrderListViewModel =  kitchenOrderListViewModels.get(position);
-              int nonVegCount = Integer.valueOf(kitchenOrderListViewModel.getNonVegCount());
-                int vegCount = Integer.valueOf(kitchenOrderListViewModel.getVegCount());
-                if(nonVegCount < 1 && vegCount < 1){
-                    Toast.makeText(kitchenActivity,getString(R.string.kitchen_no_data),Toast.LENGTH_LONG).show();
-                    return;
-                }
-                kitchenActivity.viewOrderDetails(kitchenOrderListViewModel.getOrderId());
-                return;
-            }
-        });
 
         return view;
     }
@@ -138,7 +146,6 @@ public class KitchenOrderListFragment extends Fragment {
     }
 
     private void init(){
-
         kitchenActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         kitchenActivity.getSupportActionBar().setHomeButtonEnabled(true);
 
