@@ -3,17 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_vertical|center_horizontal|center"
-    android:background="#DEDEDE"
+    android:background="@android:color/white"
     android:orientation="vertical"
     android:gravity="center_vertical|center_horizontal"> //ccc
 
 
     <ImageView
-        android:layout_width="900dp"
-        android:layout_height="900dp"
-        android:src="@drawable/place_your_order"
-
-        android:id="@+id/imageView" />
+        android:layout_width="600dp"
+        android:layout_height="600dp"
+        android:src="@drawable/place_an_order"
+        android:id="@+id/place_an_order" />
 
 
 

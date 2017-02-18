@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.archide.hsb.service.TableListService;
@@ -164,9 +165,11 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
     private void populateData(){
        PlaceAnOrderViewModel placeAnOrderViewModel =  naviDrawerActivity.getOrderService().getPlacedHistoryOrderViewModel();
        if(placeAnOrderViewModel.getMenuItemsViewModels().size() < 1){
-           View newView = mInflater.inflate(R.layout.fragment_placed_orders_history_empty, mContainer, false);
+           View newView = mInflater.inflate(R.layout.fragment_place_order_empty, mContainer, false);
            mContainer.removeAllViews();
            mContainer.addView(newView);
+           ImageView imageView =  (ImageView)newView.findViewById(R.id.place_an_order);
+           imageView.setOnClickListener(this);
        }else{
             menuItemsViewModels.clear();
             menuItemsViewModels.addAll(placeAnOrderViewModel.getMenuItemsViewModels());
@@ -224,7 +227,13 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
 
     @Override
     public void onClick(View view) {
-        getMenuList();
+        if(R.id.place_an_order == view.getId()){
+            naviDrawerActivity.onBackPressed();
+        }else{
+            getMenuList();
+        }
+
+
 
     }
 

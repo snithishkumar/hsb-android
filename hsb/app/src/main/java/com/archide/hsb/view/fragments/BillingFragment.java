@@ -187,13 +187,29 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
         }else if(view.getId() == R.id.close_order_send){
             reSentBilling();
             // Resent
+        }else if(R.id.not_closable == view.getId()){
+            naviDrawerActivity.onBackPressed();
+        }else if(R.id.place_an_order == view.getId()){
+            naviDrawerActivity.onBackPressed();
         }
+        //place_an_order
     }
 
     private void showNoData(){
+        View newView = mInflater.inflate(R.layout.fragment_place_order_empty, mContainer, false);
+        mContainer.removeAllViews();
+        mContainer.addView(newView);
+        ImageView imageView =  (ImageView)newView.findViewById(R.id.place_an_order);
+        imageView.setOnClickListener(this);
+    }
+
+    private void showNotCloseData(){
         View newView = mInflater.inflate(R.layout.fragment_order_close_empty, mContainer, false);
         mContainer.removeAllViews();
         mContainer.addView(newView);
+        ImageView imageView =  (ImageView)newView.findViewById(R.id.not_closable);
+        imageView.setOnClickListener(this);
+        //unable_close_order
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -217,7 +233,7 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case 403:
-                showNoData();
+                showNotCloseData();
                 break;
 
             case 404:
