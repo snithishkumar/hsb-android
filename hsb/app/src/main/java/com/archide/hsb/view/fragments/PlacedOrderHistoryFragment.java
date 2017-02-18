@@ -196,7 +196,7 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
         if (isNetWorkConnected) {
             TableListService tableListService = new TableListServiceImpl(naviDrawerActivity);
             progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), naviDrawerActivity);
-            tableListService.getMenuItems(ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
+            tableListService.getMenuItems(ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE,null);
         } else {
             ActivityUtil.showDialog(naviDrawerActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
         }

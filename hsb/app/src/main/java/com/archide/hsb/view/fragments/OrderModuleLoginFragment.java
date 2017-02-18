@@ -159,6 +159,7 @@ public class OrderModuleLoginFragment extends Fragment implements View.OnClickLi
             String data = TextUtils.join("",selectedPin);
             int result =  mainActivity.getTableListService().verifyLogin(data);
             if(result == 2){
+                mainActivity.getTableListService().removeAllData();
                 mainActivityCallback.success(6000,null);
                 //login success
             }else if(result == 3){

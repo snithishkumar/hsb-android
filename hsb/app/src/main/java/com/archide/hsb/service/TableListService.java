@@ -13,7 +13,7 @@ import java.util.List;
 public interface TableListService {
 
     void getTableList();
-    void getMenuItems(String tableNumber,String mobileNumber);
+    void getMenuItems(String tableNumber,String mobileNumber,String vUserTypeText);
     void createAdmin(String tableNumber,String mPin,AppType selectedAppType);
 
     void updateUserMobile(String userMobile);
@@ -34,4 +34,8 @@ public interface TableListService {
     boolean isOrderOpen();
 
     boolean isUnClosedUser();
+
+    void removeAllData();
+
+    void removeUsers(String userMobileNumber);
 }

@@ -117,6 +117,20 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
     }
 
 
+    @Override
+    public void removeAllUsers()throws SQLException{
+        usersDao.deleteBuilder().delete();
+    }
+
+
+    @Override
+    public void removeUser(String mobileNumber)throws SQLException{
+        DeleteBuilder<UsersEntity,Integer> deleteBuilder =  usersDao.deleteBuilder();
+        deleteBuilder.where().eq(UsersEntity.USER_MOBILE_NUMBER,mobileNumber);
+        deleteBuilder.delete();
+    }
+
+
 
 
 

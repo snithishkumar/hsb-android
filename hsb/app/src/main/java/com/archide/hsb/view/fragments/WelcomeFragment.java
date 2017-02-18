@@ -173,7 +173,7 @@ public class WelcomeFragment extends Fragment implements View.OnClickListener{
         boolean isNetWorkConnected = Utilities.isNetworkConnected(mainActivity);
         if (isNetWorkConnected) {
             progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_menu_items_message), mainActivity);
-            mainActivity.getTableListService().getMenuItems(ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
+            mainActivity.getTableListService().getMenuItems(ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE,null);
         } else {
             showNoInterNet();
             //ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading), getString(R.string.no_network));

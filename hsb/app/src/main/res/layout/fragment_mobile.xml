@@ -59,6 +59,28 @@
                     android:hint="@string/mobile_number_hint" />
             </android.support.design.widget.TextInputLayout>
             </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/vTableDetailsLayout"
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_free_breakfast_black_48dp"
+                android:id="@+id/vTableIcon" />
+            <com.satsuware.usefulviews.LabelledSpinner
+                android:id="@+id/vUserType"
+                ls:labelText="User Type"
+                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
         <Button
             android:id="@+id/submit"
             android:layout_width="300dp"

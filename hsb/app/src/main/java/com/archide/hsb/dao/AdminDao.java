@@ -37,4 +37,8 @@ public interface AdminDao {
     boolean isUnClosedUser()throws SQLException;
 
     void updateUser(String userMobile)throws SQLException;
+
+    void removeAllUsers()throws SQLException;
+
+    void removeUser(String mobileNumber)throws SQLException;
 }

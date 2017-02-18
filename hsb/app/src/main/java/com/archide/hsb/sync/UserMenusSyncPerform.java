@@ -79,13 +79,18 @@ public class UserMenusSyncPerform {
 
 
 
-    public ResponseData getMenuItems(String tableNumber,String mobileNumber){
+    public ResponseData getMenuItems(String tableNumber,String mobileNumber,String userType){
         try{
           long lastServerSyncTime =  menuItemsDao.getLastSyncTime();
-            Call<ResponseData> menuItemsResponse =  hsbAPI.getMenuItems(lastServerSyncTime,tableNumber,mobileNumber);
+            Call<ResponseData> menuItemsResponse =  hsbAPI.getMenuItems(lastServerSyncTime,tableNumber,userType,mobileNumber);
             Response<ResponseData> response =  menuItemsResponse.execute();
             if (response != null && response.isSuccessful()) {
+
                 ResponseData responseData = response.body();
+                if(responseData.getSuccess() &&  responseData.getStatusCode() == 404){
+                    ResponseData result = new ResponseData(404,responseData.getData());
+                    return result;
+                }
                 String menuItemsJsonString =  responseData.getData();
 
                 GetMenuDetails  menuListJsonList =  gson.fromJson(menuItemsJsonString, GetMenuDetails.class);

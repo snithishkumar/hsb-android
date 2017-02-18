@@ -117,7 +117,9 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
 
                     String tableNumber =  extras.getString("tableNumber");
                     String mobileNumber =  extras.getString("mobileNumber");
-                    responseData =   userMenusSyncPerform.getMenuItems(tableNumber,mobileNumber);
+                    String userType =  extras.getString("userType");
+                    //userType
+                    responseData =   userMenusSyncPerform.getMenuItems(tableNumber,mobileNumber,userType);
                     // responseData =  userMenusSyncPerform.getKitchenOrders();
                     postData(responseData);
                     break;

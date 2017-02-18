@@ -11,14 +11,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.archide.hsb.enumeration.UserType;
 import com.archide.hsb.sync.json.ResponseData;
 import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.MainActivity;
+import com.satsuware.usefulviews.LabelledSpinner;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import hsb.archide.com.hsb.R;
 
@@ -33,6 +38,8 @@ public class MobileFragment extends Fragment implements View.OnClickListener{
 
     private LayoutInflater mInflater;
     private ViewGroup mContainer;
+
+    private LabelledSpinner vUserType;
 
 
     @Override
@@ -58,6 +65,15 @@ public class MobileFragment extends Fragment implements View.OnClickListener{
         userMobile =  (TextView)loginView.findViewById(R.id.vUserMobileNumber);
         Button button =  (Button)loginView.findViewById(R.id.submit);
         button.setOnClickListener(this);
+
+        vUserType = (LabelledSpinner) loginView.findViewById(R.id.vUserType);
+
+        List<String> userTypeList = new ArrayList<>();
+        userTypeList.add(UserType.INDIVIDUAL.toString());
+        userTypeList.add(UserType.PARTY.toString());
+
+        vUserType.setItemsArray(userTypeList);
+
         return loginView;
 
     }
@@ -99,10 +115,11 @@ public class MobileFragment extends Fragment implements View.OnClickListener{
         switch (view.getId()){
             case R.id.submit:
                 String userMobileText = userMobile.getText().toString();
+                String vUserTypeText = vUserType.getSpinner().getSelectedItem().toString();
                 if (userMobileText != null && !userMobileText.trim().isEmpty()) {
                     mainActivity.getTableListService().updateUserMobile(userMobileText);
                     ActivityUtil.USER_MOBILE = userMobileText;
-                    getMenuList();
+                    getMenuList(vUserTypeText);
                 }else{
                     userMobile.setError(getString(R.string.mobile_number_error));
 
@@ -118,12 +135,12 @@ public class MobileFragment extends Fragment implements View.OnClickListener{
 
     }
 
-    private void getMenuList() {
+    private void getMenuList(String vUserTypeText) {
         boolean isNetWorkConnected = Utilities.isNetworkConnected(mainActivity);
         if (isNetWorkConnected) {
 
             progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_menu_items_message), mainActivity);
-            mainActivity.getTableListService().getMenuItems(ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
+            mainActivity.getTableListService().getMenuItems(ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE,vUserTypeText);
         } else {
             showNoInterNet();
            // ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
@@ -143,6 +160,12 @@ public class MobileFragment extends Fragment implements View.OnClickListener{
        if(progressDialog != null){
            progressDialog.dismiss();
        }
+        if(responseData.getStatusCode() == 404){
+            mainActivity.getTableListService().removeUsers(ActivityUtil.USER_MOBILE);
+            ActivityUtil.showDialog(mainActivity,"Error","Given MobileNumber is Already " +
+                    "Logined in tableNumber : "+responseData.getData());
+            return;
+        }
         if(responseData.getStatusCode() != 500){
             mainActivity.success(3,null);
             return;

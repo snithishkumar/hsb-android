@@ -52,11 +52,15 @@ public class TableListServiceImpl implements TableListService {
 
 
     @Override
-    public void getMenuItems(String tableNumber,String mobileNumber){
+    public void getMenuItems(String tableNumber,String mobileNumber,String vUserTypeText){
         account = HsbSyncAdapter.getSyncAccount(context);
         settingsBundle.putInt("currentScreen", SyncEvent.GET_MENU_LIST);
         settingsBundle.putString("tableNumber", tableNumber);
         settingsBundle.putString("mobileNumber", mobileNumber);
+        if(vUserTypeText != null){
+            settingsBundle.putString("userType", vUserTypeText);
+        }
+
         ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
     }
 
@@ -157,6 +161,28 @@ public class TableListServiceImpl implements TableListService {
             if(adminDao.isOrderCloseUser()){
                 adminDao.removeClosedUser();
             }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void removeAllData(){
+        try{
+            OrdersDao ordersDao = new OrdersDaoImpl(context);
+            ordersDao.removeAllData();
+            adminDao.removeAllUsers();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void removeUsers(String userMobileNumber){
+        try{
+            adminDao.removeUser(userMobileNumber);
         }catch (Exception e){
             e.printStackTrace();
         }
