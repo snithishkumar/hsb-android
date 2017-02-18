@@ -82,7 +82,7 @@ public class KitchenOrderListFragment extends Fragment {
             List<KitchenOrderListViewModel> temp = kitchenActivity.getKitchenService().getOrderList();
             kitchenOrderListViewModels.clear();
             kitchenOrderListViewModels.addAll(temp);
-            
+
             kitchenOrderListAdapter =  new KitchenOrderListAdapter(kitchenOrderListViewModels,kitchenActivity);
 
             kitchenOrderList.setAdapter(kitchenOrderListAdapter);

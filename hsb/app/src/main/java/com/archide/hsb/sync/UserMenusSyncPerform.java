@@ -311,12 +311,12 @@ public class UserMenusSyncPerform {
 
     public ResponseData closeAnOrder(String tableNumber,String mobileNumber){
         try{
-            String orderId = "";
+            String placedOrderUUID = "";
             PlacedOrdersEntity placedOrdersEntity = ordersDao.getPlacedOrderHistoryByMobile(mobileNumber,tableNumber);
             if(placedOrdersEntity != null){
-                orderId = placedOrdersEntity.getOrderId();
+                placedOrderUUID = placedOrdersEntity.getPlaceOrdersUUID();
             }
-            Call<ResponseData> serverResponse = hsbAPI.closeAnOrder(tableNumber,mobileNumber,orderId);
+            Call<ResponseData> serverResponse = hsbAPI.closeAnOrder(tableNumber,mobileNumber,placedOrderUUID);
             Response<ResponseData> response = serverResponse.execute();
             if (response != null && response.isSuccessful()) {
                 ResponseData responseData = response.body();

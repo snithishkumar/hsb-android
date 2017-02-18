@@ -286,6 +286,8 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
             startActivity(intent);
             orderActivity.finish();
             return;
+        }else if(responseData.getStatusCode() == 403){
+
         }else{
             Toast.makeText(orderActivity,getString(R.string.internal_error),Toast.LENGTH_LONG).show();
             Intent intent = new Intent(orderActivity, HomeActivity.class);
