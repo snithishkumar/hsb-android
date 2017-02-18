@@ -18,7 +18,6 @@ public class KitchenOrderDetailsViewModel {
     private int id;
     private OrderStatus status;
     private boolean isCategory;
-    private boolean isComments;
     private String comments;
     private ViewStatus viewStatus;
     private int unAvailableCount;
@@ -42,10 +41,6 @@ public class KitchenOrderDetailsViewModel {
         this.isCategory = true;
     }
 
-    public KitchenOrderDetailsViewModel(KitchenCookingCmntsEntity kitchenCookingCmntsEntity){
-        this.comments = kitchenCookingCmntsEntity.getCookingComments();
-        this.isComments = true;
-    }
 
     public boolean isEdited() {
         return isEdited;
@@ -103,13 +98,6 @@ public class KitchenOrderDetailsViewModel {
         this.status = status;
     }
 
-    public boolean isComments() {
-        return isComments;
-    }
-
-    public void setComments(boolean comments) {
-        isComments = comments;
-    }
 
     public String getComments() {
         return comments;

@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:background="@drawable/comments_round"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:layout_marginBottom="15dp"
     android:layout_height="wrap_content">
 
     <TextView
-        android:text="Comments:"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2" />
-
-    <TextView
-        android:text="Add Little bit more spicy."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="08cvdfvgdfsdsgsdfgsd "
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/kitchen_cooking_comments"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"/>
 
-        android:layout_marginStart="25dp"
-        android:id="@+id/kitchen_cooking_comments" />
-</LinearLayout>
+
+    <TextView
+        android:text="10:45 AM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/kitchen_cooking_comments"
+        android:layout_alignEnd="@+id/kitchen_cooking_comments"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
+        android:id="@+id/kitchen_cooking_comments_time" />
+</RelativeLayout>

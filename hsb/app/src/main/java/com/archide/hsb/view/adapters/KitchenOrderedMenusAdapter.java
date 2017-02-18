@@ -35,7 +35,7 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private final int HEADER = 1;
     private final int MENU_ITEM = 2;
-    private final int COMMENTS = 3;
+  //  private final int COMMENTS = 3;
 
     KitchenActivity kitchenActivity;
     List<KitchenOrderDetailsViewModel> detailsViewModels = new ArrayList<>();
@@ -55,15 +55,15 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.adapt_order_menu_category, parent, false);
             return new FoodCategoryViewHolder(view);
-        }else if(viewType == MENU_ITEM){
+        }else {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.adapt_kitchen_ordered_items, parent, false);
             return new KitchenOrderedMenusViewHolder(view);
-        }else{
+        }/*else{
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.adapt_kitchen_cooking_comments, parent, false);
             return new CookingCommentsViewHolder(view);
-        }
+        }*/
 
 
     }
@@ -98,9 +98,6 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
         }else if(viewHolder instanceof FoodCategoryViewHolder){
             FoodCategoryViewHolder foodCategoryViewHolder = (FoodCategoryViewHolder)viewHolder;
             foodCategoryViewHolder.vFoodCategory.setText(kitchenOrderDetailsViewModel.getName());
-        }else{
-            CookingCommentsViewHolder cookingCommentsViewHolder = (CookingCommentsViewHolder)viewHolder;
-            cookingCommentsViewHolder.vFoodCookingComments.setText(kitchenOrderDetailsViewModel.getComments());
         }
     }
 
@@ -109,8 +106,6 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
         KitchenOrderDetailsViewModel menuItemsViewModel =  detailsViewModels.get(position);
         if(menuItemsViewModel.isCategory()){
             return HEADER;
-        }else if(menuItemsViewModel.isComments()){
-            return COMMENTS;
         }
         else{
             return MENU_ITEM;
@@ -132,13 +127,13 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
 
-    public class  CookingCommentsViewHolder extends RecyclerView.ViewHolder{
+   /* public class  CookingCommentsViewHolder extends RecyclerView.ViewHolder{
         private TextView vFoodCookingComments;
         public CookingCommentsViewHolder(View view){
             super(view);
             vFoodCookingComments = (TextView)view.findViewById(R.id.kitchen_cooking_comments);
         }
-    }
+    }*/
 
     private class KitchenOrderedMenusViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,PopupMenu.OnMenuItemClickListener{
         TextView vTotalCount;

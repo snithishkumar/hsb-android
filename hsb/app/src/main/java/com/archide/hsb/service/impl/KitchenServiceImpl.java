@@ -16,6 +16,7 @@ import com.archide.hsb.enumeration.ViewStatus;
 import com.archide.hsb.service.KitchenService;
 import com.archide.hsb.sync.HsbSyncAdapter;
 import com.archide.hsb.sync.SyncEvent;
+import com.archide.hsb.view.model.KitchenCommentsViewModel;
 import com.archide.hsb.view.model.KitchenOrderDetailsViewModel;
 import com.archide.hsb.view.model.KitchenOrderListViewModel;
 
@@ -94,14 +95,25 @@ public class KitchenServiceImpl implements KitchenService {
                }
            }
 
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return results;
+    }
+
+
+    @Override
+    public List<KitchenCommentsViewModel> getKitchenCommentsViewModel(String orderId){
+        List<KitchenCommentsViewModel> results = new ArrayList<>();
+        try{
+            KitchenOrdersListEntity kitchenOrdersListEntity = kitchenDao.getKitchenOrdersListEntity(orderId);
             List<KitchenCookingCmntsEntity> kitchenCookingCmntsList =  kitchenDao.getKitchenCookingCmntsEntity(kitchenOrdersListEntity);
-
             for(KitchenCookingCmntsEntity kitchenCookingCmntsEntity : kitchenCookingCmntsList){
-                KitchenOrderDetailsViewModel kitchenOrderDetailsViewModel = new KitchenOrderDetailsViewModel(kitchenCookingCmntsEntity);
-                results.add(kitchenOrderDetailsViewModel);
-                break; // TODO Need to display all comments
+                KitchenCommentsViewModel kitchenCommentsViewModel = new KitchenCommentsViewModel(kitchenCookingCmntsEntity);
+                results.add(kitchenCommentsViewModel);
             }
-
         }catch (Exception e){
             e.printStackTrace();
         }

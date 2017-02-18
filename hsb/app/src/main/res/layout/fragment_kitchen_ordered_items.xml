@@ -1,45 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@color/white"
-    android:layout_height="match_parent" >
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/kitchen_order_data"
+    android:layout_height="match_parent">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_above="@+id/saveOrderStatus"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        >
 
-    <Button
-        android:id="@+id/saveOrderStatus"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:textColor="@android:color/white"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:text="Save"
-        android:layout_centerInParent="false"
-        android:visibility="gone"
-        android:layout_alignWithParentIfMissing="false"
-        tools:layout_alignWithParentIfMissing="false"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/kitchen_order_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <!-- <android.support.design.widget.FloatingActionButton
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:clickable="true"
-         android:layout_margin="15dp"
-         android:visibility="invisible"
-         app:fabSize="mini"
-         app:srcCompat="@android:drawable/ic_menu_save"
-         android:layout_alignParentBottom="true"
-         android:layout_alignParentEnd="true"
-         android:id="@+id/saveOrderStatus" /> -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/kitchen_order_data"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="15dp"
+            android:id="@+id/kitchen_cooking_comments_layout"
+            android:layout_height="wrap_content">
 
-</RelativeLayout>
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="3dp"
+                android:id="@+id/cart_item_img"
+                android:src="@drawable/ic_insert_comment_black_48dp"
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/cardview_dark_background"
+                android:text="Comments"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:id="@+id/kitchen_order_comments_text"
+
+                />
+        </LinearLayout>
+
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/kitchen_order_comments"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/kitchen_cooking_comments_layout"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/saveOrderStatus"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/kitchen_order_comments"
+            android:text="Save"
+            android:layout_centerInParent="false"
+            android:visibility="gone"
+            android:layout_alignWithParentIfMissing="false"
+            tools:layout_alignWithParentIfMissing="false"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+
+        <!-- <android.support.design.widget.FloatingActionButton
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:clickable="true"
+             android:layout_margin="15dp"
+             android:visibility="invisible"
+             app:fabSize="mini"
+             app:srcCompat="@android:drawable/ic_menu_save"
+             android:layout_alignParentBottom="true"
+             android:layout_alignParentEnd="true"
+             android:id="@+id/saveOrderStatus" /> -->
+
+    </RelativeLayout>
+
+</ScrollView>

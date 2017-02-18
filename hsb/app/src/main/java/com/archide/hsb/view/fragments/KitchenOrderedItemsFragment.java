@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.archide.hsb.view.activities.KitchenActivity;
+import com.archide.hsb.view.adapters.KitchenOrderedCommentsAdapter;
 import com.archide.hsb.view.adapters.KitchenOrderedMenusAdapter;
+import com.archide.hsb.view.model.KitchenCommentsViewModel;
 import com.archide.hsb.view.model.KitchenOrderDetailsViewModel;
 
 import java.util.ArrayList;
@@ -31,7 +33,9 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
     KitchenActivity kitchenActivity = null;
     private String orderId = null;
     KitchenOrderedMenusAdapter kitchenOrderedMenusAdapter = null;
+    KitchenOrderedCommentsAdapter kitchenOrderedCommentsAdapter = null;
     private List<KitchenOrderDetailsViewModel> detailsViewModels = new ArrayList<>();
+    private List<KitchenCommentsViewModel> kitchenCommentsViewModels = new ArrayList<>();
     FloatingActionButton floatingActionButton = null;
 
     Button button = null;
@@ -62,19 +66,12 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
         button.setOnClickListener(this);
         linearLayoutManager =  new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
+        recyclerView.setNestedScrollingEnabled(false);
         setAdapters(recyclerView);
+
+        setKitchenAdapters(view);
+
+
         loadData();
         updateViewStatus();
 
@@ -97,6 +94,31 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
     }
 
 
+    private void setKitchenAdapters(View view){
+        RecyclerView cookingCommentsRecycle = (RecyclerView) view.findViewById(R.id.kitchen_order_comments);
+        cookingCommentsRecycle.setHasFixedSize(true);
+        cookingCommentsRecycle.setNestedScrollingEnabled(false);
+       LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(getActivity());
+        cookingCommentsRecycle.setLayoutManager(linearLayoutManager);
+        cookingCommentsRecycle.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+        cookingCommentsRecycle.setLayoutManager(linearLayoutManager);
+
+        kitchenOrderedCommentsAdapter = new KitchenOrderedCommentsAdapter(kitchenCommentsViewModels);
+        cookingCommentsRecycle.setAdapter(kitchenOrderedCommentsAdapter);
+    }
+
+
     private void updateViewStatus(){
         kitchenActivity.getKitchenService().updateKitchenOrderViewStatus(orderId,detailsViewModels);
     }
@@ -106,6 +128,15 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
         detailsViewModels.clear();
         detailsViewModels.addAll(temp);
         kitchenOrderedMenusAdapter.notifyDataSetChanged();
+        loadCookingComments();
+    }
+
+    private void loadCookingComments(){
+        List<KitchenCommentsViewModel> kitchenCommentsList = kitchenActivity.getKitchenService().getKitchenCommentsViewModel(orderId);
+        kitchenCommentsViewModels.clear();
+        kitchenCommentsViewModels.addAll(kitchenCommentsList);
+        kitchenOrderedCommentsAdapter.notifyDataSetChanged();
+
     }
 
     @Override
