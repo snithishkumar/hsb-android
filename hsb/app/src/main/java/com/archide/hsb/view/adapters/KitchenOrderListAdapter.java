@@ -73,16 +73,19 @@ public class KitchenOrderListAdapter extends BaseAdapter {
     }
 
     private void populateKitchenOrderListViewHolder(KitchenOrderListViewModel kitchenOrderListViewModel,KitchenOrderListViewHolder kitchenOrderListViewHolder){
+        String nonVegCount = kitchenOrderListViewModel.getNonVegCount();
+        String vegCount = kitchenOrderListViewModel.getVegCount();
+        boolean flag = Integer.valueOf(vegCount) > 0 || Integer.valueOf(nonVegCount) > 0;
         kitchenOrderListViewHolder.orderTime.setText(kitchenOrderListViewModel.getOrderTime());
         kitchenOrderListViewHolder.noOfVegCount.setText(kitchenOrderListViewModel.getVegCount());
         kitchenOrderListViewHolder.noOfNonVegCount.setText( kitchenOrderListViewModel.getNonVegCount());
         kitchenOrderListViewHolder.tableNumber.setText(kitchenOrderListViewModel.getTableNumber());
         kitchenOrderListViewHolder.orderId.setText(kitchenOrderListViewModel.getOrderId());
-        if(kitchenOrderListViewModel.getViewStatus().getViewStatus() == ViewStatus.UPDATES.getViewStatus()){
+        if(flag && kitchenOrderListViewModel.getViewStatus().getViewStatus() == ViewStatus.UPDATES.getViewStatus()){
             kitchenOrderListViewHolder.viewStatus.setVisibility(View.VISIBLE);
             kitchenOrderListViewHolder.viewStatus.setText("UPDATES");
             kitchenOrderListViewHolder.viewStatus.setBackgroundColor(ContextCompat.getColor(kitchenActivity, android.R.color.holo_blue_bright));
-        }else if(kitchenOrderListViewModel.getViewStatus().getViewStatus() == ViewStatus.UN_VIEWED.getViewStatus()){
+        }else if(flag && kitchenOrderListViewModel.getViewStatus().getViewStatus() == ViewStatus.UN_VIEWED.getViewStatus()){
             kitchenOrderListViewHolder.viewStatus.setVisibility(View.VISIBLE);
             kitchenOrderListViewHolder.viewStatus.setText("NEW");
         }else{
