@@ -70,6 +70,7 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) {
+
         KitchenOrderDetailsViewModel kitchenOrderDetailsViewModel =  detailsViewModels.get(position);
         if(viewHolder instanceof KitchenOrderedMenusViewHolder){
 
@@ -77,6 +78,8 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
             kitchenOrderedMenusViewHolder.vOrderName.setText(kitchenOrderDetailsViewModel.getName());
             if(kitchenOrderDetailsViewModel.getViewStatus().toString().equals(ViewStatus.UN_VIEWED.toString())){
                 kitchenOrderedMenusViewHolder.vOrderViewStatus.setVisibility(View.VISIBLE);
+            }else{
+                kitchenOrderedMenusViewHolder.vOrderViewStatus.setVisibility(View.GONE);
             }
             kitchenOrderedMenusViewHolder.vTotalCount.setText(kitchenOrderDetailsViewModel.getQuantity()+"x");
 
@@ -92,6 +95,10 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
                 case PARTIAL:
                     kitchenOrderedMenusViewHolder.vOrderStatus.setText(kitchenOrderDetailsViewModel.getUnAvailableCount()+" UnAvailable");
                     kitchenOrderedMenusViewHolder.vOrderStatus.setVisibility(View.VISIBLE);
+                    break;
+
+                default:
+                    kitchenOrderedMenusViewHolder.vOrderStatus.setVisibility(View.GONE);
                     break;
             }
 
