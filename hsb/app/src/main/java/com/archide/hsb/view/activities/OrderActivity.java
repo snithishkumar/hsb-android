@@ -15,6 +15,7 @@ import hsb.archide.com.hsb.R;
 public class OrderActivity extends AppCompatActivity {
 
     private OrderService orderService;
+    OrderPlaceFragment orderPlaceFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class OrderActivity extends AppCompatActivity {
 
 
     private void showFragment(){
-        OrderPlaceFragment orderPlaceFragment = new OrderPlaceFragment();
+        orderPlaceFragment = new OrderPlaceFragment();
         FragmentsUtil.addFragment(this, orderPlaceFragment, R.id.main_container);
     }
 
@@ -39,6 +40,12 @@ public class OrderActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        orderPlaceFragment.setCookingComments();
+        super.onBackPressed();
     }
 
     @Override

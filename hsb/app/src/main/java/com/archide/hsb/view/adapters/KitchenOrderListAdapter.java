@@ -80,10 +80,11 @@ public class KitchenOrderListAdapter extends BaseAdapter {
         kitchenOrderListViewHolder.orderId.setText(kitchenOrderListViewModel.getOrderId());
         if(kitchenOrderListViewModel.getViewStatus().getViewStatus() == ViewStatus.UPDATES.getViewStatus()){
             kitchenOrderListViewHolder.viewStatus.setVisibility(View.VISIBLE);
-            kitchenOrderListViewHolder.viewStatus.setText("Updates");
+            kitchenOrderListViewHolder.viewStatus.setText("UPDATES");
             kitchenOrderListViewHolder.viewStatus.setBackgroundColor(ContextCompat.getColor(kitchenActivity, android.R.color.holo_blue_bright));
         }else if(kitchenOrderListViewModel.getViewStatus().getViewStatus() == ViewStatus.UN_VIEWED.getViewStatus()){
             kitchenOrderListViewHolder.viewStatus.setVisibility(View.VISIBLE);
+            kitchenOrderListViewHolder.viewStatus.setText("NEW");
         }else{
             kitchenOrderListViewHolder.viewStatus.setVisibility(View.INVISIBLE);
         }

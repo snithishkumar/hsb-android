@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -68,6 +69,8 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
     private PlaceAnOrderViewModel placeAnOrderViewModel;
     OrderedMenuItemsAdapter orderedMenuItemsAdapter;
 
+    SharedPreferences sharedpreferences;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +88,37 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
           totalAmount =  (TextView) view.findViewById(R.id.total_amount);
           placeAnOrder =  (Button) view.findViewById(R.id.place_an_order_submit);
           placeAnOrder.setOnClickListener(this);
-         addMoreItems.setOnClickListener(this);
+          addMoreItems.setOnClickListener(this);
+
+        getCookingComments();
+    }
+
+
+    private void getCookingComments(){
+        String key =  ActivityUtil.USER_MOBILE+"-"+ActivityUtil.TABLE_NUMBER;
+        String previousComment = sharedpreferences.getString(key,"");
+        if(previousComment != null && !previousComment.isEmpty()){
+            cookingComments.setText(previousComment.trim());
+        }
+    }
+
+    private void removeCookingComments(){
+        String key =  ActivityUtil.USER_MOBILE+"-"+ActivityUtil.TABLE_NUMBER;
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.remove(key);
+        editor.commit();
+
+    }
+
+    public void setCookingComments(){
+        String cookingCmt = cookingComments.getText().toString();
+        if(cookingCmt != null && !cookingCmt.isEmpty()){
+            String key =  ActivityUtil.USER_MOBILE+"-"+ActivityUtil.TABLE_NUMBER;
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString(key,cookingCmt);
+            editor.commit();
+        }
+
     }
 
 
@@ -94,6 +127,9 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         mInflater = inflater;
         mContainer = container;
+
+        sharedpreferences = orderActivity.getSharedPreferences("mobilepay",
+                Context.MODE_PRIVATE);
 
         placeAnOrderViewModel =  orderActivity.getOrderService().getCurrentOrderDetails();
 
@@ -233,6 +269,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
        if(view.getId() == R.id.edit_order){
+           setCookingComments();
            addMoreOrders();
        }else if(R.id.place_an_order == view.getId()){
            orderActivity.onBackPressed();
@@ -240,6 +277,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
            if(placeAnOrderViewModel.getTotalAmount() > 0){
                boolean isNetWorkConnected =  Utilities.isNetworkConnected(orderActivity);
                if(isNetWorkConnected){
+                   removeCookingComments();
                    placeAnOrderViewModel.setCookingComments(cookingComments.getText().toString().trim());
                    progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), orderActivity);
                    orderActivity.getOrderService().conformOrder(placeAnOrderViewModel,ActivityUtil.USER_MOBILE,ActivityUtil.TABLE_NUMBER,orderActivity);
@@ -306,9 +344,11 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
 
 
     public void showNoData(){
+        cookingComments.setText("");
         View newView = mInflater.inflate(R.layout.fragment_place_order_empty, mContainer, false);
         mContainer.removeAllViews();
         mContainer.addView(newView);
+        removeCookingComments();
         ImageView imageView =  (ImageView)newView.findViewById(R.id.place_an_order);
         imageView.setOnClickListener(this);
     }
