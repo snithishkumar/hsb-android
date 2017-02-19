@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,7 +83,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
           serviceVat =  (TextView) view.findViewById(R.id.service_vat);
           addMoreItems =  (TextView)view.findViewById(R.id.edit_order);
           totalAmount =  (TextView) view.findViewById(R.id.total_amount);
-          placeAnOrder =  (Button) view.findViewById(R.id.place_an_order);
+          placeAnOrder =  (Button) view.findViewById(R.id.place_an_order_submit);
           placeAnOrder.setOnClickListener(this);
          addMoreItems.setOnClickListener(this);
     }
@@ -130,6 +131,8 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
             return view;
         }else{
             View view =  inflater.inflate(R.layout.fragment_place_order_empty, container, false);
+            ImageView imageView =  (ImageView)view.findViewById(R.id.place_an_order);
+            imageView.setOnClickListener(this);
             return view;
         }
 
@@ -231,11 +234,13 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
     public void onClick(View view) {
        if(view.getId() == R.id.edit_order){
            addMoreOrders();
+       }else if(R.id.place_an_order == view.getId()){
+           orderActivity.onBackPressed();
        }else{
            if(placeAnOrderViewModel.getTotalAmount() > 0){
                boolean isNetWorkConnected =  Utilities.isNetworkConnected(orderActivity);
                if(isNetWorkConnected){
-                   placeAnOrderViewModel.setCookingComments(cookingComments.getText().toString());
+                   placeAnOrderViewModel.setCookingComments(cookingComments.getText().toString().trim());
                    progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), orderActivity);
                    orderActivity.getOrderService().conformOrder(placeAnOrderViewModel,ActivityUtil.USER_MOBILE,ActivityUtil.TABLE_NUMBER,orderActivity);
                }else{
@@ -287,7 +292,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
             orderActivity.finish();
             return;
         }else if(responseData.getStatusCode() == 403){
-
+            // TODO
         }else{
             Toast.makeText(orderActivity,getString(R.string.internal_error),Toast.LENGTH_LONG).show();
             Intent intent = new Intent(orderActivity, HomeActivity.class);
@@ -304,5 +309,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
         View newView = mInflater.inflate(R.layout.fragment_place_order_empty, mContainer, false);
         mContainer.removeAllViews();
         mContainer.addView(newView);
+        ImageView imageView =  (ImageView)newView.findViewById(R.id.place_an_order);
+        imageView.setOnClickListener(this);
     }
 }

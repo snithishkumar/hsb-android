@@ -98,7 +98,7 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
                     e.printStackTrace();
                }
                try{
-                   Thread.sleep(10000);
+                   Thread.sleep(5000);
                }catch (Exception e){
                    e.printStackTrace();
                }
