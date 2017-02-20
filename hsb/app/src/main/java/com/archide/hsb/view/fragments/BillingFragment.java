@@ -170,7 +170,7 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
         CloseOrderViewModel closeOrderViewModel =  naviDrawerActivity.getOrderService().getBillingDetails();
         vOrderId.setText(closeOrderViewModel.getOrderId());
         vTableNumber.setText(closeOrderViewModel.getTableNumber());
-        vTotalAmount.setText(closeOrderViewModel.getTotalAmount());
+        vTotalAmount.setText(getString(R.string.pound)+" "+closeOrderViewModel.getTotalAmount());
         vUserMobileNumber.setText(closeOrderViewModel.getUserMobileNumber());
 
     }
