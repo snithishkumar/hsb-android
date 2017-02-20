@@ -62,4 +62,9 @@ public interface HsbAPI {
     @POST ("/hsb//mobile/reSentBillDetails.html")
     Call<ResponseData> reSentBillDetails(@Field("placedOrderUUid") String placedOrderUUid);
 
+
+    @FormUrlEncoded
+    @POST ("/hsb//mobile/logout.html")
+    Call<ResponseData> logout(@Field("tableNumber") String tableNumber,@Field("mobileNumber") String mobileNumber);
+
 }

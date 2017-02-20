@@ -83,7 +83,7 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
 
         mInflater = inflater;
         mContainer = container;
-
+        naviDrawerActivity.setLogOut(true);
         naviDrawerActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         naviDrawerActivity.getSupportActionBar().setHomeButtonEnabled(false);
 
@@ -178,6 +178,8 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.close_order_logout){
+            naviDrawerActivity.getOrderService().logout(naviDrawerActivity,ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
+
             naviDrawerActivity.getOrderService().removeAllData();
             Intent intent = new Intent(naviDrawerActivity, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -196,6 +198,9 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void showNoData(){
+        naviDrawerActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        naviDrawerActivity.getSupportActionBar().setHomeButtonEnabled(true);
+        naviDrawerActivity.setLogOut(false);
         View newView = mInflater.inflate(R.layout.fragment_place_order_empty, mContainer, false);
         mContainer.removeAllViews();
         mContainer.addView(newView);
@@ -204,6 +209,9 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
     }
 
     private void showNotCloseData(){
+        naviDrawerActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        naviDrawerActivity.getSupportActionBar().setHomeButtonEnabled(true);
+        naviDrawerActivity.setLogOut(false);
         View newView = mInflater.inflate(R.layout.fragment_order_close_empty, mContainer, false);
         mContainer.removeAllViews();
         mContainer.addView(newView);

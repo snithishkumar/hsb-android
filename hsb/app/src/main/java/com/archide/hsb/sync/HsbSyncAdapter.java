@@ -161,6 +161,12 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
                     responseData =  userMenusSyncPerform.getUnAvailableOrders();
                     postData(responseData);
                     break;
+
+                case SyncEvent.LOG_OUT:
+                    tableNumber =  extras.getString("tableNumber");
+                    mobileNumber =  extras.getString("mobileNumber");
+                    userMenusSyncPerform.logout(tableNumber,mobileNumber);
+                    break;
             }
         }
 

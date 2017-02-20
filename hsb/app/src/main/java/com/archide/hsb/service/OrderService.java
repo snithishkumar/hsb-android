@@ -50,5 +50,7 @@ public interface OrderService {
 
     void updateOrderItems(MenuItemsViewModel menuItemsViewModel);
 
+    void logout(Context context,String tableNumber,String mobileNumber);
+
 
 }

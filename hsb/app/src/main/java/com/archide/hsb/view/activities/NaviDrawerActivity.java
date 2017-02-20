@@ -83,6 +83,7 @@ public class NaviDrawerActivity extends AppCompatActivity{
                 break;
 
             case 5:
+                orderService.logout(this,ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
                 orderService.removeAllData();
                 orderService.closeOrder(ActivityUtil.USER_MOBILE);
                 intent = new Intent(this, MainActivity.class);
@@ -119,6 +120,7 @@ public class NaviDrawerActivity extends AppCompatActivity{
     public void onBackPressed() {
 
         if(isLogOut){
+
             logOut();
         }else{
             super.onBackPressed();

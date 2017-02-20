@@ -341,6 +341,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
+    @Override
+    public void logout(Context context,String tableNumber,String mobileNumber){
+        try{
+            account = HsbSyncAdapter.getSyncAccount(context);
+            settingsBundle.putInt("currentScreen", SyncEvent.LOG_OUT);
+            settingsBundle.putString("tableNumber", tableNumber);
+            settingsBundle.putString("mobileNumber", mobileNumber);
+            ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
     public void removeAllData(){
         try{
             ordersDao.removeAllData();

@@ -236,7 +236,14 @@ public class UserMenusSyncPerform {
     }
 
 
-
+   public void logout(String tableNumber,String mobileNumber){
+       try {
+           Call<ResponseData> serverResponse =  hsbAPI.logout(tableNumber,mobileNumber);
+           Response<ResponseData> response = serverResponse.execute();
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+   }
 
 
 
