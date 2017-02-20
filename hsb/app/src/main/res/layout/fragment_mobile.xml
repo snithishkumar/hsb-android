@@ -69,12 +69,13 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginLeft="20dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_free_breakfast_black_48dp"
                 android:id="@+id/vTableIcon" />
             <com.satsuware.usefulviews.LabelledSpinner
                 android:id="@+id/vUserType"
-                ls:labelText="User Type"
+                ls:labelText="Order Type"
                 android:layout_marginLeft="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
