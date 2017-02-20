@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.archide.hsb.enumeration.OrderStatus;
 import com.archide.hsb.enumeration.ViewStatus;
 import com.archide.hsb.view.activities.KitchenActivity;
+import com.archide.hsb.view.activities.KitchenDetailsActivity;
 import com.archide.hsb.view.fragments.KitchenOrderedItemsFragment;
 import com.archide.hsb.view.model.KitchenOrderDetailsViewModel;
 
@@ -37,12 +38,12 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
     private final int MENU_ITEM = 2;
   //  private final int COMMENTS = 3;
 
-    KitchenActivity kitchenActivity;
+    KitchenDetailsActivity kitchenDetailsActivity;
     List<KitchenOrderDetailsViewModel> detailsViewModels = new ArrayList<>();
     KitchenOrderedItemsFragment kitchenOrderedItemsFragment = null;
 
-    public KitchenOrderedMenusAdapter(KitchenActivity kitchenActivity, List<KitchenOrderDetailsViewModel> detailsViewModels, KitchenOrderedItemsFragment kitchenOrderedItemsFragment){
-        this.kitchenActivity = kitchenActivity;
+    public KitchenOrderedMenusAdapter(KitchenDetailsActivity kitchenDetailsActivity, List<KitchenOrderDetailsViewModel> detailsViewModels, KitchenOrderedItemsFragment kitchenOrderedItemsFragment){
+        this.kitchenDetailsActivity = kitchenDetailsActivity;
         this.detailsViewModels = detailsViewModels;
         this.kitchenOrderedItemsFragment = kitchenOrderedItemsFragment;
     }
@@ -162,7 +163,7 @@ public class KitchenOrderedMenusAdapter extends RecyclerView.Adapter<RecyclerVie
 
         @Override
         public void onClick(View view) {
-            PopupMenu popupMenu = new PopupMenu(kitchenActivity, view);
+            PopupMenu popupMenu = new PopupMenu(kitchenDetailsActivity, view);
             popupMenu.setOnMenuItemClickListener(this);
             popupMenu.inflate(R.menu.popup_menu);
             popupMenu.show();

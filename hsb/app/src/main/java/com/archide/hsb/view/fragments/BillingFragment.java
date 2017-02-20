@@ -227,18 +227,20 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
         }
         switch (responseData.getStatusCode()){
             case 200:
+            case 405:
+            case 400:
                 naviDrawerActivity.getOrderService().closeOrder(ActivityUtil.USER_MOBILE);
                 populateData();
                 naviDrawerActivity.setLogOut(true);
                 break;
-            case 405:
+          /*  case 405:
                 populateData();
                 setError();
                 break;
             case 400:
                 populateData();
                 setError();
-                break;
+                break;*/
 
             case 403:
                 showNotCloseData();

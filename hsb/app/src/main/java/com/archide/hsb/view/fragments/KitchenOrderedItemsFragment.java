@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.archide.hsb.view.activities.KitchenActivity;
+import com.archide.hsb.view.activities.KitchenDetailsActivity;
 import com.archide.hsb.view.adapters.KitchenOrderedCommentsAdapter;
 import com.archide.hsb.view.adapters.KitchenOrderedMenusAdapter;
 import com.archide.hsb.view.model.KitchenCommentsViewModel;
@@ -30,7 +31,7 @@ import hsb.archide.com.hsb.R;
 public class KitchenOrderedItemsFragment extends Fragment implements View.OnClickListener{
 
     LinearLayoutManager linearLayoutManager = null;
-    KitchenActivity kitchenActivity = null;
+    KitchenDetailsActivity kitchenDetailsActivity = null;
     private String orderId = null;
     KitchenOrderedMenusAdapter kitchenOrderedMenusAdapter = null;
     KitchenOrderedCommentsAdapter kitchenOrderedCommentsAdapter = null;
@@ -76,8 +77,8 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
         updateViewStatus();
 
 
-        kitchenActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        kitchenActivity.getSupportActionBar().setHomeButtonEnabled(true);
+        kitchenDetailsActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        kitchenDetailsActivity.getSupportActionBar().setHomeButtonEnabled(true);
 
 
 
@@ -85,11 +86,11 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
     }
 
     private void setAdapters(RecyclerView recyclerView){
-        kitchenOrderedMenusAdapter = new KitchenOrderedMenusAdapter(kitchenActivity,detailsViewModels,KitchenOrderedItemsFragment.this);
+        kitchenOrderedMenusAdapter = new KitchenOrderedMenusAdapter(kitchenDetailsActivity,detailsViewModels,KitchenOrderedItemsFragment.this);
 
         recyclerView.setAdapter(kitchenOrderedMenusAdapter);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(kitchenActivity,linearLayoutManager.getOrientation());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(kitchenDetailsActivity,linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
@@ -120,11 +121,11 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
 
 
     private void updateViewStatus(){
-        kitchenActivity.getKitchenService().updateKitchenOrderViewStatus(orderId,detailsViewModels);
+        kitchenDetailsActivity.getKitchenService().updateKitchenOrderViewStatus(orderId,detailsViewModels);
     }
 
     private void loadData(){
-        List<KitchenOrderDetailsViewModel> temp = kitchenActivity.getKitchenService().getKitchenOrderDetails(orderId);
+        List<KitchenOrderDetailsViewModel> temp = kitchenDetailsActivity.getKitchenService().getKitchenOrderDetails(orderId);
         detailsViewModels.clear();
         detailsViewModels.addAll(temp);
         kitchenOrderedMenusAdapter.notifyDataSetChanged();
@@ -132,7 +133,7 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
     }
 
     private void loadCookingComments(){
-        List<KitchenCommentsViewModel> kitchenCommentsList = kitchenActivity.getKitchenService().getKitchenCommentsViewModel(orderId);
+        List<KitchenCommentsViewModel> kitchenCommentsList = kitchenDetailsActivity.getKitchenService().getKitchenCommentsViewModel(orderId);
         kitchenCommentsViewModels.clear();
         kitchenCommentsViewModels.addAll(kitchenCommentsList);
         kitchenOrderedCommentsAdapter.notifyDataSetChanged();
@@ -142,14 +143,14 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        kitchenActivity = (KitchenActivity)context;
+        kitchenDetailsActivity = (KitchenDetailsActivity)context;
 
     }
 
     @Override
     public void onClick(View view) {
-        kitchenActivity.getKitchenService().saveOrderStatus(detailsViewModels,orderId,kitchenActivity);
-        kitchenActivity.backPress();
+        kitchenDetailsActivity.getKitchenService().saveOrderStatus(detailsViewModels,orderId,kitchenDetailsActivity);
+        kitchenDetailsActivity.finish();
         return;
     }
 

@@ -1,7 +1,6 @@
 package com.archide.hsb.view.activities;
 
-import android.accounts.Account;
-import android.content.ContentResolver;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -9,13 +8,8 @@ import android.view.MenuItem;
 
 import com.archide.hsb.service.KitchenService;
 import com.archide.hsb.service.impl.KitchenServiceImpl;
-import com.archide.hsb.service.impl.OrderServiceImpl;
-import com.archide.hsb.sync.HsbSyncAdapter;
-import com.archide.hsb.sync.SyncEvent;
 import com.archide.hsb.view.fragments.FragmentsUtil;
 import com.archide.hsb.view.fragments.KitchenOrderListFragment;
-import com.archide.hsb.view.fragments.KitchenOrderedItemsFragment;
-import com.archide.hsb.view.fragments.OrderPlaceFragment;
 
 import hsb.archide.com.hsb.R;
 
@@ -59,35 +53,29 @@ public class KitchenActivity extends AppCompatActivity implements KitchenOrderLi
     }
 
     private void showOrderDetails(String orderId){
-        KitchenOrderedItemsFragment kitchenOrderedItemsFragment = new KitchenOrderedItemsFragment();
+
+        Intent intent = new Intent(this, KitchenDetailsActivity.class);
+        intent.putExtra("orderId",orderId);
+        startActivity(intent);
+
+
+       /* KitchenOrderedItemsFragment kitchenOrderedItemsFragment = new KitchenOrderedItemsFragment();
 
         Bundle purchaseIdArgs = new Bundle();
         purchaseIdArgs.putString("orderId",orderId);
         kitchenOrderedItemsFragment.setArguments(purchaseIdArgs);
 
-        FragmentsUtil.replaceFragment(this,kitchenOrderedItemsFragment,R.id.main_container);
+        FragmentsUtil.replaceFragment(this,kitchenOrderedItemsFragment,R.id.main_container);*/
     }
 
     public void backPress(){
         FragmentsUtil.backPressed(this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                // go to previous activity
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override

@@ -146,8 +146,8 @@ public class KitchenOrderListFragment extends Fragment {
     }
 
     private void init(){
-        kitchenActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        kitchenActivity.getSupportActionBar().setHomeButtonEnabled(true);
+       // kitchenActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //kitchenActivity.getSupportActionBar().setHomeButtonEnabled(true);
 
     }
 
