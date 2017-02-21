@@ -30,8 +30,8 @@ public class AboutAsFragment extends Fragment {
 
 
     private void initBackButton(){
-        naviDrawerActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        naviDrawerActivity.getSupportActionBar().setHomeButtonEnabled(false);
+        naviDrawerActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        naviDrawerActivity.getSupportActionBar().setHomeButtonEnabled(true);
 
     }
 

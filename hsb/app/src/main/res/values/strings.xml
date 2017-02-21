@@ -24,6 +24,7 @@
     <string name="get_table_list_heading">In Progress.</string>
     <string name="get_table_list_message">Retrieving table settings of Taste of India.Please wait...</string>
     <string name="order_placing">Placing your Order.Please wait...</string>
+    <string name="get_previous_update">Getting your Previous Update.Please wait...</string>
 
     <string name="mobile_number_message">(Please provide mobile number which you\'d registered and would like the receipt to be forwarded
 mobile number provided is not registered with MobilePay)</string>

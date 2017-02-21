@@ -120,7 +120,7 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
     private void getDataFromServer(){
         boolean isNetWorkConnected = Utilities.isNetworkConnected(naviDrawerActivity);
         if (isNetWorkConnected) {
-            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), naviDrawerActivity);
+            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_previous_update), naviDrawerActivity);
             naviDrawerActivity.getOrderService().getPreviousOrderFromServer(naviDrawerActivity,ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
         } else {
             ActivityUtil.showDialog(naviDrawerActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
@@ -198,7 +198,7 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
         boolean isNetWorkConnected = Utilities.isNetworkConnected(naviDrawerActivity);
         if (isNetWorkConnected) {
             TableListService tableListService = new TableListServiceImpl(naviDrawerActivity);
-            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), naviDrawerActivity);
+            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_menu_items_message), naviDrawerActivity);
             tableListService.getMenuItems(ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE,null);
         } else {
             ActivityUtil.showDialog(naviDrawerActivity, getString(R.string.no_network_heading), getString(R.string.no_network));

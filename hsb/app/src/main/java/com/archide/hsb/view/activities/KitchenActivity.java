@@ -28,7 +28,7 @@ public class KitchenActivity extends AppCompatActivity implements KitchenOrderLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kitchen);
         init();
-        showFragment();
+
     }
 
     private void init(){
@@ -49,7 +49,8 @@ public class KitchenActivity extends AppCompatActivity implements KitchenOrderLi
 
     private void showFragment(){
         KitchenOrderListFragment kitchenOrderListFragment = new KitchenOrderListFragment();
-        FragmentsUtil.addFragment(this, kitchenOrderListFragment, R.id.main_container);
+        FragmentsUtil.addRemoveFragment(this,kitchenOrderListFragment, R.id.main_container);
+       // FragmentsUtil.addFragment(this, kitchenOrderListFragment, R.id.main_container);
     }
 
     private void showOrderDetails(String orderId){
@@ -68,13 +69,12 @@ public class KitchenActivity extends AppCompatActivity implements KitchenOrderLi
         FragmentsUtil.replaceFragment(this,kitchenOrderedItemsFragment,R.id.main_container);*/
     }
 
-    public void backPress(){
-        FragmentsUtil.backPressed(this);
-    }
+
 
 
     @Override
     protected void onResume() {
+        showFragment();
         super.onResume();
     }
 
