@@ -3,9 +3,11 @@ package com.archide.hsb.sync;
 import android.content.Context;
 import android.util.Log;
 
+import com.archide.hsb.dao.AdminDao;
 import com.archide.hsb.dao.KitchenDao;
 import com.archide.hsb.dao.MenuItemsDao;
 import com.archide.hsb.dao.OrdersDao;
+import com.archide.hsb.dao.impl.AdminDaoImpl;
 import com.archide.hsb.dao.impl.KitchenDaoImpl;
 import com.archide.hsb.dao.impl.MenuItemsDaoImpl;
 import com.archide.hsb.dao.impl.OrdersDaoImpl;
@@ -222,6 +224,12 @@ public class UserMenusSyncPerform {
                         ordersDao.updateServerSyncTime(responseData.getData());
                         ordersDao.updatePlacedOrderItems(Long.valueOf(responseData.getData()));
                         ResponseData result = new ResponseData(200,null);
+                        return result;
+                    }else if(responseData.getStatusCode() == 403){
+                        ordersDao.removeAllData();
+                        AdminDao adminDao = new AdminDaoImpl(context);
+                        adminDao.removeUser(placedOrdersEntity.getUserMobileNumber());
+                        ResponseData result = new ResponseData(responseData.getStatusCode(),null);
                         return result;
                     }else {
                         ResponseData result = new ResponseData(responseData.getStatusCode(),null);

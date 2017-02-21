@@ -28,11 +28,12 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
         OrderModuleLoginFragment.MainActivityCallback,TableChangeFragment.MainActivityCallback,
         WelcomeFragment.MainActivityCallback{
 
-    // private MobileFragment mobileFragment;
     private WelcomeFragment welcomeFragment;
     private ConfigurationFragment configurationFragment;
     private TableListService tableListService;
 
+
+    private boolean isOrderClosed = false;
 
     private static final String TAG_MY_FRAGMENT = "myFragment";
 
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
+        isOrderClosed = getIntent().getBooleanExtra("orderClosed",false);
         showFragment();
 
     }
@@ -59,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
             if(configurationEntity.getAppType().toString().equals(AppType.Kitchen.toString())){
                 KitchenLoginFragment kitchenLoginFragment = new KitchenLoginFragment();
                 FragmentsUtil.addFragment(this, kitchenLoginFragment, R.id.main_container);
+            }else if(isOrderClosed){
+                MobileFragment mobileFragment = new MobileFragment();
+                FragmentsUtil.addRemoveFragment(this, mobileFragment, R.id.main_container);
+                ActivityUtil.TABLE_NUMBER = configurationEntity.getTableNumber();
             }else{
                 welcomeFragment = new WelcomeFragment();
 

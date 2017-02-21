@@ -359,7 +359,6 @@ public class OrderServiceImpl implements OrderService {
     public void removeAllData(){
         try{
             ordersDao.removeAllData();
-
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -23,11 +23,14 @@
 
     <string name="get_table_list_heading">In Progress.</string>
     <string name="get_table_list_message">Retrieving table settings of Taste of India.Please wait...</string>
+    <string name="order_placing">Placing your Order.Please wait...</string>
 
     <string name="mobile_number_message">(Please provide mobile number which you\'d registered and would like the receipt to be forwarded
 mobile number provided is not registered with MobilePay)</string>
 
     <string name="get_menu_items_message">Loading Menus.Please wait...</string>
+    
+    <string name="check_availability">Checking Availability.Please wait...</string>
 
     <!--Common Message-->
     <string name="no_network">Check your connection.</string>
@@ -52,6 +55,8 @@ mobile number provided is not registered with MobilePay)</string>
 
 
     <string name="order_conformation">You Order has been received. Thanks.</string>
+
+    <string name="order_already_closed">You Order has been closed. Please make a new order.</string>
 
 
     <string name="login_forget_mpin">Forget mPIN</string>

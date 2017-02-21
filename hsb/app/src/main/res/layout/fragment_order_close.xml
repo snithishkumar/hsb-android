@@ -22,7 +22,7 @@
             android:orientation="vertical">
             <ImageView
                 android:layout_width="96dp"
-                android:src="@drawable/thanks_1"
+                android:src="@drawable/thanks_2"
                 android:layout_gravity="center"
                 android:layout_height="96dp" />
 

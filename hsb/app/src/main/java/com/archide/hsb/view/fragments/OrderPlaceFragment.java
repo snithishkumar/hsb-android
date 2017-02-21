@@ -197,7 +197,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
     private void checkAvailability(){
         boolean isNetWorkConnected =  Utilities.isNetworkConnected(orderActivity);
         if(isNetWorkConnected){
-            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), orderActivity);
+            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.check_availability), orderActivity);
             orderActivity.getOrderService().checkAvailability(orderActivity);
         }else{
             ActivityUtil.showDialog(orderActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
@@ -279,7 +279,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
                if(isNetWorkConnected){
                    removeCookingComments();
                    placeAnOrderViewModel.setCookingComments(cookingComments.getText().toString().trim());
-                   progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), orderActivity);
+                   progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.order_placing), orderActivity);
                    orderActivity.getOrderService().conformOrder(placeAnOrderViewModel,ActivityUtil.USER_MOBILE,ActivityUtil.TABLE_NUMBER,orderActivity);
                }else{
                    ActivityUtil.showDialog(orderActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
@@ -330,7 +330,12 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
             orderActivity.finish();
             return;
         }else if(responseData.getStatusCode() == 403){
-            // TODO
+            Toast.makeText(orderActivity,getString(R.string.order_already_closed),Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(orderActivity, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            orderActivity.finish();
+            return;
         }else{
             Toast.makeText(orderActivity,getString(R.string.internal_error),Toast.LENGTH_LONG).show();
             Intent intent = new Intent(orderActivity, HomeActivity.class);

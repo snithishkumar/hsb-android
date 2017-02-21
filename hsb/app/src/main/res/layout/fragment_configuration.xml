@@ -29,11 +29,11 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_free_breakfast_black_48dp"
+                android:src="@drawable/chef_cooking_on_stove"
                 android:id="@+id/vTypeIcon" />
             <com.satsuware.usefulviews.LabelledSpinner
                 android:id="@+id/vType"
-                ls:labelText="Please Enter"
+                ls:labelText="App Type"
                 ls:widgetColor="#F44336"
                 android:layout_marginLeft="10dp"
                 android:layout_width="match_parent"
