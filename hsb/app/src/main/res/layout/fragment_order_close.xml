@@ -145,7 +145,7 @@
                     android:gravity="right"
                     android:textColor="@android:color/darker_gray"
                     android:layout_marginRight="10dp"
-                    android:text="Billing To:"/>
+                    android:text="Mobile No :"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -157,27 +157,172 @@
             </LinearLayout>
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginLeft="35dp"
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
                 android:layout_marginTop="15dp"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content">
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="35dp"
+                android:background="@android:color/darker_gray" />
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:id="@+id/close_order_sync_status"
-                    android:layout_height="40dp"
-                    android:src="@drawable/tick_mark_circle"
-                    />
+            <LinearLayout
+                android:id="@+id/root_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:layout_margin="10dp"
+
+                tools:context="com.archide.hsb.view.activities.OrderActivity"
+                android:weightSum="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Your Orders"
+                        android:textStyle="bold"
+                        android:textSize="18dp"
+                        android:drawableLeft="@drawable/ic_receipt_black_24dp"
+                        android:drawablePadding="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="15dp"
+                        android:id="@+id/odr_his_your_order_text"
+                        android:textColor="@android:color/black"/>
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/odr_his_order_data"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="20dp"
+                    tools:listitem="@layout/adapt_placed_ordered_his_item_details"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/close_order_sync_msg"
+                    android:text="Amount Details"
+                    android:drawableLeft="@drawable/ic_account_balance_black_24dp"
+                    android:drawablePadding="15dp"
+                    android:id="@+id/odr_his_amount_details"
                     android:layout_marginTop="10dp"
-                    android:text="Billing details has been sent to your mobile Number. You can review and pay via MobilePay App."
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:textColor="@android:color/black"
                     />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:paddingRight="15dp"
+                    android:layout_marginTop="8dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="Subtotal before discount"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/odr_his_subtotal_before_discount"
+                        android:text="Rs 1,340"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="15dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="Discount"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/odr_his_discount"
+                        android:text="-Rs 240"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="15dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="Subtotal"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/odr_his_subtotal"
+                        android:text="Rs 240"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="15dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="Service tax (0 %)"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/odr_his_service_tax"
+                        android:text="Rs 0"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:paddingRight="15dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Amount"
+                        android:drawableLeft="@drawable/ic_amount_black"
+                        android:drawablePadding="10dp"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rs. 1,123.04"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:id="@+id/odr_his_total_amount"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:layout_alignParentRight="true"
+                        />
+
+                </RelativeLayout>
+
+
+
             </LinearLayout>
 
             <Button
