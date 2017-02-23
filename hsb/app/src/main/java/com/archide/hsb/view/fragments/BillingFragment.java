@@ -120,6 +120,7 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
         recyclerView.setHasFixedSize(true);
         linearLayoutManager =  new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -337,7 +338,7 @@ public class BillingFragment extends Fragment implements View.OnClickListener {
         orderedMenuItemsAdapter.notifyDataSetChanged();
 
 
-        vOrderId.setText("Order Id:"+String.valueOf(placeAnOrderViewModel.getOrderId()));
+        vOrderId.setText(String.valueOf(placeAnOrderViewModel.getOrderId()));
         subTotalBeforeDiscount.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getSubTotalBeforeDiscount()));
         discount.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getDiscount()));
         subTotal.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getSubTotal()));
