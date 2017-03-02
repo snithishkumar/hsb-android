@@ -134,21 +134,25 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="20dp"
                 android:layout_height="wrap_content">
+                //close_order_table_number close_order_order_id
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="20dp"
-                    android:id="@+id/orderIdText"
-                    android:text="Order Id:"/>
+                    android:id="@+id/close_order_table_number_text"
+                    android:text="Table  No:"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:textStyle="bold"
-                    android:layout_toRightOf="@+id/orderIdText"
-                    android:id="@+id/close_order_order_id"
+                    android:layout_toRightOf="@+id/close_order_table_number_text"
+                    android:id="@+id/close_order_table_number"
                     android:text="HSB 0056"/>
+
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -190,13 +194,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/close_order_table_number"
+                    android:layout_toLeftOf="@+id/close_order_order_id"
                     android:layout_marginRight="20dp"
-                    android:text="Table Number:"/>
+                    android:text="Order Id:"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/close_order_table_number"
+                    android:id="@+id/close_order_order_id"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="25dp"
                     android:textStyle="bold"
