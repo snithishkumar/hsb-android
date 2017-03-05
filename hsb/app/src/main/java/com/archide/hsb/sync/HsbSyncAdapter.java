@@ -93,6 +93,11 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
                try{
                    ResponseData  responseData =  kitchenSyncPerform.getKitchenOrders();
                    kitchenSyncPerform.sendUnSyncedOrderStatus();
+                   kitchenSyncPerform.sendKitchenMenuUpdates();
+                   if(ActivityUtil.isKitchenMenuList){
+                       responseData = kitchenSyncPerform.getMenuItems();
+                       ActivityUtil.isKitchenMenuList =false;
+                   }
                    postData(responseData);
                }catch (Exception e){
                     e.printStackTrace();

@@ -23,7 +23,6 @@ public class FragmentsUtil {
 
     public static void replaceFragmentNoStack(AppCompatActivity activity, Fragment fragment, int containerId){
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
         fragmentManager.beginTransaction()
                 .replace(containerId, fragment)
                 .addToBackStack(null)

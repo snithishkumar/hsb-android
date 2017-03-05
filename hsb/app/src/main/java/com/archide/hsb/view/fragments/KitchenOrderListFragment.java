@@ -9,6 +9,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -58,11 +60,19 @@ public class KitchenOrderListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        mInflater = inflater;
+        mContainer = container;
+
+
         boolean isNetWorkConnected = Utilities.isNetworkConnected(kitchenActivity);
         View view = null;
         if(!isNetWorkConnected){
@@ -108,8 +118,6 @@ public class KitchenOrderListFragment extends Fragment {
         }
         // Inflate the layout for this fragment
 
-        mInflater = inflater;
-        mContainer = container;
 
 
 

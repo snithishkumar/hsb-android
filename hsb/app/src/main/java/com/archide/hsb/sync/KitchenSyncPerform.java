@@ -4,20 +4,29 @@ import android.content.Context;
 import android.util.Log;
 
 import com.archide.hsb.dao.KitchenDao;
+import com.archide.hsb.dao.MenuItemsDao;
 import com.archide.hsb.dao.impl.KitchenDaoImpl;
 import com.archide.hsb.dao.impl.MenuItemsDaoImpl;
 import com.archide.hsb.dao.impl.OrdersDaoImpl;
+import com.archide.hsb.entity.FoodCategoryEntity;
 import com.archide.hsb.entity.KitchenCookingCmntsEntity;
+import com.archide.hsb.entity.KitchenMenuItemsEntity;
 import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
 import com.archide.hsb.entity.KitchenOrdersListEntity;
+import com.archide.hsb.entity.MenuCourseEntity;
+import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.enumeration.GsonAPI;
 import com.archide.hsb.enumeration.Status;
 import com.archide.hsb.enumeration.ViewStatus;
+import com.archide.hsb.sync.json.FoodCategoryJson;
 import com.archide.hsb.sync.json.GetKitchenOrders;
+import com.archide.hsb.sync.json.GetMenuDetails;
 import com.archide.hsb.sync.json.KitchenCookingComments;
 import com.archide.hsb.sync.json.KitchenOrderListResponse;
 import com.archide.hsb.sync.json.KitchenOrderStatusSyncResponse;
+import com.archide.hsb.sync.json.MenuItemJson;
+import com.archide.hsb.sync.json.MenuListJson;
 import com.archide.hsb.sync.json.OrderedMenuItems;
 import com.archide.hsb.sync.json.PlaceOrdersJson;
 import com.archide.hsb.sync.json.ResponseData;
@@ -209,5 +218,59 @@ public class KitchenSyncPerform {
             e.printStackTrace();
         }
     }
+
+
+    /**
+     * Get Menu Items
+     * @return
+     */
+    public ResponseData getMenuItems(){
+        try{
+            Call<ResponseData> menuItemsResponse =  hsbAPI.getMenuItems();
+            Response<ResponseData> response =  menuItemsResponse.execute();
+            if (response != null && response.isSuccessful()) {
+
+                ResponseData responseData = response.body();
+
+                String kitchenMenuItems =  responseData.getData();
+
+                List<KitchenMenuItemsEntity> menuItemList = gson.fromJson(kitchenMenuItems,
+                        new TypeToken<List<KitchenMenuItemsEntity>>() {}.getType());
+
+                if(menuItemList.size() > 0){
+                    kitchenDao.clearKitchenMenuItems();
+                    kitchenDao.saveKitchenMenuItems(menuItemList);
+
+                }
+                ResponseData result = new ResponseData(2000,null);
+                return result;
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return getErrorResponse();
+    }
+
+
+    public ResponseData sendKitchenMenuUpdates(){
+        try{
+            List<KitchenMenuItemsEntity> kitchenMenuItems =  kitchenDao.getEditedMenuItems();
+            if(kitchenMenuItems.size() > 0){
+                Call<ResponseData> sendKitchenMenuUpdates = hsbAPI.sendKitchenMenuUpdates(kitchenMenuItems);
+                Response<ResponseData> response =  sendKitchenMenuUpdates.execute();
+                if (response != null && response.isSuccessful()) {
+                    ResponseData result = new ResponseData(200,null);
+                    return result;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return getErrorResponse();
+    }
+
+
 
 }

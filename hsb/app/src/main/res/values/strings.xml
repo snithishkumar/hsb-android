@@ -87,4 +87,9 @@ mobile number provided is not registered with MobilePay)</string>
 
     </string-array>
 
+    <string name="menus_items">MenuItems</string>
+    <string name="order_list">OrderList</string>
+    <string name="menu_search">Search</string>
+    <string name="kitchen_available_status_update">Your changes has been updated.</string>
+
 </resources>
