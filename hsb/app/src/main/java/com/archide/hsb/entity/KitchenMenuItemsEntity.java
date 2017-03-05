@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * Created by Nithish on 03/03/17.
  */
 @DatabaseTable(tableName = "KitchenMenuItems")
-public class KitchenMenuItemsEntity {
+public class KitchenMenuItemsEntity implements Comparable<KitchenMenuItemsEntity>{
 
     public static final String MENU_ID = "menuId";
     public static final String MENU_UUID= "menuUUID";
@@ -40,8 +40,17 @@ public class KitchenMenuItemsEntity {
     private int maxCount;
     @DatabaseField(columnName = IS_EDITED)
     private boolean isEdited;
+    @DatabaseField(persisted = false)
+    private int remainingCount;
 
-    
+
+    public int getRemainingCount() {
+        return remainingCount;
+    }
+
+    public void setRemainingCount(int remainingCount) {
+        this.remainingCount = remainingCount;
+    }
 
     public int getMenuId() {
         return menuId;
@@ -113,6 +122,12 @@ public class KitchenMenuItemsEntity {
 
     public void setEdited(boolean edited) {
         isEdited = edited;
+    }
+
+    @Override
+    public int compareTo(KitchenMenuItemsEntity kitchenMenuItemsEntity) {
+       int remainingCount = kitchenMenuItemsEntity.getRemainingCount();
+      return this.remainingCount - remainingCount;
     }
 
     @Override

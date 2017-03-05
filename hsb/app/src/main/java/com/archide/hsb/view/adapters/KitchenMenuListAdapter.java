@@ -45,7 +45,7 @@ public class KitchenMenuListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         kitchenMenuViewHolder.vItemNumber.setText("Item Code:"+kitchenMenuItemsEntity.getMenuItemCode());
         kitchenMenuViewHolder.vCurrentCount.setText("Current Count:"+kitchenMenuItemsEntity.getCurrentCount());
         kitchenMenuViewHolder.vTotalCount.setText("Total Count:"+kitchenMenuItemsEntity.getMaxCount());
-        kitchenMenuViewHolder.vRemainingCount.setText(String.valueOf(kitchenMenuItemsEntity.getMaxCount() - kitchenMenuItemsEntity.getCurrentCount() ));
+        kitchenMenuViewHolder.vRemainingCount.setText(String.valueOf(kitchenMenuItemsEntity.getRemainingCount() ));
     }
 
     public class  KitchenMenuViewHolder extends RecyclerView.ViewHolder{

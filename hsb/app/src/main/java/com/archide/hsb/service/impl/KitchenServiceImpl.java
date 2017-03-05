@@ -17,6 +17,7 @@ import com.archide.hsb.view.model.KitchenOrderListViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -172,8 +173,11 @@ public class KitchenServiceImpl implements KitchenService {
 
     public List<KitchenMenuItemsEntity> getKitchenMenuItemsModels(String searchText){
         try{
-            return   kitchenDao.getKitchenMenuItems(searchText);
-
+            List<KitchenMenuItemsEntity> kitchenMenuItemsEntities =   kitchenDao.getKitchenMenuItems(searchText);
+            for(KitchenMenuItemsEntity kitchenMenuItemsEntity : kitchenMenuItemsEntities){
+                kitchenMenuItemsEntity.setRemainingCount(kitchenMenuItemsEntity.getMaxCount() - kitchenMenuItemsEntity.getCurrentCount());
+            }
+            Collections.sort(kitchenMenuItemsEntities);
         }catch (Exception e){
             e.printStackTrace();
         }
