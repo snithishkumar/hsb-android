@@ -71,9 +71,18 @@ public class KitchenMenuListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                    int pos =  getAdapterPosition();
                     KitchenMenuItemsEntity kitchenMenuItemsEntity =  kitchenMenuItemsEntities.get(pos);
                     kitchenMenuItemsEntity.setEdited(true);
-                    int count =   Integer.valueOf(vRemainingCount.getText().toString());
+                    String val =  vRemainingCount.getText().toString();
+                    if(val == null || val.trim().isEmpty()){
+                        ActivityUtil.showDialog(kitchenMenusActivity,kitchenMenusActivity.getString(R.string.kitchen_menu_value_val_title),kitchenMenusActivity.getString(R.string.kitchen_menu_value_val));
+                        return;
+                    }
+                    int count =   Integer.valueOf(val);
                     kitchenMenuItemsEntity.setMaxCount(kitchenMenuItemsEntity.getCurrentCount() + count);
                     kitchenMenusActivity.getKitchenService().updateKitchenMenuItemsEntity(kitchenMenuItemsEntity);
+
+                    List<KitchenMenuItemsEntity> temp =  kitchenMenusActivity.getKitchenService().getKitchenMenuItemsModels(null);
+                    kitchenMenuItemsEntities.addAll(temp);
+
                     ActivityUtil.toast(kitchenMenusActivity,kitchenMenusActivity.getString(R.string.kitchen_available_status_update));
                     notifyDataSetChanged();
                 }

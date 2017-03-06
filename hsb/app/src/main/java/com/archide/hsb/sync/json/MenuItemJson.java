@@ -17,6 +17,15 @@ public class MenuItemJson {
 	private String description;
 	private FoodType foodType;
 	private String tasteType;
+	private int availableCount;
+
+	public int getAvailableCount() {
+		return availableCount;
+	}
+
+	public void setAvailableCount(int availableCount) {
+		this.availableCount = availableCount;
+	}
 
 	public int getDisplayOrder() {
 		return displayOrder;

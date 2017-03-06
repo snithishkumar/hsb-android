@@ -178,6 +178,7 @@ public class KitchenServiceImpl implements KitchenService {
                 kitchenMenuItemsEntity.setRemainingCount(kitchenMenuItemsEntity.getMaxCount() - kitchenMenuItemsEntity.getCurrentCount());
             }
             Collections.sort(kitchenMenuItemsEntities);
+            return kitchenMenuItemsEntities;
         }catch (Exception e){
             e.printStackTrace();
         }

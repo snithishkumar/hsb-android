@@ -24,6 +24,7 @@ public class MenuItemsViewModel {
     private String description;
     private String tasteType;
     private FoodType foodType;
+    private int availableCount;
 
     public MenuItemsViewModel(MenuEntity menuEntity){
         this.uuid = menuEntity.getMenuUUID();
@@ -33,6 +34,7 @@ public class MenuItemsViewModel {
         this.description = menuEntity.getDescription();
         this.tasteType = menuEntity.getTasteType();
         this.foodType = menuEntity.getFoodType();
+        this.availableCount = menuEntity.getAvailableCount();
 
     }
 
@@ -51,6 +53,15 @@ public class MenuItemsViewModel {
         this.orderStatus = placedOrderItemsEntity.getOrderStatus();
         this.isOrdered = true;
         this.foodType = placedOrderItemsEntity.getMenuItem().getFoodType();
+        this.availableCount = placedOrderItemsEntity.getMenuItem().getAvailableCount();
+    }
+
+    public int getAvailableCount() {
+        return availableCount;
+    }
+
+    public void setAvailableCount(int availableCount) {
+        this.availableCount = availableCount;
     }
 
     public FoodType getFoodType() {

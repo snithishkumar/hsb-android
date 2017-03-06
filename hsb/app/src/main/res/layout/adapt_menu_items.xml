@@ -26,13 +26,29 @@
                     android:background="@drawable/item_type_background"/>
         </LinearLayout>
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@android:color/darker_gray"
-            android:id="@+id/adapt_food_cost"
-            android:text="\u20B9160.00"/>
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:id="@+id/adapt_food_cost"
+                    android:text="\u20B9160.00"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/darker_gray"
+                    android:visibility="invisible"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/adapt_food_available"
+                    android:text="Available Count:"/>
+
+        </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

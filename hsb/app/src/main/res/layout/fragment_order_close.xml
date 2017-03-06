@@ -7,7 +7,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
         tools:context="com.archide.hsb.view.fragments.ConfigurationFragment">
@@ -51,81 +51,7 @@
                 android:layout_marginRight="35dp"
                 android:background="@android:color/darker_gray" />
 
-          <!--  <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
 
-                android:weightSum="2"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:textColor="@android:color/darker_gray"
-                    android:layout_marginRight="10dp"
-                    android:text="Order Id:"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:id="@+id/close_order_order_id"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="10dp"
-                    android:text="HSB 0056"/>
-            </LinearLayout>-->
-
-         <!--   <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-
-                android:weightSum="2"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:textColor="@android:color/darker_gray"
-                    android:layout_marginRight="10dp"
-                    android:text="Table Number:"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:id="@+id/close_order_table_number"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="10dp"
-                    android:text="1"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-
-                android:weightSum="2"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:textColor="@android:color/darker_gray"
-                    android:layout_marginRight="10dp"
-                    android:text="Amount:"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="10dp"
-                    android:id="@+id/close_order_total_amount"
-                    android:text="500"/>
-            </LinearLayout>
--->
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -209,30 +135,6 @@
 
 
 
-           <!-- <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-
-                android:weightSum="2"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:textColor="@android:color/darker_gray"
-                    android:layout_marginRight="10dp"
-                    android:text="Mobile No :"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="10dp"
-                    android:id="@+id/close_order_mobile_number"
-                    android:text="9942320690"/>
-            </LinearLayout>-->
 
 
             <View
@@ -246,7 +148,7 @@
             <LinearLayout
                 android:id="@+id/root_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@android:color/white"
                 android:orientation="vertical"
                 android:layout_margin="10dp"
@@ -429,11 +331,6 @@
 
 
         </LinearLayout>
-
-
-
-
-
 
     </LinearLayout>
 

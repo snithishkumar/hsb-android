@@ -25,6 +25,7 @@ public class MenuEntity {
     public static final String DESCRIPTION = "description";
     public static final String TASTE_TYPE = "tasteType";
 	public static final String FOOD_TYPE = "foodType";
+	public static final String AVAILABLE_COUNT = "availableCount";
 
 
     @DatabaseField(columnName = MENU_ID,generatedId = true)
@@ -57,6 +58,9 @@ public class MenuEntity {
 	@DatabaseField(columnName = FOOD_TYPE)
 	private FoodType foodType;
 
+	@DatabaseField(columnName = AVAILABLE_COUNT)
+	private int availableCount;
+
     public MenuEntity(){
 
     }
@@ -77,9 +81,18 @@ public class MenuEntity {
         this.description = menuItemJson.getDescription();
         this.tasteType = menuItemJson.getTasteType();
         this.foodType = menuItemJson.getFoodType();
+		this.availableCount = menuItemJson.getAvailableCount();
     }
 
-    public int getDisplayOrder() {
+	public int getAvailableCount() {
+		return availableCount;
+	}
+
+	public void setAvailableCount(int availableCount) {
+		this.availableCount = availableCount;
+	}
+
+	public int getDisplayOrder() {
         return displayOrder;
     }
 

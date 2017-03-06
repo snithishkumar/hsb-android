@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.archide.hsb.enumeration.FoodType;
+import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.HomeActivity;
 import com.archide.hsb.view.fragments.MenuItemsFragment;
 import com.archide.hsb.view.model.MenuItemsViewModel;
@@ -91,6 +92,13 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             orderItemsViewHolder.vFoodCartCount.setText(String.valueOf(menuItemsViewModel.getCount()));
             orderItemsViewHolder.vFoodTasteType.setText(menuItemsViewModel.getTasteType());
             orderItemsViewHolder.vFoodDesc.setText(menuItemsViewModel.getDescription());
+            if(menuItemsViewModel.getAvailableCount() < 5){
+                orderItemsViewHolder.vFoodAvailable.setVisibility(View.VISIBLE);
+                orderItemsViewHolder.vFoodAvailable.setText("Available Count :"+menuItemsViewModel.getAvailableCount());
+            }else{
+                orderItemsViewHolder.vFoodAvailable.setVisibility(View.INVISIBLE);
+            }
+
             setFoodType(orderItemsViewHolder.vFoodType,menuItemsViewModel.getFoodType());
         }else{
 
@@ -114,6 +122,12 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         menuItemsViewHolder.vFoodCost.setText(homeActivity.getString(R.string.pound)+String.valueOf(menuItemsViewModel.getCost()));
         menuItemsViewHolder.vFoodTasteType.setText(menuItemsViewModel.getTasteType());
         menuItemsViewHolder.vFoodDesc.setText(menuItemsViewModel.getDescription());
+        if(menuItemsViewModel.getAvailableCount() < 5){
+            menuItemsViewHolder.vFoodAvailable.setVisibility(View.VISIBLE);
+            menuItemsViewHolder.vFoodAvailable.setText("Available Count :"+menuItemsViewModel.getAvailableCount());
+        }else{
+            menuItemsViewHolder.vFoodAvailable.setVisibility(View.INVISIBLE);
+        }
     }
 
     public class  FoodCategoryViewHolder extends RecyclerView.ViewHolder{
@@ -131,6 +145,7 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         protected TextView vFoodAddCart;
         protected  Button vFoodTasteType;
         private ImageView vFoodType;
+        protected TextView vFoodAvailable;
 
         public MenuItemsViewHolder(View view){
             super(view);
@@ -141,6 +156,7 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             vFoodAddCart = (TextView)view.findViewById(R.id.adapt_food_add_cart);
             vFoodType = (ImageView)view.findViewById(R.id.veg);
             vFoodAddCart.setOnClickListener(this);
+            vFoodAvailable = (TextView)view.findViewById(R.id.adapt_food_available);
 
 
         }
@@ -166,6 +182,7 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         protected TextView vFoodCost;
         protected  Button vFoodTasteType;
         protected TextView vFoodDesc;
+        protected TextView vFoodAvailable;
         private ImageView vFoodType;
         public OrderItemsViewHolder(View view){
             super(view);
@@ -173,9 +190,11 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             vFoodCost = (TextView)view.findViewById(R.id.adapt_food_cost);
             vFoodDesc = (TextView)view.findViewById(R.id.adapt_food_desc);
             vFoodCartCount = (TextView)view.findViewById(R.id.count_value);
+            vFoodAvailable = (TextView)view.findViewById(R.id.adapt_food_available);
             vFoodTasteType = (Button)view.findViewById(R.id.adapt_food_taste_type);
             vFoodSubCartButton = (Button)view.findViewById(R.id.decrement);
             vFoodAddCartButton = (Button)view.findViewById(R.id.increment);
+            //adapt_food_available
             vFoodType = (ImageView)view.findViewById(R.id.veg);
             vFoodSubCartButton.setOnClickListener(this);
             vFoodAddCartButton.setOnClickListener(this);
@@ -188,11 +207,16 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             switch (view.getId()){
 
                 case R.id.increment:
-                    menuItemsViewModel.setCount(menuItemsViewModel.getCount() + 1);
-                    homeActivity.getOrderService().addOrderItems(menuItemsViewModel);
-                    orderDetailsViewModel.setTotalCount(orderDetailsViewModel.getTotalCount() + 1);
-                    orderDetailsViewModel.setTotalCost(orderDetailsViewModel.getTotalCost() + menuItemsViewModel.getCost());
-                    menuItemsFragment.updateFooterBar();
+                    if(menuItemsViewModel.getCount() < menuItemsViewModel.getAvailableCount()){
+                        menuItemsViewModel.setCount(menuItemsViewModel.getCount() + 1);
+                        homeActivity.getOrderService().addOrderItems(menuItemsViewModel);
+                        orderDetailsViewModel.setTotalCount(orderDetailsViewModel.getTotalCount() + 1);
+                        orderDetailsViewModel.setTotalCost(orderDetailsViewModel.getTotalCost() + menuItemsViewModel.getCost());
+                        menuItemsFragment.updateFooterBar();
+                    }else{
+                        ActivityUtil.toast(homeActivity,homeActivity.getString(R.string.un_available));
+                    }
+
                     break;
                 case R.id.decrement:
                     if(menuItemsViewModel.getCount() == 1){

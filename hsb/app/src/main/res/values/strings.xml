@@ -92,4 +92,9 @@ mobile number provided is not registered with MobilePay)</string>
     <string name="menu_search">Search</string>
     <string name="kitchen_available_status_update">Your changes has been updated.</string>
 
+    <string name="un_available">Not Available</string>
+
+    <string name="kitchen_menu_value_val">Value should not be Empty</string>
+    <string name="kitchen_menu_value_val_title">Error</string>
+
 </resources>
