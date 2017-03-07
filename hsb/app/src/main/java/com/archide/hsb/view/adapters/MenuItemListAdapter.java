@@ -92,9 +92,10 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             orderItemsViewHolder.vFoodCartCount.setText(String.valueOf(menuItemsViewModel.getCount()));
             orderItemsViewHolder.vFoodTasteType.setText(menuItemsViewModel.getTasteType());
             orderItemsViewHolder.vFoodDesc.setText(menuItemsViewModel.getDescription());
-            if(menuItemsViewModel.getAvailableCount() < 5){
+            int availableCount = menuItemsViewModel.getAvailableCount() - menuItemsViewModel.getCount();
+            if(availableCount < 10){
                 orderItemsViewHolder.vFoodAvailable.setVisibility(View.VISIBLE);
-                orderItemsViewHolder.vFoodAvailable.setText("Available Count :"+menuItemsViewModel.getAvailableCount());
+                orderItemsViewHolder.vFoodAvailable.setText("Available Count :"+availableCount);
             }else{
                 orderItemsViewHolder.vFoodAvailable.setVisibility(View.INVISIBLE);
             }
@@ -122,7 +123,7 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         menuItemsViewHolder.vFoodCost.setText(homeActivity.getString(R.string.pound)+String.valueOf(menuItemsViewModel.getCost()));
         menuItemsViewHolder.vFoodTasteType.setText(menuItemsViewModel.getTasteType());
         menuItemsViewHolder.vFoodDesc.setText(menuItemsViewModel.getDescription());
-        if(menuItemsViewModel.getAvailableCount() < 5){
+        if(menuItemsViewModel.getAvailableCount() < 10){
             menuItemsViewHolder.vFoodAvailable.setVisibility(View.VISIBLE);
             menuItemsViewHolder.vFoodAvailable.setText("Available Count :"+menuItemsViewModel.getAvailableCount());
         }else{

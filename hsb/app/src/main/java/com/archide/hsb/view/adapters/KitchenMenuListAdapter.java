@@ -81,10 +81,11 @@ public class KitchenMenuListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     kitchenMenusActivity.getKitchenService().updateKitchenMenuItemsEntity(kitchenMenuItemsEntity);
 
                     List<KitchenMenuItemsEntity> temp =  kitchenMenusActivity.getKitchenService().getKitchenMenuItemsModels(null);
+                    kitchenMenuItemsEntities.clear();
                     kitchenMenuItemsEntities.addAll(temp);
-
-                    ActivityUtil.toast(kitchenMenusActivity,kitchenMenusActivity.getString(R.string.kitchen_available_status_update));
                     notifyDataSetChanged();
+                    ActivityUtil.toast(kitchenMenusActivity,kitchenMenusActivity.getString(R.string.kitchen_available_status_update));
+
                 }
             });
         }
