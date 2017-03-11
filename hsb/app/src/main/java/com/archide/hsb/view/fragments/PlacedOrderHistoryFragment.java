@@ -45,7 +45,6 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
 
     LinearLayoutManager linearLayoutManager = null;
 
-    EditText cookingComments ;
     TextView subTotalBeforeDiscount ;
     TextView discount ;
     TextView subTotal ;
@@ -59,9 +58,7 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
     private NaviDrawerActivity naviDrawerActivity;
     PlacedOrderHisMenuItemsAdapter orderedMenuItemsAdapter;
     List<MenuItemsViewModel> menuItemsViewModels = new ArrayList<>();
-
-    private LayoutInflater mInflater;
-    private ViewGroup mContainer;
+    PlaceAnOrderViewModel placeAnOrderViewModel = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,8 +84,7 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_placed_orders_history, container, false);
 
-        mInflater = inflater;
-        mContainer = container;
+
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.odr_his_order_data);
         recyclerView.setHasFixedSize(true);
@@ -110,23 +106,20 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
         naviDrawerActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         naviDrawerActivity.getSupportActionBar().setHomeButtonEnabled(true);
 
-
+        loadData();
 
         setAdapters(recyclerView);
-        getDataFromServer();
+        populateAmountDetails();
+
         return view;
     }
 
-    private void getDataFromServer(){
-        boolean isNetWorkConnected = Utilities.isNetworkConnected(naviDrawerActivity);
-        if (isNetWorkConnected) {
-            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_previous_update), naviDrawerActivity);
-            naviDrawerActivity.getOrderService().getPreviousOrderFromServer(naviDrawerActivity,ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
-        } else {
-            ActivityUtil.showDialog(naviDrawerActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
-        }
-
+    private void loadData(){
+        placeAnOrderViewModel =  naviDrawerActivity.getOrderService().getPlacedHistoryOrderViewModel();
+        menuItemsViewModels.addAll(placeAnOrderViewModel.getMenuItemsViewModels());
     }
+
+
 
     private void setAdapters(RecyclerView recyclerView){
         orderedMenuItemsAdapter = new PlacedOrderHisMenuItemsAdapter(menuItemsViewModels,naviDrawerActivity);
@@ -149,40 +142,8 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-
-    private void populateData(){
-       PlaceAnOrderViewModel placeAnOrderViewModel =  naviDrawerActivity.getOrderService().getPlacedHistoryOrderViewModel();
-       if(placeAnOrderViewModel.getMenuItemsViewModels().size() < 1){
-           View newView = mInflater.inflate(R.layout.fragment_place_order_empty, mContainer, false);
-           mContainer.removeAllViews();
-           mContainer.addView(newView);
-           ImageView imageView =  (ImageView)newView.findViewById(R.id.place_an_order);
-           imageView.setOnClickListener(this);
-       }else{
-            menuItemsViewModels.clear();
-            menuItemsViewModels.addAll(placeAnOrderViewModel.getMenuItemsViewModels());
-            orderedMenuItemsAdapter.notifyDataSetChanged();
-            populateAmountDetails(placeAnOrderViewModel);
-        }
-
-    }
-
-    public void populateAmountDetails(PlaceAnOrderViewModel placeAnOrderViewModel){
-       if(placeAnOrderViewModel.getCookingComments() != null){
-           cookingComments.setText(placeAnOrderViewModel.getCookingComments());
-       }
+    public void populateAmountDetails(){
 
         orderId.setText("Order Id:"+String.valueOf(placeAnOrderViewModel.getOrderId()));
         subTotalBeforeDiscount.setText(getString(R.string.pound)+" "+String.valueOf(placeAnOrderViewModel.getSubTotalBeforeDiscount()));
@@ -205,36 +166,19 @@ public class PlacedOrderHistoryFragment extends Fragment implements View.OnClick
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void handleServerSyncResponse(ResponseData responseData) {
-        if(progressDialog != null){
-            progressDialog.dismiss();
-        }
-        // 3000
-        if(responseData.getStatusCode() == 3000){
-            populateData();
-        }else if(responseData.getStatusCode() != 500){
-            Intent intent = new Intent(naviDrawerActivity, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            naviDrawerActivity.finish();
-            return;
-        }else{
-            ActivityUtil.showDialog(naviDrawerActivity,"Error","Sorry for the Inconvenience. Please contact Admin.");
-        }
-    }
+
 
 
     @Override
     public void onClick(View view) {
-        if(R.id.place_an_order == view.getId()){
-            naviDrawerActivity.onBackPressed();
-        }else{
-            getMenuList();
+        getMenuList();
+
+    }
+
+    public void removeProgressDialog(){
+        if(progressDialog != null){
+            progressDialog.dismiss();
         }
-
-
-
     }
 
 }

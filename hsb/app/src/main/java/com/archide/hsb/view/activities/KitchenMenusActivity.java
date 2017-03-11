@@ -1,23 +1,18 @@
 package com.archide.hsb.view.activities;
 
 import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.archide.hsb.service.KitchenService;
 import com.archide.hsb.service.impl.KitchenServiceImpl;
 import com.archide.hsb.sync.json.ResponseData;
 import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.fragments.FragmentsUtil;
-import com.archide.hsb.view.fragments.KitchenDataFromServer;
+import com.archide.hsb.view.fragments.DataFromServer;
 import com.archide.hsb.view.fragments.KitchenInternetLostFragment;
 import com.archide.hsb.view.fragments.KitchenMenuItemsFragment;
 
@@ -70,8 +65,8 @@ public class KitchenMenusActivity extends AppCompatActivity {
     }
 
     private void showKitchenDataFromServerFragment(){
-        KitchenDataFromServer kitchenDataFromServer = new KitchenDataFromServer();
-        FragmentsUtil.addRemoveFragment(this,kitchenDataFromServer,R.id.main_container);
+        DataFromServer dataFromServer = new DataFromServer();
+        FragmentsUtil.addRemoveFragment(this, dataFromServer,R.id.main_container);
     }
 
 

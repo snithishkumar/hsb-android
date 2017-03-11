@@ -34,7 +34,7 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/cart_item_img"
+        android:id="@+id/cart_item_fire_img"
         android:src="@drawable/config_1"
         android:layout_marginLeft="7dp"
         android:layout_centerVertical="true"

@@ -52,6 +52,12 @@ public class FragmentsUtil {
 
     }
 
+    public static Fragment getCurrentFragment(AppCompatActivity activity, int containerId){
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        Fragment currentFragment =  fragmentManager.findFragmentById(containerId);
+        return currentFragment;
+    }
+
     public static void removeFragment(AppCompatActivity activity, int containerId){
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         Fragment fragment =  fragmentManager.findFragmentById(containerId);

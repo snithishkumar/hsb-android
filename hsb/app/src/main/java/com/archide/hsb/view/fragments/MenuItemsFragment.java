@@ -12,6 +12,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,6 +45,7 @@ public class MenuItemsFragment extends Fragment {
     private  MenuItemListAdapter  menuItemListAdapter;
     private  String menuCourseUuid ;
     OrderDetailsViewModel orderDetailsViewModel;
+    private ImageView imageView;
 
     TextView totalNoOfItems;
     TextView totalAmount;
@@ -80,6 +84,7 @@ public class MenuItemsFragment extends Fragment {
 
         totalNoOfItems = (TextView) layout.findViewById(R.id.total_no_of_items);
         totalAmount =  (TextView) layout.findViewById(R.id.total_amount);
+        imageView =  (ImageView)layout.findViewById(R.id.cart_item_fire_img);
         refreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -170,11 +175,14 @@ public class MenuItemsFragment extends Fragment {
 
     public void updateFooterBar(){
         if(orderDetailsViewModel.getTotalCount() > 0){
+            Animation bounce = AnimationUtils.loadAnimation(homeActivity,R.anim.bounce);
+            imageView.startAnimation(bounce);
             totalNoOfItems.setText(String.valueOf(orderDetailsViewModel.getTotalCount())+" items");
             totalAmount.setText(getString(R.string.pound)+" "+String.valueOf(orderDetailsViewModel.getTotalCost()));
             if(layout.getVisibility() != View.VISIBLE){
                 layout.setVisibility(View.VISIBLE);
             }
+
         }else{
             if(layout.getVisibility() == View.VISIBLE){
                 layout.setVisibility(View.GONE);
