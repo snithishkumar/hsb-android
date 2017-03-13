@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.archide.hsb.enumeration.FoodType;
+import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.HomeActivity;
 import com.archide.hsb.view.fragments.MenuItemsFragment;
@@ -169,7 +170,10 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             menuItemsViewModel.setCount(menuItemsViewModel.getCount() + 1);
             homeActivity.getOrderService().addOrderItems(menuItemsViewModel);
             orderDetailsViewModel.setTotalCount(orderDetailsViewModel.getTotalCount() + 1);
-            orderDetailsViewModel.setTotalCost(orderDetailsViewModel.getTotalCost() + menuItemsViewModel.getCost());
+
+            double val =  orderDetailsViewModel.getTotalCost() + menuItemsViewModel.getCost();
+            orderDetailsViewModel.setTotalCost( Utilities.roundOff(val));
+
             menuItemsFragment.updateFooterBar();
             notifyDataSetChanged();
         }
@@ -212,7 +216,8 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         menuItemsViewModel.setCount(menuItemsViewModel.getCount() + 1);
                         homeActivity.getOrderService().addOrderItems(menuItemsViewModel);
                         orderDetailsViewModel.setTotalCount(orderDetailsViewModel.getTotalCount() + 1);
-                        orderDetailsViewModel.setTotalCost(orderDetailsViewModel.getTotalCost() + menuItemsViewModel.getCost());
+                        double val =  orderDetailsViewModel.getTotalCost() + menuItemsViewModel.getCost();
+                        orderDetailsViewModel.setTotalCost( Utilities.roundOff(val));
                         menuItemsFragment.updateFooterBar();
                     }else{
                         ActivityUtil.toast(homeActivity,homeActivity.getString(R.string.un_available));
@@ -226,14 +231,15 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         homeActivity.getOrderService().removeOrderItems(menuItemsViewModel);
 
                         orderDetailsViewModel.setTotalCount(orderDetailsViewModel.getTotalCount() - 1);
-                        orderDetailsViewModel.setTotalCost(orderDetailsViewModel.getTotalCost() - menuItemsViewModel.getCost());
-
+                        double val =  orderDetailsViewModel.getTotalCost() - menuItemsViewModel.getCost();
+                        orderDetailsViewModel.setTotalCost( Utilities.roundOff(val));
                         menuItemsFragment.updateFooterBar();
                     }else{
                         menuItemsViewModel.setCount(menuItemsViewModel.getCount() - 1);
                         homeActivity.getOrderService().updateOrderItems(menuItemsViewModel);
                         orderDetailsViewModel.setTotalCount(orderDetailsViewModel.getTotalCount() - 1);
-                        orderDetailsViewModel.setTotalCost(orderDetailsViewModel.getTotalCost() - menuItemsViewModel.getCost());
+                        double val =  orderDetailsViewModel.getTotalCost() - menuItemsViewModel.getCost();
+                        orderDetailsViewModel.setTotalCost( Utilities.roundOff(val));
                         menuItemsFragment.updateFooterBar();
                     }
 

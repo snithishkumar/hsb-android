@@ -371,7 +371,9 @@ public class UserMenusSyncPerform {
                     String previousOrder = responseData.getData();
                     PlaceOrdersJson placeOrdersJson =  gson.fromJson(previousOrder,PlaceOrdersJson.class);
                     processPreviousOrder(placeOrdersJson,true);
-
+                    if(responseData.getStatusCode() == 200){
+                        responseData.setStatusCode(400);
+                    }
 
                 }
                 ResponseData result = new ResponseData(responseData.getStatusCode(),null);

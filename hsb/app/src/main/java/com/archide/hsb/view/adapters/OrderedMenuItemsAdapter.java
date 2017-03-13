@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.archide.hsb.enumeration.OrderStatus;
+import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.OrderActivity;
 import com.archide.hsb.view.fragments.OrderPlaceFragment;
@@ -64,7 +65,7 @@ public class OrderedMenuItemsAdapter extends RecyclerView.Adapter<RecyclerView.V
             OrderedMenuItemsViewHolder orderedMenuItemsViewHolder  = (OrderedMenuItemsViewHolder)viewHolder;
             //orderedMenuItemsViewHolder.vTotalCount.setText(String.valueOf(menuItemsViewModel.getCount()) +"x ");
 //            orderedMenuItemsViewHolder.vTotalCount.setText("");
-            orderedMenuItemsViewHolder.vTotalAmount.setText(orderActivity.getString(R.string.pound)+String.valueOf(menuItemsViewModel.getCost() * menuItemsViewModel.getCount()));
+            orderedMenuItemsViewHolder.vTotalAmount.setText(orderActivity.getString(R.string.pound)+String.valueOf(Utilities.roundOff(menuItemsViewModel.getCost() * menuItemsViewModel.getCount())));
             orderedMenuItemsViewHolder.vOrderName.setText(String.valueOf(menuItemsViewModel.getName()));
             orderedMenuItemsViewHolder.vCountValue.setText(String.valueOf(menuItemsViewModel.getCount()));
         }else{

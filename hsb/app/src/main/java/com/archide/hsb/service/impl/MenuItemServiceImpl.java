@@ -16,10 +16,12 @@ import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.service.MenuItemService;
 import com.archide.hsb.sync.HsbSyncAdapter;
 import com.archide.hsb.sync.SyncEvent;
+import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.model.MenuItemsViewModel;
 import com.archide.hsb.view.model.OrderDetailsViewModel;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,8 +96,11 @@ public class MenuItemServiceImpl implements MenuItemService {
                 menuItemsViewModels.remove(pos);
                 menuItemsViewModels.add(pos,menuItems);
             }
+
             orderDetailsViewModel.setTotalCount(orderDetailsViewModel.getTotalCount() + menuItems.getCount());
-            orderDetailsViewModel.setTotalCost(orderDetailsViewModel.getTotalCost() + (menuItems.getCount() * menuItems.getCost()));
+            double totalCost =  orderDetailsViewModel.getTotalCost() + (menuItems.getCount() * menuItems.getCost());
+            totalCost = Utilities.roundOff(totalCost);
+            orderDetailsViewModel.setTotalCost(totalCost);
         }
 
     }
@@ -108,6 +113,7 @@ public class MenuItemServiceImpl implements MenuItemService {
             for(PlacedOrderItemsEntity placedOrderItemsEntity : placedOrderItemsEntities){
                 totalCount = totalCount + placedOrderItemsEntity.getQuantity();
                 totalCost = totalCost + (placedOrderItemsEntity.getQuantity() * placedOrderItemsEntity.getCost());
+                totalCost = Utilities.roundOff(totalCost);
             }
             orderDetailsViewModel.setTotalCount(totalCount);
             orderDetailsViewModel.setTotalCost(totalCost);

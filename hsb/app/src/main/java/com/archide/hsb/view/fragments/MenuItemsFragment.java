@@ -175,8 +175,8 @@ public class MenuItemsFragment extends Fragment {
 
     public void updateFooterBar(){
         if(orderDetailsViewModel.getTotalCount() > 0){
-            Animation bounce = AnimationUtils.loadAnimation(homeActivity,R.anim.bounce);
-            imageView.startAnimation(bounce);
+           // Animation bounce = AnimationUtils.loadAnimation(homeActivity,R.anim.bounce);
+           // imageView.startAnimation(bounce);
             totalNoOfItems.setText(String.valueOf(orderDetailsViewModel.getTotalCount())+" items");
             totalAmount.setText(getString(R.string.pound)+" "+String.valueOf(orderDetailsViewModel.getTotalCost()));
             if(layout.getVisibility() != View.VISIBLE){
