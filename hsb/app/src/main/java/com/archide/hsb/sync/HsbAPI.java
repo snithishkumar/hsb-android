@@ -1,5 +1,6 @@
 package com.archide.hsb.sync;
 
+import com.archide.hsb.entity.KitchenMenuItemsEntity;
 import com.archide.hsb.sync.json.GetKitchenOrders;
 import com.archide.hsb.sync.json.PlaceOrdersJson;
 import com.archide.hsb.sync.json.ResponseData;
@@ -44,6 +45,12 @@ public interface HsbAPI {
 
     @POST ("/hsb/mobile/kitchen/sendUnSyncedKitchenOrders.html")
     Call<ResponseData> sendUnSyncedKitchenOrders(@Body List<PlaceOrdersJson> placeOrderList);
+
+    @POST ("/hsb/mobile/kitchen/sendKitchenMenuUpdates.html")
+    Call<ResponseData> sendKitchenMenuUpdates(@Body List<KitchenMenuItemsEntity> kitchenMenuItems);
+
+    @POST("/hsb/mobile/kitchen/getMenuItems.html")
+    Call<ResponseData> getMenuItems();
 
     @POST ("/hsb//mobile/getPreviousOrder.html")
     Call<ResponseData> getPreviousOrder(@Body JsonObject requestData);

@@ -20,6 +20,7 @@ import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.entity.PlacedOrdersEntity;
 import com.archide.hsb.enumeration.GsonAPI;
+import com.archide.hsb.enumeration.OrderStatus;
 import com.archide.hsb.enumeration.Status;
 import com.archide.hsb.enumeration.ViewStatus;
 import com.archide.hsb.sync.json.FoodCategoryJson;
@@ -33,10 +34,12 @@ import com.archide.hsb.sync.json.OrderedMenuItems;
 import com.archide.hsb.sync.json.PlaceOrdersJson;
 import com.archide.hsb.sync.json.ResponseData;
 import com.archide.hsb.sync.json.TableListJson;
+import com.archide.hsb.sync.json.UnAvailableMenuDetails;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,7 +149,12 @@ public class UserMenusSyncPerform {
                         menuEntity.setMenuCourseEntity(menuCourseEntity);
                         menuEntity.setFoodCategoryEntity(foodCategoryEntity);
                         menuItemsDao.createMenuEntity(menuEntity);
-                    }else if(menuEntity.getServerDateTime() < menuItemJson.getServerDateTime()){
+                    }/*else if(menuEntity.getServerDateTime() < menuItemJson.getServerDateTime()){
+                        menuEntity.clone(menuItemJson);
+                        menuItemsDao.updateMenuEntity(menuEntity);
+                    }*/
+
+                    else{
                         menuEntity.clone(menuItemJson);
                         menuItemsDao.updateMenuEntity(menuEntity);
                     }
@@ -205,6 +213,21 @@ public class UserMenusSyncPerform {
         return responseData;
     }
 
+    private void processUnAvailable(String responseData,List<PlacedOrderItemsEntity> itemsEntityList)throws SQLException{
+        UnAvailableMenuDetails unAvailableMenuDetails =  gson.fromJson(responseData, UnAvailableMenuDetails.class);
+        for(PlacedOrderItemsEntity placedOrderItemsEntity : itemsEntityList){
+            if(unAvailableMenuDetails.getUnAvailableMenuDetails().contains(placedOrderItemsEntity.getPlacedOrderItemsUUID())){
+                placedOrderItemsEntity.setOrderStatus(OrderStatus.UN_AVAILABLE);
+            }
+            placedOrderItemsEntity.setConform(false);
+            ordersDao.updatePlacedOrdersItemsEntity(placedOrderItemsEntity);
+        }
+        for(MenuListJson menuListJson : unAvailableMenuDetails.getMenuListJsonList()){
+            processMenuDetails(menuListJson);
+        }
+
+    }
+
 
     public ResponseData sendOrderData(){
         try{
@@ -229,6 +252,10 @@ public class UserMenusSyncPerform {
                         ordersDao.removeAllData();
                         AdminDao adminDao = new AdminDaoImpl(context);
                         adminDao.removeUser(placedOrdersEntity.getUserMobileNumber());
+                        ResponseData result = new ResponseData(responseData.getStatusCode(),null);
+                        return result;
+                    }else if(responseData.getStatusCode() == 405){
+                        processUnAvailable(responseData.getData(),itemsEntityList);
                         ResponseData result = new ResponseData(responseData.getStatusCode(),null);
                         return result;
                     }else {
@@ -344,7 +371,9 @@ public class UserMenusSyncPerform {
                     String previousOrder = responseData.getData();
                     PlaceOrdersJson placeOrdersJson =  gson.fromJson(previousOrder,PlaceOrdersJson.class);
                     processPreviousOrder(placeOrdersJson,true);
-
+                    if(responseData.getStatusCode() == 200){
+                        responseData.setStatusCode(400);
+                    }
 
                 }
                 ResponseData result = new ResponseData(responseData.getStatusCode(),null);

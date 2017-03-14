@@ -1,32 +1,25 @@
 package com.archide.hsb.service.impl;
 
-import android.accounts.Account;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.os.Bundle;
 
 import com.archide.hsb.dao.KitchenDao;
 import com.archide.hsb.dao.impl.KitchenDaoImpl;
 import com.archide.hsb.entity.KitchenCookingCmntsEntity;
+import com.archide.hsb.entity.KitchenMenuItemsEntity;
 import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
 import com.archide.hsb.entity.KitchenOrdersListEntity;
 import com.archide.hsb.enumeration.FoodType;
-import com.archide.hsb.enumeration.ViewStatus;
 import com.archide.hsb.service.KitchenService;
-import com.archide.hsb.sync.HsbSyncAdapter;
-import com.archide.hsb.sync.SyncEvent;
 import com.archide.hsb.view.model.KitchenCommentsViewModel;
 import com.archide.hsb.view.model.KitchenOrderDetailsViewModel;
 import com.archide.hsb.view.model.KitchenOrderListViewModel;
 
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import hsb.archide.com.hsb.R;
 
 /**
  * Created by Nithish on 26/11/16.
@@ -175,5 +168,30 @@ public class KitchenServiceImpl implements KitchenService {
     private String getLastOrderTime(long lastUpdatedDatTime){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
         return  simpleDateFormat.format(new Date(lastUpdatedDatTime));
+    }
+
+
+    public List<KitchenMenuItemsEntity> getKitchenMenuItemsModels(String searchText){
+        try{
+            List<KitchenMenuItemsEntity> kitchenMenuItemsEntities =   kitchenDao.getKitchenMenuItems(searchText);
+            for(KitchenMenuItemsEntity kitchenMenuItemsEntity : kitchenMenuItemsEntities){
+                kitchenMenuItemsEntity.setRemainingCount(kitchenMenuItemsEntity.getMaxCount() - kitchenMenuItemsEntity.getCurrentCount());
+            }
+            Collections.sort(kitchenMenuItemsEntities);
+            return kitchenMenuItemsEntities;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    public void updateKitchenMenuItemsEntity(KitchenMenuItemsEntity kitchenMenuItemsEntity){
+       try{
+           kitchenDao.updateKitchenMenuItemsEntity(kitchenMenuItemsEntity);
+
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+
     }
 }

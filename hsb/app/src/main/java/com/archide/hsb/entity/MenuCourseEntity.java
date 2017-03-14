@@ -13,6 +13,7 @@ public class MenuCourseEntity {
     public static final String DISPLAY_ORDER = "displayOrder";
 
 
+
     @DatabaseField(columnName = MENU_COURSE_ID,generatedId = true)
 	private int menuCourseId;
 
@@ -25,6 +26,9 @@ public class MenuCourseEntity {
 
     @DatabaseField(columnName = DISPLAY_ORDER)
 	private int displayOrder;
+
+
+
 
     public MenuCourseEntity(){
 

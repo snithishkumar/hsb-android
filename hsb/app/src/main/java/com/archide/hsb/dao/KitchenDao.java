@@ -1,6 +1,7 @@
 package com.archide.hsb.dao;
 
 import com.archide.hsb.entity.KitchenCookingCmntsEntity;
+import com.archide.hsb.entity.KitchenMenuItemsEntity;
 import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
 import com.archide.hsb.entity.KitchenOrdersListEntity;
@@ -63,4 +64,14 @@ public interface KitchenDao {
     void saveKitchenCookingCmntsEntity(KitchenCookingCmntsEntity kitchenCookingCmntsEntity)throws SQLException;
 
     List<KitchenCookingCmntsEntity> getKitchenCookingCmntsEntity(KitchenOrdersListEntity kitchenOrdersListEntity)throws SQLException;
+
+    void clearKitchenMenuItems()throws SQLException;
+
+    void saveKitchenMenuItems(List<KitchenMenuItemsEntity> kitchenMenuItemsEntity)throws SQLException;
+
+    List<KitchenMenuItemsEntity> getEditedMenuItems()throws SQLException;
+
+    List<KitchenMenuItemsEntity> getKitchenMenuItems(String searchText)throws SQLException;
+
+    void updateKitchenMenuItemsEntity(KitchenMenuItemsEntity kitchenMenuItemsEntity)throws SQLException;
 }

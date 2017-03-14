@@ -19,8 +19,8 @@ import com.google.android.gms.common.GoogleApiAvailability;
 public class ActivityUtil {
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-
-    public static String TABLE_NUMBER = "";
+    public static boolean isKitchenMenuList = false;
+     public static String TABLE_NUMBER = "";
     public static String USER_MOBILE = "";
     public static int APP_TYPE = 0;
     //static boolean IS_LOGIN = false;

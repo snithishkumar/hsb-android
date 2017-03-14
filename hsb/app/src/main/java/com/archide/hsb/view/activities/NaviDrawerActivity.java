@@ -1,26 +1,33 @@
 package com.archide.hsb.view.activities;
 
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.archide.hsb.service.OrderService;
 import com.archide.hsb.service.impl.OrderServiceImpl;
+import com.archide.hsb.sync.json.ResponseData;
+import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.fragments.AboutAsFragment;
 import com.archide.hsb.view.fragments.BillingFragment;
+import com.archide.hsb.view.fragments.DataFromServer;
 import com.archide.hsb.view.fragments.FragmentsUtil;
-import com.archide.hsb.view.fragments.KitchenOrderListFragment;
-import com.archide.hsb.view.fragments.OrderModuleLoginFragment;
-import com.archide.hsb.view.fragments.OrderPlaceFragment;
+import com.archide.hsb.view.fragments.OrderCloseEmptyFragment;
+import com.archide.hsb.view.fragments.PlacedOrderEmptyFragment;
 import com.archide.hsb.view.fragments.PlacedOrderHistoryFragment;
-import com.archide.hsb.view.fragments.TableChangeFragment;
+import com.archide.hsb.view.model.PlaceAnOrderViewModel;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import hsb.archide.com.hsb.R;
 
@@ -33,6 +40,9 @@ public class NaviDrawerActivity extends AppCompatActivity{
     private OrderService orderService;
 
     private boolean isLogOut;
+    private ProgressDialog progressDialog;
+
+    PlacedOrderHistoryFragment placedOrderHistoryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +62,7 @@ public class NaviDrawerActivity extends AppCompatActivity{
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
+
 
     private void showFragment(int options){
         switch (options){
@@ -66,15 +73,11 @@ public class NaviDrawerActivity extends AppCompatActivity{
                 break;
 
             case 2:
-                PlacedOrderHistoryFragment placedOrderHistoryFragment = new PlacedOrderHistoryFragment();
-                FragmentsUtil.addFragment(this, placedOrderHistoryFragment, R.id.navi_drawer_container);
-              //  KitchenOrderListFragment kitchenOrderListFragment = new KitchenOrderListFragment();
-               // FragmentsUtil.addFragment(this, kitchenOrderListFragment, R.id.navi_drawer_container);
+                showDataFromServerFragment(options);
                 break;
 
             case 3:
-                BillingFragment billingFragment = new BillingFragment();
-                FragmentsUtil.addFragment(this, billingFragment, R.id.navi_drawer_container);
+                showDataFromServerFragment(options);
                 break;
 
             case 4:
@@ -120,16 +123,13 @@ public class NaviDrawerActivity extends AppCompatActivity{
     public void onBackPressed() {
 
         if(isLogOut){
-
             logOut();
         }else{
-            super.onBackPressed();
+            finish();
         }
     }
 
     private void clearData(){
-
-
         getOrderService().removeAllData();
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -176,6 +176,132 @@ public class NaviDrawerActivity extends AppCompatActivity{
 
     public OrderService getOrderService() {
         return orderService;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        EventBus.getDefault().unregister(this);
+        super.onPause();
+    }
+
+
+    private void showDataFromServerFragment(int options){
+        DataFromServer dataFromServer = new DataFromServer();
+        FragmentsUtil.addRemoveFragment(this, dataFromServer,R.id.navi_drawer_container);
+
+        boolean isNetWorkConnected = Utilities.isNetworkConnected(this);
+        if (isNetWorkConnected) {
+            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_previous_update), this);
+            if(options == 2){
+                orderService.getPreviousOrderFromServer(this,ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
+            }else{
+                orderService.closeAnOrder(this,ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
+            }
+
+        } else {
+            ActivityUtil.showDialog(this, getString(R.string.no_network_heading), getString(R.string.no_network));
+        }
+
+    }
+
+     /* History */
+    private void processOrderHistory(){
+        PlaceAnOrderViewModel placeAnOrderViewModel =  orderService.getPlacedHistoryOrderViewModel();
+        if(placeAnOrderViewModel.getMenuItemsViewModels().size() < 1){
+            showPlacedOrderEmptyFragment();
+        }else{
+            showPlacedOrderHistoryFragment();
+        }
+    }
+
+
+    private void showPlacedOrderEmptyFragment(){
+        PlacedOrderEmptyFragment placedOrderEmptyFragment = new PlacedOrderEmptyFragment();
+        FragmentsUtil.replaceFragmentNoStack(this, placedOrderEmptyFragment,R.id.navi_drawer_container);
+    }
+
+
+    private void showPlacedOrderHistoryFragment(){
+        placedOrderHistoryFragment = new PlacedOrderHistoryFragment();
+        FragmentsUtil.replaceFragmentNoStack(this, placedOrderHistoryFragment,R.id.navi_drawer_container);
+    }
+     /* History End */
+
+
+    private void showOrderCloseEmptyFragment(){
+        OrderCloseEmptyFragment orderCloseEmptyFragment = new OrderCloseEmptyFragment();
+        FragmentsUtil.replaceFragmentNoStack(this, orderCloseEmptyFragment,R.id.navi_drawer_container);
+    }
+
+
+    private void showBillingFragment(){
+        BillingFragment billingFragment = new BillingFragment();
+        FragmentsUtil.replaceFragmentNoStack(this, billingFragment,R.id.navi_drawer_container);
+    }
+
+
+
+    private void showMainFragment(){
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+
+    private void removeFragment(){
+        Fragment fragment =  FragmentsUtil.getCurrentFragment(this,R.id.navi_drawer_container);
+        if(fragment instanceof PlacedOrderHistoryFragment){
+            placedOrderHistoryFragment.removeProgressDialog();
+        }
+
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleServerSyncResponse(ResponseData responseData) {
+
+        if(progressDialog != null){
+            progressDialog.dismiss();
+        }
+       switch (responseData.getStatusCode()){
+           case 3000:
+               processOrderHistory();
+               break;
+           case 200:
+               placedOrderHistoryFragment.removeProgressDialog();
+               showMainFragment();
+               break;
+           case 500:
+               removeFragment();
+               ActivityUtil.showDialog(this,"Error","Sorry for the Inconvenience. Please contact Admin.");
+               break;
+
+           case 400:
+           case 405:
+               showBillingFragment();
+               break;
+           case 403:
+               showOrderCloseEmptyFragment();
+               break;
+
+           case 404:
+               showPlacedOrderEmptyFragment();
+               break;
+
+       }
+
+    }
+
+    public void placeAnOrder(View view){
+        finish();
     }
 
 

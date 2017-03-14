@@ -11,6 +11,7 @@ import android.util.Log;
 import com.archide.hsb.entity.ConfigurationEntity;
 import com.archide.hsb.entity.FoodCategoryEntity;
 import com.archide.hsb.entity.KitchenCookingCmntsEntity;
+import com.archide.hsb.entity.KitchenMenuItemsEntity;
 import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
 import com.archide.hsb.entity.KitchenOrdersListEntity;
@@ -64,6 +65,7 @@ public class DatabaseHelper<T,T1> extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, KitchenOrdersCategoryEntity.class);
             TableUtils.createTableIfNotExists(connectionSource, KitchenOrderDetailsEntity.class);
             TableUtils.createTableIfNotExists(connectionSource, KitchenCookingCmntsEntity.class);
+            TableUtils.createTableIfNotExists(connectionSource, KitchenMenuItemsEntity.class);
 
         } catch (Exception e) {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);

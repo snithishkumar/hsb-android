@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.archide.hsb.enumeration.OrderStatus;
+import com.archide.hsb.util.Utilities;
+import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.OrderActivity;
 import com.archide.hsb.view.fragments.OrderPlaceFragment;
 import com.archide.hsb.view.model.MenuItemsViewModel;
@@ -63,7 +65,7 @@ public class OrderedMenuItemsAdapter extends RecyclerView.Adapter<RecyclerView.V
             OrderedMenuItemsViewHolder orderedMenuItemsViewHolder  = (OrderedMenuItemsViewHolder)viewHolder;
             //orderedMenuItemsViewHolder.vTotalCount.setText(String.valueOf(menuItemsViewModel.getCount()) +"x ");
 //            orderedMenuItemsViewHolder.vTotalCount.setText("");
-            orderedMenuItemsViewHolder.vTotalAmount.setText(orderActivity.getString(R.string.pound)+String.valueOf(menuItemsViewModel.getCost() * menuItemsViewModel.getCount()));
+            orderedMenuItemsViewHolder.vTotalAmount.setText(orderActivity.getString(R.string.pound)+String.valueOf(Utilities.roundOff(menuItemsViewModel.getCost() * menuItemsViewModel.getCount())));
             orderedMenuItemsViewHolder.vOrderName.setText(String.valueOf(menuItemsViewModel.getName()));
             orderedMenuItemsViewHolder.vCountValue.setText(String.valueOf(menuItemsViewModel.getCount()));
         }else{
@@ -121,9 +123,14 @@ public class OrderedMenuItemsAdapter extends RecyclerView.Adapter<RecyclerView.V
             switch (view.getId()){
 
                 case R.id.increment:
-                    menuItemsViewModel.setCount(menuItemsViewModel.getCount() + 1);
-                    orderActivity.getOrderService().addOrderItems(menuItemsViewModel);
-                    orderPlaceFragment.calcAmountDetails();
+                    if(menuItemsViewModel.getCount() < menuItemsViewModel.getAvailableCount()){
+                        menuItemsViewModel.setCount(menuItemsViewModel.getCount() + 1);
+                        orderActivity.getOrderService().addOrderItems(menuItemsViewModel);
+                        orderPlaceFragment.calcAmountDetails();
+                    }else{
+                        ActivityUtil.toast(orderActivity,orderActivity.getString(R.string.un_available));
+                    }
+
                     break;
                 case R.id.decrement:
                     if(menuItemsViewModel.getCount() == 1){

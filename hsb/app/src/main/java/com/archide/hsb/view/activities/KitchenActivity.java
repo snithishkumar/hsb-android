@@ -9,11 +9,10 @@ import android.view.MenuItem;
 import com.archide.hsb.service.KitchenService;
 import com.archide.hsb.service.impl.KitchenServiceImpl;
 import com.archide.hsb.view.fragments.FragmentsUtil;
+import com.archide.hsb.view.fragments.KitchenMenuItemsFragment;
 import com.archide.hsb.view.fragments.KitchenOrderListFragment;
 
 import hsb.archide.com.hsb.R;
-
-import static android.provider.CallLog.AUTHORITY;
 
 /**
  * Created by Nithish on 26/11/16.
@@ -33,6 +32,7 @@ public class KitchenActivity extends AppCompatActivity implements KitchenOrderLi
 
     private void init(){
 
+      //  getActionBar().setIcon(R.drawable.ic_media_play);
       /*  Account account = HsbSyncAdapter.getSyncAccount(this);
         Bundle settingsBundle = new Bundle();
         settingsBundle.putInt("currentScreen", SyncEvent.GET_KITCHEN_ORDERS_DATA);
@@ -48,9 +48,9 @@ public class KitchenActivity extends AppCompatActivity implements KitchenOrderLi
 
 
     private void showFragment(){
-        KitchenOrderListFragment kitchenOrderListFragment = new KitchenOrderListFragment();
+
+         KitchenOrderListFragment kitchenOrderListFragment = new KitchenOrderListFragment();
         FragmentsUtil.addRemoveFragment(this,kitchenOrderListFragment, R.id.main_container);
-       // FragmentsUtil.addFragment(this, kitchenOrderListFragment, R.id.main_container);
     }
 
     private void showOrderDetails(String orderId){
@@ -85,5 +85,24 @@ public class KitchenActivity extends AppCompatActivity implements KitchenOrderLi
 
     public KitchenService getKitchenService() {
         return kitchenService;
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.kitchen_menu_list_action, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_menu_list:
+                Intent intent = new Intent(this, KitchenMenusActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

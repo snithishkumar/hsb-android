@@ -19,6 +19,7 @@ import com.archide.hsb.enumeration.Status;
 import com.archide.hsb.service.OrderService;
 import com.archide.hsb.sync.HsbSyncAdapter;
 import com.archide.hsb.sync.SyncEvent;
+import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.model.CloseOrderViewModel;
 import com.archide.hsb.view.model.MenuItemsViewModel;
@@ -131,8 +132,10 @@ public class OrderServiceImpl implements OrderService {
         double subTotal = 0;
         List<MenuItemsViewModel> menuItemsViewModels = placeAnOrderViewModel.getMenuItemsViewModels();
         for(MenuItemsViewModel menuItemsViewModel : menuItemsViewModels){
-            subTotal = subTotal + ( menuItemsViewModel.getCost() * menuItemsViewModel.getCount());
+           double cost =  Utilities.roundOff(menuItemsViewModel.getCost() * menuItemsViewModel.getCount());
+            subTotal = subTotal + cost;
         }
+        subTotal = Utilities.roundOff(subTotal);
         placeAnOrderViewModel.setSubTotalBeforeDiscount(subTotal);
         placeAnOrderViewModel.setSubTotal(subTotal);
         placeAnOrderViewModel.setDiscount(0);
@@ -149,7 +152,7 @@ public class OrderServiceImpl implements OrderService {
             if(status.equals(Status.UN_AVAILABLE.toString())){
                 placeAnOrderViewModel.setUnAvailable(true);
             }else{
-                subTotal = subTotal + orderItemsEntity.getCost() * orderItemsEntity.getQuantity();
+                subTotal = subTotal + Utilities.roundOff((orderItemsEntity.getCost() * orderItemsEntity.getQuantity()));
             }
 
             MenuItemsViewModel menuItemsViewModel = new MenuItemsViewModel(orderItemsEntity);
@@ -157,6 +160,7 @@ public class OrderServiceImpl implements OrderService {
             menuItemsViewModel.setOrderStatus(orderStatus);
             placeAnOrderViewModel.getMenuItemsViewModels().add(menuItemsViewModel);
         }
+        subTotal = Utilities.roundOff(subTotal);
         placeAnOrderViewModel.setSubTotalBeforeDiscount(subTotal);
         placeAnOrderViewModel.setSubTotal(subTotal);
         placeAnOrderViewModel.setDiscount(0);
@@ -359,6 +363,11 @@ public class OrderServiceImpl implements OrderService {
     public void removeAllData(){
         try{
             ordersDao.removeAllData();
+            if(ActivityUtil.USER_MOBILE != null){
+                AdminDao adminDao = new AdminDaoImpl(context);
+                adminDao.removeUser(ActivityUtil.USER_MOBILE);
+            }
+
         }catch (Exception e){
             e.printStackTrace();
         }

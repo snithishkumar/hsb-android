@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.archide.hsb.dao.KitchenDao;
 import com.archide.hsb.entity.KitchenCookingCmntsEntity;
+import com.archide.hsb.entity.KitchenMenuItemsEntity;
 import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
 import com.archide.hsb.entity.KitchenOrdersListEntity;
@@ -30,6 +31,8 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
     Dao<KitchenOrderDetailsEntity,Integer> kitchenOrderDetailsDao = null;
     Dao<KitchenCookingCmntsEntity,Integer> kitchenCookingCommentsDao = null;
 
+    Dao<KitchenMenuItemsEntity,Integer> kitchenMenuItemsDao = null;
+
 
     public KitchenDaoImpl(Context context) throws SQLException {
         super(context);
@@ -42,6 +45,7 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
         kitchenOrderCategorytDao =  databaseHelper.getDao(KitchenOrdersCategoryEntity.class);
         kitchenOrderDetailsDao = databaseHelper.getDao(KitchenOrderDetailsEntity.class);
         kitchenCookingCommentsDao = databaseHelper.getDao(KitchenCookingCmntsEntity.class);
+        kitchenMenuItemsDao = databaseHelper.getDao(KitchenMenuItemsEntity.class);
     }
 
     @Override
@@ -217,6 +221,40 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
     @Override
     public void saveKitchenCookingCmntsEntity(KitchenCookingCmntsEntity kitchenCookingCmntsEntity)throws SQLException{
         kitchenCookingCommentsDao.create(kitchenCookingCmntsEntity);
+    }
+
+
+    @Override
+    public void clearKitchenMenuItems()throws SQLException{
+        kitchenMenuItemsDao.deleteBuilder().delete();
+    }
+
+
+    @Override
+    public void saveKitchenMenuItems(List<KitchenMenuItemsEntity> kitchenMenuItemsEntity)throws SQLException{
+        kitchenMenuItemsDao.create(kitchenMenuItemsEntity);
+    }
+
+
+    @Override
+    public List<KitchenMenuItemsEntity> getEditedMenuItems()throws SQLException{
+       return kitchenMenuItemsDao.queryBuilder().where().eq(KitchenMenuItemsEntity.IS_EDITED,true).query();
+    }
+
+    @Override
+    public List<KitchenMenuItemsEntity> getKitchenMenuItems(String searchText)throws SQLException{
+        if(searchText != null && !searchText.trim().isEmpty()){
+          QueryBuilder<KitchenMenuItemsEntity,Integer> queryBuilder =  kitchenMenuItemsDao.queryBuilder();
+            queryBuilder.where().like(KitchenMenuItemsEntity.NAME,'%'+searchText+"%").or().like(KitchenMenuItemsEntity.MENU_ITEM_CODE,'%'+searchText+"%");
+            return queryBuilder.query();
+        }
+        return kitchenMenuItemsDao.queryForAll();
+    }
+
+
+    @Override
+    public void updateKitchenMenuItemsEntity(KitchenMenuItemsEntity kitchenMenuItemsEntity)throws SQLException{
+        kitchenMenuItemsDao.update(kitchenMenuItemsEntity);
     }
 
 }

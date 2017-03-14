@@ -12,6 +12,7 @@
         android:layout_width="600dp"
         android:layout_height="600dp"
         android:src="@drawable/place_an_order"
+        android:onClick="placeAnOrder"
         android:id="@+id/place_an_order" />
 
 
