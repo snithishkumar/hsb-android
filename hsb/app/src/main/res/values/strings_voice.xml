@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_voice">Welcome to Taste of India</string>
+    <string name="menu_screen_voice">Please Select an menu</string>
+    <string name="order_confirm_voice">Your order has been conformed. </string>
+    <string name="order_already_closed_voice">Your order has been closed.</string>
+    <string name="internal_server_error_voice">OOps. Something went wrong.</string>
+    <string name="data_from_server_voice">Getting your Updates.</string>
+    <string name="history_empty_voice">We have not receive any orders. Please make an order.</string>
+    <string name="close_order_empty_voice">We have not receive any orders. Please make an order.</string>
+    <string name="close_order_voice">Thanks to coming.</string>
+</resources>
