@@ -3,6 +3,7 @@ package com.archide.hsb.view.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,13 +25,17 @@ import com.archide.hsb.view.fragments.MenuItemsFragment;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import hsb.archide.com.hsb.R;
 
-public class HomeActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener{
+public class HomeActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener,TextToSpeech.OnInitListener{
 
     private MenuItemService menuItemService;
     private OrderService orderService;
+
+    private TextToSpeech engine;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +60,15 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.root_layout),mToolbar);
         drawerFragment.setDrawerListener(this);
+       // speech();
 
     }
 
     private void init(){
         menuItemService = new MenuItemServiceImpl(this);
         orderService = new OrderServiceImpl(this);
+        engine = new TextToSpeech(this, this);
+
     }
 
     private void setupViewPager(ViewPager viewPager,TabLayout tabLayout) {
@@ -211,4 +219,25 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
         return;
        // finish();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        engine.shutdown();
+    }
+
+    @Override
+    public void onInit(int i) {
+        if (i == TextToSpeech.SUCCESS) {
+            engine.setLanguage(Locale.UK);
+            speech(getString(R.string.menu_screen_voice));
+        }
+
+    }
+
+    private void speech(String textToSpeech) {
+        engine.speak(textToSpeech, TextToSpeech.QUEUE_FLUSH, null, null);
+    }
+
+
 }

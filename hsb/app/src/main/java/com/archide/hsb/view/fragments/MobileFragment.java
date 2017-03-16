@@ -3,6 +3,7 @@ package com.archide.hsb.view.fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,13 +25,14 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import hsb.archide.com.hsb.R;
 
 /**
  *
  */
-public class MobileFragment extends Fragment implements View.OnClickListener{
+public class MobileFragment extends Fragment implements View.OnClickListener,TextToSpeech.OnInitListener {
 
     private MainActivity mainActivity;
     private TextView userMobile;
@@ -41,10 +43,13 @@ public class MobileFragment extends Fragment implements View.OnClickListener{
 
     private LabelledSpinner vUserType;
 
+    private TextToSpeech engine;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        engine = new TextToSpeech(mainActivity, this);
     }
 
     @Override
@@ -103,6 +108,7 @@ public class MobileFragment extends Fragment implements View.OnClickListener{
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+        engine.shutdown();
     }
 
     public interface MainActivityCallback {
@@ -172,6 +178,19 @@ public class MobileFragment extends Fragment implements View.OnClickListener{
         }else{
             ActivityUtil.showDialog(mainActivity,"Error","Sorry for the Inconvenience. Please contact Admin.");
         }
+    }
+
+    @Override
+    public void onInit(int i) {
+        if (i == TextToSpeech.SUCCESS) {
+            engine.setLanguage(Locale.UK);
+            speech(mainActivity.getString(R.string.welcome_voice));
+        }
+
+    }
+
+    private void speech(String textToSpeech) {
+        engine.speak(textToSpeech, TextToSpeech.QUEUE_FLUSH, null, null);
     }
 
 
