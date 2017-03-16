@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -93,4 +94,7 @@ public class ActivityUtil {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
+
+
 }

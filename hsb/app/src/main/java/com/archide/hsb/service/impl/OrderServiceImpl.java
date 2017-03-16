@@ -281,7 +281,7 @@ public class OrderServiceImpl implements OrderService {
                 closeOrderViewModel.setOrderId(placedOrdersEntity.getOrderId());
                 closeOrderViewModel.setTableNumber(placedOrdersEntity.getTableNumber());
                 closeOrderViewModel.setUserMobileNumber(placedOrdersEntity.getUserMobileNumber());
-                closeOrderViewModel.setTotalAmount(String.valueOf(placedOrdersEntity.getTotalPrice()));
+                closeOrderViewModel.setTotalAmount(String.valueOf(Utilities.roundOff(placedOrdersEntity.getTotalPrice())));
             }
 
 

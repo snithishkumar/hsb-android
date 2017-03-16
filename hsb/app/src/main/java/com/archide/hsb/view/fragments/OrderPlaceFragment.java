@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,15 +29,13 @@ import com.archide.hsb.view.activities.HomeActivity;
 import com.archide.hsb.view.activities.MainActivity;
 import com.archide.hsb.view.activities.OrderActivity;
 import com.archide.hsb.view.adapters.OrderedMenuItemsAdapter;
-import com.archide.hsb.view.model.MenuItemsViewModel;
 import com.archide.hsb.view.model.PlaceAnOrderViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
 import hsb.archide.com.hsb.R;
 
@@ -44,7 +43,7 @@ import hsb.archide.com.hsb.R;
  * Created by Nithish on 19/11/16.
  */
 
-public class OrderPlaceFragment extends Fragment implements View.OnClickListener{
+public class OrderPlaceFragment extends Fragment implements View.OnClickListener,TextToSpeech.OnInitListener {
 
     LinearLayoutManager linearLayoutManager = null;
 
@@ -71,10 +70,12 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
 
     SharedPreferences sharedpreferences;
 
+    private TextToSpeech engine;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        engine = new TextToSpeech(orderActivity, this);
     }
 
     private void init(View view){
@@ -228,6 +229,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+        engine.shutdown();
     }
 
 
@@ -327,6 +329,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
                 break;
 
             case 200:
+                speech(orderActivity.getString(R.string.order_confirm_voice));
                 Toast.makeText(orderActivity,getString(R.string.order_conformation),Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(orderActivity, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -334,7 +337,8 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
                 orderActivity.finish();
                 return;
             case 403:
-                Toast.makeText(orderActivity,getString(R.string.order_already_closed),Toast.LENGTH_LONG).show();
+                speech(orderActivity.getString(R.string.order_already_closed_voice));
+                Toast.makeText(orderActivity,getString(R.string.order_already_closed_voice),Toast.LENGTH_LONG).show();
                  intent = new Intent(orderActivity, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -342,6 +346,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
                 return;
 
             default:
+                speech(orderActivity.getString(R.string.internal_server_error_voice));
                 Toast.makeText(orderActivity,getString(R.string.internal_error),Toast.LENGTH_LONG).show();
                  intent = new Intent(orderActivity, HomeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -363,5 +368,18 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
         removeCookingComments();
         ImageView imageView =  (ImageView)newView.findViewById(R.id.place_an_order);
         imageView.setOnClickListener(this);
+    }
+
+    @Override
+    public void onInit(int i) {
+        if (i == TextToSpeech.SUCCESS) {
+            engine.setLanguage(Locale.UK);
+
+        }
+
+    }
+
+    private void speech(String textToSpeech) {
+        engine.speak(textToSpeech, TextToSpeech.QUEUE_FLUSH, null, null);
     }
 }
