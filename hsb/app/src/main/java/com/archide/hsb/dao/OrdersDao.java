@@ -17,8 +17,6 @@ public interface OrdersDao {
 
     PlacedOrdersEntity getPlacedOrdersEntity(String placeOrderUuid)throws SQLException;
 
-    PlacedOrdersEntity getPlacedOrderHistoryByMobile(String userMobileNumber,String tableNumber)throws SQLException;
-
     void createPlacedOrdersEntity(PlacedOrdersEntity placedOrdersEntity)throws  SQLException;
 
     PlacedOrderItemsEntity getPlacedOrdersItemsEntity(String orderUuid)throws SQLException;
@@ -33,7 +31,7 @@ public interface OrdersDao {
 
     List<PlacedOrderItemsEntity> getPlacedOrderItemsEntity(MenuCourseEntity menuCourseEntity)throws SQLException;
 
-    List<PlacedOrderItemsEntity> getPlacedOrderHistoryItems(PlacedOrdersEntity placedOrdersEntity)throws SQLException;
+    List<PlacedOrderItemsEntity> getPlacedOrderHistoryItems()throws SQLException;
 
     void removeCurrentOrder()throws SQLException;
 
@@ -45,7 +43,6 @@ public interface OrdersDao {
 
     void reSetPlacedOrderItems()throws SQLException;
 
-    long getPreviousSyncHistoryData()throws SQLException;
 
     void removeUnAvailablePlacedOrders()throws SQLException;
 

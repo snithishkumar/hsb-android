@@ -23,6 +23,8 @@ import java.util.List;
 
 import hsb.archide.com.hsb.R;
 
+import static com.archide.hsb.view.activities.MainActivity.KITCHEN_LOGIN_SUCCESS;
+
 
 /**
  *
@@ -172,7 +174,7 @@ public class KitchenLoginFragment extends Fragment implements View.OnClickListen
             int result =  mainActivity.getTableListService().verifyLogin(data);
             if(result == 2){
                 syncData();
-                mainActivityCallback.success(5000,null);
+                mainActivityCallback.success(KITCHEN_LOGIN_SUCCESS,null);
                 //login success
             }else if(result == 3){
                 ActivityUtil.showDialog(mainActivity,"Error",getString(R.string.incorrect_password));

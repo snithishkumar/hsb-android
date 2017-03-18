@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 android:gravity="center"
+   tools:context="com.archide.hsb.view.activities.MainActivity"
     > //ccc
 
     <RelativeLayout
@@ -32,40 +33,26 @@ android:gravity="center"
             android:layout_height="wrap_content">
 
             <Button
-                android:text="Button1"
+                android:text="Dinning"
                 android:layout_width="170dp"
                 android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:background="@drawable/item_type_background"
-                android:id="@+id/welcome_button1" />
+                android:onClick="onClick"
+                android:id="@+id/welcome_dinning" />
 
             <Button
-                android:text="Button2"
+                android:text="Take Away"
                 android:layout_height="wrap_content"
                 android:layout_width="170dp"
                 android:layout_marginTop="75dp"
                 android:textColor="@android:color/white"
                 android:background="@drawable/item_type_background"
-                android:id="@+id/welcome_button2" />
+                android:onClick="onClick"
+                android:id="@+id/welcome_take_away" />
 
-            <Button
-                android:text="Button3"
-                android:layout_height="wrap_content"
-                android:layout_width="170dp"
-                android:layout_marginTop="75dp"
-                android:textColor="@android:color/white"
-                android:background="@drawable/item_type_background"
-                android:id="@+id/welcome_button3" />
 
-            <Button
-                android:text="Button3"
-                android:layout_height="wrap_content"
-                android:layout_width="170dp"
-                android:layout_marginTop="75dp"
-                android:textColor="@android:color/white"
-                android:background="@drawable/item_type_background"
-                android:id="@+id/welcome_button4" />
 
 
 

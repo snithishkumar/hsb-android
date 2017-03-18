@@ -5,105 +5,108 @@
     xmlns:ls="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="#F6F6F6"
-    android:gravity="center"
-    tools:context="com.archide.hsb.view.fragments.ConfigurationFragment">
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:gravity="center">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="50dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:background="@android:color/white"
         android:orientation="vertical">
-        <LinearLayout
-            android:id="@+id/vTypeLayout"
-            android:layout_margin="10dp"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/chef_cooking_on_stove"
-                android:id="@+id/vTypeIcon" />
-            <com.satsuware.usefulviews.LabelledSpinner
-                android:id="@+id/vType"
-                ls:labelText="App Type"
-                ls:widgetColor="#F44336"
-                android:layout_marginLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/tasteofindia"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/login_text"
+            android:layout_marginTop="20dp"
+            android:textSize="18dp"
+            android:text="@string/mobile_number_message"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal" />
 
         <LinearLayout
-            android:id="@+id/vPasswordLayout"
+            android:id="@+id/vTableLayout"
             android:layout_width="match_parent"
-            android:layout_margin="10dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_vpn_key_black_48dp"
-                android:id="@+id/vPasswordImg" />
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_local_phone_black_48dp"
+                android:id="@+id/vTableIcon" />
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="25dp"
                 android:layout_height="wrap_content">
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:id="@+id/vPassword"
-                    android:maxLength="6"
-                    android:hint= "@string/mpin_hint" />
+                    android:id="@+id/vCaptainTableNumber"
+                    android:hint="@string/table_number_hint" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
+
+
         <LinearLayout
+            android:id="@+id/vTypeLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_vpn_key_black_48dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_local_phone_black_48dp"
                 android:id="@+id/vUserMobileIcon" />
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="25dp"
                 android:layout_height="wrap_content">
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:id="@+id/vRetypePassword"
-                    android:maxLength="6"
-                    android:hint="@string/mpin_hint_retype" />
+                    android:id="@+id/vCaptainUserMobileNumber"
+                    android:hint="@string/mobile_number_hint" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
+
+
+
         <Button
             android:id="@+id/submit"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="30dp"
             android:text="Submit"/>
+        </LinearLayout>
+    </ScrollView>
     </LinearLayout>
-</ScrollView>
-
-
-
-
-</LinearLayout>

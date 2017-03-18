@@ -86,9 +86,7 @@ public class NaviDrawerActivity extends AppCompatActivity{
                 break;
 
             case 5:
-                orderService.logout(this,ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
                 orderService.removeAllData();
-                orderService.closeOrder(ActivityUtil.USER_MOBILE);
                 intent = new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -200,9 +198,9 @@ public class NaviDrawerActivity extends AppCompatActivity{
         if (isNetWorkConnected) {
             progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_previous_update), this);
             if(options == 2){
-                orderService.getPreviousOrderFromServer(this,ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
+                orderService.getPreviousOrderFromServer(this);
             }else{
-                orderService.closeAnOrder(this,ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
+                orderService.closeAnOrder(this);
             }
 
         } else {

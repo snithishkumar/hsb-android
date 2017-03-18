@@ -3,6 +3,7 @@ package com.archide.hsb.service;
 import com.archide.hsb.entity.ConfigurationEntity;
 import com.archide.hsb.entity.UsersEntity;
 import com.archide.hsb.enumeration.AppType;
+import com.archide.hsb.enumeration.OrderType;
 
 import java.util.List;
 
@@ -12,11 +13,10 @@ import java.util.List;
 
 public interface TableListService {
 
-    void getTableList();
-    void getMenuItems(String tableNumber,String mobileNumber,String vUserTypeText);
-    void createAdmin(String tableNumber,String mPin,AppType selectedAppType);
+    void getMenuItems();
+    void createAdmin(String mPin,AppType selectedAppType);
 
-    void updateUserMobile(String userMobile);
+
 
   //  boolean isTableConfigured();
 
@@ -24,18 +24,15 @@ public interface TableListService {
 
     int verifyLogin(String mPin);
 
-    List<UsersEntity> getUsers();
-
-    void removePreviousData();
 
 
     void changeTableNumber(String tableNumber);
 
-    boolean isOrderOpen();
-
-    boolean isUnClosedUser();
 
     void removeAllData();
 
-    void removeUsers(String userMobileNumber);
+
+    void createUsers(String mobileNumber,OrderType orderType);
+
+    void updateTableNumber(String tableNumber,String userMobileNumber,OrderType orderType);
 }

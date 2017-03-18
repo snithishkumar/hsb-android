@@ -5,17 +5,19 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.archide.hsb.entity.ConfigurationEntity;
 import com.archide.hsb.enumeration.AppType;
+import com.archide.hsb.enumeration.OrderType;
 import com.archide.hsb.service.TableListService;
 import com.archide.hsb.service.impl.TableListServiceImpl;
+import com.archide.hsb.view.fragments.CaptainMobileFragment;
 import com.archide.hsb.view.fragments.ConfigurationFragment;
 import com.archide.hsb.view.fragments.FragmentsUtil;
 import com.archide.hsb.view.fragments.KitchenLoginFragment;
 import com.archide.hsb.view.fragments.MobileFragment;
 import com.archide.hsb.view.fragments.OrderModuleLoginFragment;
-import com.archide.hsb.view.fragments.TableChangeFragment;
 import com.archide.hsb.view.fragments.WelcomeFragment;
 
 import java.io.File;
@@ -25,24 +27,24 @@ import hsb.archide.com.hsb.R;
 
 public class MainActivity extends AppCompatActivity implements MobileFragment.MainActivityCallback,
         ConfigurationFragment.MainActivityCallback, KitchenLoginFragment.MainActivityCallback,
-        OrderModuleLoginFragment.MainActivityCallback,TableChangeFragment.MainActivityCallback,
-        WelcomeFragment.MainActivityCallback{
+        OrderModuleLoginFragment.MainActivityCallback{
 
     private WelcomeFragment welcomeFragment;
     private ConfigurationFragment configurationFragment;
     private TableListService tableListService;
 
 
-    private boolean isOrderClosed = false;
-
-    private static final String TAG_MY_FRAGMENT = "myFragment";
+    public static final int CONF_SUCCESS_KITCHEN = 1;
+    public static final int CONF_SUCCESS_USER = 2;
+    public static final int CONF_SUCCESS_CAPTAIN = 3;
+    public static final int MENU_LIST_SUCCESS = 4;
+    public static final int KITCHEN_LOGIN_SUCCESS = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        isOrderClosed = getIntent().getBooleanExtra("orderClosed",false);
         showFragment();
 
     }
@@ -58,66 +60,78 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
             configurationFragment = new ConfigurationFragment();
             FragmentsUtil.addFragment(this, configurationFragment, R.id.main_container);
         }else{
-            if(configurationEntity.getAppType().toString().equals(AppType.Kitchen.toString())){
-                KitchenLoginFragment kitchenLoginFragment = new KitchenLoginFragment();
-                FragmentsUtil.addFragment(this, kitchenLoginFragment, R.id.main_container);
-            }else if(isOrderClosed){
-                MobileFragment mobileFragment = new MobileFragment();
-                FragmentsUtil.addRemoveFragment(this, mobileFragment, R.id.main_container);
-                ActivityUtil.TABLE_NUMBER = configurationEntity.getTableNumber();
-            }else{
-                welcomeFragment = new WelcomeFragment();
-
-                FragmentsUtil.addRemoveFragment(this, welcomeFragment, R.id.main_container);
-                ActivityUtil.TABLE_NUMBER = configurationEntity.getTableNumber();
-
+            switch (configurationEntity.getAppType()){
+                case User:
+                    WelcomeFragment welcomeFragment = new WelcomeFragment();
+                    FragmentsUtil.addFragment(this, welcomeFragment, R.id.main_container);
+                    break;
+                case Captain:
+                    CaptainMobileFragment captainMobileFragment = new CaptainMobileFragment();
+                    FragmentsUtil.addFragment(this, captainMobileFragment, R.id.main_container);
+                    break;
+                case Kitchen:
+                    KitchenLoginFragment kitchenLoginFragment = new KitchenLoginFragment();
+                    FragmentsUtil.addFragment(this, kitchenLoginFragment, R.id.main_container);
+                    break;
             }
+
         }
 
     }
 
+    private void showCaptainView(){
+        CaptainMobileFragment captainMobileFragment = new CaptainMobileFragment();
+        FragmentsUtil.replaceFragmentNoStack(this, captainMobileFragment, R.id.main_container);
+    }
+
+    private void showUserView(){
+        WelcomeFragment welcomeFragment = new WelcomeFragment();
+        FragmentsUtil.replaceFragmentNoStack(this, welcomeFragment, R.id.main_container);
+    }
+
+    private void showKitchenView(){
+        KitchenLoginFragment kitchenLoginFragment = new KitchenLoginFragment();
+        FragmentsUtil.replaceFragmentNoStack(this, kitchenLoginFragment, R.id.main_container);
+    }
+
+
+    private void showUserMobileFragment(OrderType orderType){
+        MobileFragment mobileFragment = new MobileFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("orderType", orderType.toString());
+        mobileFragment.setArguments(bundle);
+        FragmentsUtil.replaceFragmentNoStack(this, mobileFragment, R.id.main_container);
+    }
+
     @Override
     public void success(int code, Object data) {
-        if(code == AppType.Kitchen.getAppType()){
-            KitchenLoginFragment kitchenLoginFragment = new KitchenLoginFragment();
-            FragmentsUtil.addFragment(this, kitchenLoginFragment, R.id.main_container);
+        switch (code){
+            case CONF_SUCCESS_CAPTAIN:
+                showCaptainView();
+                break;
+            case CONF_SUCCESS_KITCHEN:
+                showKitchenView();
+                break;
+            case CONF_SUCCESS_USER:
+                showUserView();
+                break;
+            case MENU_LIST_SUCCESS:
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+                break;
 
-           /* Intent intent = new Intent(this, KitchenActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();*/
-        }
-        else if(code == AppType.User.getAppType()){
-            welcomeFragment = new WelcomeFragment();
-            FragmentsUtil.replaceFragmentNoStack(this, welcomeFragment, R.id.main_container);
+            case KITCHEN_LOGIN_SUCCESS:
+                intent = new Intent(this, KitchenActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
 
+                break;
         }
-        else if(code == 5001){
-            MobileFragment mobileFragment = new MobileFragment();
-            FragmentsUtil.replaceFragment(this,mobileFragment,R.id.main_container);
-        }else if(code == 5002){
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        }
-        else if(code == 5000){
-            Intent intent = new Intent(this, KitchenActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        }else if(code == 6000){
-            TableChangeFragment tableChangeFragment = new TableChangeFragment();
-            FragmentsUtil.replaceFragmentNoStack(this, tableChangeFragment, R.id.main_container);
-        }else if(code == 7000){
-            FragmentsUtil.replaceFragmentNoStack(this, welcomeFragment, R.id.main_container);
-        }else{
 
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        }
+
 
     }
 
@@ -146,24 +160,18 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
 
-            case R.id.action_refresh:
-                if(getTableListService().isUnClosedUser()){
-                    ActivityUtil.showDialog(this,getString(R.string.Warn),getString(R.string.change_table_error));
-                }else{
-                   OrderModuleLoginFragment orderModuleLoginFragment = new OrderModuleLoginFragment();
-                    FragmentsUtil.replaceFragmentNoStack(this, orderModuleLoginFragment, R.id.main_container);
-                }
 
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.welcome_dinning:
+                showUserMobileFragment(OrderType.Dinning);
                 break;
-            default:
+            case R.id.welcome_take_away:
+                showUserMobileFragment(OrderType.TakeAway);
                 break;
         }
 
-        return true;
     }
 
 

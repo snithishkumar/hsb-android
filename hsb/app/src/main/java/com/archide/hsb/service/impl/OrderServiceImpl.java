@@ -14,21 +14,19 @@ import com.archide.hsb.dao.impl.OrdersDaoImpl;
 import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.entity.PlacedOrdersEntity;
+import com.archide.hsb.entity.UsersEntity;
 import com.archide.hsb.enumeration.OrderStatus;
 import com.archide.hsb.enumeration.Status;
 import com.archide.hsb.service.OrderService;
 import com.archide.hsb.sync.HsbSyncAdapter;
 import com.archide.hsb.sync.SyncEvent;
 import com.archide.hsb.util.Utilities;
-import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.model.CloseOrderViewModel;
 import com.archide.hsb.view.model.MenuItemsViewModel;
 import com.archide.hsb.view.model.PlaceAnOrderViewModel;
 
 import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 import hsb.archide.com.hsb.R;
@@ -170,62 +168,45 @@ public class OrderServiceImpl implements OrderService {
         return placeAnOrderViewModel;
     }
 
-    private void createPlacedOrders(PlacedOrdersEntity placedOrdersEntity,PlaceAnOrderViewModel placeAnOrderViewModel,String mobileNumber,String tableNumber)throws SQLException{
-
-        placedOrdersEntity.setPlaceOrdersUUID(UUID.randomUUID().toString());
-        placedOrdersEntity.setOrderId(generateOrderId());
-        placedOrdersEntity.setTableNumber(tableNumber);
-        placedOrdersEntity.setUserMobileNumber(mobileNumber);
-        placedOrdersEntity.setOrderDateTime(System.currentTimeMillis());
-        placedOrdersEntity.setPrice(placeAnOrderViewModel.getSubTotal());
-        placedOrdersEntity.setTaxAmount(placeAnOrderViewModel.getServiceTax());
-        placedOrdersEntity.setDiscount(placeAnOrderViewModel.getDiscount());
-        placedOrdersEntity.setTotalPrice(placeAnOrderViewModel.getTotalAmount());
-        placedOrdersEntity.setDateTime(System.currentTimeMillis());
-        placedOrdersEntity.setComments(placeAnOrderViewModel.getCookingComments());
-        ordersDao.createPlacedOrdersEntity(placedOrdersEntity);
-    }
 
 
 
 
 
-    public void conformOrder(PlaceAnOrderViewModel placeAnOrderViewModel,String mobileNumber,String tableNumber,Context context){
+
+    public void conformOrder(String cookingComments,Context context){
         try{
             PlacedOrdersEntity placedOrdersEntity =  ordersDao.getPlacedOrdersEntity();
-            if(placedOrdersEntity != null && placedOrdersEntity.isClosed()){
-                ordersDao.removePlacedOrder(placedOrdersEntity);
+            if(placedOrdersEntity == null){
                 AdminDao adminDao = new AdminDaoImpl(context);
-                adminDao.updateUser(ActivityUtil.USER_MOBILE);
+                UsersEntity usersEntity = adminDao.getUsers();
+                placedOrdersEntity.setUserMobileNumber(usersEntity.getUserMobileNumber());
                 placedOrdersEntity = new PlacedOrdersEntity();
-                createPlacedOrders(placedOrdersEntity,placeAnOrderViewModel,mobileNumber,tableNumber);
-            }
-            if(placedOrdersEntity == null ){
-                placedOrdersEntity = new PlacedOrdersEntity();
-                createPlacedOrders(placedOrdersEntity,placeAnOrderViewModel,mobileNumber,tableNumber);
-            }else{
-                placedOrdersEntity.setTotalPrice(placedOrdersEntity.getTotalPrice() + placeAnOrderViewModel.getTotalAmount());
-                placedOrdersEntity.setComments(placeAnOrderViewModel.getCookingComments());
-                ordersDao.updatePlacedOrdersEntity(placedOrdersEntity);
-            }
-           // List<PlacedOrderItemsEntity> itemsEntities = ordersDao.getPlacedOrderItemsEntity();
-            ordersDao.removeCurrentOrder();
-           // List<PlacedOrderItemsEntity> itemsEntities1 = ordersDao.getPlacedOrderItemsEntity();
-            List<MenuItemsViewModel> menuItemsViewModels =  placeAnOrderViewModel.getMenuItemsViewModels();
-            for(MenuItemsViewModel menuItemsViewModel : menuItemsViewModels){
-                if(!menuItemsViewModel.getOrderStatus().toString().equals(OrderStatus.UN_AVAILABLE.toString())){
-                    createOrderItems(menuItemsViewModel);
-                }
+                placedOrdersEntity.setClosed(false);
+                placedOrdersEntity.setPlaceOrdersUUID(UUID.randomUUID().toString());
+                placedOrdersEntity.setDateTime(System.currentTimeMillis());
+                placedOrdersEntity.setOrderDateTime(placedOrdersEntity.getDateTime());
 
+                ordersDao.createPlacedOrdersEntity(placedOrdersEntity);
             }
-
+            List<PlacedOrderItemsEntity> placedOrderItemsEntities =  ordersDao.getAvailablePlacedOrderItemsEntity();
+            double totalCost = 0;
+            for(PlacedOrderItemsEntity placedOrderItemsEntity : placedOrderItemsEntities){
+               double cost =  placedOrderItemsEntity.getCost() * placedOrderItemsEntity.getQuantity();
+               totalCost = totalCost + Utilities.roundOff(cost);
+            }
+            totalCost = Utilities.roundOff(totalCost);
+            placedOrdersEntity.setPrice(totalCost);
+            placedOrdersEntity.setTotalPrice(totalCost);
+            placedOrdersEntity.setComments(cookingComments);
+            placedOrdersEntity.setLastUpdatedDateTime(System.currentTimeMillis());
+            ordersDao.updatePlacedOrdersEntity(placedOrdersEntity);
         }catch (Exception e){
             e.printStackTrace();
         }
 
         account = HsbSyncAdapter.getSyncAccount(context);
         settingsBundle.putInt("currentScreen", SyncEvent.PLACE_AN_ORDER);
-        settingsBundle.putString("tableNumber", tableNumber);
         ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
     }
 
@@ -237,25 +218,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void getPreviousOrderFromServer(Context context,String tableNumber,String mobileNumber){
+    public void getPreviousOrderFromServer(Context context){
         account = HsbSyncAdapter.getSyncAccount(context);
         settingsBundle.putInt("currentScreen", SyncEvent.GET_PREVIOUS_ORDER);
-        settingsBundle.putString("tableNumber", tableNumber);
-        settingsBundle.putString("mobileNumber", mobileNumber);
         ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
     }
 
 
-    private String generateOrderId(){
-        StringBuilder stringBuilder = new StringBuilder("T");
-        stringBuilder.append(ActivityUtil.TABLE_NUMBER);
-        stringBuilder.append("-");
-        Calendar calendar = Calendar.getInstance();
-        stringBuilder.append(calendar.get(Calendar.HOUR_OF_DAY));
-        stringBuilder.append(calendar.get(Calendar.MINUTE));
-        stringBuilder.append(calendar.get(Calendar.SECOND));
-       return stringBuilder.toString();
-    }
 
 
     private void init(){
@@ -272,10 +241,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public CloseOrderViewModel getBillingDetails(){
-
         try{
-
-            PlacedOrdersEntity placedOrdersEntity =   ordersDao.getPlacedOrderHistoryByMobile(ActivityUtil.USER_MOBILE,ActivityUtil.TABLE_NUMBER);
+            PlacedOrdersEntity placedOrdersEntity =   ordersDao.getPlacedOrdersEntity();
             CloseOrderViewModel closeOrderViewModel = new CloseOrderViewModel();
             if(placedOrdersEntity != null){
                 closeOrderViewModel.setOrderId(placedOrdersEntity.getOrderId());
@@ -283,8 +250,6 @@ public class OrderServiceImpl implements OrderService {
                 closeOrderViewModel.setUserMobileNumber(placedOrdersEntity.getUserMobileNumber());
                 closeOrderViewModel.setTotalAmount(String.valueOf(Utilities.roundOff(placedOrdersEntity.getTotalPrice())));
             }
-
-
             return closeOrderViewModel;
         }catch (Exception e){
             e.printStackTrace();
@@ -298,10 +263,10 @@ public class OrderServiceImpl implements OrderService {
         PlaceAnOrderViewModel placeAnOrderViewModel = new PlaceAnOrderViewModel();
         try{
 
-            PlacedOrdersEntity placedOrdersEntity =   ordersDao.getPlacedOrderHistoryByMobile(ActivityUtil.USER_MOBILE,ActivityUtil.TABLE_NUMBER);
+            PlacedOrdersEntity placedOrdersEntity =   ordersDao.getPlacedOrdersEntity();
             if(placedOrdersEntity != null){
                 placeAnOrderViewModel.setOrderId(placedOrdersEntity.getOrderId());
-                List<PlacedOrderItemsEntity> placedOrderItemsEntityList =  ordersDao.getPlacedOrderHistoryItems(placedOrdersEntity);
+                List<PlacedOrderItemsEntity> placedOrderItemsEntityList =  ordersDao.getPlacedOrderHistoryItems();
                 for(PlacedOrderItemsEntity orderItemsEntity : placedOrderItemsEntityList){
                     MenuItemsViewModel menuItemsViewModel = new MenuItemsViewModel(orderItemsEntity);
                     placeAnOrderViewModel.getMenuItemsViewModels().add(menuItemsViewModel);
@@ -318,12 +283,10 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public void closeAnOrder(Context context,String tableNumber,String mobileNumber){
+    public void closeAnOrder(Context context){
         try{
             account = HsbSyncAdapter.getSyncAccount(context);
             settingsBundle.putInt("currentScreen", SyncEvent.CLOSE_AN_ORDER);
-            settingsBundle.putString("tableNumber", tableNumber);
-            settingsBundle.putString("mobileNumber", mobileNumber);
             ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
         }catch (Exception e){
             e.printStackTrace();
@@ -363,18 +326,16 @@ public class OrderServiceImpl implements OrderService {
     public void removeAllData(){
         try{
             ordersDao.removeAllData();
-            if(ActivityUtil.USER_MOBILE != null){
-                AdminDao adminDao = new AdminDaoImpl(context);
-                adminDao.removeUser(ActivityUtil.USER_MOBILE);
-            }
-
+            AdminDao adminDao = new AdminDaoImpl(context);
+            adminDao.removeAllUsers();
+            adminDao.changeTableNumber(null);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
     @Override
-    public void getMenuItems(String tableNumber,String mobileNumber,Context context){
+    public void getMenuItems(Context context){
         Account account = HsbSyncAdapter.getSyncAccount(context);
         Bundle settingsBundle = new Bundle();
         settingsBundle.putBoolean(
@@ -382,21 +343,12 @@ public class OrderServiceImpl implements OrderService {
         settingsBundle.putBoolean(
                 ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         settingsBundle.putInt("currentScreen", SyncEvent.GET_MENU_LIST);
-        settingsBundle.putString("tableNumber", tableNumber);
-        settingsBundle.putString("mobileNumber", mobileNumber);
+
         ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
     }
 
 
-    @Override
-    public void closeOrder(String mobileNumber){
-        try{
-            AdminDao adminDao = new AdminDaoImpl(context);
-            adminDao.closeOrder(mobileNumber);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+
 
 
 

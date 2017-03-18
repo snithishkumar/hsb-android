@@ -2,6 +2,9 @@ package com.archide.hsb.sync.json;
 
 import com.archide.hsb.entity.KitchenOrdersListEntity;
 import com.archide.hsb.entity.PlacedOrdersEntity;
+import com.archide.hsb.enumeration.AppType;
+import com.archide.hsb.enumeration.OrderType;
+import com.archide.hsb.enumeration.UserType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,8 @@ public class PlaceOrdersJson {
     private long lastUpdatedDateTime;
     private List<KitchenCookingComments> cookingCommentsList = new ArrayList<>();
 	private String comments;
+	private OrderType orderType;
+	private AppType appType;
 
 	public PlaceOrdersJson(KitchenOrdersListEntity kitchenOrdersListEntity){
 		this.orderId = kitchenOrdersListEntity.getOrderId();
@@ -44,7 +49,23 @@ public class PlaceOrdersJson {
 		this.comments = placedOrdersEntity.getComments();
     }
 
-    public List<KitchenCookingComments> getCookingCommentsList() {
+	public OrderType getOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(OrderType orderType) {
+		this.orderType = orderType;
+	}
+
+	public AppType getAppType() {
+		return appType;
+	}
+
+	public void setAppType(AppType appType) {
+		this.appType = appType;
+	}
+
+	public List<KitchenCookingComments> getCookingCommentsList() {
         return cookingCommentsList;
     }
 

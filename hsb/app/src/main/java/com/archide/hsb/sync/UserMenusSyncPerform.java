@@ -11,6 +11,7 @@ import com.archide.hsb.dao.impl.AdminDaoImpl;
 import com.archide.hsb.dao.impl.KitchenDaoImpl;
 import com.archide.hsb.dao.impl.MenuItemsDaoImpl;
 import com.archide.hsb.dao.impl.OrdersDaoImpl;
+import com.archide.hsb.entity.ConfigurationEntity;
 import com.archide.hsb.entity.FoodCategoryEntity;
 import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
@@ -19,8 +20,10 @@ import com.archide.hsb.entity.MenuCourseEntity;
 import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.entity.PlacedOrdersEntity;
+import com.archide.hsb.entity.UsersEntity;
 import com.archide.hsb.enumeration.GsonAPI;
 import com.archide.hsb.enumeration.OrderStatus;
+import com.archide.hsb.enumeration.OrderType;
 import com.archide.hsb.enumeration.Status;
 import com.archide.hsb.enumeration.ViewStatus;
 import com.archide.hsb.sync.json.FoodCategoryJson;
@@ -60,6 +63,7 @@ public class UserMenusSyncPerform {
 
     private MenuItemsDao menuItemsDao;
     private OrdersDao ordersDao;
+    private AdminDao adminDao;
 
 
     public UserMenusSyncPerform(){
@@ -75,6 +79,7 @@ public class UserMenusSyncPerform {
         try{
             menuItemsDao = new MenuItemsDaoImpl(context);
             ordersDao = new OrdersDaoImpl(context);
+            adminDao = new AdminDaoImpl(context);
             gson = GsonAPI.INSTANCE.getGson();
         }catch (Exception e){
             Log.e(LOG_TAG,"Error in init",e);
@@ -84,18 +89,17 @@ public class UserMenusSyncPerform {
 
 
 
-    public ResponseData getMenuItems(String tableNumber,String mobileNumber,String userType){
+    public ResponseData getMenuItems(){
         try{
+          ConfigurationEntity configurationEntity =  adminDao.getAppType();
           long lastServerSyncTime =  menuItemsDao.getLastSyncTime();
-            Call<ResponseData> menuItemsResponse =  hsbAPI.getMenuItems(lastServerSyncTime,tableNumber,userType,mobileNumber);
+          UsersEntity usersEntity =   adminDao.getUsers();
+            Call<ResponseData> menuItemsResponse =  hsbAPI.getMenuItems(lastServerSyncTime,configurationEntity.getTableNumber(),configurationEntity.getAppType(),usersEntity.getUserMobileNumber());
             Response<ResponseData> response =  menuItemsResponse.execute();
             if (response != null && response.isSuccessful()) {
 
                 ResponseData responseData = response.body();
-                if(responseData.getSuccess() &&  responseData.getStatusCode() == 404){
-                    ResponseData result = new ResponseData(404,responseData.getData());
-                    return result;
-                }
+
                 String menuItemsJsonString =  responseData.getData();
 
                 GetMenuDetails  menuListJsonList =  gson.fromJson(menuItemsJsonString, GetMenuDetails.class);
@@ -120,6 +124,8 @@ public class UserMenusSyncPerform {
 
         return getErrorResponse();
     }
+
+
 
     /**
      * Process Menu Details
@@ -234,6 +240,15 @@ public class UserMenusSyncPerform {
             PlacedOrdersEntity placedOrdersEntity =  ordersDao.getPlacedOrdersEntity();
             if(placedOrdersEntity != null){
                 PlaceOrdersJson placeOrdersJson = new PlaceOrdersJson(placedOrdersEntity);
+
+                ConfigurationEntity configurationEntity = adminDao.getAppType();
+                placeOrdersJson.setTableNumber(configurationEntity.getTableNumber());
+                placeOrdersJson.setAppType(configurationEntity.getAppType());
+
+                UsersEntity usersEntity =  adminDao.getUsers();
+                placeOrdersJson.setUserMobileNumber(usersEntity.getUserMobileNumber());
+                placeOrdersJson.setOrderType(usersEntity.getOrderType());
+
                 List<PlacedOrderItemsEntity> itemsEntityList =  ordersDao.getAvailablePlacedOrderItemsEntity();
                 for(PlacedOrderItemsEntity placedOrderItemsEntity : itemsEntityList){
                     OrderedMenuItems orderedMenuItems = new OrderedMenuItems(placedOrderItemsEntity);
@@ -244,6 +259,7 @@ public class UserMenusSyncPerform {
                 if (response != null && response.isSuccessful()) {
                     ResponseData responseData =  response.body();
                     if(responseData.getSuccess() && responseData.getStatusCode() == 200){
+                        // TODO Table Number
                         ordersDao.updateServerSyncTime(responseData.getData());
                         ordersDao.updatePlacedOrderItems(Long.valueOf(responseData.getData()));
                         ResponseData result = new ResponseData(200,null);
@@ -282,13 +298,15 @@ public class UserMenusSyncPerform {
 
 
 
-    public ResponseData getPreviousOrderDetails(String tableNumber,String mobileNumber){
+    public ResponseData getPreviousOrderDetails(){
         try{
-           long serverSyncTime =  ordersDao.getPreviousSyncHistoryData();
+
+           ConfigurationEntity configurationEntity =  adminDao.getAppType();
+           UsersEntity usersEntity =  adminDao.getUsers();
+
             JsonObject request = new JsonObject();
-            request.addProperty("tableNumber", tableNumber);
-            request.addProperty("mobileNumber", mobileNumber);
-            request.addProperty("serverLastUdpateTime", serverSyncTime);
+            request.addProperty("tableNumber", configurationEntity.getTableNumber());
+            request.addProperty("mobileNumber", usersEntity.getUserMobileNumber());
             Call<ResponseData> serverResponse =   hsbAPI.getPreviousOrder(request);
             Response<ResponseData> response = serverResponse.execute();
             if (response != null && response.isSuccessful()) {
@@ -338,7 +356,7 @@ public class UserMenusSyncPerform {
     }
 
 
-    public ResponseData resentBillingDetails(String tableNumber,String mobileNumber){
+   /* public ResponseData resentBillingDetails(String tableNumber,String mobileNumber){
         try{
             PlacedOrdersEntity placedOrdersEntity = ordersDao.getPlacedOrderHistoryByMobile(mobileNumber,tableNumber);
             Call<ResponseData> serverResponse =  hsbAPI.reSentBillDetails(placedOrdersEntity.getPlaceOrdersUUID());
@@ -353,17 +371,19 @@ public class UserMenusSyncPerform {
             e.printStackTrace();
         }
         return getErrorResponse();
-    }
+    }*/
 
 
-    public ResponseData closeAnOrder(String tableNumber,String mobileNumber){
+    public ResponseData closeAnOrder(){
         try{
+            ConfigurationEntity configurationEntity = adminDao.getAppType();
+           UsersEntity usersEntity =  adminDao.getUsers();
             String placedOrderUUID = "";
-            PlacedOrdersEntity placedOrdersEntity = ordersDao.getPlacedOrderHistoryByMobile(mobileNumber,tableNumber);
+            PlacedOrdersEntity placedOrdersEntity = ordersDao.getPlacedOrdersEntity();
             if(placedOrdersEntity != null){
                 placedOrderUUID = placedOrdersEntity.getPlaceOrdersUUID();
             }
-            Call<ResponseData> serverResponse = hsbAPI.closeAnOrder(tableNumber,mobileNumber,placedOrderUUID);
+            Call<ResponseData> serverResponse = hsbAPI.closeAnOrder(configurationEntity.getTableNumber(),usersEntity.getUserMobileNumber(),placedOrderUUID);
             Response<ResponseData> response = serverResponse.execute();
             if (response != null && response.isSuccessful()) {
                 ResponseData responseData = response.body();
@@ -384,5 +404,7 @@ public class UserMenusSyncPerform {
         }
         return getErrorResponse();
     }
+
+
 
 }

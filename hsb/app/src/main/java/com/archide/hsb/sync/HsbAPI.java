@@ -1,6 +1,7 @@
 package com.archide.hsb.sync;
 
 import com.archide.hsb.entity.KitchenMenuItemsEntity;
+import com.archide.hsb.enumeration.AppType;
 import com.archide.hsb.sync.json.GetKitchenOrders;
 import com.archide.hsb.sync.json.PlaceOrdersJson;
 import com.archide.hsb.sync.json.ResponseData;
@@ -21,9 +22,11 @@ import retrofit2.http.POST;
 
 public interface HsbAPI {
 
-    /** Create User **/
-    @GET("/hsb/mobile/getTableList.html")
-    Call<ResponseData> getTableList();
+
+
+    /** Get Available Table Numbers **/
+    @GET("/hsb/mobile/users/getAvailableTableNumbers.html")
+    Call<ResponseData> getAvailableTableNumbers();
 
 
     /** Create User **/
@@ -31,7 +34,7 @@ public interface HsbAPI {
     @POST("/hsb/mobile/getMenuItems.html")
     Call<ResponseData> getMenuItems(@Field("lastServerSyncTime") long lastServerSyncTime,
                                     @Field("tableNumber") String tableNumber,
-                                    @Field("userType") String userType,
+                                    @Field("appType") AppType appType,
                                     @Field("mobileNumber") String mobileNumber);
 
     @POST("/hsb/mobile/placeAnOrder.html")

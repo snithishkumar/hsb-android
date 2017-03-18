@@ -1,5 +1,6 @@
 package com.archide.hsb.entity;
 
+import com.archide.hsb.enumeration.OrderType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -11,14 +12,16 @@ public class UsersEntity {
 
     public static final String USER_ID = "UserId";
     public static final String USER_MOBILE_NUMBER = "UserMobileNumber";
-    public static final String IS_CLOSED = "IsClosed";
+    public static final String ORDER_TYPE = "OrderType";
 
     @DatabaseField(columnName = USER_ID)
     private int userId;
     @DatabaseField(columnName = USER_MOBILE_NUMBER)
     private String userMobileNumber;
-    @DatabaseField(columnName = IS_CLOSED)
-    private boolean isClosed;
+
+
+    @DatabaseField(columnName =  ORDER_TYPE)
+    private OrderType orderType;
 
     public int getUserId() {
         return userId;
@@ -36,12 +39,12 @@ public class UsersEntity {
         this.userMobileNumber = userMobileNumber;
     }
 
-    public boolean isClosed() {
-        return isClosed;
+    public OrderType getOrderType() {
+        return orderType;
     }
 
-    public void setClosed(boolean closed) {
-        isClosed = closed;
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
     }
 
     @Override
@@ -49,7 +52,7 @@ public class UsersEntity {
         return "UsersEntity{" +
                 "userId=" + userId +
                 ", userMobileNumber='" + userMobileNumber + '\'' +
-                ", isClosed=" + isClosed +
+                ", orderType=" + orderType +
                 '}';
     }
 }

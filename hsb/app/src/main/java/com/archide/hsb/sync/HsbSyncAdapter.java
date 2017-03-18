@@ -112,20 +112,9 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
 
         }else{
             switch (currentScreen){
-                case SyncEvent.GET_TABLE_LIST:
-                    ResponseData responseData =  getTableDetails();
-                    //responseData =  kitchenSyncPerform.getKitchenOrders();
-                    postData(responseData);
-                    break;
 
                 case SyncEvent.GET_MENU_LIST:
-
-                    String tableNumber =  extras.getString("tableNumber");
-                    String mobileNumber =  extras.getString("mobileNumber");
-                    String userType =  extras.getString("userType");
-                    //userType
-                    responseData =   userMenusSyncPerform.getMenuItems(tableNumber,mobileNumber,userType);
-                    // responseData =  userMenusSyncPerform.getKitchenOrders();
+                    ResponseData responseData =   userMenusSyncPerform.getMenuItems();
                     postData(responseData);
                     break;
 
@@ -141,37 +130,29 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
                     postData(responseData);
                     break;
 
-                case SyncEvent.RESENT_BILLING:
+                /*case SyncEvent.RESENT_BILLING:
                     tableNumber =  extras.getString("tableNumber");
                     mobileNumber =  extras.getString("mobileNumber");
                     responseData = userMenusSyncPerform.resentBillingDetails(tableNumber,mobileNumber);
                     postData(responseData);
-                    break;
+                    break;*/
 
-                case 3:
-                    tableNumber =  extras.getString("tableNumber");
-                    mobileNumber =  extras.getString("mobileNumber");
-                    responseData = userMenusSyncPerform.getPreviousOrderDetails(tableNumber,mobileNumber);
+                case SyncEvent.GET_PREVIOUS_ORDER:
+                    responseData = userMenusSyncPerform.getPreviousOrderDetails();
                     postData(responseData);
                     break;
 
-                case 4:
-                    tableNumber =  extras.getString("tableNumber");
-                    mobileNumber =  extras.getString("mobileNumber");
-                    responseData = userMenusSyncPerform.closeAnOrder(tableNumber,mobileNumber);
+                case SyncEvent.CLOSE_AN_ORDER:
+                    responseData = userMenusSyncPerform.closeAnOrder();
                     postData(responseData);
                     break;
 
-                case 5:
+                case SyncEvent.CHECK_AVAILABILITY:
                     responseData =  userMenusSyncPerform.getUnAvailableOrders();
                     postData(responseData);
                     break;
 
-                case SyncEvent.LOG_OUT:
-                    tableNumber =  extras.getString("tableNumber");
-                    mobileNumber =  extras.getString("mobileNumber");
-                    userMenusSyncPerform.logout(tableNumber,mobileNumber);
-                    break;
+
             }
         }
 
@@ -223,42 +204,5 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
 
-    /**
-     * Get Table list from server and send back to UI
-     * @return
-     */
-    public ResponseData getTableDetails() {
-        try {
-            HsbAPI hsbAPI = ServiceAPI.INSTANCE.getHsbAPI();
-            Call<ResponseData> tableListResponse = hsbAPI.getTableList();
-            Response<ResponseData> response = tableListResponse.execute();
-            if (response != null && response.isSuccessful()) {
-                ResponseData responseData = response.body();
-                // ResponseData responseData =  gson.fromJson(stringResponse,ResponseData.class);
-                String tableListJsonString =  responseData.getData();
-                Gson gson = GsonAPI.INSTANCE.getGson();
-                List<TableListJson> tableListJson =  gson.fromJson(tableListJsonString, new TypeToken<List<TableListJson>>() {
-                }.getType());
 
-                List<String> results = new ArrayList<>();
-                for(TableListJson tempTableList : tableListJson){
-                    results.add(tempTableList.getTableNumber());
-                }
-                responseData.setData(null);
-                responseData.setMessage(results);
-                return responseData;
-            }else{
-                return getErrorResponse();
-            }
-        } catch (Exception e) {
-            Log.e("Error","Error in  getTableDetails",e);
-        }
-        return getErrorResponse();
-    }
-
-    private ResponseData getErrorResponse(){
-        ResponseData responseData =new ResponseData(500,null);
-        responseData.setStatusCode(500);
-        return responseData;
-    }
 }

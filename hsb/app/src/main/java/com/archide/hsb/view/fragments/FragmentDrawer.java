@@ -101,8 +101,8 @@ public class FragmentDrawer extends Fragment {
             }
         }));
 
-        vUserName.setText("Table No: "+ ActivityUtil.TABLE_NUMBER);
-        vMobileNumber.setText(ActivityUtil.USER_MOBILE);
+      //  vUserName.setText("Table No: "+ ActivityUtil.TABLE_NUMBER);
+       // vMobileNumber.setText(ActivityUtil.USER_MOBILE);
         return layout;
     }
  
@@ -114,13 +114,13 @@ public class FragmentDrawer extends Fragment {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                homeActivity.invalidateOptionsMenu();
+                //homeActivity.invalidateOptionsMenu();
             }
  
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                homeActivity.invalidateOptionsMenu();
+               // homeActivity.invalidateOptionsMenu();
             }
  
             @Override

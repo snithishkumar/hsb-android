@@ -139,18 +139,10 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
         placedOrdersDao.delete(placedOrdersEntity);
     }
 
-    @Override
-    public PlacedOrdersEntity getPlacedOrderHistoryByMobile(String userMobileNumber,String tableNumber) throws SQLException {
-      // List<PlacedOrdersEntity> list =  placedOrdersDao.queryForAll();
-        PlacedOrdersEntity placedOrdersEntity =  placedOrdersDao.queryBuilder().where().eq(PlacedOrdersEntity.USER_MOBILE_NUMBER,userMobileNumber)
-                .and().eq(PlacedOrdersEntity.TABLE_NUMBER,tableNumber)
-                .queryForFirst();
-        return placedOrdersEntity;
-    }
 
 
     @Override
-    public List<PlacedOrderItemsEntity> getPlacedOrderHistoryItems(PlacedOrdersEntity placedOrdersEntity)throws SQLException{
+    public List<PlacedOrderItemsEntity> getPlacedOrderHistoryItems()throws SQLException{
         return   placedOrderItemDao.queryBuilder().where().eq(PlacedOrderItemsEntity.IS_CONFORM,true).and()
                 .ne(PlacedOrderItemsEntity.ORDER_STATUS,OrderStatus.UN_AVAILABLE)
                 .and().eq(PlacedOrderItemsEntity.IS_DELETED,false)
@@ -158,11 +150,7 @@ public class OrdersDaoImpl extends BaseDaoImpl implements OrdersDao {
     }
 
 
-    @Override
-    public long getPreviousSyncHistoryData()throws SQLException{
-        PlacedOrderItemsEntity placedOrderItemsEntity =  placedOrderItemDao.queryBuilder().selectColumns(PlacedOrderItemsEntity.SERVER_SYNC_TIME).orderBy(PlacedOrderItemsEntity.SERVER_SYNC_TIME,false).where().ne(PlacedOrderItemsEntity.ORDER_STATUS, OrderStatus.ORDERED).and().eq(PlacedOrderItemsEntity.IS_CONFORM,true).queryForFirst();
-        return placedOrderItemsEntity != null ? placedOrderItemsEntity.getServerSyncTime() : 0;
-    }
+
 
 
     @Override

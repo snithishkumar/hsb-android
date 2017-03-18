@@ -40,6 +40,11 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
     }
 
 
+    @Override
+    public void updateUsers(UsersEntity usersEntity)throws SQLException{
+        usersDao.update(usersEntity);
+    }
+
 
 
     @Override
@@ -55,65 +60,28 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
 
 
     @Override
-    public List<UsersEntity> getUsersList()throws SQLException{
-       // List<UsersEntity> tt =  usersDao.queryForAll();
-       return usersDao.queryBuilder().where().eq(UsersEntity.IS_CLOSED,false).query();
+    public UsersEntity getUsers()throws SQLException{
+       return usersDao.queryBuilder().queryForFirst();
     }
 
 
-    @Override
-    public boolean isMobileNumberPresent(String mobileNumber)throws SQLException{
-        List<UsersEntity> users =  usersDao.queryBuilder().where().eq(UsersEntity.IS_CLOSED,false).and().eq(UsersEntity.USER_MOBILE_NUMBER,mobileNumber).query();
-        return users.size() > 0;
-    }
 
 
-    @Override
-    public boolean isOrderCloseUser()throws SQLException{
-        List<UsersEntity> users =  usersDao.queryBuilder().where().eq(UsersEntity.IS_CLOSED,true).query();
-        return users.size() > 0;
-    }
 
 
-    @Override
-    public void removeClosedUser()throws SQLException{
-      DeleteBuilder<UsersEntity,Integer> deleteBuilder = usersDao.deleteBuilder();
-        deleteBuilder.where().eq(UsersEntity.IS_CLOSED,true);
-        deleteBuilder.delete();
-    }
 
     @Override
     public UsersEntity getUsersEntity(String mobileNumber)throws SQLException{
-       return usersDao.queryBuilder().where().eq(UsersEntity.USER_MOBILE_NUMBER,mobileNumber).and().eq(UsersEntity.IS_CLOSED,false).queryForFirst();
+       return usersDao.queryBuilder().where().eq(UsersEntity.USER_MOBILE_NUMBER,mobileNumber).queryForFirst();
     }
 
 
-    @Override
-    public void closeOrder(String mobileNumber)throws SQLException{
-     UpdateBuilder<UsersEntity,Integer> updateBuilder = usersDao.updateBuilder();
-        updateBuilder.updateColumnValue(UsersEntity.IS_CLOSED,true).where().eq(UsersEntity.USER_MOBILE_NUMBER,mobileNumber);
-        updateBuilder.update();
-    }
+
 
 
     @Override
     public void changeTableNumber(String tableNumber)throws SQLException{
         appTypeDao.updateBuilder().updateColumnValue(ConfigurationEntity.TABLE_NUMBER,tableNumber).update();
-    }
-
-
-    @Override
-    public boolean isUnClosedUser()throws SQLException{
-        UsersEntity usersEntity =  usersDao.queryBuilder().where().eq(UsersEntity.IS_CLOSED,false).queryForFirst();
-       return usersEntity != null;
-    }
-
-
-    @Override
-    public void updateUser(String mobileNumber)throws SQLException{
-        UpdateBuilder<UsersEntity,Integer> updateBuilder = usersDao.updateBuilder();
-        updateBuilder.updateColumnValue(UsersEntity.IS_CLOSED,false).where().eq(UsersEntity.USER_MOBILE_NUMBER,mobileNumber);
-        updateBuilder.update();
     }
 
 
@@ -129,6 +97,8 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
         deleteBuilder.where().eq(UsersEntity.USER_MOBILE_NUMBER,mobileNumber);
         deleteBuilder.delete();
     }
+
+
 
 
 

@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,10 +32,11 @@ import hsb.archide.com.hsb.R;
 /**
  *
  */
-public class MobileFragment extends Fragment implements View.OnClickListener,TextToSpeech.OnInitListener {
+public class CaptainMobileFragment extends Fragment implements View.OnClickListener,TextToSpeech.OnInitListener {
 
     private MainActivity mainActivity;
-    private TextView userMobile;
+    private TextView tableNumber;
+    private TextView mobileNumber;
     private ProgressDialog progressDialog;
 
     private LayoutInflater mInflater;
@@ -44,7 +44,6 @@ public class MobileFragment extends Fragment implements View.OnClickListener,Tex
 
 
     private TextToSpeech engine;
-    private String orderType;
 
 
     @Override
@@ -60,17 +59,20 @@ public class MobileFragment extends Fragment implements View.OnClickListener,Tex
 
         mInflater = inflater;
         mContainer = container;
-        orderType = getArguments().getString("orderType");
+
 
         return initLayout();
     }
 
 
     private View initLayout(){
-        View loginView =  mInflater.inflate(R.layout.fragment_mobile, mContainer, false);
-        userMobile =  (TextView)loginView.findViewById(R.id.vUserMobileNumber);
+        View loginView =  mInflater.inflate(R.layout.fragment_captain_mobile, mContainer, false);
+      //vCaptainTableNumber
+        tableNumber =  (TextView)loginView.findViewById(R.id.vCaptainTableNumber);
+        mobileNumber =  (TextView)loginView.findViewById(R.id.vCaptainUserMobileNumber);
         Button button =  (Button)loginView.findViewById(R.id.submit);
         button.setOnClickListener(this);
+
 
 
         return loginView;
@@ -114,13 +116,14 @@ public class MobileFragment extends Fragment implements View.OnClickListener,Tex
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.submit:
-                String userMobileText = userMobile.getText().toString();
-                if(userMobileText != null && !userMobileText.trim().isEmpty()){
-                    getMenuList(userMobileText);
+              String tableNumberValue =  tableNumber.getText().toString();
+              String mobileNumberValue =    mobileNumber.getText().toString();
+                if (tableNumberValue != null && !tableNumberValue.trim().isEmpty()) {
+                    getMenuList(tableNumberValue,mobileNumberValue);
                 }else{
-                    userMobile.setError(getString(R.string.mobile_number_error));
-                }
+                    tableNumber.setError(getString(R.string.mobile_number_error));
 
+                }
                 break;
 
         }
@@ -128,11 +131,11 @@ public class MobileFragment extends Fragment implements View.OnClickListener,Tex
 
     }
 
-    private void getMenuList(String userMobileText) {
+    private void getMenuList(String tableNumberValue,String mobileNumberValue) {
         boolean isNetWorkConnected = Utilities.isNetworkConnected(mainActivity);
         if (isNetWorkConnected) {
             progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_menu_items_message), mainActivity);
-            mainActivity.getTableListService().createUsers(userMobileText, OrderType.valueOf(orderType));
+            mainActivity.getTableListService().updateTableNumber(tableNumberValue,mobileNumberValue,OrderType.Dinning);
             mainActivity.getTableListService().getMenuItems();
         } else {
             showNoInterNet();

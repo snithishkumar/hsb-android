@@ -168,8 +168,6 @@ public class BillingFragment extends Fragment implements View.OnClickListener,Te
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.close_order_logout){
-            naviDrawerActivity.getOrderService().logout(naviDrawerActivity,ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE);
-
             naviDrawerActivity.getOrderService().removeAllData();
             Intent intent = new Intent(naviDrawerActivity, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

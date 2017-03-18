@@ -26,7 +26,7 @@ public interface OrderService {
 
     void calcAmount(PlaceAnOrderViewModel placeAnOrderViewModel);
 
-    void conformOrder(PlaceAnOrderViewModel placeAnOrderViewModel,String mobileNumber,String tableNumber,Context context);
+    void conformOrder(String cookingComments,Context context);
 
     PlaceAnOrderViewModel getPlacedHistoryOrderViewModel();
 
@@ -34,9 +34,9 @@ public interface OrderService {
 
     void removeUnAvailableOrders();
 
-    void getPreviousOrderFromServer(Context context,String tableNumber,String mobileNumber);
+    void getPreviousOrderFromServer(Context context);
 
-    void closeAnOrder(Context context,String tableNumber,String mobileNumber);
+    void closeAnOrder(Context context);
 
     CloseOrderViewModel getBillingDetails();
 
@@ -44,9 +44,8 @@ public interface OrderService {
 
     void removeAllData();
 
-    void getMenuItems(String tableNumber,String mobileNumber,Context context);
+    void getMenuItems(Context context);
 
-    void closeOrder(String mobileNumber);
 
     void updateOrderItems(MenuItemsViewModel menuItemsViewModel);
 

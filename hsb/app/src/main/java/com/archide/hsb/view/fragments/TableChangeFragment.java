@@ -1,3 +1,4 @@
+/*
 package com.archide.hsb.view.fragments;
 
 import android.app.ProgressDialog;
@@ -25,9 +26,11 @@ import java.util.List;
 
 import hsb.archide.com.hsb.R;
 
+*/
 /**
  * Created by Nithish on 16/01/17.
- */
+ *//*
+
 
 public class TableChangeFragment extends Fragment implements View.OnClickListener{
 
@@ -68,9 +71,11 @@ public class TableChangeFragment extends Fragment implements View.OnClickListene
         EventBus.getDefault().unregister(this);
     }
 
-    /**
+    */
+/**
      * Get Table List from the Server
-     */
+     *//*
+
     private void getTableList(){
         boolean isNetWorkConnected =  Utilities.isNetworkConnected(mainActivity);
         if(isNetWorkConnected){
@@ -82,20 +87,24 @@ public class TableChangeFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    /**
+    */
+/**
      * Process Table list response
      * @param responseData
-     */
+     *//*
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleServerSyncResponse(ResponseData responseData) {
         intiView(responseData);
         return;
     }
 
-    /**
+    */
+/**
      * Process Table List Data and Show that component
      * @param responseData
-     */
+     *//*
+
     private void intiView(ResponseData responseData){
         dismiss();
         if(responseData.getSuccess()){
@@ -131,3 +140,4 @@ public class TableChangeFragment extends Fragment implements View.OnClickListene
         void success(int code, Object data);
     }
 }
+*/

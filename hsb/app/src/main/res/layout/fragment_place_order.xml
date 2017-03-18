@@ -53,6 +53,7 @@
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:layout_alignParentRight="true"
+                android:onClick="onClick"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:textColor="@android:color/holo_green_dark"/>
@@ -276,6 +277,7 @@ android:layout_marginLeft="10dp"
             android:layout_gravity="center_horizontal"
             android:textColor="@android:color/white"
             android:text="Proceed to Checkout"
+            android:onClick="onClick"
              />
 
 

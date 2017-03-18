@@ -18,27 +18,21 @@ public interface AdminDao {
     void createAppType(ConfigurationEntity configurationEntity)throws SQLException;
 
 
-    List<UsersEntity> getUsersList()throws SQLException;
+    UsersEntity getUsers()throws SQLException;
 
-    boolean isMobileNumberPresent(String mobileNumber)throws SQLException;
-
-    boolean isOrderCloseUser()throws SQLException;
-
-    void removeClosedUser()throws SQLException;
 
     void createUsers(UsersEntity usersEntity)throws SQLException;
 
     UsersEntity getUsersEntity(String mobileNumber)throws SQLException;
 
-    void closeOrder(String mobileNumber)throws SQLException;
 
     void changeTableNumber(String tableNumber)throws SQLException;
 
-    boolean isUnClosedUser()throws SQLException;
 
-    void updateUser(String userMobile)throws SQLException;
 
     void removeAllUsers()throws SQLException;
 
     void removeUser(String mobileNumber)throws SQLException;
+
+    void updateUsers(UsersEntity usersEntity)throws SQLException;
 }

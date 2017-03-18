@@ -89,7 +89,7 @@ public class MenuItemsFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                homeActivity.getOrderService().getMenuItems(ActivityUtil.TABLE_NUMBER,ActivityUtil.USER_MOBILE,homeActivity);
+                homeActivity.getOrderService().getMenuItems(homeActivity);
 
             }
         });

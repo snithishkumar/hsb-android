@@ -36,13 +36,10 @@ import hsb.archide.com.hsb.R;
 public class ConfigurationFragment extends Fragment implements View.OnClickListener{
 
     private MainActivity mainActivity;
-    ProgressDialog progressDialog = null;
 
     private EditText vPasswordText;
     private EditText vReTypePasswordText;
     private LabelledSpinner vType;
-    private LabelledSpinner vTableNumber;
-    private LinearLayout linearLayout;
     private AppType selectedAppType = AppType.Kitchen;
 
     @Override
@@ -64,8 +61,6 @@ public class ConfigurationFragment extends Fragment implements View.OnClickListe
         button.setOnClickListener(this);
 
         initType(registrationView);
-        vTableNumber = (LabelledSpinner) registrationView.findViewById(R.id.vTableNumber);
-        linearLayout = (LinearLayout) registrationView.findViewById(R.id.vTableDetailsLayout);
 
         return registrationView;
     }
@@ -79,21 +74,25 @@ public class ConfigurationFragment extends Fragment implements View.OnClickListe
         vType = (LabelledSpinner) registrationView.findViewById(R.id.vType);
         final List<String> data  = new ArrayList<>();
         data.add(AppType.Kitchen.toString());
+        data.add(AppType.Captain.toString());
         data.add(AppType.User.toString());
         vType.setItemsArray(data);
 
         vType.setOnItemChosenListener(new LabelledSpinner.OnItemChosenListener() {
             @Override
             public void onItemChosen(View labelledSpinner, AdapterView<?> adapterView, View itemView, int position, long id) {
-                if(position == 1){
-                    getTableList();
-                    selectedAppType = AppType.User;
-                }else{
-                    if(linearLayout.getVisibility() == View.VISIBLE){
-                        linearLayout.setVisibility(View.GONE);
-                    }
-                    selectedAppType = AppType.Kitchen;
+                switch (position){
+                    case 0:
+                       selectedAppType = AppType.Kitchen;
+                        break;
+                    case 1:
+                        selectedAppType = AppType.Captain;
+                        break;
+                    case 2:
+                        selectedAppType = AppType.User;
+                        break;
                 }
+
             }
 
             @Override
@@ -105,19 +104,7 @@ public class ConfigurationFragment extends Fragment implements View.OnClickListe
     }
 
 
-    /**
-     * Get Table List from the Server
-     */
-    private void getTableList(){
-        boolean isNetWorkConnected =  Utilities.isNetworkConnected(mainActivity);
-        if(isNetWorkConnected){
 
-            progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_table_list_message), mainActivity);
-            mainActivity.getTableListService().getTableList();
-        }else{
-            ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -141,38 +128,8 @@ public class ConfigurationFragment extends Fragment implements View.OnClickListe
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
     }
 
-    /**
-     * Process Table list response
-     * @param responseData
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void handleServerSyncResponse(ResponseData responseData) {
-        intiView(responseData);
-        return;
-    }
-
-    /**
-     * Process Table List Data and Show that component
-     * @param responseData
-     */
-    private void intiView(ResponseData responseData){
-        dismiss();
-        if(responseData.getSuccess()){
-            List<String> data  =  (List<String>)responseData.getMessage();
-            linearLayout.setVisibility(View.VISIBLE);
-            vTableNumber.setItemsArray(data);
-        }
-
-    }
-
-    private void dismiss(){
-        if(progressDialog != null){
-            progressDialog.dismiss();
-        }
-    }
 
     @Override
     public void onClick(View view) {
@@ -191,20 +148,20 @@ public class ConfigurationFragment extends Fragment implements View.OnClickListe
             return;
         }
 
-        String vTableNumberText = null;
-        int appType = AppType.Kitchen.getAppType();
-        if(selectedAppType.equals(AppType.User)){
-            vTableNumberText = vTableNumber.getSpinner().getSelectedItem().toString();
-            appType = AppType.User.getAppType();
-            ActivityUtil.TABLE_NUMBER = vTableNumberText;
+        mainActivity.getTableListService().createAdmin(mPin,selectedAppType);
+        if(selectedAppType.toString().equals(AppType.Captain.toString())){
+            mainActivity.success(MainActivity.CONF_SUCCESS_CAPTAIN,null);
+        }else if(selectedAppType.toString().equals(AppType.User.toString())){
+            mainActivity.success(MainActivity.CONF_SUCCESS_USER,null);
+        }else{
+            mainActivity.success(MainActivity.CONF_SUCCESS_KITCHEN,null);
         }
 
-        mainActivity.getTableListService().createAdmin(vTableNumberText,mPin,selectedAppType);
-        mainActivity.success(appType,null);
         return;
     }
 
     public interface MainActivityCallback{
+
         void success(int code,Object data);
     }
 }
