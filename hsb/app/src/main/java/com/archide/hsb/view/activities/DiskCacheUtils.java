@@ -73,8 +73,6 @@ public class DiskCacheUtils {
 
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             String  path = Environment.getExternalStoragePublicDirectory("/").getAbsolutePath();
-            //path = "/sdcard/TerragoEdge/";
-
             File file =  new File(path+File.separator+"hsb");
             if(!file.exists()){
                 file.mkdirs();
@@ -83,21 +81,5 @@ public class DiskCacheUtils {
         }else {
             return  context.getDir("hsb",Context.MODE_PRIVATE).getAbsolutePath();
         }
-    }
-
-    public static String getAvailableFile(){
-        Boolean isSDPresent = android.os.Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
-//        File appFolder = null;
-        String path =null;
-        if(isSDPresent)
-        {
-            path = "/sdcard/TerragoEdge/";  // yes SD-card is present
-        }
-        else
-        {
-            path = "/data/data/com.terragotech.edgeandroid/TerragoEdge/";// Sorry
-        }
-        return path;
-
     }
 }

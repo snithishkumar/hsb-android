@@ -8,10 +8,15 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.archide.hsb.service.impl.PrinterServiceImpl;
 import com.archide.hsb.view.activities.KitchenActivity;
 import com.archide.hsb.view.activities.KitchenDetailsActivity;
 import com.archide.hsb.view.adapters.KitchenOrderedCommentsAdapter;
@@ -28,7 +33,7 @@ import hsb.archide.com.hsb.R;
  * Created by Nithish on 26/11/16.
  */
 
-public class KitchenOrderedItemsFragment extends Fragment implements View.OnClickListener{
+public class KitchenOrderedItemsFragment extends Fragment implements View.OnClickListener {
 
     LinearLayoutManager linearLayoutManager = null;
     KitchenDetailsActivity kitchenDetailsActivity = null;
@@ -38,34 +43,36 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
     private List<KitchenOrderDetailsViewModel> detailsViewModels = new ArrayList<>();
     private List<KitchenCommentsViewModel> kitchenCommentsViewModels = new ArrayList<>();
     FloatingActionButton floatingActionButton = null;
+    private PrinterServiceImpl printerService = null;
 
     Button button = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
+        printerService = new PrinterServiceImpl(getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_kitchen_ordered_items, container, false);
+        View view = inflater.inflate(R.layout.fragment_kitchen_ordered_items, container, false);
 
 
         Bundle purchaseIdArgs = getArguments();
-        if(purchaseIdArgs != null){
-            orderId =  purchaseIdArgs.getString("orderId");
+        if (purchaseIdArgs != null) {
+            orderId = purchaseIdArgs.getString("orderId");
 
         }
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.kitchen_order_data);
         recyclerView.setHasFixedSize(true);
 
-       // floatingActionButton = (FloatingActionButton)view.findViewById(R.id.saveOrderStatus);
-        button = (Button)view.findViewById(R.id.saveOrderStatus);
+        // floatingActionButton = (FloatingActionButton)view.findViewById(R.id.saveOrderStatus);
+        button = (Button) view.findViewById(R.id.saveOrderStatus);
         button.setOnClickListener(this);
-        linearLayoutManager =  new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setNestedScrollingEnabled(false);
         setAdapters(recyclerView);
@@ -81,25 +88,24 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
         kitchenDetailsActivity.getSupportActionBar().setHomeButtonEnabled(true);
 
 
-
         return view;
     }
 
-    private void setAdapters(RecyclerView recyclerView){
-        kitchenOrderedMenusAdapter = new KitchenOrderedMenusAdapter(kitchenDetailsActivity,detailsViewModels,KitchenOrderedItemsFragment.this);
+    private void setAdapters(RecyclerView recyclerView) {
+        kitchenOrderedMenusAdapter = new KitchenOrderedMenusAdapter(kitchenDetailsActivity, detailsViewModels, KitchenOrderedItemsFragment.this);
 
         recyclerView.setAdapter(kitchenOrderedMenusAdapter);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(kitchenDetailsActivity,linearLayoutManager.getOrientation());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(kitchenDetailsActivity, linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
 
-    private void setKitchenAdapters(View view){
+    private void setKitchenAdapters(View view) {
         RecyclerView cookingCommentsRecycle = (RecyclerView) view.findViewById(R.id.kitchen_order_comments);
         cookingCommentsRecycle.setHasFixedSize(true);
         cookingCommentsRecycle.setNestedScrollingEnabled(false);
-       LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         cookingCommentsRecycle.setLayoutManager(linearLayoutManager);
         cookingCommentsRecycle.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -120,11 +126,11 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
     }
 
 
-    private void updateViewStatus(){
-        kitchenDetailsActivity.getKitchenService().updateKitchenOrderViewStatus(orderId,detailsViewModels);
+    private void updateViewStatus() {
+        kitchenDetailsActivity.getKitchenService().updateKitchenOrderViewStatus(orderId, detailsViewModels);
     }
 
-    private void loadData(){
+    private void loadData() {
         List<KitchenOrderDetailsViewModel> temp = kitchenDetailsActivity.getKitchenService().getKitchenOrderDetails(orderId);
         detailsViewModels.clear();
         detailsViewModels.addAll(temp);
@@ -132,7 +138,7 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
         loadCookingComments();
     }
 
-    private void loadCookingComments(){
+    private void loadCookingComments() {
         List<KitchenCommentsViewModel> kitchenCommentsList = kitchenDetailsActivity.getKitchenService().getKitchenCommentsViewModel(orderId);
         kitchenCommentsViewModels.clear();
         kitchenCommentsViewModels.addAll(kitchenCommentsList);
@@ -143,20 +149,42 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        kitchenDetailsActivity = (KitchenDetailsActivity)context;
+        kitchenDetailsActivity = (KitchenDetailsActivity) context;
 
     }
 
     @Override
     public void onClick(View view) {
-        kitchenDetailsActivity.getKitchenService().saveOrderStatus(detailsViewModels,orderId,kitchenDetailsActivity);
+        kitchenDetailsActivity.getKitchenService().saveOrderStatus(detailsViewModels, orderId, kitchenDetailsActivity);
         kitchenDetailsActivity.finish();
         return;
     }
 
-    public void enableSaveButton(){
-       if(button != null && button.getVisibility() != View.VISIBLE){
-           button.setVisibility(View.VISIBLE);
-       }
+    public void enableSaveButton() {
+        if (button != null && button.getVisibility() != View.VISIBLE) {
+            button.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        menuInflater.inflate(R.menu.kitchen_order_item_print_menu, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
+    }
+
+    /**
+     * react to the user tapping/selecting an options menu item
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_print:
+                if (printerService != null) {
+                    printerService.printOrders(orderId, getActivity());
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

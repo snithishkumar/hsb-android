@@ -91,6 +91,7 @@ mobile number provided is not registered with MobilePay)</string>
     <string name="order_list">OrderList</string>
     <string name="menu_search">Search</string>
     <string name="kitchen_available_status_update">Your changes has been updated.</string>
+    <string name="print_item">Print</string>
 
     <string name="un_available">Not Available</string>
 
