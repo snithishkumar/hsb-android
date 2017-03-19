@@ -11,6 +11,8 @@
     <string name="mobile_number_hint">MobileNumber</string>
     <string name="mobile_number_error">MobileNumber should not be Empty</string>
 
+    <string name="table_number_error">TableNumber should not be Empty</string>
+
     <string name="table_number_hint">TableNumber</string>
 
     <string name="mpin_hint">mPIN(Must be 6 digits)</string>

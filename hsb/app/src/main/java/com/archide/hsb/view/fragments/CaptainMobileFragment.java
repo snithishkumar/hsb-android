@@ -107,9 +107,6 @@ mainActivity.getTableListService().removeAllData();
         engine.shutdown();
     }
 
-    public interface MainActivityCallback {
-        void success(int code, Object data);
-    }
 
 
     @Override
@@ -121,7 +118,7 @@ mainActivity.getTableListService().removeAllData();
                 if (tableNumberValue != null && !tableNumberValue.trim().isEmpty()) {
                     getMenuList(tableNumberValue,mobileNumberValue);
                 }else{
-                    tableNumber.setError(getString(R.string.mobile_number_error));
+                    tableNumber.setError(getString(R.string.table_number_error));
 
                 }
                 break;
@@ -160,6 +157,8 @@ mainActivity.getTableListService().removeAllData();
         if(responseData.getStatusCode() != 500){
             mainActivity.success(MainActivity.MENU_LIST_SUCCESS,null);
             return;
+        }else if(responseData.getStatusCode() == 404){
+            ActivityUtil.showDialog(mainActivity,"Error","InValid TableNumber.");
         }else{
             ActivityUtil.showDialog(mainActivity,"Error","Sorry for the Inconvenience. Please contact Admin.");
         }

@@ -107,6 +107,12 @@ public class UserMenusSyncPerform {
 
                 ResponseData responseData = response.body();
 
+                if(!responseData.getSuccess() && responseData.getStatusCode() == 404){
+                     responseData =new ResponseData(404,null);
+                    responseData.setStatusCode(404);
+                    return responseData;
+                }
+
                 String menuItemsJsonString =  responseData.getData();
 
                 GetMenuDetails  menuListJsonList =  gson.fromJson(menuItemsJsonString, GetMenuDetails.class);
