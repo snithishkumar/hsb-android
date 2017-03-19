@@ -5,12 +5,21 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -59,11 +68,7 @@ public class KitchenOrderListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,8 +76,6 @@ public class KitchenOrderListFragment extends Fragment {
 
         mInflater = inflater;
         mContainer = container;
-
-
         boolean isNetWorkConnected = Utilities.isNetworkConnected(kitchenActivity);
         View view = null;
         if(!isNetWorkConnected){
@@ -80,11 +83,11 @@ public class KitchenOrderListFragment extends Fragment {
             isFlag = true;
         }else{
             view =  inflater.inflate(R.layout.fragment_kitchen_order_list, container, false);
-
+/*
             kitchenOrderList =  (GridView)view.findViewById(R.id.gridview);
             int orientation = getResources().getConfiguration().orientation;
             if(Configuration.ORIENTATION_LANDSCAPE == orientation){
-                kitchenOrderList.setNumColumns(2);
+                kitchenOrderList.setNumColumns(1);
             }else{
                 kitchenOrderList.setNumColumns(1);
             }
@@ -92,15 +95,9 @@ public class KitchenOrderListFragment extends Fragment {
             List<KitchenOrderListViewModel> temp = kitchenActivity.getKitchenService().getOrderList();
             kitchenOrderListViewModels.clear();
             kitchenOrderListViewModels.addAll(temp);
-
             kitchenOrderListAdapter =  new KitchenOrderListAdapter(kitchenOrderListViewModels,kitchenActivity);
-
             kitchenOrderList.setAdapter(kitchenOrderListAdapter);
-
             init();
-
-
-
             kitchenOrderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View v,
                                         int position, long id) {
@@ -114,13 +111,9 @@ public class KitchenOrderListFragment extends Fragment {
                     kitchenActivity.viewOrderDetails(kitchenOrderListViewModel.getOrderId());
                     return;
                 }
-            });
+            });*/
         }
         // Inflate the layout for this fragment
-
-
-
-
         return view;
     }
 
@@ -228,4 +221,5 @@ public class KitchenOrderListFragment extends Fragment {
    public interface ViewOrderDetails{
         void viewOrderDetails(String orderId);
     }
+
 }

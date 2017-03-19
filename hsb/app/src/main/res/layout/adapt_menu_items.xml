@@ -24,6 +24,12 @@
                     android:textStyle="bold"
                     android:textColor="@android:color/white"
                     android:background="@drawable/item_type_background"/>
+                <ImageButton
+                    android:id="@+id/info_view"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/info"/>
         </LinearLayout>
 
         <LinearLayout

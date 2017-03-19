@@ -120,7 +120,7 @@ public class MenuItemsFragment extends Fragment {
     }
 
     private void setAdapters(RecyclerView recyclerView){
-        menuItemListAdapter = new MenuItemListAdapter(menuItemsViewModels,MenuItemsFragment.this,homeActivity,orderDetailsViewModel);
+        menuItemListAdapter = new MenuItemListAdapter(menuItemsViewModels,MenuItemsFragment.this,homeActivity,orderDetailsViewModel,getActivity());
         recyclerView.setAdapter(menuItemListAdapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(homeActivity,linearLayoutManager.getOrientation());

@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:background="#e5e5e5"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:baselineAligned="false"
+    android:orientation="vertical" >
+    <fragment
+        android:id="@+id/kitchen_table_number"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.archide.hsb.view.fragments.KitchenOrderListFragment"
+        tools:layout="@layout/fragment_kitchen_order_view">
+    </fragment>
+    <fragment
+        android:id="@+id/kitchen_product"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.archide.hsb.view.fragments.KitchenProductFragment"
+        tools:layout="@layout/fragment_kithen_product">
+    </fragment>
+    <fragment
+        android:id="@+id/kitchen_product_status"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.archide.hsb.view.fragments.kitchenProductStatus"
+        tools:layout="@layout/fragment_kitchen_product_status">
+    </fragment>
 
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/gridview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="20dp"
-        android:horizontalSpacing="20dp"
-        android:numColumns="3"
-        android:verticalSpacing="20dp"
-
-        />
-
-</RelativeLayout>
+</LinearLayout>
