@@ -76,7 +76,7 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     private void showOrderConformationFragment(){
-        final int SPLASH_TIME_OUT = 3000;
+        final int SPLASH_TIME_OUT = 30000;
         OrderConformationFragment orderConformationFragment = new OrderConformationFragment();
         FragmentsUtil.replaceFragmentNoStack(this, orderConformationFragment, R.id.main_container);
         new Handler().postDelayed(new Runnable() {
@@ -126,7 +126,7 @@ public class OrderActivity extends AppCompatActivity {
 
     private void showWelcomeScreen(){
         orderService.removeAllData();
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

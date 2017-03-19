@@ -94,7 +94,14 @@ public class UserMenusSyncPerform {
           ConfigurationEntity configurationEntity =  adminDao.getAppType();
           long lastServerSyncTime =  menuItemsDao.getLastSyncTime();
           UsersEntity usersEntity =   adminDao.getUsers();
-            Call<ResponseData> menuItemsResponse =  hsbAPI.getMenuItems(lastServerSyncTime,configurationEntity.getTableNumber(),configurationEntity.getAppType(),usersEntity.getUserMobileNumber());
+            JsonObject requestJson = new JsonObject();
+            requestJson.addProperty("lastServerSyncTime",lastServerSyncTime);
+            requestJson.addProperty("tableNumber",configurationEntity.getTableNumber());
+            requestJson.addProperty("appType",configurationEntity.getAppType().toString());
+            requestJson.addProperty("mobileNumber",usersEntity.getUserMobileNumber());
+            requestJson.addProperty("orderType",usersEntity.getOrderType().toString());
+
+            Call<ResponseData> menuItemsResponse =  hsbAPI.getMenuItems(requestJson);
             Response<ResponseData> response =  menuItemsResponse.execute();
             if (response != null && response.isSuccessful()) {
 
@@ -109,6 +116,10 @@ public class UserMenusSyncPerform {
                 for(MenuListJson menuListJson : menuListJsonsList){
                     processMenuDetails(menuListJson);
                 }
+                if(menuListJsonList.getTableNumber() != null){
+                    adminDao.changeTableNumber(menuListJsonList.getTableNumber());
+                }
+
 
                 PlaceOrdersJson placeOrdersJson =    menuListJsonList.getPreviousOrder();
                 if(placeOrdersJson != null){

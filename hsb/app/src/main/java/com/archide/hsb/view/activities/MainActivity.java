@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
 
     private void init(){
         tableListService = new TableListServiceImpl(this);
+        tableListService.removeAllData();
     }
 
 

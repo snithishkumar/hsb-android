@@ -151,8 +151,9 @@ public class TableListServiceImpl implements TableListService {
     public void removeAllData(){
         try{
             OrdersDao ordersDao = new OrdersDaoImpl(context);
-            ordersDao.removeAllData();
             adminDao.removeAllUsers();
+            ordersDao.removeAllData();
+            adminDao.changeTableNumber(null);
         }catch (Exception e){
             e.printStackTrace();
         }

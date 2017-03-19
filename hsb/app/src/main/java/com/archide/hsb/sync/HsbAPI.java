@@ -2,6 +2,7 @@ package com.archide.hsb.sync;
 
 import com.archide.hsb.entity.KitchenMenuItemsEntity;
 import com.archide.hsb.enumeration.AppType;
+import com.archide.hsb.enumeration.OrderType;
 import com.archide.hsb.sync.json.GetKitchenOrders;
 import com.archide.hsb.sync.json.PlaceOrdersJson;
 import com.archide.hsb.sync.json.ResponseData;
@@ -30,12 +31,8 @@ public interface HsbAPI {
 
 
     /** Create User **/
-    @FormUrlEncoded
     @POST("/hsb/mobile/getMenuItems.html")
-    Call<ResponseData> getMenuItems(@Field("lastServerSyncTime") long lastServerSyncTime,
-                                    @Field("tableNumber") String tableNumber,
-                                    @Field("appType") AppType appType,
-                                    @Field("mobileNumber") String mobileNumber);
+    Call<ResponseData> getMenuItems(@Body JsonObject requestJson);
 
     @POST("/hsb/mobile/placeAnOrder.html")
     Call<ResponseData> placeAnOrder(@Body PlaceOrdersJson placeOrdersJson);

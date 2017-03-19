@@ -11,6 +11,7 @@ import com.archide.hsb.dao.OrdersDao;
 import com.archide.hsb.dao.impl.AdminDaoImpl;
 import com.archide.hsb.dao.impl.MenuItemsDaoImpl;
 import com.archide.hsb.dao.impl.OrdersDaoImpl;
+import com.archide.hsb.entity.ConfigurationEntity;
 import com.archide.hsb.entity.MenuEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
 import com.archide.hsb.entity.PlacedOrdersEntity;
@@ -180,12 +181,13 @@ public class OrderServiceImpl implements OrderService {
             if(placedOrdersEntity == null){
                 AdminDao adminDao = new AdminDaoImpl(context);
                 UsersEntity usersEntity = adminDao.getUsers();
+                placedOrdersEntity = new PlacedOrdersEntity();
                 placedOrdersEntity.setUserMobileNumber(usersEntity.getUserMobileNumber());
                 placedOrdersEntity = new PlacedOrdersEntity();
                 placedOrdersEntity.setClosed(false);
                 placedOrdersEntity.setPlaceOrdersUUID(UUID.randomUUID().toString());
                 placedOrdersEntity.setDateTime(System.currentTimeMillis());
-                placedOrdersEntity.setOrderDateTime(placedOrdersEntity.getDateTime());
+                placedOrdersEntity.setOrderDateTime(System.currentTimeMillis());
 
                 ordersDao.createPlacedOrdersEntity(placedOrdersEntity);
             }
@@ -348,6 +350,29 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
+
+    @Override
+    public ConfigurationEntity getAppType(){
+        try{
+            AdminDao adminDao = new AdminDaoImpl(context);
+           return adminDao.getAppType();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    @Override
+    public UsersEntity getUsersEntity(){
+        try{
+            AdminDao adminDao = new AdminDaoImpl(context);
+            return   adminDao.getUsers();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
 

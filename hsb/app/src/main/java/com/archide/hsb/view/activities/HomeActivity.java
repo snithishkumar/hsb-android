@@ -14,7 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.archide.hsb.entity.ConfigurationEntity;
 import com.archide.hsb.entity.MenuCourseEntity;
+import com.archide.hsb.enumeration.AppType;
 import com.archide.hsb.service.MenuItemService;
 import com.archide.hsb.service.OrderService;
 import com.archide.hsb.service.impl.MenuItemServiceImpl;
@@ -56,10 +58,15 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        FragmentDrawer drawerFragment = (FragmentDrawer)
-                getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-        drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.root_layout),mToolbar);
-        drawerFragment.setDrawerListener(this);
+        ConfigurationEntity configurationEntity = orderService.getAppType();
+        if(configurationEntity != null && configurationEntity.getAppType().toString().equals(AppType.Captain.toString())){
+            FragmentDrawer drawerFragment = (FragmentDrawer)
+                    getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+            drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.root_layout),mToolbar);
+            drawerFragment.setDrawerListener(this);
+        }
+
+
        // speech();
 
     }

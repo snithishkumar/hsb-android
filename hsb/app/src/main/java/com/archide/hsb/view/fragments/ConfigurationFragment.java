@@ -122,7 +122,6 @@ public class ConfigurationFragment extends Fragment implements View.OnClickListe
     @Override
     public void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
     }
 
     @Override

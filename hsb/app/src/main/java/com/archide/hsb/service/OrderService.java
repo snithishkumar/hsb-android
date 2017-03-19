@@ -2,7 +2,9 @@ package com.archide.hsb.service;
 
 import android.content.Context;
 
+import com.archide.hsb.entity.ConfigurationEntity;
 import com.archide.hsb.entity.PlacedOrderItemsEntity;
+import com.archide.hsb.entity.UsersEntity;
 import com.archide.hsb.view.model.CloseOrderViewModel;
 import com.archide.hsb.view.model.MenuItemsViewModel;
 import com.archide.hsb.view.model.PlaceAnOrderViewModel;
@@ -51,5 +53,8 @@ public interface OrderService {
 
     void logout(Context context,String tableNumber,String mobileNumber);
 
+    ConfigurationEntity getAppType();
+
+    UsersEntity getUsersEntity();
 
 }

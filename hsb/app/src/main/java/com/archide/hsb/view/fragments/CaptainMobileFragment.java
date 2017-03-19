@@ -73,7 +73,7 @@ public class CaptainMobileFragment extends Fragment implements View.OnClickListe
         Button button =  (Button)loginView.findViewById(R.id.submit);
         button.setOnClickListener(this);
 
-
+mainActivity.getTableListService().removeAllData();
 
         return loginView;
 

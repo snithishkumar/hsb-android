@@ -7,8 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.archide.hsb.entity.ConfigurationEntity;
+import com.archide.hsb.enumeration.AppType;
 import com.archide.hsb.view.activities.NaviDrawerActivity;
+import com.archide.hsb.view.activities.OrderActivity;
 
 import java.util.Locale;
 
@@ -21,6 +25,7 @@ import hsb.archide.com.hsb.R;
 public class OrderConformationFragment extends Fragment implements TextToSpeech.OnInitListener{
 
     private TextToSpeech engine;
+    private OrderActivity orderActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,12 +41,21 @@ public class OrderConformationFragment extends Fragment implements TextToSpeech.
                              Bundle savedInstanceState) {
         engine = new TextToSpeech(getContext(), this);
         View view = inflater.inflate(R.layout.fragment_order_conformation, container, false);
+        TextView  textView  = (TextView)view.findViewById(R.id.vOrderConformation);
+        ConfigurationEntity configurationEntity =  orderActivity.getOrderService().getAppType();
+        if(configurationEntity.getAppType().toString().equals(AppType.User.toString())){
+
+            textView.setText("Table "+configurationEntity.getTableNumber()+" is awating for you!!!");
+        }else{
+            textView.setVisibility(View.INVISIBLE);
+        }
         return view;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        orderActivity = (OrderActivity)context;
     }
 
 

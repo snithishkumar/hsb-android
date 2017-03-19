@@ -15,6 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.archide.hsb.entity.ConfigurationEntity;
+import com.archide.hsb.entity.UsersEntity;
+import com.archide.hsb.enumeration.AppType;
+import com.archide.hsb.enumeration.OrderType;
+import com.archide.hsb.service.OrderService;
+import com.archide.hsb.service.impl.OrderServiceImpl;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.HomeActivity;
 import com.archide.hsb.view.adapters.NavigationDrawerAdapter;
@@ -72,7 +78,19 @@ public class FragmentDrawer extends Fragment {
     }
 
     private void  loadData(){
+        OrderService orderService = new OrderServiceImpl(homeActivity);
+        ConfigurationEntity configurationEntity =  orderService.getAppType();
+        UsersEntity  usersEntity =  orderService.getUsersEntity();
+        if(usersEntity.getOrderType().toString().equals(OrderType.TakeAway.toString())){
+            vUserName.setText("Table No: T");
+        }else{
+            vUserName.setText("Table No: "+configurationEntity.getTableNumber());
+        }
 
+        vMobileNumber.setText(usersEntity.getUserMobileNumber());
+
+        //  vUserName.setText("Table No: "+ ActivityUtil.TABLE_NUMBER);
+        // vMobileNumber.setText(ActivityUtil.USER_MOBILE);
     }
 
     @Override
@@ -84,7 +102,7 @@ public class FragmentDrawer extends Fragment {
 
         vUserName =  (TextView)layout.findViewById(R.id.navigation_drawer_name);
         vMobileNumber = (TextView)layout.findViewById(R.id.navigation_drawer_mobile_no);
-        loadData();
+
         NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(homeActivity, getData());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(homeActivity));
@@ -100,7 +118,7 @@ public class FragmentDrawer extends Fragment {
  
             }
         }));
-
+        loadData();
       //  vUserName.setText("Table No: "+ ActivityUtil.TABLE_NUMBER);
        // vMobileNumber.setText(ActivityUtil.USER_MOBILE);
         return layout;
