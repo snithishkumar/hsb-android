@@ -26,6 +26,7 @@ public class OrderConformationFragment extends Fragment implements TextToSpeech.
 
     private TextToSpeech engine;
     private OrderActivity orderActivity;
+    private int statusCode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,14 +41,20 @@ public class OrderConformationFragment extends Fragment implements TextToSpeech.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         engine = new TextToSpeech(getContext(), this);
+        statusCode = getArguments().getInt("statusCode");
         View view = inflater.inflate(R.layout.fragment_order_conformation, container, false);
         TextView  textView  = (TextView)view.findViewById(R.id.vOrderConformation);
         ConfigurationEntity configurationEntity =  orderActivity.getOrderService().getAppType();
         if(configurationEntity.getAppType().toString().equals(AppType.User.toString())){
 
-            textView.setText("Table "+configurationEntity.getTableNumber()+" is awating for you!!!");
+            textView.setText("Table "+configurationEntity.getTableNumber()+" is awaiting for you!!!");
         }else{
-            textView.setVisibility(View.INVISIBLE);
+            if(statusCode == 201){
+                textView.setText("Your Bill has been sent to MobilePay.");
+            }else{
+                textView.setVisibility(View.INVISIBLE);
+            }
+
         }
         return view;
     }

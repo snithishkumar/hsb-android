@@ -154,6 +154,8 @@ mainActivity.getTableListService().removeAllData();
            progressDialog.dismiss();
        }
 
+
+
         if(responseData.getStatusCode() != 500){
             mainActivity.success(MainActivity.MENU_LIST_SUCCESS,null);
             return;

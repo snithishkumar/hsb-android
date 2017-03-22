@@ -275,11 +275,11 @@ public class UserMenusSyncPerform {
                 Response<ResponseData> response =   placeOrderResponse.execute();
                 if (response != null && response.isSuccessful()) {
                     ResponseData responseData =  response.body();
-                    if(responseData.getSuccess() && responseData.getStatusCode() == 200){
+                    if(responseData.getSuccess() && (responseData.getStatusCode() == 200 || responseData.getStatusCode() == 201)){
                         // TODO Table Number
                         ordersDao.updateServerSyncTime(responseData.getData());
                         ordersDao.updatePlacedOrderItems(Long.valueOf(responseData.getData()));
-                        ResponseData result = new ResponseData(200,null);
+                        ResponseData result = new ResponseData(responseData.getStatusCode(),null);
                         return result;
                     }else if(responseData.getStatusCode() == 403){
                         ordersDao.removeAllData();

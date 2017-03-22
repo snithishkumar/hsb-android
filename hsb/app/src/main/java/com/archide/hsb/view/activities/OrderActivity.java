@@ -75,9 +75,13 @@ public class OrderActivity extends AppCompatActivity {
         FragmentsUtil.replaceFragmentNoStack(this, orderPlaceFragment, R.id.main_container);
     }
 
-    private void showOrderConformationFragment(){
+    private void showOrderConformationFragment(int statusCode){
         final int SPLASH_TIME_OUT = 30000;
         OrderConformationFragment orderConformationFragment = new OrderConformationFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("statusCode", statusCode);
+        orderConformationFragment.setArguments(bundle);
+
         FragmentsUtil.replaceFragmentNoStack(this, orderConformationFragment, R.id.main_container);
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -146,7 +150,8 @@ public class OrderActivity extends AppCompatActivity {
                 break;
 
             case 200:
-                showOrderConformationFragment();
+            case 201:
+                showOrderConformationFragment(responseData.getStatusCode());
                 return;
 
 
