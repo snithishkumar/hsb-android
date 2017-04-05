@@ -1,32 +1,87 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="20dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="290dp"
+    android:layout_height="350dp"
+    android:orientation="horizontal"
+    android:id="@+id/adapt_unorder_menu_layout"
     android:background="@android:color/white">
-    <ImageView
-        android:id="@+id/veg"
-        android:layout_width="35dp"
-        android:layout_marginTop="10dp"
-        android:layout_height="35dp"
-        android:background="@drawable/ic_veg"/>
-    <include
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/adapt_food_add_cart"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_toRightOf="@+id/veg"
-        layout="@layout/adapt_menu_items"/>
-    <TextView
-        android:id="@+id/adapt_food_add_cart"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:background="@drawable/rectangle_corner"
-        android:text="ADD"
-        android:layout_centerVertical="true"
-        android:gravity="center"
-        android:layout_alignParentRight="true"
-        android:textColor="@android:color/holo_green_dark"/>
+        android:orientation="horizontal"
+        android:id="@+id/menu_item_layout"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="10dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_veg"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MASAL DOSA"
+                android:layout_marginTop="10dp"
+                android:id="@+id/user_menu_item_name"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:maxLines="3"
+                android:id="@+id/user_menu_item_desc"
+                android:text="Dummy Desc Here are some quick\n tips for a first-time organization member"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:id="@+id/user_menu_item_rate"
+                android:textSize="20dp"
+                android:text="INR 200"
+                />
+
+
+            <RelativeLayout
+                android:id="@+id/number_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:padding="2dp"
+                android:background="@drawable/rectangle_corner">
+                <include
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    layout="@layout/number_picker"/>
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:layout_width="300dp"
+        android:id="@+id/menu_img"
+        android:src="@drawable/dosa_tmp"
+        android:layout_height="150dp"
+        android:layout_marginEnd="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
 
 </RelativeLayout>
-

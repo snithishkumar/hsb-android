@@ -155,7 +155,7 @@ public class OrderedMenuItemsAdapter extends RecyclerView.Adapter<RecyclerView.V
             if(menuItemsViewModels.size() > 0){
                 notifyDataSetChanged();
             }else{
-                orderPlaceFragment.showNoData();
+                orderActivity.showNoPlacedOrderFragment();
                 return;
             }
 

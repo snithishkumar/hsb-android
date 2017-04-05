@@ -5,26 +5,26 @@ import android.content.Context;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.archide.hsb.enumeration.OrderType;
-import com.archide.hsb.enumeration.UserType;
 import com.archide.hsb.sync.json.ResponseData;
 import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.MainActivity;
-import com.satsuware.usefulviews.LabelledSpinner;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import hsb.archide.com.hsb.R;
@@ -32,11 +32,12 @@ import hsb.archide.com.hsb.R;
 /**
  *
  */
-public class CaptainMobileFragment extends Fragment implements View.OnClickListener,TextToSpeech.OnInitListener {
+public class CaptainMobileFragment extends Fragment implements TextToSpeech.OnInitListener {
 
     private MainActivity mainActivity;
     private TextView tableNumber;
-    private TextView mobileNumber;
+    private EditText userMobile;
+    private ImageView nextButton;
     private ProgressDialog progressDialog;
 
     private LayoutInflater mInflater;
@@ -67,13 +68,23 @@ public class CaptainMobileFragment extends Fragment implements View.OnClickListe
 
     private View initLayout(){
         View loginView =  mInflater.inflate(R.layout.fragment_captain_mobile, mContainer, false);
-      //vCaptainTableNumber
-        tableNumber =  (TextView)loginView.findViewById(R.id.vCaptainTableNumber);
-        mobileNumber =  (TextView)loginView.findViewById(R.id.vCaptainUserMobileNumber);
-        Button button =  (Button)loginView.findViewById(R.id.submit);
-        button.setOnClickListener(this);
+        userMobile =  (EditText)loginView.findViewById(R.id.vCaptainTableNumber);
+        nextButton =  (ImageView)loginView.findViewById(R.id.captain_next_button);
 
-mainActivity.getTableListService().removeAllData();
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String userMobileText =    userMobile.getText().toString();
+                if(userMobileText.length() >= 1){
+                    getMenuList(userMobileText,null);
+                }
+            }
+        });
+
+
+
+
+        mainActivity.getTableListService().removeAllData();
 
         return loginView;
 
@@ -109,24 +120,7 @@ mainActivity.getTableListService().removeAllData();
 
 
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.submit:
-              String tableNumberValue =  tableNumber.getText().toString();
-              String mobileNumberValue =    mobileNumber.getText().toString();
-                if (tableNumberValue != null && !tableNumberValue.trim().isEmpty()) {
-                    getMenuList(tableNumberValue,mobileNumberValue);
-                }else{
-                    tableNumber.setError(getString(R.string.table_number_error));
 
-                }
-                break;
-
-        }
-
-
-    }
 
     private void getMenuList(String tableNumberValue,String mobileNumberValue) {
         boolean isNetWorkConnected = Utilities.isNetworkConnected(mainActivity);
@@ -135,18 +129,18 @@ mainActivity.getTableListService().removeAllData();
             mainActivity.getTableListService().updateTableNumber(tableNumberValue,mobileNumberValue,OrderType.Dinning);
             mainActivity.getTableListService().getMenuItems();
         } else {
-            showNoInterNet();
-           // ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
+           // showNoInterNet();
+            ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
         }
     }
 
-    private void showNoInterNet(){
+   /* private void showNoInterNet(){
         View newView = mInflater.inflate(R.layout.fragment_no_internet, mContainer, false);
         TextView tryNow = (TextView)newView.findViewById(R.id.try_now);
         tryNow.setOnClickListener(this);
         mContainer.removeAllViews();
         mContainer.addView(newView);
-    }
+    }*/
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleServerSyncResponse(ResponseData responseData) {

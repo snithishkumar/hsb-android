@@ -26,6 +26,10 @@ public class MenuItemsViewModel {
     private FoodType foodType;
     private int availableCount;
 
+    public MenuItemsViewModel(){
+
+    }
+
     public MenuItemsViewModel(MenuEntity menuEntity){
         this.uuid = menuEntity.getMenuUUID();
         this.name = menuEntity.getName();

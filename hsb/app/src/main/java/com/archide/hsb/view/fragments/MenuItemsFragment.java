@@ -1,25 +1,17 @@
 package com.archide.hsb.view.fragments;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.net.Uri;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
+import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.archide.hsb.sync.json.ResponseData;
-import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.HomeActivity;
 import com.archide.hsb.view.adapters.MenuItemListAdapter;
 import com.archide.hsb.view.model.MenuItemsViewModel;
@@ -39,14 +31,11 @@ import hsb.archide.com.hsb.R;
 public class MenuItemsFragment extends Fragment {
 
 
-    private SwipeRefreshLayout refreshLayout;
-    private LinearLayoutManager  linearLayoutManager;
     private HomeActivity homeActivity;
     private  MenuItemListAdapter  menuItemListAdapter;
     private  String menuCourseUuid ;
     OrderDetailsViewModel orderDetailsViewModel;
-    private ImageView imageView;
-
+    GridView userMenuList;
     TextView totalNoOfItems;
     TextView totalAmount;
 
@@ -73,74 +62,49 @@ public class MenuItemsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_menu_items, container, false);
 
-        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.menu_items_swipe);
+        userMenuList =  (GridView)view.findViewById(R.id.user_menu_item_grid);
+
+        layout =  (RelativeLayout)view.findViewById(R.id.current_order_details);
+        layout.setVisibility(View.GONE);
+
+        totalNoOfItems = (TextView) layout.findViewById(R.id.total_no_of_items);
+        totalAmount = (TextView) layout.findViewById(R.id.total_amount);
+
+
+        int orientation = getResources().getConfiguration().orientation;
+        if(Configuration.ORIENTATION_LANDSCAPE == orientation){
+            userMenuList.setNumColumns(3);
+        }else{
+            userMenuList.setNumColumns(2);
+        }
 
 
         orderDetailsViewModel = new OrderDetailsViewModel();
 
 
-        layout =  (RelativeLayout)view.findViewById(R.id.textView1);
-        layout.setVisibility(View.GONE);
-
-        totalNoOfItems = (TextView) layout.findViewById(R.id.total_no_of_items);
-        totalAmount =  (TextView) layout.findViewById(R.id.total_amount);
-        imageView =  (ImageView)layout.findViewById(R.id.cart_item_fire_img);
-        refreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                homeActivity.getOrderService().getMenuItems(homeActivity);
-
-            }
-        });
-
-
-        //  refreshLayout.
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.menu_items_list_fragment);
-        recyclerView.setHasFixedSize(true);
-          linearLayoutManager =  new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                refreshLayout.setEnabled(linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0);
-            }
-        });
-
-        setAdapters(recyclerView);
-       // getData();
-        return view;
-    }
-
-    private void setAdapters(RecyclerView recyclerView){
-        menuItemListAdapter = new MenuItemListAdapter(menuItemsViewModels,MenuItemsFragment.this,homeActivity,orderDetailsViewModel);
-        recyclerView.setAdapter(menuItemListAdapter);
-
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(homeActivity,linearLayoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
-    }
-
-    private void getData(){
         List<MenuItemsViewModel> menuItemsViewModels =  homeActivity.getMenuItemService().getMenuItemsViewModel(menuCourseUuid,orderDetailsViewModel);
         this.menuItemsViewModels.clear();
         this.menuItemsViewModels.addAll(menuItemsViewModels);
-        menuItemListAdapter.notifyDataSetChanged();
-       // updateFooterBar();
 
+        setAdapters();
+        updateFooterBar();
+        return view;
     }
+
+
+
+    private void setAdapters(){
+        menuItemListAdapter = new MenuItemListAdapter(menuItemsViewModels,MenuItemsFragment.this,homeActivity,orderDetailsViewModel);
+        userMenuList.setAdapter(menuItemListAdapter);
+    }
+
+
 
     @Override
     public void onResume() {
         super.onResume();
-        getData();
-        reLoadData();
+        //getData();
+        //reLoadData();
     }
 
     @Override
@@ -169,14 +133,15 @@ public class MenuItemsFragment extends Fragment {
     }
 
     public void reLoadData(){
-        homeActivity.getMenuItemService().getCurrentOrdersCounts(orderDetailsViewModel);
-        updateFooterBar();
+        if(homeActivity != null){
+            homeActivity.getMenuItemService().getCurrentOrdersCounts(orderDetailsViewModel);
+            updateFooterBar();
+        }
+
     }
 
     public void updateFooterBar(){
         if(orderDetailsViewModel.getTotalCount() > 0){
-           // Animation bounce = AnimationUtils.loadAnimation(homeActivity,R.anim.bounce);
-           // imageView.startAnimation(bounce);
             totalNoOfItems.setText(String.valueOf(orderDetailsViewModel.getTotalCount())+" items");
             totalAmount.setText(getString(R.string.pound)+" "+String.valueOf(orderDetailsViewModel.getTotalCost()));
             if(layout.getVisibility() != View.VISIBLE){
@@ -193,17 +158,15 @@ public class MenuItemsFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleServerSyncResponse(ResponseData responseData) {
-        stopRefreshing();
-        getData();
-        reLoadData();
+       // getData();
+       // reLoadData();
 
     }
 
 
-    private void stopRefreshing(){
-        if(refreshLayout != null){
-            refreshLayout.setRefreshing(false);
-        }
-    }
+
+
+
+
 
 }

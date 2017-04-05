@@ -1,5 +1,7 @@
 package com.archide.hsb.view.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
     public static final int CONF_SUCCESS_USER = 2;
     public static final int CONF_SUCCESS_CAPTAIN = 3;
     public static final int MENU_LIST_SUCCESS = 4;
+    public static final int TABLE_UNAVAILABLE = 6;
     public static final int KITCHEN_LOGIN_SUCCESS = 5;
 
     @Override
@@ -104,9 +107,53 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
         FragmentsUtil.replaceFragmentNoStack(this, mobileFragment, R.id.main_container);
     }
 
+
+    private void showWelcome(ConfigurationEntity configurationEntity){
+        switch (configurationEntity.getAppType()){
+            case User:
+                WelcomeFragment welcomeFragment = new WelcomeFragment();
+                FragmentsUtil.addFragment(this, welcomeFragment, R.id.main_container);
+                break;
+            case Captain:
+                CaptainMobileFragment captainMobileFragment = new CaptainMobileFragment();
+                FragmentsUtil.addFragment(this, captainMobileFragment, R.id.main_container);
+                break;
+            case Kitchen:
+                KitchenLoginFragment kitchenLoginFragment = new KitchenLoginFragment();
+                FragmentsUtil.addFragment(this, kitchenLoginFragment, R.id.main_container);
+                break;
+        }
+    }
+
+
+    private void showUnAvailable(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        // Setting Dialog Title
+        alertDialog.setTitle("Error");
+
+        // Setting Dialog Message
+        alertDialog.setMessage(getString(R.string.table_unavailable));
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                ConfigurationEntity configurationEntity = tableListService.getAppType();
+                showWelcome(configurationEntity);
+
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
     @Override
     public void success(int code, Object data) {
         switch (code){
+            case TABLE_UNAVAILABLE:
+                showUnAvailable();
+                break;
             case CONF_SUCCESS_CAPTAIN:
                 showCaptainView();
                 break;

@@ -1,26 +1,28 @@
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
-    android:id="@+id/menu_items_swipe">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="#e5e5e5"
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/user_menu_item_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/textView1"
+        android:numColumns="3"
+        android:verticalSpacing="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_above="@+id/current_order_details"
         tools:listitem="@layout/adapt_unorder_menu_items"
-        android:id="@+id/menu_items_list_fragment" />
+        />
 
-        <include
-            android:layout_width="match_parent"
-            android:id="@+id/textView1"
-            android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
-            layout="@layout/current_orders"/>
+    <include
+        android:layout_width="match_parent"
+        android:id="@+id/current_order_details"
+        android:layout_height="90dp"
+        android:layout_alignParentBottom="true"
+        layout="@layout/current_orders"/>
 
 </RelativeLayout>
-</android.support.v4.widget.SwipeRefreshLayout>

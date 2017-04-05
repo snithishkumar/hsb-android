@@ -66,15 +66,10 @@ public class MenuItemServiceImpl implements MenuItemService {
 
             MenuCourseEntity menuCourseEntity =  menuItemsDao.getMenuCourseEntity(menuCourseUuid);
             if(menuCourseEntity != null){
-                List<FoodCategoryEntity>  foodCategoryList =  menuItemsDao.getFoodCategoryEntity(menuCourseEntity);
-                for(FoodCategoryEntity foodCategoryEntity : foodCategoryList){
-                    MenuItemsViewModel menuItemsViewModel = new MenuItemsViewModel(foodCategoryEntity) ;
-                    menuItemsViewModels.add(menuItemsViewModel);
-                    List<MenuEntity> menuEntityList =  menuItemsDao.getMenuEntityList(menuCourseEntity,foodCategoryEntity);
-                    for(MenuEntity menuEntity : menuEntityList){
-                        MenuItemsViewModel menuItems = new MenuItemsViewModel(menuEntity) ;
-                        menuItemsViewModels.add(menuItems);
-                    }
+                List<MenuEntity> menuEntityList =  menuItemsDao.getMenuEntityList(menuCourseEntity);
+                for(MenuEntity menuEntity : menuEntityList){
+                    MenuItemsViewModel menuItems = new MenuItemsViewModel(menuEntity) ;
+                    menuItemsViewModels.add(menuItems);
                 }
                 getCurrentOrders(menuCourseEntity,menuItemsViewModels,orderDetailsViewModel);
             }

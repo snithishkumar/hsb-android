@@ -1,21 +1,24 @@
 package com.archide.hsb.view.adapters;
 
-import android.graphics.drawable.Drawable;
-import android.support.v7.widget.RecyclerView;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.archide.hsb.enumeration.FoodType;
 import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.HomeActivity;
 import com.archide.hsb.view.fragments.MenuItemsFragment;
 import com.archide.hsb.view.model.MenuItemsViewModel;
 import com.archide.hsb.view.model.OrderDetailsViewModel;
+import com.facebook.rebound.SimpleSpringListener;
+import com.facebook.rebound.Spring;
+import com.facebook.rebound.SpringSystem;
 
 import java.util.List;
 
@@ -25,16 +28,14 @@ import hsb.archide.com.hsb.R;
  * Created by Nithish on 16/11/16.
  */
 
-public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
+public class MenuItemListAdapter extends BaseAdapter {
 
     List<MenuItemsViewModel> menuItemsViewModels = null;
 
-    private final int HEADER = 1;
-    private final int MENU_ITEM = 2;
-    private final int ORDERED_MENU_ITEN = 3;
     MenuItemsFragment menuItemsFragment;
     private HomeActivity homeActivity;
     private OrderDetailsViewModel orderDetailsViewModel;
+    MenuItemsViewHolder menuItemsViewHolder;
 
     public MenuItemListAdapter(List<MenuItemsViewModel> menuItemsViewModels, MenuItemsFragment menuItemsFragment, HomeActivity homeActivity,OrderDetailsViewModel orderDetailsViewModel){
         this.menuItemsViewModels = menuItemsViewModels;
@@ -44,210 +45,167 @@ public class MenuItemListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public int getItemCount() {
+    public int getCount() {
         return menuItemsViewModels.size() ;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        MenuItemsViewModel menuItemsViewModel =  menuItemsViewModels.get(position);
-        if(menuItemsViewModel.isCategory()){
-            return HEADER;
-        }else if(menuItemsViewModel.isOrdered()){
-            return ORDERED_MENU_ITEN;
-        }else{
-           return MENU_ITEM;
-        }
 
+
+    @Override
+    public Object getItem(int i) {
+        return null;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view;
-        if(viewType == HEADER){
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.adapt_order_menu_category, parent, false);
-            return new FoodCategoryViewHolder(view);
-        }else if(viewType == MENU_ITEM){
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.adapt_unorder_menu_items, parent, false);
-            return new MenuItemsViewHolder(view);
-        }else{
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.adapt_order_menu_items, parent, false);
-            return new OrderItemsViewHolder(view);
-        }
+    public long getItemId(int i) {
+        return i;
     }
 
-    @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) {
-        MenuItemsViewModel menuItemsViewModel = menuItemsViewModels.get(position);
-        if(viewHolder instanceof FoodCategoryViewHolder){
-            FoodCategoryViewHolder foodCategoryViewHolder  = (FoodCategoryViewHolder)viewHolder;
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        MenuItemsViewHolder menuItemsViewHolder;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapt_unorder_menu_items, parent, false);
+            menuItemsViewHolder = new MenuItemsViewHolder(convertView);
+            convertView.setTag(menuItemsViewHolder);
+        }else{
+            menuItemsViewHolder = (MenuItemsViewHolder) convertView.getTag();
+        }
+        this.menuItemsViewHolder = menuItemsViewHolder;
 
-            foodCategoryViewHolder.vFoodCategory.setText(menuItemsViewModel.getName());
-        }else if(viewHolder instanceof OrderItemsViewHolder){
-            OrderItemsViewHolder orderItemsViewHolder = (OrderItemsViewHolder)viewHolder;
-            orderItemsViewHolder.vFoodName.setText(menuItemsViewModel.getName());
-            orderItemsViewHolder.vFoodCost.setText(homeActivity.getString(R.string.pound)+String.valueOf(menuItemsViewModel.getCost()));
-            orderItemsViewHolder.vFoodCartCount.setText(String.valueOf(menuItemsViewModel.getCount()));
-            orderItemsViewHolder.vFoodTasteType.setText(menuItemsViewModel.getTasteType());
-            orderItemsViewHolder.vFoodDesc.setText(menuItemsViewModel.getDescription());
-            int availableCount = menuItemsViewModel.getAvailableCount() - menuItemsViewModel.getCount();
-            if(availableCount < 10){
-                orderItemsViewHolder.vFoodAvailable.setVisibility(View.VISIBLE);
-                orderItemsViewHolder.vFoodAvailable.setText("Available Count :"+availableCount);
-            }else{
-                orderItemsViewHolder.vFoodAvailable.setVisibility(View.INVISIBLE);
+       final MenuItemsViewModel menuItemsViewModel = menuItemsViewModels.get(position);
+        menuItemsViewHolder.vFoodSubCartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               RelativeLayout viewParent =  (RelativeLayout)view.getParent().getParent().getParent().getParent().getParent();
+                bound(viewParent);
+                if(menuItemsViewModel.getCount() == 1){
+                    menuItemsViewModel.setOrdered(false);
+                    menuItemsViewModel.setCount(0);
+                    homeActivity.getOrderService().removeOrderItems(menuItemsViewModel);
+
+                    orderDetailsViewModel.setTotalCount(orderDetailsViewModel.getTotalCount() - 1);
+                    double val =  orderDetailsViewModel.getTotalCost() - menuItemsViewModel.getCost();
+                    orderDetailsViewModel.setTotalCost( Utilities.roundOff(val));
+                      menuItemsFragment.updateFooterBar();
+                    notifyDataSetChanged();
+                }else if(menuItemsViewModel.getCount() > 1){
+                    menuItemsViewModel.setCount(menuItemsViewModel.getCount() - 1);
+                    homeActivity.getOrderService().updateOrderItems(menuItemsViewModel);
+                    orderDetailsViewModel.setTotalCount(orderDetailsViewModel.getTotalCount() - 1);
+                    double val =  orderDetailsViewModel.getTotalCost() - menuItemsViewModel.getCost();
+                    orderDetailsViewModel.setTotalCost( Utilities.roundOff(val));
+                      menuItemsFragment.updateFooterBar();
+                    notifyDataSetChanged();
+                }else{
+                    ActivityUtil.toast(homeActivity,"No items to remove");
+                }
+
+            }
+        });
+
+
+        menuItemsViewHolder.vFoodAddCartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RelativeLayout viewParent =  (RelativeLayout)view.getParent().getParent().getParent().getParent().getParent();
+                bound(viewParent);
+                if(menuItemsViewModel.getCount() < menuItemsViewModel.getAvailableCount()){
+                    menuItemsViewModel.setCount(menuItemsViewModel.getCount() + 1);
+                    homeActivity.getOrderService().addOrderItems(menuItemsViewModel);
+                    orderDetailsViewModel.setTotalCount(orderDetailsViewModel.getTotalCount() + 1);
+                    double val =  orderDetailsViewModel.getTotalCost() + menuItemsViewModel.getCost();
+                    orderDetailsViewModel.setTotalCost( Utilities.roundOff(val));
+                     menuItemsFragment.updateFooterBar();
+                }else{
+                    ActivityUtil.toast(homeActivity,homeActivity.getString(R.string.un_available));
+                }
+                notifyDataSetChanged();
             }
 
-            setFoodType(orderItemsViewHolder.vFoodType,menuItemsViewModel.getFoodType());
-        }else{
+        });
 
-            MenuItemsViewHolder menuItemsViewHolder = (MenuItemsViewHolder)viewHolder;
-            setFoodType(menuItemsViewHolder.vFoodType,menuItemsViewModel.getFoodType());
-            setValues(menuItemsViewHolder,menuItemsViewModel);
-        }
+
+        populateData(menuItemsViewModel,menuItemsViewHolder);
+        return convertView;
+
     }
 
 
-    private void setFoodType(ImageView imageView, FoodType foodType){
-        if(foodType.toString().equals(FoodType.NONVEG.toString())){
-            imageView.setImageDrawable(homeActivity.getDrawable(R.drawable.ic_nonveg));
-        }else{
-            imageView.setImageDrawable(homeActivity.getDrawable(R.drawable.ic_veg));
-        }
+    private void bound(final RelativeLayout viewParent){
+        // Create a system to run the physics loop for a set of springs.
+        SpringSystem springSystem = SpringSystem.create();
+
+        // Add a spring to the system.
+       final Spring spring = springSystem.createSpring();
+
+       // Add a listener to observe the motion of the spring.
+        spring.addListener(new SimpleSpringListener() {
+
+            @Override
+            public void onSpringUpdate(Spring spring) {
+                // You can observe the updates in the spring
+                // state by asking its current value in onSpringUpdate.
+                float value = (float) spring.getCurrentValue();
+                float scale = 1f - (value * 0.5f);
+                viewParent.setScaleX(scale);
+                viewParent.setScaleY(scale);
+            }
+        });
+
+// Set the spring in motion; moving from 0 to 1
+        spring.setEndValue(1);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                spring.setEndValue(0);
+            }
+        }, 100);
+
+
     }
 
-    private void setValues(MenuItemsViewHolder menuItemsViewHolder,MenuItemsViewModel menuItemsViewModel ){
+
+    private void populateData(MenuItemsViewModel menuItemsViewModel,MenuItemsViewHolder menuItemsViewHolder){
         menuItemsViewHolder.vFoodName.setText(menuItemsViewModel.getName());
-        menuItemsViewHolder.vFoodCost.setText(homeActivity.getString(R.string.pound)+String.valueOf(menuItemsViewModel.getCost()));
-        menuItemsViewHolder.vFoodTasteType.setText(menuItemsViewModel.getTasteType());
+        menuItemsViewHolder.vFoodCost.setText(String.valueOf(menuItemsViewModel.getCost()));
         menuItemsViewHolder.vFoodDesc.setText(menuItemsViewModel.getDescription());
-        if(menuItemsViewModel.getAvailableCount() < 10){
-            menuItemsViewHolder.vFoodAvailable.setVisibility(View.VISIBLE);
-            menuItemsViewHolder.vFoodAvailable.setText("Available Count :"+menuItemsViewModel.getAvailableCount());
+        if(menuItemsViewModel.getCount() > 0){
+            menuItemsViewHolder.vFoodCartCount.setText(String.valueOf(menuItemsViewModel.getCount()));
         }else{
-            menuItemsViewHolder.vFoodAvailable.setVisibility(View.INVISIBLE);
+            menuItemsViewHolder.vFoodCartCount.setText(String.valueOf(""));
         }
+
     }
 
-    public class  FoodCategoryViewHolder extends RecyclerView.ViewHolder{
-       private TextView vFoodCategory;
-        public FoodCategoryViewHolder(View view){
-            super(view);
-            vFoodCategory = (TextView)view.findViewById(R.id.adapt_food_category);
-        }
-    }
 
-    public class MenuItemsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+
+    public class MenuItemsViewHolder {
         protected TextView vFoodName;
         protected TextView vFoodCost;
         protected TextView vFoodDesc;
-        protected TextView vFoodAddCart;
-        protected  Button vFoodTasteType;
-        private ImageView vFoodType;
-        protected TextView vFoodAvailable;
-
-        public MenuItemsViewHolder(View view){
-            super(view);
-            vFoodName = (TextView)view.findViewById(R.id.adapt_food_name);
-            vFoodCost = (TextView)view.findViewById(R.id.adapt_food_cost);
-            vFoodDesc = (TextView)view.findViewById(R.id.adapt_food_desc);
-            vFoodTasteType = (Button)view.findViewById(R.id.adapt_food_taste_type);
-            vFoodAddCart = (TextView)view.findViewById(R.id.adapt_food_add_cart);
-            vFoodType = (ImageView)view.findViewById(R.id.veg);
-            vFoodAddCart.setOnClickListener(this);
-            vFoodAvailable = (TextView)view.findViewById(R.id.adapt_food_available);
-
-
-        }
-
-        @Override
-        public void onClick(View view) {
-            MenuItemsViewModel menuItemsViewModel =  menuItemsViewModels.get(getAdapterPosition());
-            menuItemsViewModel.setOrdered(true);
-            menuItemsViewModel.setCount(menuItemsViewModel.getCount() + 1);
-            homeActivity.getOrderService().addOrderItems(menuItemsViewModel);
-            orderDetailsViewModel.setTotalCount(orderDetailsViewModel.getTotalCount() + 1);
-
-            double val =  orderDetailsViewModel.getTotalCost() + menuItemsViewModel.getCost();
-            orderDetailsViewModel.setTotalCost( Utilities.roundOff(val));
-
-            menuItemsFragment.updateFooterBar();
-            notifyDataSetChanged();
-        }
-    }
-
-    public class OrderItemsViewHolder  extends RecyclerView.ViewHolder implements View.OnClickListener {
-        protected TextView vFoodCartCount;
         protected Button vFoodSubCartButton;
         protected Button vFoodAddCartButton;
-        protected TextView vFoodName;
-        protected TextView vFoodCost;
-        protected  Button vFoodTasteType;
-        protected TextView vFoodDesc;
-        protected TextView vFoodAvailable;
-        private ImageView vFoodType;
-        public OrderItemsViewHolder(View view){
-            super(view);
-            vFoodName = (TextView)view.findViewById(R.id.adapt_food_name);
-            vFoodCost = (TextView)view.findViewById(R.id.adapt_food_cost);
-            vFoodDesc = (TextView)view.findViewById(R.id.adapt_food_desc);
-            vFoodCartCount = (TextView)view.findViewById(R.id.count_value);
-            vFoodAvailable = (TextView)view.findViewById(R.id.adapt_food_available);
-            vFoodTasteType = (Button)view.findViewById(R.id.adapt_food_taste_type);
+        protected TextView vFoodCartCount;
+        protected RelativeLayout vAdaptUnOrderMenuLayout;
+
+        public MenuItemsViewHolder(View view){
+            //adapt_unorder_menu_layout
+            vAdaptUnOrderMenuLayout =  (RelativeLayout)view.findViewById(R.id.adapt_unorder_menu_layout);
+            vFoodName =  (TextView)view.findViewById(R.id.user_menu_item_name);
+            vFoodDesc =  (TextView)view.findViewById(R.id.user_menu_item_desc);
+            vFoodCost =  (TextView)view.findViewById(R.id.user_menu_item_rate);
+
             vFoodSubCartButton = (Button)view.findViewById(R.id.decrement);
             vFoodAddCartButton = (Button)view.findViewById(R.id.increment);
-            //adapt_food_available
-            vFoodType = (ImageView)view.findViewById(R.id.veg);
-            vFoodSubCartButton.setOnClickListener(this);
-            vFoodAddCartButton.setOnClickListener(this);
+            vFoodCartCount = (TextView)view.findViewById(R.id.count_value);
+
+
         }
 
-        @Override
-        public void onClick(View view) {
-            MenuItemsViewModel menuItemsViewModel =  menuItemsViewModels.get(getAdapterPosition());
 
-            switch (view.getId()){
-
-                case R.id.increment:
-                    if(menuItemsViewModel.getCount() < menuItemsViewModel.getAvailableCount()){
-                        menuItemsViewModel.setCount(menuItemsViewModel.getCount() + 1);
-                        homeActivity.getOrderService().addOrderItems(menuItemsViewModel);
-                        orderDetailsViewModel.setTotalCount(orderDetailsViewModel.getTotalCount() + 1);
-                        double val =  orderDetailsViewModel.getTotalCost() + menuItemsViewModel.getCost();
-                        orderDetailsViewModel.setTotalCost( Utilities.roundOff(val));
-                        menuItemsFragment.updateFooterBar();
-                    }else{
-                        ActivityUtil.toast(homeActivity,homeActivity.getString(R.string.un_available));
-                    }
-
-                    break;
-                case R.id.decrement:
-                    if(menuItemsViewModel.getCount() == 1){
-                        menuItemsViewModel.setOrdered(false);
-                        menuItemsViewModel.setCount(0);
-                        homeActivity.getOrderService().removeOrderItems(menuItemsViewModel);
-
-                        orderDetailsViewModel.setTotalCount(orderDetailsViewModel.getTotalCount() - 1);
-                        double val =  orderDetailsViewModel.getTotalCost() - menuItemsViewModel.getCost();
-                        orderDetailsViewModel.setTotalCost( Utilities.roundOff(val));
-                        menuItemsFragment.updateFooterBar();
-                    }else{
-                        menuItemsViewModel.setCount(menuItemsViewModel.getCount() - 1);
-                        homeActivity.getOrderService().updateOrderItems(menuItemsViewModel);
-                        orderDetailsViewModel.setTotalCount(orderDetailsViewModel.getTotalCount() - 1);
-                        double val =  orderDetailsViewModel.getTotalCost() - menuItemsViewModel.getCost();
-                        orderDetailsViewModel.setTotalCost( Utilities.roundOff(val));
-                        menuItemsFragment.updateFooterBar();
-                    }
-
-                    break;
-            }
-
-            notifyDataSetChanged();
-        }
     }
+
+
 
 }

@@ -8,15 +8,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
+import com.archide.hsb.entity.ConfigurationEntity;
+import com.archide.hsb.entity.UsersEntity;
+import com.archide.hsb.enumeration.AppType;
+import com.archide.hsb.enumeration.OrderType;
 import com.archide.hsb.service.OrderService;
 import com.archide.hsb.service.impl.OrderServiceImpl;
 import com.archide.hsb.sync.json.ResponseData;
 import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.fragments.DataFromServer;
 import com.archide.hsb.view.fragments.FragmentsUtil;
-import com.archide.hsb.view.fragments.OrderConformationFragment;
+import com.archide.hsb.view.fragments.OrderConformationTakeAwayFragment;
+import com.archide.hsb.view.fragments.OrderConformationUserFragment;
 import com.archide.hsb.view.fragments.OrderPlaceFragment;
 import com.archide.hsb.view.fragments.PlacedOrderEmptyFragment;
 import com.archide.hsb.view.model.PlaceAnOrderViewModel;
@@ -70,19 +74,33 @@ public class OrderActivity extends AppCompatActivity {
         FragmentsUtil.addFragment(this, placedOrderEmptyFragment,R.id.navi_drawer_container);
     }
 
+
+    public void showNoPlacedOrderFragment(){
+        PlacedOrderEmptyFragment placedOrderEmptyFragment = new PlacedOrderEmptyFragment();
+        FragmentsUtil.replaceFragmentNoStack(this, placedOrderEmptyFragment,R.id.main_container);
+    }
+
     private void showOrderPlaceFragment(){
         orderPlaceFragment = new OrderPlaceFragment();
         FragmentsUtil.replaceFragmentNoStack(this, orderPlaceFragment, R.id.main_container);
     }
 
     private void showOrderConformationFragment(int statusCode){
-        final int SPLASH_TIME_OUT = 30000;
-        OrderConformationFragment orderConformationFragment = new OrderConformationFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt("statusCode", statusCode);
-        orderConformationFragment.setArguments(bundle);
+        final int SPLASH_TIME_OUT = 10000;
+        UsersEntity usersEntity = getOrderService().getUsersEntity();
+        if(usersEntity.getOrderType().toString().equals(OrderType.Dinning.toString())){
+            OrderConformationUserFragment orderConformationUserFragment = new OrderConformationUserFragment();
+            FragmentsUtil.replaceFragmentNoStack(this, orderConformationUserFragment, R.id.main_container);
+        }else{
+            OrderConformationTakeAwayFragment orderConformationTakeAwayFragment = new OrderConformationTakeAwayFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("statusCode", statusCode);
+            orderConformationTakeAwayFragment.setArguments(bundle);
 
-        FragmentsUtil.replaceFragmentNoStack(this, orderConformationFragment, R.id.main_container);
+            FragmentsUtil.replaceFragmentNoStack(this, orderConformationTakeAwayFragment, R.id.main_container);
+        }
+
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -105,9 +123,14 @@ public class OrderActivity extends AppCompatActivity {
         }
     }
 
+    public void placeAnOrder(View view){
+        onClick(view);
+    }
+
     public void onClick(View view){
     switch (view.getId()){
         case R.id.edit_order:
+        case R.id.place_an_order:
             orderService.removeUnAvailableOrders();
             Intent intent = new Intent(this, HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -151,6 +174,7 @@ public class OrderActivity extends AppCompatActivity {
 
             case 200:
             case 201:
+            case 400:
                 showOrderConformationFragment(responseData.getStatusCode());
                 return;
 

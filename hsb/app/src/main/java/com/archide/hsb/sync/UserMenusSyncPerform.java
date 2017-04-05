@@ -107,8 +107,8 @@ public class UserMenusSyncPerform {
 
                 ResponseData responseData = response.body();
 
-                if(!responseData.getSuccess() && responseData.getStatusCode() == 404){
-                     responseData =new ResponseData(404,null);
+                if(responseData.getStatusCode() == 404){
+                     responseData = new ResponseData(404,null);
                     responseData.setStatusCode(404);
                     return responseData;
                 }
@@ -275,26 +275,39 @@ public class UserMenusSyncPerform {
                 Response<ResponseData> response =   placeOrderResponse.execute();
                 if (response != null && response.isSuccessful()) {
                     ResponseData responseData =  response.body();
-                    if(responseData.getSuccess() && (responseData.getStatusCode() == 200 || responseData.getStatusCode() == 201)){
-                        // TODO Table Number
-                        ordersDao.updateServerSyncTime(responseData.getData());
-                        ordersDao.updatePlacedOrderItems(Long.valueOf(responseData.getData()));
-                        ResponseData result = new ResponseData(responseData.getStatusCode(),null);
-                        return result;
-                    }else if(responseData.getStatusCode() == 403){
-                        ordersDao.removeAllData();
-                        AdminDao adminDao = new AdminDaoImpl(context);
-                        adminDao.removeUser(placedOrdersEntity.getUserMobileNumber());
-                        ResponseData result = new ResponseData(responseData.getStatusCode(),null);
-                        return result;
-                    }else if(responseData.getStatusCode() == 405){
-                        processUnAvailable(responseData.getData(),itemsEntityList);
-                        ResponseData result = new ResponseData(responseData.getStatusCode(),null);
-                        return result;
-                    }else {
-                        ResponseData result = new ResponseData(responseData.getStatusCode(),null);
-                        return result;
+                    if(responseData.getSuccess()){
+                        switch (responseData.getStatusCode()){
+                            case 200:
+                            case 201:
+                                ordersDao.updateServerSyncTime(responseData.getData());
+                                ordersDao.updatePlacedOrderItems(Long.valueOf(responseData.getData()));
+                                ResponseData result = new ResponseData(responseData.getStatusCode(),null);
+                                return result;
+                            case 403:
+                            case 400:// Temp
+                                ordersDao.removeAllData();
+                                AdminDao adminDao = new AdminDaoImpl(context);
+                                adminDao.removeUser(placedOrdersEntity.getUserMobileNumber());
+                                result = new ResponseData(responseData.getStatusCode(),null);
+                                return result;
+                            case 405:
+                                processUnAvailable(responseData.getData(),itemsEntityList);
+                                 result = new ResponseData(responseData.getStatusCode(),null);
+                                return result;
+                            default:
+                                 result = new ResponseData(responseData.getStatusCode(),null);
+                                return result;
+                        }
+                    }else{
+                        if(responseData.getStatusCode() == 400){
+                            ordersDao.removeAllData();
+                            AdminDao adminDao = new AdminDaoImpl(context);
+                            adminDao.removeUser(usersEntity.getUserMobileNumber());
+                            ResponseData result = new ResponseData(responseData.getStatusCode(),null);
+                            return result;
+                        }
                     }
+
                 }
             }
         }catch (Exception e){

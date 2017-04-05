@@ -1,7 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_green_dark"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="35dp"
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_gravity="center|left"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:text="Selected Items" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:id="@+id/total_no_of_items"
+                android:textColor="@android:color/white"
+                android:layout_height="wrap_content"
+                android:text="11 Nos" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="3dp"
+            android:layout_height="30dp"
+            android:layout_margin="20dp"
+            android:background="@color/white" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:text="Total Amount" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/total_amount"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:text="11 Nos" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="45dp"
+        android:layout_alignParentEnd="true"
+        android:onClick="viewCurrentOrder"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/place_next_btn"
+        android:layout_alignBottom="@+id/linearLayout" />
+</RelativeLayout><!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:background="#BDBDBD"
+    android:background="@android:color/holo_green_dark"
     android:layout_height="match_parent">
     //https://www.iconfinder.com/icons/769537/campfire_camping_cooking_fire_flame_hot_wood_icon#size=128
     <LinearLayout
@@ -14,7 +93,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:text="5 items"
-            android:textColor="#000000"
+            android:textColor="@android:color/white"
             android:textStyle="bold"
             android:id="@+id/total_no_of_items"
             android:layout_height="wrap_content" />
@@ -23,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/total_amount"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@android:color/white"
             android:textStyle="bold"
             android:text="500"
             android:layout_gravity="center_horizontal" />
@@ -45,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="viewCurrentOrder"
-        android:textColor="#B71C1C"
+        android:textColor="@android:color/white"
         android:id="@+id/textView"
         android:textSize="17dp"
         android:drawableEnd="@drawable/place_an_order_img"
@@ -56,4 +135,4 @@
         android:layout_marginEnd="7dp" />
 
 
-</RelativeLayout>
+</RelativeLayout>-->

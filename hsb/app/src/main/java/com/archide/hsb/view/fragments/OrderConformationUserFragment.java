@@ -22,11 +22,10 @@ import hsb.archide.com.hsb.R;
  * Created by Nithish on 17/03/17.
  */
 
-public class OrderConformationFragment extends Fragment implements TextToSpeech.OnInitListener{
+public class OrderConformationUserFragment extends Fragment implements TextToSpeech.OnInitListener{
 
     private TextToSpeech engine;
     private OrderActivity orderActivity;
-    private int statusCode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,20 +40,11 @@ public class OrderConformationFragment extends Fragment implements TextToSpeech.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         engine = new TextToSpeech(getContext(), this);
-        statusCode = getArguments().getInt("statusCode");
         View view = inflater.inflate(R.layout.fragment_order_conformation, container, false);
         TextView  textView  = (TextView)view.findViewById(R.id.vOrderConformation);
         ConfigurationEntity configurationEntity =  orderActivity.getOrderService().getAppType();
         if(configurationEntity.getAppType().toString().equals(AppType.User.toString())){
-
-            textView.setText("Table "+configurationEntity.getTableNumber()+" is awaiting for you!!!");
-        }else{
-            if(statusCode == 201){
-                textView.setText("Your Bill has been sent to MobilePay.");
-            }else{
-                textView.setVisibility(View.INVISIBLE);
-            }
-
+            textView.setText("DINE AT TABLE \n"+ configurationEntity.getTableNumber());
         }
         return view;
     }

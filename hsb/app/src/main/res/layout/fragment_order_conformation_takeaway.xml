@@ -43,7 +43,6 @@
         android:textSize="25dp"
         android:textColor="@color/white"
         android:layout_marginTop="15dp"
-        android:background="@drawable/order_conformation_dine"
         android:id="@+id/vOrderConformation"
         android:layout_gravity="center_horizontal"
         />
