@@ -92,9 +92,11 @@ public class OrderActivity extends AppCompatActivity {
         final int SPLASH_TIME_OUT = 10000;
         UsersEntity usersEntity = getOrderService().getUsersEntity();
         if(usersEntity.getOrderType().toString().equals(OrderType.Dinning.toString())){
+            orderService.removeAllData();
             OrderConformationUserFragment orderConformationUserFragment = new OrderConformationUserFragment();
             FragmentsUtil.replaceFragmentNoStack(this, orderConformationUserFragment, R.id.main_container);
         }else{
+            orderService.removeAllData();
             OrderConformationTakeAwayFragment orderConformationTakeAwayFragment = new OrderConformationTakeAwayFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("statusCode", statusCode);

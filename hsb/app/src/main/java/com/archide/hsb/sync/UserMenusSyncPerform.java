@@ -290,9 +290,9 @@ public class UserMenusSyncPerform {
                                 return result;
                             case 403:
                             case 400:// Temp
-                                ordersDao.removeAllData();
+                               /* ordersDao.removeAllData();
                                 AdminDao adminDao = new AdminDaoImpl(context);
-                                adminDao.removeUser(placedOrdersEntity.getUserMobileNumber());
+                                adminDao.removeUser(placedOrdersEntity.getUserMobileNumber());*/
                                 result = new ResponseData(responseData.getStatusCode(),null);
                                 return result;
                             case 405:

@@ -43,9 +43,7 @@ public class OrderConformationUserFragment extends Fragment implements TextToSpe
         View view = inflater.inflate(R.layout.fragment_order_conformation, container, false);
         TextView  textView  = (TextView)view.findViewById(R.id.vOrderConformation);
         ConfigurationEntity configurationEntity =  orderActivity.getOrderService().getAppType();
-        if(configurationEntity.getAppType().toString().equals(AppType.User.toString())){
-            textView.setText("DINE AT TABLE \n"+ configurationEntity.getTableNumber());
-        }
+        textView.setText("DINE AT TABLE \n"+ configurationEntity.getTableNumber());
         return view;
     }
 

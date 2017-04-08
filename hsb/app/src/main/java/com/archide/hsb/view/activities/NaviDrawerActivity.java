@@ -77,7 +77,8 @@ public class NaviDrawerActivity extends AppCompatActivity{
                 break;
 
             case 3:
-                showDataFromServerFragment(options);
+                orderCloseConformation(options);
+
                 break;
 
             case 4:
@@ -133,6 +134,37 @@ public class NaviDrawerActivity extends AppCompatActivity{
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+
+    private void orderCloseConformation(final int options){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        // Setting Dialog Title
+        alertDialog.setTitle("Conform");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Are you sure want to close an order?");
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.cancel();
+                showDataFromServerFragment(options);
+
+            }
+        });
+
+        // Setting Positive "Yes" Button
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
     }
 
 
