@@ -14,7 +14,7 @@ public class UsersEntity {
     public static final String USER_MOBILE_NUMBER = "UserMobileNumber";
     public static final String ORDER_TYPE = "OrderType";
 
-    @DatabaseField(columnName = USER_ID)
+    @DatabaseField(columnName = USER_ID,generatedId = true)
     private int userId;
     @DatabaseField(columnName = USER_MOBILE_NUMBER)
     private String userMobileNumber;

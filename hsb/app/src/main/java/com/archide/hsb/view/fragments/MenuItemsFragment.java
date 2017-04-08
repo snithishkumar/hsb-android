@@ -2,6 +2,8 @@ package com.archide.hsb.view.fragments;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,6 +13,9 @@ import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.airbnb.lottie.ImageAssetDelegate;
+import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieImageAsset;
 import com.archide.hsb.sync.json.ResponseData;
 import com.archide.hsb.view.activities.HomeActivity;
 import com.archide.hsb.view.adapters.MenuItemListAdapter;
@@ -85,11 +90,19 @@ public class MenuItemsFragment extends Fragment {
         List<MenuItemsViewModel> menuItemsViewModels =  homeActivity.getMenuItemService().getMenuItemsViewModel(menuCourseUuid,orderDetailsViewModel);
         this.menuItemsViewModels.clear();
         this.menuItemsViewModels.addAll(menuItemsViewModels);
-
+      //  animate(view);
         setAdapters();
         updateFooterBar();
         return view;
     }
+    /* private void animate(View view){
+        LottieAnimationView animationView = (LottieAnimationView) view.findViewById(R.id.animation_view);
+        animationView.setAnimation("PinJump.json");
+        animationView.loop(true);
+        animationView.playAnimation();
+
+        animationView.setImageDrawable(homeActivity.getDrawable(R.drawable.place_next_btn));
+    }*/
 
 
 
@@ -161,6 +174,13 @@ public class MenuItemsFragment extends Fragment {
        // getData();
        // reLoadData();
 
+    }
+
+
+    public int[] getDestinationLoc(){
+        int toLoc[] = new int[2];
+        totalNoOfItems.getLocationOnScreen(toLoc);
+        return toLoc;
     }
 
 

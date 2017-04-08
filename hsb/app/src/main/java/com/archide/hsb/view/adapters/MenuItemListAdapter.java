@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.animation.Animation;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.HomeActivity;
+import com.archide.hsb.view.animations.Animations;
 import com.archide.hsb.view.fragments.MenuItemsFragment;
 import com.archide.hsb.view.model.MenuItemsViewModel;
 import com.archide.hsb.view.model.OrderDetailsViewModel;
@@ -78,6 +80,7 @@ public class MenuItemListAdapter extends BaseAdapter {
             public void onClick(View view) {
                RelativeLayout viewParent =  (RelativeLayout)view.getParent().getParent().getParent().getParent().getParent();
                 bound(viewParent);
+               // animate(viewParent);
                 if(menuItemsViewModel.getCount() == 1){
                     menuItemsViewModel.setOrdered(false);
                     menuItemsViewModel.setCount(0);
@@ -109,6 +112,7 @@ public class MenuItemListAdapter extends BaseAdapter {
             public void onClick(View view) {
                 RelativeLayout viewParent =  (RelativeLayout)view.getParent().getParent().getParent().getParent().getParent();
                 bound(viewParent);
+                //animate(viewParent);
                 if(menuItemsViewModel.getCount() < menuItemsViewModel.getAvailableCount()){
                     menuItemsViewModel.setCount(menuItemsViewModel.getCount() + 1);
                     homeActivity.getOrderService().addOrderItems(menuItemsViewModel);
@@ -162,6 +166,20 @@ public class MenuItemListAdapter extends BaseAdapter {
         }, 100);
 
 
+    }
+
+
+    private void animate(final RelativeLayout viewParent){
+        int fromLoc[] = new int[2];
+        viewParent.getLocationOnScreen(fromLoc);
+        float startX = fromLoc[0];
+        float startY = fromLoc[1];
+
+        int[] dest =  menuItemsFragment.getDestinationLoc();
+        Animations anim = new Animations();
+        Animation a = anim.fromAtoB(startX, startY, dest[0], dest[1], null,1300);
+        viewParent.setAnimation(a);
+        a.startNow();
     }
 
 

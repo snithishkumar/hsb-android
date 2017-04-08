@@ -2,22 +2,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/current_order_layout"
     android:background="@android:color/holo_green_dark"
     android:orientation="vertical">
+
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="35dp"
         android:orientation="horizontal"
         android:id="@+id/linearLayout">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
+            android:layout_width="150dp"
+            android:layout_height="130dp"
+            app:lottie_autoPlay="true"
+            android:layout_gravity="center"
+            app:lottie_fileName="EmptyState.json"
+            app:lottie_loop="true" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
             android:layout_gravity="center|left"
             android:orientation="vertical">
 
@@ -75,64 +85,10 @@
         android:layout_marginRight="45dp"
         android:layout_alignParentEnd="true"
         android:onClick="viewCurrentOrder"
+        android:layout_marginBottom="10dp"
         android:layout_alignParentTop="true"
         android:src="@drawable/place_next_btn"
         android:layout_alignBottom="@+id/linearLayout" />
-</RelativeLayout><!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:background="@android:color/holo_green_dark"
-    android:layout_height="match_parent">
-    //https://www.iconfinder.com/icons/769537/campfire_camping_cooking_fire_flame_hot_wood_icon#size=128
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="false"
-        android:layout_centerVertical="true">
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="5 items"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:id="@+id/total_no_of_items"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/total_amount"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:text="500"
-            android:layout_gravity="center_horizontal" />
 
 
-    </LinearLayout>
-
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/cart_item_fire_img"
-        android:src="@drawable/config_1"
-        android:layout_marginLeft="7dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"/>
-
-    <TextView
-        android:text="Place Order"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="viewCurrentOrder"
-        android:textColor="@android:color/white"
-        android:id="@+id/textView"
-        android:textSize="17dp"
-        android:drawableEnd="@drawable/place_an_order_img"
-        android:textStyle="bold"
-        android:layout_centerInParent="false"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="7dp" />
-
-
-</RelativeLayout>-->
+</RelativeLayout>

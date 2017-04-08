@@ -126,6 +126,11 @@ public class UserMenusSyncPerform {
                     adminDao.changeTableNumber(menuListJsonList.getTableNumber());
                 }
 
+                if(menuListJsonList.getMobileNumber() != null){
+                    usersEntity.setUserMobileNumber(menuListJsonList.getMobileNumber());
+                    adminDao.updateUsers(usersEntity);
+                }
+
 
                 PlaceOrdersJson placeOrdersJson =    menuListJsonList.getPreviousOrder();
                 if(placeOrdersJson != null){
