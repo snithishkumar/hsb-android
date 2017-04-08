@@ -1,8 +1,11 @@
 package com.archide.hsb.view.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -194,11 +197,22 @@ public class OrderActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        orderPlaceFragment.setCookingComments();
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
+        Fragment fragment =  ActivityUtil.getCurrentFragment(this,R.id.main_container);
+        if(fragment instanceof OrderConformationUserFragment || fragment instanceof OrderConformationTakeAwayFragment){
+            removeComments();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }else{
+            orderPlaceFragment.setCookingComments();
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
+
+
     }
 
     @Override
@@ -223,6 +237,16 @@ public class OrderActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void removeComments(){
+        String key =  "cookingComments";
+        SharedPreferences sharedpreferences = this.getSharedPreferences("mobilepayhsb",
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.remove(key);
+        editor.commit();
+    }
+
 
 
 

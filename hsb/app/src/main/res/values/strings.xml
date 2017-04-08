@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Taste Of India</string>
+    <string name="app_name">HSB</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -26,7 +26,7 @@
     <string name="re_password_hint">Re-Type Password</string>
 
     <string name="get_table_list_heading">In Progress.</string>
-    <string name="get_table_list_message">Retrieving table settings of Taste of India.Please wait...</string>
+    <string name="get_table_list_message">Retrieving table settings of HSB.Please wait...</string>
     <string name="order_placing">Placing your Order.Please wait...</string>
     <string name="get_previous_update">Getting your Previous Update.Please wait...</string>
 

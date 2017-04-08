@@ -96,7 +96,7 @@ public class OrderPlaceFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private void removeCookingComments(){
+    public void removeCookingComments(){
         String key =  "cookingComments";
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.remove(key);

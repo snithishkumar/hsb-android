@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.speech.tts.TextToSpeech;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+
+import hsb.archide.com.hsb.R;
 
 /**
  * Created by Nithish on 07-02-2016.
@@ -92,6 +95,11 @@ public class ActivityUtil {
             InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+
+    public static Fragment getCurrentFragment(AppCompatActivity context, int id){
+      return   context.getSupportFragmentManager().findFragmentById(id);
     }
 
 
