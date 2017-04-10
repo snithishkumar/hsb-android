@@ -71,6 +71,11 @@ public interface HsbAPI {
 
 
     @FormUrlEncoded
+    @POST ("/hsb//mobile/removeReservedTable.html")
+    Call<ResponseData> removeReservedTable(@Field("tableNumber") String tableNumber);
+
+
+    @FormUrlEncoded
     @POST ("/hsb//mobile/logout.html")
     Call<ResponseData> logout(@Field("tableNumber") String tableNumber,@Field("mobileNumber") String mobileNumber);
 

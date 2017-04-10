@@ -57,4 +57,6 @@ public interface OrderService {
 
     UsersEntity getUsersEntity();
 
+    void removeReservedTable(Context context,String tableNumber);
+
 }

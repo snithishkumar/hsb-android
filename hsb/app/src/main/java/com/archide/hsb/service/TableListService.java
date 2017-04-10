@@ -31,8 +31,12 @@ public interface TableListService {
 
     void removeAllData();
 
+    UsersEntity getUsersEntity();
+
 
     void createUsers(String mobileNumber,OrderType orderType);
 
     void updateTableNumber(String tableNumber,String userMobileNumber,OrderType orderType);
+
+    void changeUserMobile(String mobileNumber);
 }

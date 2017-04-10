@@ -305,9 +305,9 @@ public class UserMenusSyncPerform {
                         }
                     }else{
                         if(responseData.getStatusCode() == 400){
-                            ordersDao.removeAllData();
+                          /*  ordersDao.removeAllData();
                             AdminDao adminDao = new AdminDaoImpl(context);
-                            adminDao.removeUser(usersEntity.getUserMobileNumber());
+                            adminDao.removeUser(usersEntity.getUserMobileNumber());*/
                             ResponseData result = new ResponseData(responseData.getStatusCode(),null);
                             return result;
                         }
@@ -361,7 +361,15 @@ public class UserMenusSyncPerform {
     }
 
 
-
+public void removeReservedTable(String tableNumber){
+    try{
+       // ConfigurationEntity configurationEntity =  adminDao.getAppType();
+        Call<ResponseData> serverResponse =   hsbAPI.removeReservedTable(tableNumber);
+        Response<ResponseData> response = serverResponse.execute();
+    }catch (Exception e){
+e.printStackTrace();
+    }
+}
 
     public ResponseData getUnAvailableOrders() {
         try{

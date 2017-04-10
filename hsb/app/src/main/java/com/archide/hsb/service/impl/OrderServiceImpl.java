@@ -297,6 +297,19 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
+    public void removeReservedTable(Context context,String tableNumber){
+        try{
+            account = HsbSyncAdapter.getSyncAccount(context);
+            settingsBundle.putInt("currentScreen", SyncEvent.REMOVE_RESERVED_TABLE);
+            settingsBundle.putString("tableNumber", tableNumber);
+            ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
     public void resentBilling(Context context,String tableNumber,String mobileNumber){
         try{
             account = HsbSyncAdapter.getSyncAccount(context);

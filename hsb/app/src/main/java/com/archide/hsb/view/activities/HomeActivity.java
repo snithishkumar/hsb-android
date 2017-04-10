@@ -1,6 +1,8 @@
 package com.archide.hsb.view.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -56,7 +58,6 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
         setSupportActionBar(mToolbar);
 
 
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         ConfigurationEntity configurationEntity = orderService.getAppType();
         if(configurationEntity != null && configurationEntity.getAppType().toString().equals(AppType.Captain.toString())){
@@ -218,12 +219,48 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
     }
 
-    @Override
-    public void onBackPressed() {
+
+    private void showMenuExit(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        // Setting Dialog Title
+        alertDialog.setTitle("Error");
+
+        // Setting Dialog Message
+        alertDialog.setMessage(getString(R.string.menu_exit));
+
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+
+                removeOldData();
+
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
+
+    private void removeOldData(){
+        ConfigurationEntity configurationEntity =  orderService.getAppType();
+        if(configurationEntity.getTableNumber() != null){
+            orderService.removeReservedTable(this,configurationEntity.getTableNumber());
+        }
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         return;
+    }
+
+    @Override
+    public void onBackPressed() {
+        showMenuExit();
+
+
+
        // finish();
     }
 

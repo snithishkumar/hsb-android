@@ -6,15 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.archide.hsb.entity.ConfigurationEntity;
-import com.archide.hsb.enumeration.AppType;
 import com.archide.hsb.enumeration.OrderType;
 import com.archide.hsb.service.TableListService;
 import com.archide.hsb.service.impl.TableListServiceImpl;
 import com.archide.hsb.view.fragments.CaptainMobileFragment;
+import com.archide.hsb.view.fragments.CaptainTableFragment;
 import com.archide.hsb.view.fragments.ConfigurationFragment;
 import com.archide.hsb.view.fragments.FragmentsUtil;
 import com.archide.hsb.view.fragments.KitchenLoginFragment;
@@ -40,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
     public static final int CONF_SUCCESS_USER = 2;
     public static final int CONF_SUCCESS_CAPTAIN = 3;
     public static final int MENU_LIST_SUCCESS = 4;
+    public static final int MENU_LIST_NO_MOBILE = 7;
     public static final int TABLE_UNAVAILABLE = 6;
     public static final int KITCHEN_LOGIN_SUCCESS = 5;
 
@@ -70,8 +70,8 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
                     FragmentsUtil.addFragment(this, welcomeFragment, R.id.main_container);
                     break;
                 case Captain:
-                    CaptainMobileFragment captainMobileFragment = new CaptainMobileFragment();
-                    FragmentsUtil.addFragment(this, captainMobileFragment, R.id.main_container);
+                    CaptainTableFragment captainTableFragment = new CaptainTableFragment();
+                    FragmentsUtil.addFragment(this, captainTableFragment, R.id.main_container);
                     break;
                 case Kitchen:
                     KitchenLoginFragment kitchenLoginFragment = new KitchenLoginFragment();
@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
     }
 
     private void showCaptainView(){
-        CaptainMobileFragment captainMobileFragment = new CaptainMobileFragment();
-        FragmentsUtil.replaceFragmentNoStack(this, captainMobileFragment, R.id.main_container);
+        CaptainTableFragment captainTableFragment = new CaptainTableFragment();
+        FragmentsUtil.replaceFragmentNoStack(this, captainTableFragment, R.id.main_container);
     }
 
     private void showUserView(){
@@ -96,6 +96,12 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
     private void showKitchenView(){
         KitchenLoginFragment kitchenLoginFragment = new KitchenLoginFragment();
         FragmentsUtil.replaceFragmentNoStack(this, kitchenLoginFragment, R.id.main_container);
+    }
+
+
+    private void showCaptainMobileView(){
+        CaptainMobileFragment captainMobileFragment = new CaptainMobileFragment();
+        FragmentsUtil.replaceFragmentNoStack(this, captainMobileFragment, R.id.main_container);
     }
 
 
@@ -115,8 +121,8 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
                 FragmentsUtil.addFragment(this, welcomeFragment, R.id.main_container);
                 break;
             case Captain:
-                CaptainMobileFragment captainMobileFragment = new CaptainMobileFragment();
-                FragmentsUtil.addFragment(this, captainMobileFragment, R.id.main_container);
+                CaptainTableFragment captainTableFragment = new CaptainTableFragment();
+                FragmentsUtil.addFragment(this, captainTableFragment, R.id.main_container);
                 break;
             case Kitchen:
                 KitchenLoginFragment kitchenLoginFragment = new KitchenLoginFragment();
@@ -176,6 +182,10 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
                 startActivity(intent);
                 finish();
 
+                break;
+
+            case MENU_LIST_NO_MOBILE:
+                showCaptainMobileView();
                 break;
         }
 

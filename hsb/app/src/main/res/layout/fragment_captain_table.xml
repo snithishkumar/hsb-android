@@ -1,0 +1,155 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/mobile_fragment_layout"
+    android:background="@drawable/mobile_background"
+    android:orientation="vertical"
+    tools:context="com.archide.hsb.view.activities.MainActivity"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="300dp"
+            android:background="@drawable/mobile_welcome_btn"
+            android:text=""
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:hint="Table Number"
+            android:id="@+id/vCaptainTableNumber"
+            android:textColor="@android:color/white"
+            android:inputType="number"
+            android:gravity="center"
+            android:layout_height="75dp" />
+
+
+        <ImageView
+            android:layout_width="150dp"
+            android:src="@drawable/next_button"
+            android:id="@+id/captain_next_button"
+            android:layout_height="75dp" />
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
+
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:ls="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:background="#F6F6F6"
+        android:gravity="center">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/tasteofindia"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/login_text"
+                android:layout_marginTop="20dp"
+                android:textSize="18dp"
+                android:text="@string/mobile_number_message"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal" />
+
+            <LinearLayout
+                android:id="@+id/vTableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/ic_local_phone_black_48dp"
+                    android:id="@+id/vTableIcon" />
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:id="@+id/vCaptainTableNumber"
+                        android:hint="@string/table_number_hint" />
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/vTypeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/ic_local_phone_black_48dp"
+                    android:id="@+id/vUserMobileIcon" />
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:id="@+id/vCaptainUserMobileNumber"
+                        android:hint="@string/mobile_number_hint" />
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+
+
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/colorPrimary"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="30dp"
+                android:text="Submit"/>
+            </LinearLayout>
+        </ScrollView>
+        </LinearLayout>-->

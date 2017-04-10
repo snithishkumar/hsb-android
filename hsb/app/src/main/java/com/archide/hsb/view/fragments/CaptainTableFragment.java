@@ -2,35 +2,27 @@ package com.archide.hsb.view.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.archide.hsb.entity.UsersEntity;
 import com.archide.hsb.enumeration.OrderType;
-import com.archide.hsb.enumeration.UserType;
 import com.archide.hsb.sync.json.ResponseData;
 import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.MainActivity;
-import com.satsuware.usefulviews.LabelledSpinner;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import hsb.archide.com.hsb.R;
@@ -38,10 +30,12 @@ import hsb.archide.com.hsb.R;
 /**
  *
  */
-public class MobileFragment extends Fragment implements TextToSpeech.OnInitListener {
+public class CaptainTableFragment extends Fragment implements TextToSpeech.OnInitListener {
 
     private MainActivity mainActivity;
+    private TextView tableNumber;
     private EditText userMobile;
+    private ImageView nextButton;
     private ProgressDialog progressDialog;
 
     private LayoutInflater mInflater;
@@ -49,7 +43,6 @@ public class MobileFragment extends Fragment implements TextToSpeech.OnInitListe
 
 
     private TextToSpeech engine;
-    private String orderType;
 
 
     @Override
@@ -65,58 +58,37 @@ public class MobileFragment extends Fragment implements TextToSpeech.OnInitListe
 
         mInflater = inflater;
         mContainer = container;
-        orderType = getArguments().getString("orderType");
+
 
         return initLayout();
     }
 
 
     private View initLayout(){
-        View loginView =  mInflater.inflate(R.layout.fragment_mobile, mContainer, false);
+        View loginView =  mInflater.inflate(R.layout.fragment_captain_table, mContainer, false);
+        userMobile =  (EditText)loginView.findViewById(R.id.vCaptainTableNumber);
+        nextButton =  (ImageView)loginView.findViewById(R.id.captain_next_button);
 
-
-        //mobile_fragment_layout
-
-        RelativeLayout relativeLayout = (RelativeLayout)loginView.findViewById(R.id.mobile_fragment_layout);
-        int orientation = getResources().getConfiguration().orientation;
-        if(Configuration.ORIENTATION_LANDSCAPE == orientation){
-            relativeLayout.setBackground(getResources().getDrawable(R.drawable.mobile_background_land));
-        }else{
-            relativeLayout.setBackground(getResources().getDrawable(R.drawable.mobile_background));
-        }
-
-        userMobile =  (EditText)loginView.findViewById(R.id.vUserMobileNumber);
-        userMobile.addTextChangedListener(new TextWatcher() {
+        nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-              String userMobileText =    userMobile.getText().toString();
-                if(userMobileText.length() >= 10){
-
-                    getMenuList(userMobileText);
+            public void onClick(View view) {
+                String userMobileText =    userMobile.getText().toString();
+                if(userMobileText.length() >= 1){
+                    getMenuList(userMobileText,null);
                 }
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
             }
         });
 
+
+
+
+        mainActivity.getTableListService().removeAllData();
 
         return loginView;
 
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -144,21 +116,18 @@ public class MobileFragment extends Fragment implements TextToSpeech.OnInitListe
         engine.shutdown();
     }
 
-    public interface MainActivityCallback {
-        void success(int code, Object data);
-    }
 
 
 
 
-    private void getMenuList(String userMobileText) {
+    private void getMenuList(String tableNumberValue,String mobileNumberValue) {
         boolean isNetWorkConnected = Utilities.isNetworkConnected(mainActivity);
         if (isNetWorkConnected) {
             progressDialog = ActivityUtil.showProgress(getString(R.string.get_table_list_heading), getString(R.string.get_menu_items_message), mainActivity);
-            mainActivity.getTableListService().createUsers(userMobileText, OrderType.valueOf(orderType));
+            mainActivity.getTableListService().updateTableNumber(tableNumberValue,mobileNumberValue,OrderType.Dinning);
             mainActivity.getTableListService().getMenuItems();
         } else {
-            //showNoInterNet();
+           // showNoInterNet();
             ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
         }
     }
@@ -176,13 +145,19 @@ public class MobileFragment extends Fragment implements TextToSpeech.OnInitListe
        if(progressDialog != null){
            progressDialog.dismiss();
        }
-        if(responseData.getStatusCode() == 404){
-            mainActivity.success(MainActivity.TABLE_UNAVAILABLE,null);
-            return;
-        }
+
+
+
         if(responseData.getStatusCode() != 500){
+            UsersEntity usersEntity = mainActivity.getTableListService().getUsersEntity();
+            if(usersEntity == null || usersEntity.getUserMobileNumber() == null){
+                mainActivity.success(MainActivity.MENU_LIST_NO_MOBILE,null);
+                return;
+            }
             mainActivity.success(MainActivity.MENU_LIST_SUCCESS,null);
             return;
+        }else if(responseData.getStatusCode() == 404){
+            ActivityUtil.showDialog(mainActivity,"Error","InValid TableNumber.");
         }else{
             ActivityUtil.showDialog(mainActivity,"Error","Sorry for the Inconvenience. Please contact Admin.");
         }

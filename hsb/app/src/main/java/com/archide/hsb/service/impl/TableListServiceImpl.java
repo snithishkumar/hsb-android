@@ -45,6 +45,16 @@ public class TableListServiceImpl implements TableListService {
     }
 
 
+    public UsersEntity getUsersEntity(){
+        try {
+           return adminDao.getUsers();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     public void updateTableNumber(String tableNumber,String userMobileNumber,OrderType orderType){
         try{
             adminDao.changeTableNumber(tableNumber);
@@ -160,7 +170,15 @@ public class TableListServiceImpl implements TableListService {
     }
 
 
-
+    @Override
+    public void changeUserMobile(String mobileNumber){
+        try {
+            AdminDao adminDao = new AdminDaoImpl(context);
+            adminDao.changeUserMobileNumber(mobileNumber);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
 
     @Override

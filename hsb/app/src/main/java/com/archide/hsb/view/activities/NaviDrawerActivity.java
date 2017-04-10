@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.archide.hsb.entity.ConfigurationEntity;
 import com.archide.hsb.service.OrderService;
 import com.archide.hsb.service.impl.OrderServiceImpl;
 import com.archide.hsb.sync.json.ResponseData;
@@ -87,7 +88,10 @@ public class NaviDrawerActivity extends AppCompatActivity{
                 break;
 
             case 5:
+               ConfigurationEntity configurationEntity =  orderService.getAppType();
+                orderService.removeReservedTable(this,configurationEntity.getTableNumber());
                 orderService.removeAllData();
+
                 intent = new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -160,6 +164,7 @@ public class NaviDrawerActivity extends AppCompatActivity{
             public void onClick(DialogInterface dialog, int which) {
 
                 dialog.cancel();
+                finish();
             }
         });
 

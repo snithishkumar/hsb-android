@@ -35,4 +35,6 @@ public interface AdminDao {
     void removeUser(String mobileNumber)throws SQLException;
 
     void updateUsers(UsersEntity usersEntity)throws SQLException;
+
+    void changeUserMobileNumber(String userMobileNumber)throws SQLException;
 }

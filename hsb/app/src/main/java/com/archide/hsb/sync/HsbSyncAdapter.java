@@ -152,6 +152,11 @@ public class HsbSyncAdapter extends AbstractThreadedSyncAdapter {
                     postData(responseData);
                     break;
 
+                case SyncEvent.REMOVE_RESERVED_TABLE:
+                    String  tableNumber =  extras.getString("tableNumber");
+                    userMenusSyncPerform.removeReservedTable(tableNumber);
+                    break;
+
 
             }
         }

@@ -17,4 +17,6 @@ public class SyncEvent {
     public static final int LOG_OUT = 8;
 
     public static final int GET_KITCHEN_ORDERS_DATA = 7;
+
+    public static final int REMOVE_RESERVED_TABLE = 9;
 }

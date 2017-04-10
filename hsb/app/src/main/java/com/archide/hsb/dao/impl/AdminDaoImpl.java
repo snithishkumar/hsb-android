@@ -86,6 +86,13 @@ public class AdminDaoImpl extends BaseDaoImpl implements AdminDao {
 
 
     @Override
+    public void changeUserMobileNumber(String userMobileNumber)throws SQLException{
+        usersDao.updateBuilder().updateColumnValue(UsersEntity.USER_MOBILE_NUMBER,userMobileNumber).update();
+
+    }
+
+
+    @Override
     public void removeAllUsers()throws SQLException{
         usersDao.deleteBuilder().delete();
     }
