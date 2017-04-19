@@ -157,6 +157,15 @@ public class MenuItemsDaoImpl extends  BaseDaoImpl implements MenuItemsDao {
     }
 
 
+    public boolean getAvailableMenuEntity(MenuCourseEntity menuCourseEntity)throws SQLException{
+      long countOf =   menuEntityDao.queryBuilder().where().eq(MenuEntity.MENU_COURSE,menuCourseEntity)
+                // .and().eq(MenuEntity.FOOD_CATEGORY,foodCategoryEntity)
+                .and().eq(MenuEntity.STATUS,Status.AVAILABLE)
+                .countOf();
+      return countOf > 0;
+    }
+
+
     /**
      * Update Order status as UnAvailable and servertime based on menuitemUUID
      * @param menuItemUuid

@@ -38,4 +38,6 @@ public interface MenuItemsDao {
     void updateMenuItemStatus(String menuItemUuid,long serverLastUpdatedTime)throws SQLException;
 
     MenuEntity getMenuEntity(String menuUUID)throws SQLException;
+
+    boolean getAvailableMenuEntity(MenuCourseEntity menuCourseEntity)throws SQLException;
 }

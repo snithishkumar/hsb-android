@@ -8,9 +8,11 @@ import android.view.ViewParent;
 import android.view.animation.Animation;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.archide.hsb.sync.ServiceAPI;
 import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.HomeActivity;
@@ -21,6 +23,7 @@ import com.archide.hsb.view.model.OrderDetailsViewModel;
 import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringSystem;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -187,12 +190,25 @@ public class MenuItemListAdapter extends BaseAdapter {
         menuItemsViewHolder.vFoodName.setText(menuItemsViewModel.getName());
         menuItemsViewHolder.vFoodCost.setText(String.valueOf(menuItemsViewModel.getCost()));
         menuItemsViewHolder.vFoodDesc.setText(menuItemsViewModel.getDescription());
+        if(menuItemsViewModel.getAvailableCount() <= 10){
+            menuItemsViewHolder.vMenuItemAvailability.setText("Availability : " +String.valueOf(menuItemsViewModel.getAvailableCount()));
+            menuItemsViewHolder.vMenuItemAvailability.setVisibility(View.VISIBLE);
+        }else{
+            menuItemsViewHolder.vMenuItemAvailability.setVisibility(View.INVISIBLE);
+        }
+
         if(menuItemsViewModel.getCount() > 0){
             menuItemsViewHolder.vFoodCartCount.setText(String.valueOf(menuItemsViewModel.getCount()));
         }else{
             menuItemsViewHolder.vFoodCartCount.setText(String.valueOf(""));
         }
 
+      /*  Picasso.with(homeActivity)
+                .load(ServiceAPI.INSTANCE.getUrl()+"/")
+                .placeholder(R.drawable.dosa_tmp)
+                .error(R.drawable.dosa_tmp)
+                .into(menuItemsViewHolder.vImageView);
+*/
     }
 
 
@@ -206,6 +222,8 @@ public class MenuItemListAdapter extends BaseAdapter {
         protected Button vFoodAddCartButton;
         protected TextView vFoodCartCount;
         protected RelativeLayout vAdaptUnOrderMenuLayout;
+        protected TextView vMenuItemAvailability;
+        protected ImageView vImageView;
 
         public MenuItemsViewHolder(View view){
             //adapt_unorder_menu_layout
@@ -213,6 +231,9 @@ public class MenuItemListAdapter extends BaseAdapter {
             vFoodName =  (TextView)view.findViewById(R.id.user_menu_item_name);
             vFoodDesc =  (TextView)view.findViewById(R.id.user_menu_item_desc);
             vFoodCost =  (TextView)view.findViewById(R.id.user_menu_item_rate);
+            vMenuItemAvailability =  (TextView)view.findViewById(R.id.user_menu_item_availability);
+            vImageView =  (ImageView)view.findViewById(R.id.menu_img);
+            //menu_img
 
             vFoodSubCartButton = (Button)view.findViewById(R.id.decrement);
             vFoodAddCartButton = (Button)view.findViewById(R.id.increment);

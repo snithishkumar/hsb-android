@@ -18,5 +18,7 @@ public interface MenuItemService {
 
     void getCurrentOrdersCounts(OrderDetailsViewModel orderDetailsViewModel);
 
+    boolean isAvailable(MenuCourseEntity menuCourseEntity);
+
 
 }

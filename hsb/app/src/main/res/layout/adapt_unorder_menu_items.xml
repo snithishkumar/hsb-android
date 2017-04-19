@@ -44,15 +44,35 @@
                 android:text="Dummy Desc Here are some quick\n tips for a first-time organization member"
                 />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:layout_marginTop="10dp"
-                android:id="@+id/user_menu_item_rate"
-                android:textSize="20dp"
-                android:text="INR 200"
-                />
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/user_menu_item_rate"
+                    android:textSize="20dp"
+                    android:text="INR 200"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="8dp"
+                    android:visibility="invisible"
+                    android:id="@+id/user_menu_item_availability"
+                    android:text="Available:10"
+                    />
+            </LinearLayout>
+
+
+
+
 
 
             <RelativeLayout
@@ -65,7 +85,11 @@
                 <include
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/number_picker"
                     layout="@layout/number_picker"/>
+
+
+
             </RelativeLayout>
 
 

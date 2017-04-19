@@ -90,10 +90,7 @@ public class MobileFragment extends Fragment implements TextToSpeech.OnInitListe
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
               String userMobileText =    userMobile.getText().toString();
-                if(userMobileText.length() >= 10){
 
-                    getMenuList(userMobileText);
-                }
             }
 
             @Override
@@ -103,7 +100,10 @@ public class MobileFragment extends Fragment implements TextToSpeech.OnInitListe
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                String userMobileText =    userMobile.getText().toString();
+                if(userMobileText.length() >= 10){
+                    getMenuList(userMobileText);
+                }
             }
         });
 

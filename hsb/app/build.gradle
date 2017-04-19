@@ -46,5 +46,6 @@ dependencies {
     compile 'com.android.support:design:25.3.0'
     compile 'com.facebook.rebound:rebound:0.3.8'
     compile 'com.airbnb.android:lottie:2.0.0-beta3'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     testCompile 'junit:junit:4.12'
 }

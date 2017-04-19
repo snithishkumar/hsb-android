@@ -72,12 +72,7 @@ public class CaptainMobileFragment extends Fragment implements TextToSpeech.OnIn
         userMobile.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String userMobileText =    userMobile.getText().toString();
-                if(userMobileText.length() >= 10){
 
-                    mainActivity.getTableListService().changeUserMobile(userMobileText);
-                    showMenuSuccess();
-                }
             }
 
             @Override
@@ -87,7 +82,11 @@ public class CaptainMobileFragment extends Fragment implements TextToSpeech.OnIn
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                String userMobileText =    userMobile.getText().toString();
+                if(userMobileText.length() >= 10){
+                    mainActivity.getTableListService().changeUserMobile(userMobileText);
+                    showMenuSuccess();
+                }
             }
         });
 

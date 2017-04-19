@@ -72,12 +72,12 @@
             </intent-filter>
         </activity>
         <activity android:name="com.archide.hsb.view.activities.HomeActivity"
-            android:configChanges="screenSize" android:theme="@style/MainTheme.NoActionBar" />
-        <activity android:name="com.archide.hsb.view.activities.OrderActivity" android:configChanges="orientation|screenSize" android:theme="@style/MainTheme"></activity>
-        <activity android:name="com.archide.hsb.view.activities.NaviDrawerActivity" android:configChanges="orientation|screenSize" android:theme="@style/MainTheme"></activity>
-        <activity android:name="com.archide.hsb.view.activities.KitchenActivity"  android:configChanges="screenSize"></activity>
-        <activity android:name="com.archide.hsb.view.activities.KitchenDetailsActivity" android:configChanges="orientation|screenSize"></activity>
-        <activity android:name="com.archide.hsb.view.activities.KitchenMenusActivity" android:configChanges="orientation|screenSize">
+            android:configChanges="screenSize" android:theme="@style/UserAppTheme.NoActionBar" />
+        <activity android:name="com.archide.hsb.view.activities.OrderActivity" android:configChanges="orientation|screenSize" android:theme="@style/UserAppTheme"></activity>
+        <activity android:name="com.archide.hsb.view.activities.NaviDrawerActivity" android:configChanges="orientation|screenSize" android:theme="@style/UserAppTheme"></activity>
+        <activity android:name="com.archide.hsb.view.activities.KitchenActivity"  android:configChanges="screenSize" android:theme="@style/KitchenAppTheme"></activity>
+        <activity android:name="com.archide.hsb.view.activities.KitchenDetailsActivity" android:configChanges="orientation|screenSize" android:theme="@style/KitchenAppTheme"></activity>
+        <activity android:name="com.archide.hsb.view.activities.KitchenMenusActivity" android:configChanges="orientation|screenSize" android:theme="@style/KitchenAppTheme">
 
             <meta-data
                 android:name="android.app.searchable"

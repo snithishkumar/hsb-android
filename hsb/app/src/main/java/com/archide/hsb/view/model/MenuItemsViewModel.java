@@ -61,7 +61,7 @@ public class MenuItemsViewModel {
     }
 
     public int getAvailableCount() {
-        return availableCount;
+        return availableCount != -1 ? availableCount : 0;
     }
 
     public void setAvailableCount(int availableCount) {

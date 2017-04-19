@@ -84,14 +84,17 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
         List<MenuCourseEntity> menuCourseEntityList = menuItemService.getMenuCourseEntity();
         int count = 0;
         for(MenuCourseEntity menuCourseEntity : menuCourseEntityList){
-            MenuItemsFragment menuItemsFragment = new MenuItemsFragment();
-            Bundle purchaseIdArgs = new Bundle();
-            purchaseIdArgs.putString("menuCourseUuid",menuCourseEntity.getMenuCourseUUID());
-            purchaseIdArgs.putInt("tabPosition",count);
-            menuItemsFragment.setArguments(purchaseIdArgs);
+            if(menuItemService.isAvailable(menuCourseEntity)){
+                MenuItemsFragment menuItemsFragment = new MenuItemsFragment();
+                Bundle purchaseIdArgs = new Bundle();
+                purchaseIdArgs.putString("menuCourseUuid",menuCourseEntity.getMenuCourseUUID());
+                purchaseIdArgs.putInt("tabPosition",count);
+                menuItemsFragment.setArguments(purchaseIdArgs);
 
-            adapter.addFragment(menuItemsFragment, menuCourseEntity.getCategoryName());
-            count += 1;
+                adapter.addFragment(menuItemsFragment, menuCourseEntity.getCategoryName());
+                count += 1;
+            }
+
         }
         if(count < 4){
             tabLayout.setTabMode(TabLayout.MODE_FIXED);

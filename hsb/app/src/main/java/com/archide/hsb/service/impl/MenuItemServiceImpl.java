@@ -60,6 +60,16 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
 
+    public boolean isAvailable(MenuCourseEntity menuCourseEntity){
+        try{
+           return menuItemsDao.getAvailableMenuEntity(menuCourseEntity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+
     public List<MenuItemsViewModel> getMenuItemsViewModel(String menuCourseUuid, OrderDetailsViewModel orderDetailsViewModel){
         List<MenuItemsViewModel> menuItemsViewModels = new ArrayList<>();
         try{
