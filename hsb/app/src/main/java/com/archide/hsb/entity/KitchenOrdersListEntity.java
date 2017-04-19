@@ -22,6 +22,7 @@ public class KitchenOrdersListEntity {
     public static final String IS_SYNCED = "IsSynced";
     public static final String VIEW_STATUS = "ViewStatus";
     public static final String STATUS = "Status";
+    public static final String USER_MOBILE_NUMBER = "UserMobileNumber";
 
     @DatabaseField(columnName = KITCHEN_ORDER_LIST_ID,generatedId = true)
     private int kitchenOrderListId;
@@ -43,6 +44,8 @@ public class KitchenOrdersListEntity {
     private ViewStatus viewStatus;
     @DatabaseField(columnName = STATUS)
     private Status status;
+    @DatabaseField(columnName = USER_MOBILE_NUMBER)
+    private String userMobileNumber;
 
     public KitchenOrdersListEntity(){
 
@@ -58,7 +61,16 @@ public class KitchenOrdersListEntity {
         this.status = Status.OPEN;
         this.isSynced = true;
         this.serverDateTime = placeOrdersJson.getServerDateTime();
+        this.userMobileNumber = placeOrdersJson.getUserMobileNumber();
 
+    }
+
+    public String getUserMobileNumber() {
+        return userMobileNumber;
+    }
+
+    public void setUserMobileNumber(String userMobileNumber) {
+        this.userMobileNumber = userMobileNumber;
     }
 
     public int getKitchenOrderListId() {

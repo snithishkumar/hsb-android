@@ -78,6 +78,12 @@ public class KitchenDaoImpl extends BaseDaoImpl implements KitchenDao{
        return kitchenOrderListDao.queryBuilder().where().eq(KitchenOrdersListEntity.ORDER_ID,orderId).queryForFirst();
     }
 
+
+    @Override
+    public List<KitchenOrderDetailsEntity> getKitchenOrderDetails(KitchenOrdersListEntity  kitchenOrdersListEntity)throws SQLException{
+        return kitchenOrderDetailsDao.queryBuilder().where().eq(KitchenOrderDetailsEntity.KITCHEN_ORDER_LIST,kitchenOrdersListEntity).query();
+    }
+
     @Override
     public List<KitchenOrdersListEntity> getKitchenOrdersList()throws SQLException{
        return kitchenOrderListDao.queryBuilder().selectColumns(KitchenOrdersListEntity.ORDER_ID,KitchenOrdersListEntity.PLACED_ORDERS_UUID,KitchenOrdersListEntity.SERVER_DATE_TIME).where().ne(KitchenOrdersListEntity.STATUS, Status.CLOSE).query();

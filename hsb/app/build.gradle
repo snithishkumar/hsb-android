@@ -44,8 +44,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile 'com.google.android.gms:play-services:9.8.0'
     compile 'com.android.support:design:25.3.0'
+    compile 'com.hp.mss:mobileprintsdk:v2.02.418'
     compile 'com.facebook.rebound:rebound:0.3.8'
     compile 'com.airbnb.android:lottie:2.0.0-beta3'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile group: 'com.itextpdf', name: 'itextg', version: '5.5.10'
     testCompile 'junit:junit:4.12'
 }
