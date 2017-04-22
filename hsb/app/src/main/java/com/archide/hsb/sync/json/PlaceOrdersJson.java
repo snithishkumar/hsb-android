@@ -4,6 +4,7 @@ import com.archide.hsb.entity.KitchenOrdersListEntity;
 import com.archide.hsb.entity.PlacedOrdersEntity;
 import com.archide.hsb.enumeration.AppType;
 import com.archide.hsb.enumeration.OrderType;
+import com.archide.hsb.enumeration.Status;
 import com.archide.hsb.enumeration.UserType;
 
 import java.util.ArrayList;
@@ -27,10 +28,15 @@ public class PlaceOrdersJson {
 	private String comments;
 	private OrderType orderType;
 	private AppType appType;
+	private boolean isClosed;
 
 	public PlaceOrdersJson(KitchenOrdersListEntity kitchenOrdersListEntity){
 		this.orderId = kitchenOrdersListEntity.getOrderId();
 		this.placeOrderUuid = kitchenOrdersListEntity.getPlacedOrderUuid();
+		if(kitchenOrdersListEntity.getStatus().toString().equals(Status.CLOSE.toString())){
+			this.isClosed = true;
+		}
+
 	}
 
 	public PlaceOrdersJson(PlacedOrdersEntity placedOrdersEntity){

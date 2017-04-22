@@ -10,6 +10,7 @@ import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
 import com.archide.hsb.entity.KitchenOrdersListEntity;
 import com.archide.hsb.enumeration.FoodType;
+import com.archide.hsb.enumeration.OrderStatus;
 import com.archide.hsb.enumeration.OrderType;
 import com.archide.hsb.service.KitchenService;
 import com.archide.hsb.view.model.KitchenCommentsViewModel;
@@ -130,16 +131,24 @@ public class KitchenServiceImpl implements KitchenService {
     @Override
     public void saveOrderStatus(List<KitchenOrderDetailsViewModel> detailsViewModels,String orderId,Context context ){
         try{
+            int notDelivered = 0;
             for(KitchenOrderDetailsViewModel kitchenOrderDetailsViewModel : detailsViewModels){
                 if(!kitchenOrderDetailsViewModel.isCategory() && kitchenOrderDetailsViewModel.isEdited()){
                     kitchenDao.updateKitchenOrderDetailsViewStatus(kitchenOrderDetailsViewModel.getId(),
                             kitchenOrderDetailsViewModel.getStatus(),kitchenOrderDetailsViewModel.getUnAvailableCount(),
                             Integer.valueOf(kitchenOrderDetailsViewModel.getQuantity()));
+
+                    if(!kitchenOrderDetailsViewModel.getStatus().toString().equals(OrderStatus.DELIVERED.toString())){
+                        notDelivered += 1;
+                    }
                 }
 
             }
+            OrderType orderType = getOrderType(orderId);
+            if(notDelivered == 0 && orderType.toString().equals(OrderType.TakeAway.toString())){
+                kitchenDao.closeOrders(orderId);
+            }
             kitchenDao.updateKitchenOrderListViewSync(orderId);
-           // syncData();
         }catch (Exception e){
             e.printStackTrace();
         }

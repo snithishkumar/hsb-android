@@ -226,7 +226,7 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private void showMenuExit(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         // Setting Dialog Title
-        alertDialog.setTitle("Error");
+        alertDialog.setTitle("Conform");
 
         // Setting Dialog Message
         alertDialog.setMessage(getString(R.string.menu_exit));

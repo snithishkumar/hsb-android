@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.archide.hsb.enumeration.OrderStatus;
+import com.archide.hsb.enumeration.OrderType;
 import com.archide.hsb.service.impl.PrinterServiceImpl;
 import com.archide.hsb.view.activities.KitchenActivity;
 import com.archide.hsb.view.activities.KitchenDetailsActivity;
@@ -156,8 +158,22 @@ public class KitchenOrderedItemsFragment extends Fragment implements View.OnClic
     }
 
     public void enableSaveButton(){
-       if(button != null && button.getVisibility() != View.VISIBLE){
-           button.setVisibility(View.VISIBLE);
-       }
+        if(button != null && button.getVisibility() != View.VISIBLE){
+            button.setVisibility(View.VISIBLE);
+        }
+        OrderType orderType =  kitchenDetailsActivity.getKitchenService().getOrderType(orderId);
+        if(orderType.toString().equals(OrderType.TakeAway.toString())){
+            for(KitchenOrderDetailsViewModel kitchenOrderDetailsViewModel : detailsViewModels){
+                if(!kitchenOrderDetailsViewModel.isCategory()){
+                    if(!kitchenOrderDetailsViewModel.isEdited() || !kitchenOrderDetailsViewModel.getStatus().toString().equals(OrderStatus.DELIVERED.toString())){
+                        return;
+                    }
+                }
+
+
+            }
+            button.setText(getString(R.string.close_an_order));
+        }
+
     }
 }

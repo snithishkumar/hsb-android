@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
     private void showUnAvailable(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         // Setting Dialog Title
-        alertDialog.setTitle("Error");
+        alertDialog.setTitle("Sorry");
 
         // Setting Dialog Message
         alertDialog.setMessage(getString(R.string.table_unavailable));
@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
                 ConfigurationEntity configurationEntity = tableListService.getAppType();
+                tableListService.removeAllData();
                 showWelcome(configurationEntity);
 
             }
