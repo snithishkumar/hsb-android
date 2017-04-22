@@ -212,6 +212,7 @@ public class OrderActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }else{
+            orderService.removeUnAvailableOrders();
             orderPlaceFragment.setCookingComments();
             Intent intent = new Intent(this, HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
