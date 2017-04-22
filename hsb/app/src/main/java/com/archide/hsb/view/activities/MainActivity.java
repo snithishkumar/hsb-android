@@ -10,7 +10,9 @@ import android.view.View;
 
 import com.archide.hsb.entity.ConfigurationEntity;
 import com.archide.hsb.enumeration.OrderType;
+import com.archide.hsb.service.OrderService;
 import com.archide.hsb.service.TableListService;
+import com.archide.hsb.service.impl.OrderServiceImpl;
 import com.archide.hsb.service.impl.TableListServiceImpl;
 import com.archide.hsb.view.fragments.CaptainMobileFragment;
 import com.archide.hsb.view.fragments.CaptainTableFragment;
@@ -214,6 +216,10 @@ public class MainActivity extends AppCompatActivity implements MobileFragment.Ma
         Fragment fragment =  getSupportFragmentManager().findFragmentById(R.id.main_container);
         if(!(fragment instanceof WelcomeFragment)){
             super.onBackPressed();
+        }else if(fragment instanceof CaptainMobileFragment){
+            OrderService orderService = new OrderServiceImpl(this);
+            ConfigurationEntity configurationEntity = tableListService.getAppType();
+            orderService.removeReservedTable(this,configurationEntity.getTableNumber());
         }
 
     }

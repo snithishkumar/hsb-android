@@ -76,4 +76,6 @@ public interface KitchenDao {
     void updateKitchenMenuItemsEntity(KitchenMenuItemsEntity kitchenMenuItemsEntity)throws SQLException;
 
     List<KitchenOrderDetailsEntity> getKitchenOrderDetails(KitchenOrdersListEntity  kitchenOrdersListEntity)throws SQLException;
+
+    KitchenOrderDetailsEntity getKitchenOrderDetailsEntity(String placedOrderUUID) throws SQLException;
 }

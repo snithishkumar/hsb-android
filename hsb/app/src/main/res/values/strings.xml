@@ -80,6 +80,14 @@ mobile number provided is not registered with MobilePay)</string>
         <item>Neptune</item>
     </string-array>
 
+    <string-array name="shop_details">
+        <item>NANDHANAM ARASAPPAR</item>
+        <item>471, AnnaSalai, Nandanam, Chennai - 35</item>
+        <item>Phone:24359171/9942320690</item>
+
+
+    </string-array>
+
     <string-array name="nav_menu">
        <!-- <item>My Cart</item> -->
         <item>Ordered Items</item>

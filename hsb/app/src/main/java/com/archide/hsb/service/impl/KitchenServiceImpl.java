@@ -10,6 +10,7 @@ import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersCategoryEntity;
 import com.archide.hsb.entity.KitchenOrdersListEntity;
 import com.archide.hsb.enumeration.FoodType;
+import com.archide.hsb.enumeration.OrderType;
 import com.archide.hsb.service.KitchenService;
 import com.archide.hsb.view.model.KitchenCommentsViewModel;
 import com.archide.hsb.view.model.KitchenOrderDetailsViewModel;
@@ -193,5 +194,17 @@ public class KitchenServiceImpl implements KitchenService {
            e.printStackTrace();
        }
 
+    }
+
+
+    @Override
+    public OrderType getOrderType(String orderId){
+        try{
+            KitchenOrdersListEntity kitchenOrdersListEntity =  kitchenDao.getKitchenOrdersListEntity(orderId);
+           return kitchenOrdersListEntity.getOrderType();
+        }catch (Exception e){
+e.printStackTrace();
+        }
+        return OrderType.TakeAway;
     }
 }

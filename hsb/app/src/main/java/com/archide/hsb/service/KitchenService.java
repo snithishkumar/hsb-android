@@ -3,6 +3,7 @@ package com.archide.hsb.service;
 import android.content.Context;
 
 import com.archide.hsb.entity.KitchenMenuItemsEntity;
+import com.archide.hsb.enumeration.OrderType;
 import com.archide.hsb.view.model.KitchenCommentsViewModel;
 import com.archide.hsb.view.model.KitchenOrderDetailsViewModel;
 import com.archide.hsb.view.model.KitchenOrderListViewModel;
@@ -28,6 +29,8 @@ public interface KitchenService {
     List<KitchenMenuItemsEntity> getKitchenMenuItemsModels(String searchText);
 
     void updateKitchenMenuItemsEntity(KitchenMenuItemsEntity kitchenMenuItemsEntity);
+
+    OrderType getOrderType(String orderId);
 
 
 }

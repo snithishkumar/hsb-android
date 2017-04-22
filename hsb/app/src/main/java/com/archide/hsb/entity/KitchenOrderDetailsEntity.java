@@ -30,6 +30,7 @@ public class KitchenOrderDetailsEntity {
     public static final String UN_AVAILABLE_COUNT = "UnAvailableCount";
     public static final String IS_SYNC = "IsSync";
     public static final String SERVER_DATE_TIME = "ServerDateTime";
+    public static final String PRICE = "Price";
 
     @DatabaseField(columnName = MENU_ID,generatedId = true)
     private int menuId;
@@ -66,6 +67,10 @@ public class KitchenOrderDetailsEntity {
     @DatabaseField(columnName = SERVER_DATE_TIME)
     private long serverDateTime;
 
+
+    @DatabaseField(columnName = PRICE)
+    private double price;
+
     public KitchenOrderDetailsEntity(){
 
     }
@@ -81,6 +86,7 @@ public class KitchenOrderDetailsEntity {
         this.unAvailableCount = orderedMenuItems.getUnAvailableCount();
         this.isSync = true;
         this.serverDateTime = Long.valueOf(orderedMenuItems.getLastUpdatedDateTime());
+        this.price = orderedMenuItems.getPrice();
     }
 
     public long getServerDateTime() {
@@ -157,6 +163,10 @@ public class KitchenOrderDetailsEntity {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    public double getPrice() {
+        return price;
     }
 
     public void setQuantity(int quantity) {

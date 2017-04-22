@@ -1,5 +1,6 @@
 package com.archide.hsb.entity;
 
+import com.archide.hsb.enumeration.OrderType;
 import com.archide.hsb.enumeration.Status;
 import com.archide.hsb.enumeration.ViewStatus;
 import com.archide.hsb.sync.json.PlaceOrdersJson;
@@ -23,6 +24,7 @@ public class KitchenOrdersListEntity {
     public static final String VIEW_STATUS = "ViewStatus";
     public static final String STATUS = "Status";
     public static final String USER_MOBILE_NUMBER = "UserMobileNumber";
+    public static final String ORDER_TYPE = "OrderType";
 
     @DatabaseField(columnName = KITCHEN_ORDER_LIST_ID,generatedId = true)
     private int kitchenOrderListId;
@@ -47,6 +49,9 @@ public class KitchenOrdersListEntity {
     @DatabaseField(columnName = USER_MOBILE_NUMBER)
     private String userMobileNumber;
 
+    @DatabaseField(columnName = ORDER_TYPE)
+    private OrderType orderType;
+
     public KitchenOrdersListEntity(){
 
     }
@@ -62,7 +67,16 @@ public class KitchenOrdersListEntity {
         this.isSynced = true;
         this.serverDateTime = placeOrdersJson.getServerDateTime();
         this.userMobileNumber = placeOrdersJson.getUserMobileNumber();
+        this.orderType = placeOrdersJson.getOrderType();
 
+    }
+
+    public OrderType getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
     }
 
     public String getUserMobileNumber() {

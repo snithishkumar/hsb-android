@@ -146,21 +146,21 @@ public class CaptainTableFragment extends Fragment implements TextToSpeech.OnIni
            progressDialog.dismiss();
        }
 
+       if(responseData.getStatusCode() == 404){
+           ActivityUtil.showDialog(mainActivity,"Error","InValid TableNumber.");
+       }else if(responseData.getStatusCode() != 500){
+           UsersEntity usersEntity = mainActivity.getTableListService().getUsersEntity();
+           if(usersEntity == null || usersEntity.getUserMobileNumber() == null){
+               mainActivity.success(MainActivity.MENU_LIST_NO_MOBILE,null);
+               return;
+           }
+           mainActivity.success(MainActivity.MENU_LIST_SUCCESS,null);
+           return;
+       }else{
+           ActivityUtil.showDialog(mainActivity,"Error","Sorry for the Inconvenience. Please contact Admin.");
+       }
 
 
-        if(responseData.getStatusCode() != 500){
-            UsersEntity usersEntity = mainActivity.getTableListService().getUsersEntity();
-            if(usersEntity == null || usersEntity.getUserMobileNumber() == null){
-                mainActivity.success(MainActivity.MENU_LIST_NO_MOBILE,null);
-                return;
-            }
-            mainActivity.success(MainActivity.MENU_LIST_SUCCESS,null);
-            return;
-        }else if(responseData.getStatusCode() == 404){
-            ActivityUtil.showDialog(mainActivity,"Error","InValid TableNumber.");
-        }else{
-            ActivityUtil.showDialog(mainActivity,"Error","Sorry for the Inconvenience. Please contact Admin.");
-        }
     }
 
     @Override

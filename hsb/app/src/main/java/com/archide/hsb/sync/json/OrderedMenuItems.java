@@ -19,7 +19,8 @@ public class OrderedMenuItems {
     private int unAvailableCount;
 	private String lastUpdatedDateTime;
 	private boolean isDeleted;
-	
+	private double price;
+
 	public OrderedMenuItems(KitchenOrderDetailsEntity kitchenOrderDetailsEntity){
 		this.unAvailableCount = kitchenOrderDetailsEntity.getUnAvailableCount();
 		this.orderStatus = kitchenOrderDetailsEntity.getOrderStatus();
@@ -38,6 +39,14 @@ public class OrderedMenuItems {
 
 
 
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	public boolean isDeleted() {

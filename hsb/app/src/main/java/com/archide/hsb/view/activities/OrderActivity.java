@@ -39,6 +39,7 @@ public class OrderActivity extends AppCompatActivity {
     private OrderService orderService;
     OrderPlaceFragment orderPlaceFragment;
     private ProgressDialog progressDialog;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,13 +107,16 @@ public class OrderActivity extends AppCompatActivity {
         }
 
 
-        new Handler().postDelayed(new Runnable() {
+        handler = new Handler();
+
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 orderService.removeAllData();
                 showWelcomeScreen();
             }
         }, SPLASH_TIME_OUT);
+
 
     }
 

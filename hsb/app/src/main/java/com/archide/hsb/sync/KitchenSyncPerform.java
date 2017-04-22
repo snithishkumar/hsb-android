@@ -104,19 +104,15 @@ public class KitchenSyncPerform {
             for(PlaceOrdersJson placeOrdersJson : placeOrdersJsonList){
                 List<OrderedMenuItems>  orderedMenuItemsList = placeOrdersJson.getMenuItems();
                if(orderedMenuItemsList.size() > 0){
+                   boolean isCreate = false;
                    KitchenOrdersListEntity kitchenOrdersListEntity =  kitchenDao.getKitchenOrdersListEntity(placeOrdersJson.getOrderId());
                    if(kitchenOrdersListEntity == null){
                        kitchenOrdersListEntity = new KitchenOrdersListEntity(placeOrdersJson);
                        kitchenDao.createKitchenOrder(kitchenOrdersListEntity);
-                   }else{
-                       kitchenOrdersListEntity.setLastUpdateTime(placeOrdersJson.getLastUpdatedDateTime());
-                       kitchenOrdersListEntity.setServerDateTime(placeOrdersJson.getServerDateTime());
-                       kitchenOrdersListEntity.setStatus(Status.OPEN);
-                       kitchenOrdersListEntity.setViewStatus(ViewStatus.UPDATES);
-                       kitchenDao.updateKitchenOrder(kitchenOrdersListEntity);
+                       isCreate = true;
                    }
 
-
+                   boolean flag = false;
                    for(OrderedMenuItems orderedMenuItems : orderedMenuItemsList){
                        KitchenOrdersCategoryEntity kitchenOrdersCategory = kitchenDao.getKitchenOrdersCategoryEntity(kitchenOrdersListEntity,orderedMenuItems.getCategoryUuid());
                        if(kitchenOrdersCategory == null){
@@ -127,11 +123,26 @@ public class KitchenSyncPerform {
                            kitchenOrdersCategory.setDateTime(System.currentTimeMillis());
                            kitchenDao.createKitchenOrderCategory(kitchenOrdersCategory);
                        }
-                       KitchenOrderDetailsEntity kitchenOrderDetailsEntity = new KitchenOrderDetailsEntity(orderedMenuItems);
-                       kitchenOrderDetailsEntity.setKitchenOrdersCategory(kitchenOrdersCategory);
-                       kitchenOrderDetailsEntity.setKitchenOrdersList(kitchenOrdersListEntity);
-                       kitchenDao.createKitchenOrderItems(kitchenOrderDetailsEntity);
+                       KitchenOrderDetailsEntity kitchenOrderDetailsEntity =   kitchenDao.getKitchenOrderDetailsEntity(orderedMenuItems.getPlacedOrderItemsUUID());
+                       if(kitchenOrderDetailsEntity == null){
+                           kitchenOrderDetailsEntity = new KitchenOrderDetailsEntity(orderedMenuItems);
+                           kitchenOrderDetailsEntity.setKitchenOrdersCategory(kitchenOrdersCategory);
+                           kitchenOrderDetailsEntity.setKitchenOrdersList(kitchenOrdersListEntity);
+                           kitchenDao.createKitchenOrderItems(kitchenOrderDetailsEntity);
+                           flag = true;
+                       }
+
                    }
+
+                   if(flag && !isCreate){
+                       kitchenOrdersListEntity.setLastUpdateTime(placeOrdersJson.getLastUpdatedDateTime());
+                       kitchenOrdersListEntity.setServerDateTime(placeOrdersJson.getServerDateTime());
+                       kitchenOrdersListEntity.setStatus(Status.OPEN);
+                       kitchenOrdersListEntity.setViewStatus(ViewStatus.UPDATES);
+                       kitchenDao.updateKitchenOrder(kitchenOrdersListEntity);
+                   }
+
+
                    processCookingComments(placeOrdersJson,kitchenOrdersListEntity);
                }
 
