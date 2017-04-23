@@ -27,6 +27,7 @@ import com.archide.hsb.view.activities.HomeActivity;
 import com.archide.hsb.view.activities.KitchenActivity;
 import com.archide.hsb.view.adapters.KitchenOrderListAdapter;
 import com.archide.hsb.view.model.KitchenOrderListViewModel;
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,6 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hsb.archide.com.hsb.R;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * Created by Nithish on 25/11/16.
@@ -55,12 +58,28 @@ public class KitchenOrderListFragment extends Fragment {
     private ViewGroup mContainer;
     private boolean isFlag = false;
 
+    private int count = 0;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
 
 
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        if(count > 0){
+            menu.clear();
+            inflater.inflate(R.menu.kitchen_menu_list_action_batch, menu);
+            ActionItemBadge.update(kitchenActivity, menu.findItem(R.id.action_menu_list),kitchenActivity.getDrawable(R.drawable.ic_menu_white_48dp) , ActionItemBadge.BadgeStyles.GREEN, count);
+        }
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
 
@@ -161,6 +180,16 @@ public class KitchenOrderListFragment extends Fragment {
 
 
 
+    private void updateBatchCount(String unavailableCount){
+       int unAvailableCount = Integer.parseInt(unavailableCount);
+        if(unAvailableCount > 0){
+            count = unAvailableCount;
+            kitchenActivity.invalidateOptionsMenu();
+        }
+    }
+
+
+
     private void loadData(ResponseData responseData){
         if(responseData != null && responseData.getStatusCode() == 600 && !responseData.getSuccess()){
             mContainer.removeAllViews();
@@ -171,6 +200,7 @@ public class KitchenOrderListFragment extends Fragment {
             if(responseData != null && responseData.getStatusCode() == 500){
                 return;
             }
+            updateBatchCount(responseData.getData());
             List<KitchenOrderListViewModel> temp = kitchenActivity.getKitchenService().getOrderList();
             kitchenOrderListViewModels.clear();
             if(temp.size() < 1){

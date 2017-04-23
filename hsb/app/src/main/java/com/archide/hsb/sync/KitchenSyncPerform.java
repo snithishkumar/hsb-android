@@ -78,7 +78,7 @@ public class KitchenSyncPerform {
                 getKitchenOrdersList.add(getKitchenOrders);
             }
             Call<ResponseData> kitchenResponse =   hsbAPI.getKitchenOrders(getKitchenOrdersList);
-
+int count = 0;
             Response<ResponseData> response = kitchenResponse.execute();
             if (response != null && response.isSuccessful()) {
                 ResponseData responseData = response.body();
@@ -89,8 +89,10 @@ public class KitchenSyncPerform {
                 processKitchenOrders(kitchenOrderListResponse.getPlaceOrdersJsonList());
 
                 processCloseData(kitchenOrderListResponse.getClosedOrders());
+
+                count = kitchenOrderListResponse.getUnAvailableCount();
             }
-            ResponseData result = new ResponseData(200,null);
+            ResponseData result = new ResponseData(200,String.valueOf(count));
             return result;
         }catch (Exception e){
             e.printStackTrace();

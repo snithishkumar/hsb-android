@@ -14,6 +14,7 @@ import com.archide.hsb.service.impl.KitchenServiceImpl;
 import com.archide.hsb.view.fragments.FragmentsUtil;
 import com.archide.hsb.view.fragments.KitchenMenuItemsFragment;
 import com.archide.hsb.view.fragments.KitchenOrderListFragment;
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
 
 import hsb.archide.com.hsb.R;
 
@@ -101,6 +102,8 @@ public class KitchenActivity extends AppCompatActivity implements KitchenOrderLi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.kitchen_menu_list_action, menu);
+        //  app:actionLayout="@layout/menu_action_item_badge"
+      //  ActionItemBadge.update(this, menu.findItem(R.id.action_menu_list),getDrawable(R.drawable.ic_menu_white_48dp) , ActionItemBadge.BadgeStyles.BLUE, 0);
         return true;
     }
 
