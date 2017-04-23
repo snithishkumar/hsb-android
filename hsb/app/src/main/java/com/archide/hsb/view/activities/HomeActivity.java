@@ -1,12 +1,15 @@
 package com.archide.hsb.view.activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -76,6 +79,13 @@ public class HomeActivity extends AppCompatActivity implements FragmentDrawer.Fr
         menuItemService = new MenuItemServiceImpl(this);
         orderService = new OrderServiceImpl(this);
         engine = new TextToSpeech(this, this);
+
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission
+                            .WRITE_EXTERNAL_STORAGE},
+                    1);
+        }
 
     }
 

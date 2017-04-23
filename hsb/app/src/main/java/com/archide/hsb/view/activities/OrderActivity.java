@@ -142,6 +142,7 @@ public class OrderActivity extends AppCompatActivity {
         case R.id.edit_order:
         case R.id.place_an_order:
             orderService.removeUnAvailableOrders();
+            orderPlaceFragment.setCookingComments();
             Intent intent = new Intent(this, HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

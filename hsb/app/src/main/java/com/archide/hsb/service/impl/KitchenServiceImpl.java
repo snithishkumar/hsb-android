@@ -138,9 +138,10 @@ public class KitchenServiceImpl implements KitchenService {
                             kitchenOrderDetailsViewModel.getStatus(),kitchenOrderDetailsViewModel.getUnAvailableCount(),
                             Integer.valueOf(kitchenOrderDetailsViewModel.getQuantity()));
 
-                    if(!kitchenOrderDetailsViewModel.getStatus().toString().equals(OrderStatus.DELIVERED.toString())){
-                        notDelivered += 1;
-                    }
+
+                }
+                if(!kitchenOrderDetailsViewModel.isCategory() && !kitchenOrderDetailsViewModel.getStatus().toString().equals(OrderStatus.DELIVERED.toString())){
+                    notDelivered += 1;
                 }
 
             }
