@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/mobile_fragment_layout"
-    android:background="@drawable/mobile_background"
+    android:background="@drawable/mobile_background_land"
     android:orientation="vertical"
     tools:context="com.archide.hsb.view.activities.MainActivity"
     >
@@ -21,6 +21,7 @@
             android:textSize="25sp"
             android:textStyle="bold"
             android:hint="Table Number"
+            android:layout_marginLeft="50dp"
             android:id="@+id/vCaptainTableNumber"
             android:textColor="@android:color/white"
             android:inputType="number"
@@ -29,10 +30,10 @@
 
 
         <ImageView
-            android:layout_width="150dp"
+            android:layout_width="80dp"
             android:src="@drawable/next_button"
             android:id="@+id/captain_next_button"
-            android:layout_height="75dp" />
+            android:layout_height="80dp" />
 
 
     </LinearLayout>

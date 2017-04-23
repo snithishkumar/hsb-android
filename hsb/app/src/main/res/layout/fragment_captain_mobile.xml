@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/mobile_fragment_layout"
-    android:background="@drawable/mobile_background"
+    android:background="@drawable/mobile_background_land"
     android:orientation="vertical"
     tools:context="com.archide.hsb.view.activities.MainActivity"
     >
