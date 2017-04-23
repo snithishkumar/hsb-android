@@ -9,11 +9,15 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.archide.hsb.service.impl.PrinterServiceImpl;
 import com.archide.hsb.view.activities.ActivityUtil;
 import com.archide.hsb.view.activities.MainActivity;
 import com.archide.hsb.view.activities.NaviDrawerActivity;
@@ -66,7 +70,7 @@ public class BillingFragment extends Fragment implements View.OnClickListener,Te
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
         engine = new TextToSpeech(getContext(), this);
     }
 
@@ -207,6 +211,30 @@ public class BillingFragment extends Fragment implements View.OnClickListener,Te
 
     private void speech(String textToSpeech) {
         engine.speak(textToSpeech, TextToSpeech.QUEUE_FLUSH, null, null);
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.kitchen_print_action, menu);
+
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_print_job:
+                PrinterServiceImpl printerService = new PrinterServiceImpl(naviDrawerActivity);
+                printerService.printUserOrders(naviDrawerActivity);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

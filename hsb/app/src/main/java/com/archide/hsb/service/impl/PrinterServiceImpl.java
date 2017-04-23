@@ -4,9 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.archide.hsb.dao.KitchenDao;
+import com.archide.hsb.dao.OrdersDao;
 import com.archide.hsb.dao.impl.KitchenDaoImpl;
+import com.archide.hsb.dao.impl.OrdersDaoImpl;
 import com.archide.hsb.entity.KitchenOrderDetailsEntity;
 import com.archide.hsb.entity.KitchenOrdersListEntity;
+import com.archide.hsb.entity.PlacedOrderItemsEntity;
+import com.archide.hsb.entity.PlacedOrdersEntity;
 import com.archide.hsb.util.Utilities;
 import com.archide.hsb.view.activities.FileUtils;
 import com.hp.mss.hpprint.model.PDFPrintItem;
@@ -46,11 +50,70 @@ public class PrinterServiceImpl {
     private KitchenDao kitchenDao;
     private Context context;
 
+    private OrdersDao ordersDao;
+
     public PrinterServiceImpl(Context context,boolean kitchen) {
         try {
             kitchenDao = new KitchenDaoImpl(context);
             this.context = context;
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public PrinterServiceImpl(Context context) {
+        try {
+            ordersDao = new OrdersDaoImpl(context);
+            this.context = context;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void printUserOrders(Activity activity){
+        try{
+            PlacedOrdersEntity placedOrdersEntity =  ordersDao.getPlacedOrdersEntity();
+            List<PlacedOrderItemsEntity>  placedOrderItemsEntities = ordersDao.getPlacedOrderItemsEntity();
+
+            String basedir = placedOrdersEntity.getOrderId()+".pdf";
+
+            String filePath = Utilities.getAppRootPath(activity)+File.separator;
+
+            filePath = filePath+basedir;
+
+
+            Document document = new Document(PageSize.A5);
+            PdfWriter pdfWriter= PdfWriter.getInstance(document, new FileOutputStream(filePath));
+            document.open();
+
+
+
+            populateShopDetails(document);
+            populateBillDetails(document,placedOrdersEntity.getOrderId(),placedOrdersEntity.getTableNumber(),placedOrdersEntity.getUserMobileNumber());
+
+            Font normalBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+
+            PdfPTable myTable = new PdfPTable(4);
+            myTable.setWidthPercentage(100);
+            myTable.setSpacingBefore(0f);
+            myTable.setSpacingAfter(0f);
+            myTable.setWidths(new float[] { 1, 3, 1, 2 });
+            createBillHeader(myTable,normalBold);
+            populateUserOrders(placedOrderItemsEntities,placedOrdersEntity,myTable,document);
+            footer(document);
+            document.newPage();
+            document.close();
+
+
+            PDFAsset pdfPath = new PDFAsset(filePath);
+            PrintItem printItemDefault = new PDFPrintItem(PrintItem.ScaleType.CENTER, pdfPath);
+            PrintJobData printJobData = new PrintJobData(activity, printItemDefault);
+            printJobData.setJobName(placedOrdersEntity.getPlaceOrdersUUID());
+            PrintUtil.setPrintJobData(printJobData);
+            PrintUtil.print(activity);
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
@@ -113,6 +176,7 @@ public class PrinterServiceImpl {
             rate =  Utilities.roundOff(rate);
             subTotal += rate;
             addEntry(myTable, String.valueOf(rate));
+            count += 1;
         }
 
         document.add(myTable);
@@ -121,6 +185,29 @@ public class PrinterServiceImpl {
         document.add(new Chunk(ls));
         amountDetails(String.valueOf(subTotal),"0",String.valueOf(subTotal),document);
     }
+
+
+    private void populateUserOrders(List<PlacedOrderItemsEntity>  placedOrderItemsEntities,PlacedOrdersEntity placedOrdersEntity,PdfPTable myTable,Document document)throws Exception{
+        int count = 1;
+        for(PlacedOrderItemsEntity placedOrderItemsEntity : placedOrderItemsEntities){
+            addEntry(myTable, String.valueOf(count));
+            addName(myTable, placedOrderItemsEntity.getName());
+            addEntry(myTable, String.valueOf(placedOrderItemsEntity.getQuantity()));
+            double rate = placedOrderItemsEntity.getCost() * placedOrderItemsEntity.getQuantity();
+            rate =  Utilities.roundOff(rate);
+            addEntry(myTable, String.valueOf(rate));
+            count += 1;
+        }
+        document.add(myTable);
+        LineSeparator ls = new LineSeparator();
+        ls.setLineWidth(0.5f);
+        document.add(new Chunk(ls));
+        amountDetails(String.valueOf(placedOrdersEntity.getTotalPrice()),"0",String.valueOf(placedOrdersEntity.getPrice()),document);
+    }
+
+
+
+
 
 
     private void createBillHeader(PdfPTable myTable, Font normalBold) {
